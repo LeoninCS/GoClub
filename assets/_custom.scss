@@ -13,7 +13,7 @@
   --body-font-color: #1b1c1a;
 
   --color-link: #0d4d4b;
-  --color-visited-link: #5d3c2a;
+  --color-visited-link: var(--color-link);
 
   --icon-filter: none;
 
@@ -525,7 +525,13 @@ body.sidebar-collapsed .book-brand-mark {
   text-decoration: none;
 }
 
+.book-article h1 .page-home-link:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
 .book-article h1 .page-home-link:hover {
+  color: var(--goclub-primary-soft);
   text-decoration: none;
 }
 
@@ -574,9 +580,30 @@ body.sidebar-collapsed .book-brand-mark {
   margin: 2rem 0;
 }
 
-.markdown a[href] {
+.markdown a[href],
+.markdown a[href]:visited {
+  color: var(--color-link);
   text-decoration-thickness: 0.11em;
   text-underline-offset: 0.14em;
+  transition: color 0.18s ease;
+}
+
+.markdown a[href]:hover,
+.markdown a[href]:focus-visible {
+  color: var(--goclub-primary-soft);
+}
+
+.markdown .page-home-link[href],
+.markdown .page-home-link[href]:visited {
+  color: inherit;
+}
+
+.markdown .section-card[href],
+.markdown .section-card[href]:visited,
+.markdown .goclub-nav-card[href],
+.markdown .goclub-nav-card[href]:visited {
+  color: inherit;
+  text-decoration: none;
 }
 
 .markdown code {
@@ -719,12 +746,17 @@ body.sidebar-collapsed .book-brand-mark {
 
 .markdown .page-hero-button[href]:hover,
 .markdown .page-hero-button[href]:focus-visible,
+.markdown .homepage-github-button[href]:hover,
+.markdown .homepage-github-button[href]:focus-visible {
+  color: #fff;
+  text-decoration: none;
+}
+
 .markdown .page-hero-button-secondary[href]:hover,
 .markdown .page-hero-button-secondary[href]:focus-visible,
-.markdown .homepage-github-button[href]:hover,
-.markdown .homepage-github-button[href]:focus-visible,
 .markdown .homepage-github-secondary[href]:hover,
 .markdown .homepage-github-secondary[href]:focus-visible {
+  color: var(--goclub-primary);
   text-decoration: none;
 }
 
@@ -803,6 +835,18 @@ body.sidebar-collapsed .book-brand-mark {
   border: 1px solid rgba(112, 121, 120, 0.13);
   font-size: 0.92rem;
   color: rgba(0, 51, 49, 0.86);
+}
+
+.markdown .page-lead-chip[href],
+.markdown .page-lead-chip[href]:visited {
+  color: rgba(0, 51, 49, 0.86);
+  text-decoration: none;
+}
+
+.markdown .page-lead-chip[href]:hover,
+.markdown .page-lead-chip[href]:focus-visible {
+  color: var(--goclub-primary-soft);
+  text-decoration: none;
 }
 
 .section-index-shell {
@@ -1047,6 +1091,10 @@ body.sidebar-collapsed .book-brand-mark {
   color: var(--goclub-primary-soft);
   text-decoration: underline;
   text-decoration-thickness: 0.12em;
+}
+
+.markdown .homepage-github-url a[href]:visited {
+  color: var(--goclub-primary-soft);
 }
 
 .homepage-github-callout p {
