@@ -698,17 +698,34 @@ body.sidebar-collapsed .book-brand-mark {
 }
 
 .markdown .page-hero-button[href],
-.markdown .homepage-github-button[href] {
+.markdown .page-hero-button[href]:visited,
+.markdown .homepage-github-button[href],
+.markdown .homepage-github-button[href]:visited {
   background: linear-gradient(135deg, var(--goclub-primary), var(--goclub-primary-soft));
   color: #fff;
   box-shadow: 0 16px 32px rgba(0, 51, 49, 0.18);
+  text-decoration: none;
 }
 
 .markdown .page-hero-button-secondary[href],
-.markdown .homepage-github-secondary[href] {
+.markdown .page-hero-button-secondary[href]:visited,
+.markdown .homepage-github-secondary[href],
+.markdown .homepage-github-secondary[href]:visited {
   background: rgba(233, 232, 228, 0.92);
   color: var(--goclub-primary);
   border: 1px solid rgba(112, 121, 120, 0.16);
+  text-decoration: none;
+}
+
+.markdown .page-hero-button[href]:hover,
+.markdown .page-hero-button[href]:focus-visible,
+.markdown .page-hero-button-secondary[href]:hover,
+.markdown .page-hero-button-secondary[href]:focus-visible,
+.markdown .homepage-github-button[href]:hover,
+.markdown .homepage-github-button[href]:focus-visible,
+.markdown .homepage-github-secondary[href]:hover,
+.markdown .homepage-github-secondary[href]:focus-visible {
+  text-decoration: none;
 }
 
 .hero-metrics {
