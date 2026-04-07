@@ -723,6 +723,12 @@ body.sidebar-collapsed .book-brand-mark {
   border-radius: 1rem;
   font-weight: 800;
   text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
 }
 
 .markdown .page-hero-button[href],
@@ -749,6 +755,9 @@ body.sidebar-collapsed .book-brand-mark {
 .markdown .page-hero-button[href]:focus-visible,
 .markdown .homepage-github-button[href]:hover,
 .markdown .homepage-github-button[href]:focus-visible {
+  background: linear-gradient(135deg, #00413e, #005b58);
+  box-shadow: 0 20px 36px rgba(0, 51, 49, 0.26);
+  transform: translateY(-2px);
   color: #fff;
   text-decoration: none;
 }
@@ -757,7 +766,11 @@ body.sidebar-collapsed .book-brand-mark {
 .markdown .page-hero-button-secondary[href]:focus-visible,
 .markdown .homepage-github-secondary[href]:hover,
 .markdown .homepage-github-secondary[href]:focus-visible {
-  color: var(--goclub-primary);
+  background: rgba(0, 51, 49, 0.92);
+  border-color: rgba(0, 51, 49, 0.42);
+  box-shadow: 0 18px 34px rgba(0, 51, 49, 0.2);
+  transform: translateY(-2px);
+  color: #fff;
   text-decoration: none;
 }
 
