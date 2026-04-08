@@ -118,7 +118,7 @@ select {
 .book-menu nav {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 2rem);
+  // min-height: calc(100vh - 2rem);
 }
 
 .book-menu nav > ul {
