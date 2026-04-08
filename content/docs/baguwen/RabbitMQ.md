@@ -4,71 +4,142 @@
 
 ## 1. RabbitMQ、Kafka、RocketMQ 对比
 
-答案：三者都能做异步解耦与削峰，但定位不同：RabbitMQ 更通用灵活，Kafka 更偏高吞吐日志流，RocketMQ 偏金融/事务消息场景。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 三者都能做异步解耦与削峰，但定位不同：RabbitMQ 更通用灵活，Kafka 更偏高吞吐日志流，RocketMQ 偏金融/事务消息场景。面试里可按三点展开：吞吐量：Kafka 通常最高；协议与路由能力：RabbitMQ 更丰富；事务/顺序/延时等能力在 RocketMQ 更常被强调。
+
+
+**关键点：**
 - 吞吐量：Kafka 通常最高。
 - 协议与路由能力：RabbitMQ 更丰富。
 - 事务/顺序/延时等能力在 RocketMQ 更常被强调。
 
+</div>
+</details>
+
 ## 2. 消息队列的作用和使用场景
 
-答案：主要作用是异步解耦、削峰填谷、系统间可靠通信。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 主要作用是异步解耦、削峰填谷、系统间可靠通信。面试里可按两点展开：下单后异步发短信、发券、积分；流量高峰时缓冲请求，保护下游。
+
+
+**关键点：**
 - 下单后异步发短信、发券、积分。
 - 流量高峰时缓冲请求，保护下游。
 
+</div>
+</details>
+
 ## 3. 如何保证消息队列可靠性
 
-答案：要从“生产、存储、消费”三段都做可靠性设计。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 要从“生产、存储、消费”三段都做可靠性设计。面试里可按三点展开：生产端：发送确认、重试、落库补偿；Broker：持久化、镜像/副本、ACK 机制；消费端：手动 ACK、失败重试、死信队列。
+
+
+**关键点：**
 - 生产端：发送确认、重试、落库补偿。
 - Broker：持久化、镜像/副本、ACK 机制。
 - 消费端：手动 ACK、失败重试、死信队列。
 
+</div>
+</details>
+
 ## 4. 如何防止消息重复消费（幂等）
 
-答案：重复消费无法完全避免，核心是消费端幂等。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 重复消费无法完全避免，核心是消费端幂等。面试里可按三点展开：业务唯一键去重（订单号/消息 ID）；幂等表或状态机校验；保证“重复执行结果一致”。
+
+
+**关键点：**
 - 业务唯一键去重（订单号/消息 ID）。
 - 幂等表或状态机校验。
 - 保证“重复执行结果一致”。
 
+</div>
+</details>
+
 ## 5. 消息积压会发生什么，如何解决
 
-答案：积压会导致延迟升高、超时、甚至服务雪崩。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 积压会导致延迟升高、超时、甚至服务雪崩。面试里可按三点展开：临时扩容消费者和分区并发；提升消费逻辑性能，拆分慢处理链路；必要时限流、降级、转离线处理。
+
+
+**关键点：**
 - 临时扩容消费者和分区并发。
 - 提升消费逻辑性能，拆分慢处理链路。
 - 必要时限流、降级、转离线处理。
 
+</div>
+</details>
+
 ## 6. 消息队列算哪种设计模式
 
-答案：更接近架构模式中的“发布-订阅”和“生产者-消费者”模式。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 更接近架构模式中的“发布-订阅”和“生产者-消费者”模式。面试里可按两点展开：发布订阅：一条消息多订阅者；生产者消费者：削峰与并发处理。
+
+
+**关键点：**
 - 发布订阅：一条消息多订阅者。
 - 生产者消费者：削峰与并发处理。
 
+</div>
+</details>
+
 ## 7. RabbitMQ 底层架构是什么样的
 
-答案：核心组件是 Producer、Exchange、Queue、Consumer，消息先到 Exchange，再按规则路由到 Queue。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 核心组件是 Producer、Exchange、Queue、Consumer，消息先到 Exchange，再按规则路由到 Queue。面试里可按三点展开：Exchange 不存消息，只做路由；Queue 负责存储与投递；连接基于 TCP，通道基于 Channel 复用。
+
+
+**关键点：**
 - Exchange 不存消息，只做路由。
 - Queue 负责存储与投递。
 - 连接基于 TCP，通道基于 Channel 复用。
 
+</div>
+</details>
+
 ## 8. RabbitMQ 的交换机类型
 
-答案：常见有 Direct、Topic、Fanout、Headers 四种。
+<details class="qa-answer">
+<summary class="qa-answer-toggle">查看答案</summary>
 
-关键点：
+<div class="qa-answer-body">
+
+**可直接说：** 常见有 Direct、Topic、Fanout、Headers 四种。面试里可按三点展开：Direct：精确路由键匹配；Topic：通配符匹配（`*`、`#`）；Fanout：广播到所有绑定队列。
+
+
+**关键点：**
 - Direct：精确路由键匹配。
 - Topic：通配符匹配（`*`、`#`）。
 - Fanout：广播到所有绑定队列。
 - Headers：按消息头匹配，使用较少。
+</div>
+</details>

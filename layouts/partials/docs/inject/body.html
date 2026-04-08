@@ -60,3 +60,17 @@
     syncViewportState();
   })();
 </script>
+<script>
+  (function () {
+    var blocks = document.querySelectorAll('details.qa-answer');
+    blocks.forEach(function (el) {
+      var summary = el.querySelector('summary.qa-answer-toggle');
+      if (!summary) return;
+      var update = function () {
+        summary.textContent = el.open ? '收起答案' : '查看答案';
+      };
+      el.addEventListener('toggle', update);
+      update();
+    });
+  })();
+</script>

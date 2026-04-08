@@ -1366,3 +1366,42 @@ body.sidebar-collapsed .book-brand-mark {
     transform: translateX(calc(-1 * var(--goclub-sidebar-width)));
   }
 }
+
+/* Q&A details toggle for baguwen pages */
+.book-page details.qa-answer {
+  margin: 0.75rem 0 1rem;
+  border: 1px solid var(--goclub-border);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.book-page details.qa-answer > summary.qa-answer-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.55rem 0 0.2rem 0.7rem;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid rgba(0, 51, 49, 0.26);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--goclub-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.35;
+  cursor: pointer;
+  user-select: none;
+}
+
+.book-page details.qa-answer > summary.qa-answer-toggle::marker,
+.book-page details.qa-answer > summary.qa-answer-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.book-page details.qa-answer[open] > summary.qa-answer-toggle {
+  background: rgba(0, 75, 73, 0.1);
+}
+
+.book-page details.qa-answer .qa-answer-body {
+  padding: 0 0.9rem 0.85rem;
+}
