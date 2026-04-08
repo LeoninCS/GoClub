@@ -1126,19 +1126,34 @@ body.sidebar-collapsed .book-brand-mark {
 
 .contributors-grid {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.15rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   margin-top: 1.5rem;
 }
 
 .contributor-card {
-  border: 1px solid rgba(112, 121, 120, 0.13);
-  padding: 1rem;
+  border: 1px solid rgba(112, 121, 120, 0.16);
+  padding: 1.1rem;
   display: flex;
-  gap: 0.95rem;
+  gap: 1rem;
   align-items: flex-start;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: var(--goclub-shadow-soft);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(244, 244, 240, 0.9));
+  box-shadow:
+    0 8px 20px rgba(36, 48, 46, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.contributor-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(13, 77, 75, 0.32);
+  box-shadow:
+    0 14px 28px rgba(36, 48, 46, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 }
 
 .contributor-avatar-link {
@@ -1147,33 +1162,80 @@ body.sidebar-collapsed .book-brand-mark {
 }
 
 .contributor-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 999px;
+  width: 72px;
+  height: 72px;
+  border-radius: 1.05rem;
   object-fit: cover;
+  border: 1px solid rgba(112, 121, 120, 0.28);
+  box-shadow: 0 8px 18px rgba(33, 51, 50, 0.16);
 }
 
 .contributor-body {
   min-width: 0;
+  display: grid;
+  gap: 0.35rem;
 }
 
 .contributor-name {
-  margin: 0 0 0.2rem;
-  font-size: 1.05rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1.55rem;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.contributor-name a {
+  color: var(--goclub-primary);
+  text-decoration: none;
+}
+
+.contributor-name a:hover {
+  color: var(--goclub-link-hover);
 }
 
 .contributor-role {
-  margin: 0.2rem 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--goclub-primary-soft);
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: rgba(31, 43, 42, 0.88);
 }
 
 .contributor-fullname,
 .contributor-meta {
-  margin: 0.2rem 0;
-  font-size: 0.92rem;
+  margin: 0;
+  font-size: 0.93rem;
   word-break: break-word;
+  color: rgba(27, 28, 26, 0.8);
+}
+
+.contributor-meta a {
+  font-weight: 700;
+  color: var(--goclub-primary-soft);
+  text-decoration: none;
+}
+
+.contributor-meta a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.contributor-prs {
+  margin-top: 0.18rem;
+}
+
+.contributor-prs strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.65rem;
+  height: 1.65rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: rgba(13, 77, 75, 0.12);
+  color: var(--goclub-primary);
+  font-weight: 800;
 }
 
 .book-footer > .flex.flex-wrap.justify-between:first-child {

@@ -37,9 +37,9 @@
                   />
                 </a>
                 <div class="contributor-body">
-                  <h2 class="contributor-name">
+                  <h3 class="contributor-name">
                     <a href="{{ .html_url }}" target="_blank" rel="noopener">{{ .login }}</a>
-                  </h2>
+                  </h3>
                   {{ with .role }}
                     <p class="contributor-role">{{ . }}</p>
                   {{ end }}
@@ -47,9 +47,12 @@
                     <p class="contributor-fullname">{{ . }}</p>
                   {{ end }}
                   <p class="contributor-meta">
-                    <a href="{{ .html_url }}" target="_blank" rel="noopener">{{ .html_url }}</a>
+                    GitHub：
+                    <a href="{{ .html_url }}" target="_blank" rel="noopener">@{{ .login }}</a>
                   </p>
-                  <p class="contributor-meta">Merged PRs: {{ .merged_prs }}</p>
+                  <p class="contributor-meta contributor-prs">
+                    Merged PRs：<strong>{{ .merged_prs }}</strong>
+                  </p>
                 </div>
               </article>
             {{ end }}
