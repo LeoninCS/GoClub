@@ -1,3 +1,477 @@
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+.goclub-chatbot {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: var(--goclub-font-body, sans-serif);
+}
+.goclub-chatbot-toggle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #2563eb;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.goclub-chatbot-toggle:hover { transform: scale(1.05); }
+.goclub-chatbot-window {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 380px;
+  height: 560px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.goclub-chatbot-window.open { display: flex; }
+.goclub-chatbot-header {
+  padding: 16px;
+  background: #2563eb;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.goclub-chatbot-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.goclub-chatbot-header button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+}
+.goclub-chatbot-settings {
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+.goclub-chatbot-settings-toggle {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.goclub-chatbot-settings-toggle::before { content: "▶"; font-size: 10px; transition: transform 0.2s; }
+.goclub-chatbot-settings-toggle.open::before { transform: rotate(90deg); }
+.goclub-chatbot-settings-panel {
+  display: none;
+  margin-top: 12px;
+}
+.goclub-chatbot-settings-panel.open { display: block; }
+.goclub-chatbot-settings-panel label {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+.goclub-chatbot-settings-panel input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+.goclub-chatbot-settings-panel input:last-child { margin-bottom: 0; }
+.goclub-chatbot-presets {
+  padding: 10px 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #e2e8f0;
+}
+.goclub-chatbot-preset {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.goclub-chatbot-preset:hover { background: #dbeafe; }
+.goclub-chatbot-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.goclub-chatbot-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.goclub-chatbot-msg.user {
+  align-self: flex-end;
+  background: #2563eb;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.goclub-chatbot-msg.assistant {
+  align-self: flex-start;
+  background: #f1f5f9;
+  color: #1e293b;
+  border-bottom-left-radius: 4px;
+}
+.goclub-chatbot-msg.error {
+  align-self: flex-start;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 13px;
+}
+.goclub-chatbot-msg code {
+  background: rgba(0,0,0,0.08);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+.goclub-chatbot-msg pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 10px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+.goclub-chatbot-msg pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+.goclub-chatbot-input-area {
+  padding: 12px 16px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 8px;
+}
+.goclub-chatbot-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  max-height: 100px;
+}
+.goclub-chatbot-input:focus { border-color: #2563eb; }
+.goclub-chatbot-send {
+  width: 40px;
+  height: 40px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.goclub-chatbot-send:disabled { background: #94a3b8; cursor: not-allowed; }
+.goclub-chatbot-welcome {
+  text-align: center;
+  color: #64748b;
+  padding: 20px;
+  font-size: 14px;
+}
+@media (max-width: 440px) {
+  .goclub-chatbot-window {
+    width: calc(100vw - 32px);
+    right: -10px;
+    height: 70vh;
+  }
+}
+</style>
+<div class="goclub-chatbot">
+  <div class="goclub-chatbot-window" id="goclubChatWindow">
+    <div class="goclub-chatbot-header">
+      <h3>AI 助手</h3>
+      <button id="goclubChatCloseBtn" title="关闭">×</button>
+    </div>
+    <div class="goclub-chatbot-settings">
+      <button class="goclub-chatbot-settings-toggle" id="goclubChatSettingsToggle">API 设置</button>
+      <div class="goclub-chatbot-settings-panel" id="goclubChatSettingsPanel">
+        <label>Base URL</label>
+        <input type="text" id="goclubChatBaseUrl" placeholder="https://api.openai.com/v1 (仅支持 OpenAI 兼容接口)">
+        <label>API Key</label>
+        <input type="password" id="goclubChatApiKey" placeholder="sk-...">
+        <label>模型</label>
+        <input type="text" id="goclubChatModel" placeholder="">
+      </div>
+    </div>
+    <div class="goclub-chatbot-presets" id="goclubChatPresets">
+      <button class="goclub-chatbot-preset">总结页面</button>
+      <button class="goclub-chatbot-preset">列出要点</button>
+      <button class="goclub-chatbot-preset">推荐相关</button>
+    </div>
+    <div class="goclub-chatbot-messages" id="goclubChatMessages">
+      <div class="goclub-chatbot-welcome">输入问题或点击上方快捷按钮</div>
+    </div>
+    <div class="goclub-chatbot-input-area">
+      <textarea class="goclub-chatbot-input" id="goclubChatInput" placeholder="问我关于这个页面的问题..." rows="1"></textarea>
+      <button class="goclub-chatbot-send" id="goclubChatSend" title="发送">↑</button>
+    </div>
+  </div>
+  <button class="goclub-chatbot-toggle" id="goclubChatToggle" title="AI 助手">💬</button>
+</div>
+<script>
+(function() {
+  var STORAGE_KEY = 'goclub_chatbot';
+  var pageKey = STORAGE_KEY + '_' + location.pathname;
+  var windowEl = document.getElementById('goclubChatWindow');
+  var toggleBtn = document.getElementById('goclubChatToggle');
+  var closeBtn = document.getElementById('goclubChatCloseBtn');
+  var settingsToggle = document.getElementById('goclubChatSettingsToggle');
+  var settingsPanel = document.getElementById('goclubChatSettingsPanel');
+  var baseUrlInput = document.getElementById('goclubChatBaseUrl');
+  var apiKeyInput = document.getElementById('goclubChatApiKey');
+  var modelInput = document.getElementById('goclubChatModel');
+  var messagesEl = document.getElementById('goclubChatMessages');
+  var inputEl = document.getElementById('goclubChatInput');
+  var sendBtn = document.getElementById('goclubChatSend');
+  var presetsEl = document.getElementById('goclubChatPresets');
+
+  var isOpen = false;
+  var isLoading = false;
+
+  var state = {
+    baseUrl: '',
+    apiKey: '',
+    model: '',
+    messages: []
+  };
+
+  function loadState() {
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        var cfg = JSON.parse(saved);
+        state.baseUrl = cfg.baseUrl || '';
+        state.apiKey = cfg.apiKey || '';
+        state.model = cfg.model || '';
+      }
+      var pageData = localStorage.getItem(pageKey);
+      if (pageData) {
+        state.messages = JSON.parse(pageData);
+      }
+    } catch(e) {}
+  }
+
+  function saveConfig() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        baseUrl: state.baseUrl,
+        apiKey: state.apiKey,
+        model: state.model
+      }));
+    } catch(e) {}
+  }
+
+  function saveMessages() {
+    try {
+      localStorage.setItem(pageKey, JSON.stringify(state.messages));
+    } catch(e) {}
+  }
+
+  function getPageContent() {
+    var content = '';
+    var article = document.querySelector('.markdown.book-article') || document.querySelector('article') || document.querySelector('main');
+    if (article) {
+      content = article.innerText || article.textContent || '';
+    } else {
+      content = document.body.innerText || document.body.textContent || '';
+    }
+    return content.slice(0, 8000);
+  }
+
+  function renderMessages() {
+    if (state.messages.length === 0) {
+      messagesEl.innerHTML = '<div class="goclub-chatbot-welcome">输入问题或点击上方快捷按钮</div>';
+      return;
+    }
+    messagesEl.innerHTML = state.messages.map(function(m) {
+      var html = m.role === 'user' ? escapeHtml(m.content) : marked.parse(m.content);
+      return '<div class="goclub-chatbot-msg ' + m.role + '">' + html + '</div>';
+    }).join('');
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function addMessage(role, content) {
+    state.messages.push({ role: role, content: content });
+    saveMessages();
+    renderMessages();
+  }
+
+  function setLoading(loading) {
+    isLoading = loading;
+    sendBtn.disabled = loading;
+    sendBtn.textContent = loading ? '...' : '↑';
+    inputEl.disabled = loading;
+  }
+
+  async function sendMessage(userContent) {
+    if (!userContent.trim()) return;
+    if (!state.baseUrl || !state.apiKey) {
+      addMessage('assistant', '请先在设置中配置 Base URL 和 API Key');
+      return;
+    }
+
+    addMessage('user', userContent);
+    setLoading(true);
+
+    var pageContent = getPageContent();
+    var systemPrompt = '你是一个助手，基于以下页面内容回答用户的问题。如果页面内容中没有相关信息，请说明你无法从页面内容中找到答案。\n\n页面内容：\n' + pageContent;
+
+    var slidingWindow = state.messages.slice(-5);
+    var messages = [{ role: 'system', content: systemPrompt }].concat(slidingWindow);
+
+    try {
+      var response = await fetch(state.baseUrl + '/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + state.apiKey
+        },
+        body: JSON.stringify({
+          model: state.model,
+          messages: messages
+        })
+      });
+
+      if (!response.ok) {
+        var errData = await response.json().catch(function() { return {}; });
+        throw new Error(errData.error?.message || '请求失败: ' + response.status);
+      }
+
+      var data = await response.json();
+      var assistantMessage = data.choices[0]?.message?.content || '';
+      if (assistantMessage) {
+        addMessage('assistant', assistantMessage);
+      } else {
+        addMessage('assistant', '未收到有效回复');
+      }
+    } catch(e) {
+      addMessage('assistant', '错误: ' + e.message);
+    }
+
+    setLoading(false);
+  }
+
+  function handlePreset(e) {
+    var btn = e.target.closest('.goclub-chatbot-preset');
+    if (!btn) return;
+    var text = btn.textContent;
+    var userContent = '';
+    if (text === '总结页面') {
+      userContent = '请用一段话总结这个页面的主要内容';
+    } else if (text === '列出要点') {
+      userContent = '列出这个页面的3-5个关键要点';
+    } else if (text === '推荐相关') {
+      userContent = '基于这个页面的内容，推荐3个相关的深入学习方向';
+    } else {
+      userContent = text;
+    }
+    sendMessage(userContent);
+  }
+
+  toggleBtn.addEventListener('click', function() {
+    isOpen = !isOpen;
+    windowEl.classList.toggle('open', isOpen);
+    toggleBtn.textContent = isOpen ? '×' : '💬';
+    if (isOpen) {
+      baseUrlInput.value = state.baseUrl;
+      apiKeyInput.value = state.apiKey;
+      modelInput.value = state.model;
+    }
+  });
+
+  closeBtn.addEventListener('click', function() {
+    isOpen = false;
+    windowEl.classList.remove('open');
+    toggleBtn.textContent = '💬';
+  });
+
+  settingsToggle.addEventListener('click', function() {
+    settingsToggle.classList.toggle('open');
+    settingsPanel.classList.toggle('open');
+  });
+
+  baseUrlInput.addEventListener('change', function() {
+    state.baseUrl = baseUrlInput.value.trim();
+    saveConfig();
+  });
+
+  apiKeyInput.addEventListener('change', function() {
+    state.apiKey = apiKeyInput.value.trim();
+    saveConfig();
+  });
+
+  modelInput.addEventListener('change', function() {
+    state.model = modelInput.value.trim();
+    saveConfig();
+  });
+
+  inputEl.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!isLoading) {
+        sendMessage(inputEl.value);
+        inputEl.value = '';
+      }
+    }
+  });
+
+  sendBtn.addEventListener('click', function() {
+    if (!isLoading) {
+      sendMessage(inputEl.value);
+      inputEl.value = '';
+    }
+  });
+
+  presetsEl.addEventListener('click', handlePreset);
+
+  loadState();
+  renderMessages();
+  baseUrlInput.value = state.baseUrl;
+  apiKeyInput.value = state.apiKey;
+  modelInput.value = state.model;
+})();
+</script>
 <script>
   (function () {
     var storageKey = "goclub.sidebar.collapsed";
