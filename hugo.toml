@@ -16,3 +16,17 @@ enableGitInfo = true
   BookToC = true
   BookSection = 'docs'
   BookSearch = true
+
+  [params.giscus]
+    enabled = true
+    repo = 'LeoninCS/GoClub'
+    repoId = 'R_kgDORwC2sw'
+    category = 'Announcements'
+    categoryId = 'DIC_kwDORwC2s84C7Zu2'
+    mapping = 'pathname'
+    strict = '0'
+    reactionsEnabled = '1'
+    emitMetadata = '0'
+    inputPosition = 'bottom'
+    theme = 'preferred_color_scheme'
+    lang = 'zh-CN'
