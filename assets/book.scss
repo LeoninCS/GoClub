@@ -13,5 +13,15 @@
 @import "custom";
 
 :root {
-  @include theme-{{ default "light" .Site.Params.BookTheme }};
+  @include theme-light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include theme-dark;
+  }
+}
+
+[data-theme="dark"] {
+  @include theme-dark;
 }

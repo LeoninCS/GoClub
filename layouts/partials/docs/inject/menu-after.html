@@ -1,1 +1,64 @@
+<script>
+(function() {
+  const toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
 
+  const sunIcon = document.getElementById('sun-icon');
+  const moonIcon = document.getElementById('moon-icon');
+  
+  function updateIcons(isDark) {
+    if (isDark) {
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = 'block';
+    } else {
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
+    }
+  }
+
+  // Initial state based on applied theme
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  updateIcons(isDark);
+
+  toggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isCurrentlyDark = currentTheme === 'dark' || (!currentTheme && systemDark);
+    
+    const newTheme = isCurrentlyDark ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateIcons(newTheme === 'dark');
+  });
+})();
+</script>
+
+<style>
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--goclub-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  border-radius: 50%;
+}
+
+.theme-toggle:hover {
+  background-color: var(--goclub-border);
+  transform: scale(1.1);
+}
+
+.theme-icon {
+  width: 20px;
+  height: 20px;
+}
+
+[data-theme="dark"] .theme-toggle {
+  color: #4fd1cd;
+}
+</style>

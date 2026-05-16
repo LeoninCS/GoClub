@@ -2,6 +2,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700;6..72,800&display=swap" rel="stylesheet">
 
+<script>
+  (function() {
+    const theme = localStorage.getItem('theme') || 'auto';
+    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    if (theme === 'dark' || (theme === 'auto' && darkQuery.matches)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script>
+
 <style>
   :root {
     --goclub-font-body: "Manrope", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
