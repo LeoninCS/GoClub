@@ -66,6 +66,222 @@
   --goclub-radius-md: 0.9rem;
 }
 
+@mixin goclub-theme-dark {
+  --body-background: #0d1110;
+  --body-background-tint:
+    radial-gradient(circle at top right, rgba(0, 75, 73, 0.15), transparent 24rem),
+    linear-gradient(180deg, rgba(13, 17, 16, 0.45), rgba(13, 17, 16, 0));
+  --body-font-color: #e1e3df;
+
+  --color-link: #4fd1cd;
+  --color-visited-link: var(--color-link);
+
+  --icon-filter: brightness(0) invert(1);
+
+  --gray-100: #1a1c1b;
+  --gray-200: #2a2c2b;
+  --gray-500: #8ba09e;
+
+  --color-accent-default: #4fd1cd;
+  --color-accent-default-tint: rgba(79, 209, 205, 0.16);
+  --color-accent-note: #4fd1cd;
+  --color-accent-note-tint: rgba(79, 209, 205, 0.14);
+  --color-accent-tip: #a3be8c;
+  --color-accent-tip-tint: rgba(163, 190, 140, 0.14);
+  --color-accent-important: #b48ead;
+  --color-accent-important-tint: rgba(180, 142, 173, 0.14);
+  --color-accent-warning: #d08770;
+  --color-accent-warning-tint: rgba(208, 135, 112, 0.16);
+  --color-accent-caution: #bf616a;
+  --color-accent-caution-tint: rgba(191, 97, 106, 0.15);
+
+  --goclub-primary: #4fd1cd;
+  --goclub-primary-soft: #004b49;
+  --goclub-surface: rgba(26, 28, 27, 0.84);
+  --goclub-surface-strong: rgba(30, 32, 31, 0.9);
+  --goclub-surface-muted: rgba(13, 17, 16, 0.84);
+  --goclub-border: rgba(255, 255, 255, 0.1);
+  --goclub-border-strong: rgba(255, 255, 255, 0.18);
+  --goclub-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  --goclub-shadow-soft: 0 16px 38px rgba(0, 0, 0, 0.3);
+  --goclub-shadow-card: 0 18px 42px rgba(0, 0, 0, 0.35);
+
+  .book-menu .book-menu-content {
+    background: linear-gradient(180deg, rgba(26, 28, 27, 0.96), rgba(20, 22, 21, 0.9));
+  }
+  
+  .book-brand a {
+    background:
+      radial-gradient(circle at top right, rgba(0, 75, 73, 0.4), transparent 9rem),
+      linear-gradient(135deg, rgba(38, 40, 39, 0.92), rgba(26, 28, 27, 0.88));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  
+  .sidebar-toggle {
+    background: rgba(38, 40, 39, 0.94);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #4fd1cd;
+  }
+
+  .book-header,
+  .book-menu #book-search-results,
+  .book-toc .book-toc-content {
+    background: rgba(26, 28, 27, 0.92);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .goclub-mobile-header-button {
+    background: rgba(38, 40, 39, 0.88);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .book-menu .book-search input {
+    background: rgba(38, 40, 39, 0.92);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e1e3df;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .book-menu #book-search-results a {
+    color: #e1e3df;
+  }
+
+  .book-menu a {
+    color: #e1e3df;
+  }
+
+  .book-menu a[href]:hover {
+    background: rgba(38, 40, 39, 0.95);
+  }
+
+  .book-menu a.active {
+    background: rgba(38, 40, 39, 0.98);
+  }
+
+  .book-toc nav a {
+    color: rgba(225, 227, 223, 0.82);
+  }
+
+  .book-toc nav a:hover {
+    background: rgba(38, 40, 41, 0.9);
+  }
+
+  .markdown code {
+    background: rgba(79, 209, 205, 0.15);
+  }
+
+  .markdown pre {
+    background: rgba(26, 28, 27, 0.96);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .markdown table {
+    background: rgba(26, 28, 27, 0.78);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .markdown table tr th {
+    background: rgba(79, 209, 205, 0.1);
+    color: #e1e3df;
+  }
+
+  .goclub-nav-card {
+    background: rgba(38, 40, 39, 0.82);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .goclub-nav-card-title {
+    color: #e1e3df;
+  }
+
+  .section-card {
+    background:
+      radial-gradient(circle at top right, rgba(0, 75, 73, 0.2), transparent 8rem),
+      linear-gradient(180deg, rgba(38, 40, 39, 0.98), rgba(26, 28, 27, 0.92));
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .section-card-title {
+    color: #e1e3df;
+  }
+
+  .page-hero,
+  .page-lead,
+  .homepage-github-callout {
+    background:
+      radial-gradient(circle at top right, rgba(0, 75, 73, 0.3), transparent 12rem),
+      linear-gradient(135deg, rgba(30, 32, 31, 0.96), rgba(20, 22, 21, 0.94));
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .page-hero h1,
+  .page-lead-title,
+  .homepage-github-title {
+    color: #4fd1cd;
+  }
+
+  .page-lead-chip {
+    background: rgba(38, 40, 39, 0.82);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #4fd1cd;
+  }
+
+  /* Chatbot Dark Mode */
+  .goclub-chatbot-window {
+    background: #1a1c1b;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .goclub-chatbot-settings,
+  .goclub-chatbot-presets {
+    background: rgba(38, 40, 39, 0.92);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  .goclub-chatbot-settings-toggle {
+    color: #4fd1cd;
+  }
+  .goclub-chatbot-settings-panel input,
+  .goclub-chatbot-preset {
+    background: rgba(48, 50, 49, 0.92);
+    color: #e1e3df;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .goclub-chatbot-messages {
+    background: #0d1110;
+  }
+  .goclub-chatbot-msg.assistant {
+    background: rgba(38, 40, 39, 0.92);
+    color: #e1e3df;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .goclub-chatbot-msg pre {
+    background: rgba(26, 28, 27, 0.96);
+    color: #e1e3df;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+  .goclub-chatbot-input-area {
+    background: rgba(26, 28, 27, 0.92);
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+  .goclub-chatbot-input {
+    background: rgba(38, 40, 39, 0.92);
+    color: #e1e3df;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include goclub-theme-dark;
+  }
+}
+
+[data-theme="dark"] {
+  @include goclub-theme-dark;
+}
+
+
 html {
   scroll-padding-top: 2rem;
 }
@@ -162,8 +378,12 @@ select {
   line-height: 1;
 }
 
-.book-brand {
+.book-brand-container {
   margin-bottom: 1rem;
+}
+
+.book-brand {
+  margin-bottom: 0;
 }
 
 .book-brand a {
@@ -416,7 +636,8 @@ body.sidebar-collapsed .book-brand-mark {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(0, 51, 49, 0.6);
+  color: var(--body-font-color);
+  opacity: 0.6;
 }
 
 .book-toc nav ul {
@@ -435,11 +656,13 @@ body.sidebar-collapsed .book-brand-mark {
   display: block;
   padding: 0.55rem 0.7rem;
   border-radius: 0.85rem;
-  color: rgba(27, 28, 26, 0.82);
+  color: var(--body-font-color);
+  opacity: 0.8;
 }
 
 .book-toc nav a:hover {
-  background: rgba(227, 226, 223, 0.9);
+  background: var(--goclub-surface-muted);
+  opacity: 1;
 }
 
 .book-header {
@@ -539,14 +762,14 @@ body.sidebar-collapsed .book-brand-mark {
 .book-article h2,
 .book-article h3,
 .book-article h4 {
-  color: #1f2b2a;
+  color: var(--goclub-primary);
   line-height: 1.16;
 }
 
 .book-article h2 {
   margin-top: 2.4rem;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(112, 121, 120, 0.14);
+  border-top: 1px solid var(--goclub-border);
   font-size: 1.75rem;
 }
 
@@ -563,7 +786,8 @@ body.sidebar-collapsed .book-brand-mark {
 
 .book-article p,
 .book-article li {
-  color: rgba(27, 28, 26, 0.82);
+  color: var(--body-font-color);
+  opacity: 0.92;
   line-height: 1.8;
 }
 
@@ -978,13 +1202,14 @@ body.sidebar-collapsed .book-brand-mark {
   font-family: var(--goclub-font-headline);
   font-size: 2rem;
   font-weight: 700;
-  color: #162624;
+  color: var(--body-font-color);
   line-height: 1.08;
 }
 
 .section-card-summary {
   margin-top: 0.75rem;
-  color: rgba(27, 28, 26, 0.74);
+  color: var(--body-font-color);
+  opacity: 0.74;
   line-height: 1.72;
   flex-grow: 1;
 }
@@ -996,7 +1221,8 @@ body.sidebar-collapsed .book-brand-mark {
   align-items: center;
   gap: 0.75rem;
   font-size: 0.88rem;
-  color: rgba(27, 28, 26, 0.58);
+  color: var(--body-font-color);
+  opacity: 0.58;
 }
 
 .section-card-arrow {
@@ -1199,7 +1425,8 @@ body.sidebar-collapsed .book-brand-mark {
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.01em;
-  color: rgba(31, 43, 42, 0.88);
+  color: var(--body-font-color);
+  opacity: 0.88;
 }
 
 .contributor-fullname,
@@ -1207,7 +1434,8 @@ body.sidebar-collapsed .book-brand-mark {
   margin: 0;
   font-size: 0.93rem;
   word-break: break-word;
-  color: rgba(27, 28, 26, 0.8);
+  color: var(--body-font-color);
+  opacity: 0.8;
 }
 
 .contributor-meta a {
@@ -1467,3 +1695,4 @@ body.sidebar-collapsed .book-brand-mark {
 .book-page details.qa-answer .qa-answer-body {
   padding: 0 0.9rem 0.85rem;
 }
+
