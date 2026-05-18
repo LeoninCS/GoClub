@@ -14,6 +14,7 @@ aliases:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>视频Feed流系统（medium）学习</title>
+<link rel="icon" type="image/svg+xml" href='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="16" fill="%23e0f7fa"/%3E%3Cellipse cx="18" cy="24" rx="9" ry="11" fill="%2370d7e7"/%3E%3Cellipse cx="46" cy="24" rx="9" ry="11" fill="%2370d7e7"/%3E%3Cellipse cx="32" cy="35" rx="24" ry="20" fill="%236fd4e6"/%3E%3Cellipse cx="23" cy="32" rx="4" ry="5" fill="%23111827"/%3E%3Cellipse cx="41" cy="32" rx="4" ry="5" fill="%23111827"/%3E%3Cellipse cx="32" cy="39" rx="6" ry="4" fill="%2327252a"/%3E%3Crect x="27" y="45" width="10" height="7" rx="2" fill="white"/%3E%3Cpath d="M32 43v10" stroke="%2327252a" stroke-width="2" stroke-linecap="round"/%3E%3Cpath d="M13 39c-4 1-7 3-9 6M51 39c4 1 7 3 9 6" stroke="%2327252a" stroke-width="3" stroke-linecap="round"/%3E%3C/svg%3E'>
 <style>
 /* ═══════════ DESIGN TOKENS ═══════════ */
 :root {
@@ -58,7 +59,8 @@ button{cursor:pointer;border:none;font-family:inherit;font-size:inherit;backgrou
 .topnav{display:flex;align-items:center;gap:10px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;height:var(--topnav-h);backdrop-filter:blur(12px)}
 .topnav::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto;white-space:nowrap}
-.brand-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;box-shadow:0 2px 8px var(--accent-glow)}
+.brand-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#e0f7fa;box-shadow:0 2px 8px var(--accent-glow);overflow:hidden;border:1px solid rgba(15,118,140,.16);flex-shrink:0}
+.brand-icon svg{display:block;width:30px;height:30px}
 .brand-text{font-size:15px;font-weight:700;letter-spacing:-.3px}
 .brand-sub{font-size:11px;color:var(--fg3);margin-left:4px}
 .mode-tabs{display:flex;background:var(--bg2);border-radius:8px;padding:3px;gap:2px}
@@ -269,19 +271,89 @@ mark{background:var(--accent-glow);color:var(--accent);padding:1px 3px;border-ra
   .search-box{width:160px}.search-box:focus{width:200px}
 }
 @media(max-width:640px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{font-size:14px}
+  body::before{display:none}
+  .topnav{display:flex;flex-direction:column;width:100vw;max-width:100vw;height:auto;min-height:var(--topnav-h);padding:10px 12px;gap:8px;align-items:stretch;overflow:hidden}
+  .brand{order:1;width:100%;min-width:0;margin-right:0;padding-right:42px}
+  .brand>div:last-child{min-width:0}
+  .brand-icon{width:30px;height:30px;flex:0 0 30px}
+  .brand-icon svg{width:28px;height:28px}
+  .brand-text{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;letter-spacing:0}
+  .brand-sub{display:none}
+  .progress-pill{order:2;align-self:flex-start;padding:3px 8px;font-size:11px;white-space:nowrap}
+  .theme-btn{position:absolute;top:8px;right:10px;width:32px;height:32px}
+  .mode-tabs{order:3;display:flex;flex-direction:column;width:calc(100vw - 24px);max-width:calc(100vw - 24px);min-width:0;gap:4px;overflow:hidden}
+  .mode-btn{width:100%;min-width:0;padding:8px 10px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+  .search-wrap{order:4;width:calc(100vw - 24px);max-width:calc(100vw - 24px);min-width:0}
+  .search-box,.search-box:focus{width:100%;height:36px;font-size:13px}
+  .app{display:block;width:100%;max-width:100%;height:auto;min-height:calc(100dvh - 136px);overflow:visible}
   .sidebar{display:none}
-  .main{padding:16px 18px 40px}
-  .topnav{padding:0 12px;gap:6px}
-  .brand-text{font-size:13px}
-  .mode-btn{padding:4px 10px;font-size:12px}
-  .search-box{width:120px;font-size:12px}
+  .main{width:100%;max-width:100%;padding:16px 14px max(40px,env(safe-area-inset-bottom));overflow:visible}
+  .content-header{margin-bottom:16px}
+  .content-header h1{font-size:22px;letter-spacing:0}
+  .section-card,.intro-card{width:100%;max-width:100%;padding:16px 14px;border-radius:8px;margin-bottom:14px;overflow:hidden}
+  .section-card h2{font-size:16px;align-items:flex-start;margin-bottom:12px}
+  .section-card p,.section-card ul,.section-card ol,.lv-body p,.lv-body ul,.lv-body ol{font-size:13.5px}
+  .section-card ul,.section-card ol,.lv-body ul,.lv-body ol{margin-left:18px}
+  .lv-header{padding:10px 12px;align-items:flex-start;gap:6px;flex-wrap:wrap}
+  .lv-header>span:last-child{min-width:0;margin-left:0!important;flex:1 1 160px!important}
+  .lv-body{padding:0 12px}
+  .lv-body.open{padding:0 12px 12px;max-height:5000px}
+  .lv-body pre,pre{max-width:100%;padding:14px 12px;margin:12px -2px;border-radius:8px;font-size:12px;line-height:1.55}
+  pre::before{display:none}
+  .quiz-q{padding:12px;gap:8px;flex-wrap:wrap}
+  .quiz-q .q-text{flex:1 1 calc(100% - 48px)}
+  .quiz-status{margin-left:32px}
+  .quiz-body.open{max-height:1200px}
+  .quiz-hint{margin:0 12px 12px;padding:12px;font-size:13px}
+  .quiz-btns{margin:0 12px 12px;flex-direction:column}
+  .quiz-btn{width:100%;padding:8px 12px}
+  .toolbar{gap:8px;align-items:stretch}
+  .toolbar .search-wrap{width:100%}
+  .toolbar .search-box,.toolbar .search-box:focus{width:100%!important}
+  .tool-btn,.timer-btn{flex:1 1 120px;justify-content:center}
+  .timer-display{flex:1 1 100%;min-width:0;text-align:center}
+  .card-grid,.scenario-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+  .card{height:360px}
+  .card-front{padding:16px}
+  .card-back{padding:16px}
+  .card-title{font-size:14px}
+  .card-actions{flex-wrap:wrap}
+  .card-action{flex:1 1 110px;padding:7px 8px;text-align:center}
+  .scenario-card{padding:16px}
+  .scenario-card h3{font-size:15px;align-items:flex-start}
+  .scenario-card .sc-desc,.sc-step-content p{font-size:13px}
+  .sc-step{gap:10px}
+  .appendix-table{display:block;overflow-x:auto;white-space:nowrap}
+  .appendix-table table{min-width:560px}
+  .nav-bar{flex-direction:column;align-items:stretch;margin-top:20px;padding-top:16px}
+  .nav-btn{width:100%;justify-content:center;min-height:40px}
+  .search-result{padding:12px}
+}
+@media(max-width:420px){
+  .brand{padding-right:42px}
+  .card{height:380px}
+  .quiz-q .q-num{width:22px;height:22px}
 }
 </style>
 </head>
 <body>
 <div class="topnav">
   <div class="brand">
-    <div class="brand-icon">G</div>
+    <div class="brand-icon" aria-label="Go Gopher">
+      <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+        <ellipse cx="18" cy="24" rx="9" ry="11" fill="#6fd4e6"/>
+        <ellipse cx="46" cy="24" rx="9" ry="11" fill="#6fd4e6"/>
+        <ellipse cx="32" cy="35" rx="24" ry="20" fill="#74d7e8"/>
+        <ellipse cx="23" cy="32" rx="4" ry="5" fill="#111827"/>
+        <ellipse cx="41" cy="32" rx="4" ry="5" fill="#111827"/>
+        <ellipse cx="32" cy="39" rx="6" ry="4" fill="#27252a"/>
+        <rect x="27" y="45" width="10" height="7" rx="2" fill="#fff"/>
+        <path d="M32 43v10" stroke="#27252a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M13 39c-4 1-7 3-9 6M51 39c4 1 7 3 9 6" stroke="#27252a" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
     <div><span class="brand-text">视频Feed流系统</span><span class="brand-sub">（medium）学习</span></div>
   </div>
   <div class="mode-tabs">
