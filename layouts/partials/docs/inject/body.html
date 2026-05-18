@@ -7,6 +7,9 @@
   z-index: 9999;
   font-family: var(--goclub-font-body, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
 }
+.goclub-chatbot.is-dragging {
+  cursor: grabbing;
+}
 .goclub-chatbot-toggle {
   width: 56px;
   height: 56px;
@@ -15,12 +18,18 @@
   border: none;
   color: var(--goclub-on-primary-action);
   font-size: 20px;
-  cursor: pointer;
+  cursor: grab;
   box-shadow: 0 4px 12px rgba(var(--goclub-primary-rgb), 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
+  touch-action: none;
+  user-select: none;
+}
+.goclub-chatbot.is-dragging .goclub-chatbot-toggle {
+  cursor: grabbing;
+  transform: none;
 }
 .goclub-chatbot-toggle:hover {
   transform: translateY(-2px);
@@ -361,7 +370,7 @@
   }
 }
 </style>
-<div class="goclub-chatbot">
+<div class="goclub-chatbot" id="goclubChatbot">
   <div class="goclub-chatbot-window" id="goclubChatWindow">
     <div class="goclub-chatbot-header">
       <h3>AI 助手</h3>
@@ -397,7 +406,9 @@
 <script>
 (function() {
   var STORAGE_KEY = 'goclub_chatbot';
+  var POSITION_KEY = STORAGE_KEY + '_position';
   var pageKey = STORAGE_KEY + '_' + location.pathname;
+  var rootEl = document.getElementById('goclubChatbot');
   var windowEl = document.getElementById('goclubChatWindow');
   var toggleBtn = document.getElementById('goclubChatToggle');
   var closeBtn = document.getElementById('goclubChatCloseBtn');
@@ -413,6 +424,7 @@
 
   var isOpen = false;
   var isLoading = false;
+  var didDrag = false;
 
   var state = {
     baseUrl: '',
@@ -451,6 +463,46 @@
     try {
       localStorage.setItem(pageKey, JSON.stringify(state.messages));
     } catch(e) {}
+  }
+
+  function clampPosition(x, y) {
+    var rect = rootEl.getBoundingClientRect();
+    var margin = 12;
+    var maxX = Math.max(margin, window.innerWidth - rect.width - margin);
+    var maxY = Math.max(margin, window.innerHeight - rect.height - margin);
+    return {
+      x: Math.min(Math.max(x, margin), maxX),
+      y: Math.min(Math.max(y, margin), maxY)
+    };
+  }
+
+  function setChatPosition(x, y, persist) {
+    var point = clampPosition(x, y);
+    rootEl.style.left = point.x + 'px';
+    rootEl.style.top = point.y + 'px';
+    rootEl.style.right = 'auto';
+    rootEl.style.bottom = 'auto';
+    if (persist) {
+      try {
+        localStorage.setItem(POSITION_KEY, JSON.stringify(point));
+      } catch(e) {}
+    }
+  }
+
+  function restoreChatPosition() {
+    try {
+      var saved = localStorage.getItem(POSITION_KEY);
+      if (!saved) return;
+      var point = JSON.parse(saved);
+      if (typeof point.x === 'number' && typeof point.y === 'number') {
+        setChatPosition(point.x, point.y, false);
+      }
+    } catch(e) {}
+  }
+
+  function keepChatInViewport() {
+    var rect = rootEl.getBoundingClientRect();
+    setChatPosition(rect.left, rect.top, true);
   }
 
   function getPageContent() {
@@ -585,7 +637,12 @@
     sendMessage(userContent);
   }
 
-  toggleBtn.addEventListener('click', function() {
+  toggleBtn.addEventListener('click', function(e) {
+    if (didDrag) {
+      didDrag = false;
+      e.preventDefault();
+      return;
+    }
     isOpen = !isOpen;
     windowEl.classList.toggle('open', isOpen);
     toggleBtn.textContent = isOpen ? '×' : '💬';
@@ -641,6 +698,66 @@
 
   presetsEl.addEventListener('click', handlePreset);
 
+  (function() {
+    var isDragging = false;
+    var startX = 0;
+    var startY = 0;
+    var startLeft = 0;
+    var startTop = 0;
+
+    function getPoint(e) {
+      var point = e.touches ? e.touches[0] : e;
+      return { x: point.clientX, y: point.clientY };
+    }
+
+    function startDrag(e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      var handle = e.target.closest('.goclub-chatbot-toggle');
+      if (!handle) return;
+      var point = getPoint(e);
+      var rect = rootEl.getBoundingClientRect();
+      isDragging = true;
+      didDrag = false;
+      startX = point.x;
+      startY = point.y;
+      startLeft = rect.left;
+      startTop = rect.top;
+      rootEl.classList.add('is-dragging');
+      document.body.style.userSelect = 'none';
+    }
+
+    function moveDrag(e) {
+      if (!isDragging) return;
+      var point = getPoint(e);
+      var dx = point.x - startX;
+      var dy = point.y - startY;
+      if (Math.abs(dx) + Math.abs(dy) > 4) {
+        didDrag = true;
+      }
+      setChatPosition(startLeft + dx, startTop + dy, false);
+      e.preventDefault();
+    }
+
+    function endDrag() {
+      if (!isDragging) return;
+      isDragging = false;
+      rootEl.classList.remove('is-dragging');
+      document.body.style.userSelect = '';
+      keepChatInViewport();
+      window.setTimeout(function() {
+        didDrag = false;
+      }, 400);
+    }
+
+    rootEl.addEventListener('mousedown', startDrag);
+    rootEl.addEventListener('touchstart', startDrag, { passive: false });
+    document.addEventListener('mousemove', moveDrag);
+    document.addEventListener('touchmove', moveDrag, { passive: false });
+    document.addEventListener('mouseup', endDrag);
+    document.addEventListener('touchend', endDrag);
+    window.addEventListener('resize', keepChatInViewport);
+  })();
+
   // 拖动调整大小 - 从顶部拖动可改变宽度和高度
   (function() {
     var resizeHandle = windowEl.querySelector('.goclub-chatbot-resize-handle');
@@ -686,6 +803,7 @@
   })();
 
   loadState();
+  restoreChatPosition();
   renderMessages();
   baseUrlInput.value = state.baseUrl;
   apiKeyInput.value = state.apiKey;
