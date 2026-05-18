@@ -227,6 +227,61 @@
     color: #4fd1cd;
   }
 
+  .contributor-card {
+    background:
+      radial-gradient(circle at top right, rgba(79, 209, 205, 0.11), transparent 9rem),
+      linear-gradient(160deg, rgba(38, 40, 39, 0.98), rgba(26, 28, 27, 0.94));
+    border-color: rgba(79, 209, 205, 0.2);
+    box-shadow:
+      0 16px 34px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .contributor-card:hover {
+    border-color: rgba(79, 209, 205, 0.36);
+    box-shadow:
+      0 20px 42px rgba(0, 0, 0, 0.36),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .contributor-avatar {
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+  }
+
+  .markdown .contributor-name a[href],
+  .markdown .contributor-name a[href]:visited,
+  .contributor-name a {
+    color: #8ee7e4;
+  }
+
+  .contributor-role,
+  .contributor-fullname,
+  .contributor-meta {
+    color: rgba(225, 227, 223, 0.86);
+    opacity: 1;
+  }
+
+  .markdown .contributor-meta a[href],
+  .markdown .contributor-meta a[href]:visited,
+  .contributor-meta a {
+    color: #b6d8ff;
+  }
+
+  .markdown .contributor-meta a[href]:hover,
+  .markdown .contributor-meta a[href]:focus-visible,
+  .markdown .contributor-name a[href]:hover,
+  .markdown .contributor-name a[href]:focus-visible,
+  .contributor-meta a:hover,
+  .contributor-name a:hover {
+    color: #d6c2ff;
+  }
+
+  .contributor-prs strong {
+    background: rgba(79, 209, 205, 0.18);
+    color: #69e4df;
+  }
+
   /* Chatbot Dark Mode */
   .goclub-chatbot-window {
     background: #1a1c1b;
@@ -1695,4 +1750,3 @@ body.sidebar-collapsed .book-brand-mark {
 .book-page details.qa-answer .qa-answer-body {
   padding: 0 0.9rem 0.85rem;
 }
-
