@@ -1,6 +1,6 @@
 ---
 title: "贡献者"
-weight: 6
+weight: 7
 bookCollapseSection: true
 type: docs
 ---

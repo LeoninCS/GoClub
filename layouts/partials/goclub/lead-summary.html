@@ -40,9 +40,9 @@
   {{ end }}
 {{ end }}
 
-{{ $summary := $scratch.Get "summary" }}
+{{ $summary := .Params.description | default .Description | default ($scratch.Get "summary") }}
 {{ if not $summary }}
-  {{ $summary = .Description | default (.Summary | plainify | htmlUnescape | replaceRE "\\s+" " " | trim " ") }}
+  {{ $summary = .Summary | plainify | htmlUnescape | replaceRE "\\s+" " " | trim " " }}
 {{ end }}
 
 {{ return $summary }}
