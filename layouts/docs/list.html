@@ -10,7 +10,7 @@
       {{ end }}
       <div class="page-lead-meta">
         <span class="page-lead-chip">内容数量：{{ len (where .Pages "Params.bookHidden" "ne" true) }}</span>
-        <span class="page-lead-chip">适合按卡片方式快速筛选</span>
+        <span class="page-lead-chip">适合按目录顺序阅读</span>
         {{ if partial "docs/toc-show" . }}
           <span class="page-lead-chip">支持右侧目录导航</span>
         {{ end }}

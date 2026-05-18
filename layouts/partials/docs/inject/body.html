@@ -11,12 +11,12 @@
   width: 56px;
   height: 56px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #003331, #004b49);
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
   border: none;
-  color: white;
+  color: var(--goclub-on-primary-action);
   font-size: 20px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 51, 49, 0.18);
+  box-shadow: 0 4px 12px rgba(var(--goclub-primary-rgb), 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@
 }
 .goclub-chatbot-toggle:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 51, 49, 0.26);
+  box-shadow: 0 8px 20px rgba(var(--goclub-primary-rgb), 0.24);
 }
 .goclub-chatbot-window {
   position: absolute;
@@ -32,10 +32,10 @@
   right: 0;
   width: 420px;
   height: 520px;
-  background: #ffffff;
-  border: 1px solid rgba(112, 121, 120, 0.16);
+  background: var(--goclub-surface);
+  border: 1px solid var(--goclub-border);
   border-radius: 1rem;
-  box-shadow: 0 10px 20px rgba(36, 48, 46, 0.1), 0 3px 6px rgba(36, 48, 46, 0.05);
+  box-shadow: 0 10px 20px rgba(var(--goclub-ink-rgb), 0.1), 0 3px 6px rgba(var(--goclub-ink-rgb), 0.05);
   display: none;
   flex-direction: column;
   overflow: hidden;
@@ -47,8 +47,8 @@
 .goclub-chatbot-window.open { display: flex; }
 .goclub-chatbot-header {
   padding: 16px 20px;
-  background: linear-gradient(135deg, #003331, #004b49);
-  color: white;
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,13 +67,13 @@
 .goclub-chatbot-header button:hover { background: rgba(255,255,255,0.15); }
 .goclub-chatbot-settings {
   padding: 12px 20px;
-  background: rgba(244, 244, 240, 0.92);
-  border-bottom: 1px solid rgba(112, 121, 120, 0.14);
+  background: var(--goclub-surface-strong);
+  border-bottom: 1px solid var(--goclub-border);
 }
 .goclub-chatbot-settings-toggle {
   background: none;
   border: none;
-  color: #003331;
+  color: var(--goclub-primary);
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
@@ -93,25 +93,25 @@
   display: block;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(0, 51, 49, 0.7);
+  color: var(--goclub-muted-text);
   margin-bottom: 6px;
 }
 .goclub-chatbot-settings-panel input {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid rgba(112, 121, 120, 0.2);
+  border: 1px solid var(--goclub-border);
   border-radius: 0.6rem;
   font-size: 14px;
   margin-bottom: 10px;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.92);
-  color: #1b1c1a;
+  background: rgba(var(--goclub-surface-rgb), 0.92);
+  color: var(--body-font-color);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .goclub-chatbot-settings-panel input:focus {
   outline: none;
-  border-color: rgba(0, 75, 73, 0.4);
-  box-shadow: 0 0 0 3px rgba(149, 209, 206, 0.28);
+  border-color: rgba(var(--goclub-primary-rgb), 0.42);
+  box-shadow: 0 0 0 3px rgba(var(--goclub-primary-rgb), 0.14);
 }
 .goclub-chatbot-settings-panel input:last-child { margin-bottom: 0; }
 .goclub-chatbot-presets {
@@ -119,13 +119,13 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  border-bottom: 1px solid rgba(112, 121, 120, 0.14);
-  background: rgba(244, 244, 240, 0.92);
+  border-bottom: 1px solid var(--goclub-border);
+  background: var(--goclub-surface-strong);
 }
 .goclub-chatbot-preset {
-  background: rgba(255, 255, 255, 0.92);
-  color: #003331;
-  border: 1px solid rgba(112, 121, 120, 0.18);
+  background: rgba(var(--goclub-surface-rgb), 0.92);
+  color: var(--goclub-primary);
+  border: 1px solid var(--goclub-border);
   padding: 6px 14px;
   border-radius: 999px;
   font-size: 13px;
@@ -135,8 +135,8 @@
   transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
 }
 .goclub-chatbot-preset:hover {
-  background: rgba(255, 223, 150, 0.5);
-  border-color: #a33d23;
+  background: rgba(var(--goclub-tertiary-rgb), 0.14);
+  border-color: rgba(var(--goclub-tertiary-rgb), 0.34);
   transform: translateY(-1px);
 }
 .goclub-chatbot-messages {
@@ -146,7 +146,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #faf9f5;
+  background: var(--body-background);
 }
 .goclub-chatbot-msg {
   max-width: 85%;
@@ -159,42 +159,42 @@
 }
 .goclub-chatbot-msg.user {
   align-self: flex-end;
-  background: linear-gradient(135deg, #003331, #004b49);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
   border-bottom-right-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 51, 49, 0.15);
+  box-shadow: 0 4px 12px rgba(var(--goclub-primary-rgb), 0.16);
 }
 .goclub-chatbot-msg.assistant {
   align-self: flex-start;
-  background: rgba(255, 255, 255, 0.92);
-  color: #1b1c1a;
-  border: 1px solid rgba(112, 121, 120, 0.16);
+  background: var(--goclub-surface);
+  color: var(--body-font-color);
+  border: 1px solid var(--goclub-border);
   border-bottom-left-radius: 4px;
 }
 .goclub-chatbot-msg.error {
   align-self: flex-start;
-  background: rgba(255, 218, 210, 0.5);
-  color: #a33d23;
-  border: 1px solid rgba(163, 61, 35, 0.2);
+  background: rgba(var(--goclub-secondary-rgb), 0.13);
+  color: var(--goclub-secondary);
+  border: 1px solid rgba(var(--goclub-secondary-rgb), 0.24);
   font-size: 13px;
 }
 .goclub-chatbot-msg code {
-  background: rgba(0, 75, 73, 0.08);
+  background: rgba(var(--goclub-primary-rgb), 0.1);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 13px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
 }
 .goclub-chatbot-msg pre {
-  background: rgba(244, 244, 240, 0.96);
-  border: 1px solid rgba(112, 121, 120, 0.16);
-  color: #1b1c1a;
+  background: rgba(var(--goclub-bg-rgb), 0.62);
+  border: 1px solid var(--goclub-border);
+  color: var(--body-font-color);
   padding: 12px 14px;
   border-radius: 0.85rem;
   overflow-x: auto;
   margin: 10px 0;
   line-height: 1.5;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  box-shadow: inset 0 1px 0 rgba(var(--goclub-surface-rgb), 0.7);
 }
 .goclub-chatbot-msg pre code {
   background: none;
@@ -230,9 +230,9 @@
 .goclub-chatbot-msg blockquote {
   margin: 8px 0;
   padding: 8px 14px;
-  border-left: 3px solid #a33d23;
-  background: rgba(255, 218, 210, 0.42);
-  color: rgba(27, 28, 26, 0.78);
+  border-left: 3px solid var(--goclub-secondary);
+  background: rgba(var(--goclub-secondary-rgb), 0.12);
+  color: var(--body-font-color);
   border-radius: 0 0.6rem 0.6rem 0;
 }
 .goclub-chatbot-msg table {
@@ -242,23 +242,23 @@
   font-size: 13px;
   border-radius: 0.6rem;
   overflow: hidden;
-  border: 1px solid rgba(112, 121, 120, 0.14);
+  border: 1px solid var(--goclub-border);
 }
 .goclub-chatbot-msg th, .goclub-chatbot-msg td {
-  border: 1px solid rgba(112, 121, 120, 0.14);
+  border: 1px solid var(--goclub-border);
   padding: 8px 12px;
   text-align: left;
 }
 .goclub-chatbot-msg th {
-  background: rgba(0, 75, 73, 0.07);
+  background: rgba(var(--goclub-primary-rgb), 0.09);
   font-weight: 600;
-  color: #1b1c1a;
+  color: var(--body-font-color);
 }
-.goclub-chatbot-msg a { color: #0d4d4b; text-decoration: none; }
-.goclub-chatbot-msg a:hover { color: #6b2bd9; text-decoration: underline; }
+.goclub-chatbot-msg a { color: var(--goclub-primary); text-decoration: none; }
+.goclub-chatbot-msg a:hover { color: var(--goclub-link-hover); text-decoration: underline; }
 .goclub-chatbot-msg hr {
   border: none;
-  border-top: 1px solid rgba(112, 121, 120, 0.14);
+  border-top: 1px solid var(--goclub-border);
   margin: 12px 0;
 }
 .goclub-chatbot-resize-handle {
@@ -282,51 +282,51 @@
   letter-spacing: 4px;
 }
 .goclub-chatbot-msg .tool-call {
-  background: #f0f0f3;
-  border: 1px solid #e0e1e6;
+  background: var(--goclub-surface-muted);
+  border: 1px solid var(--goclub-border);
   border-radius: 8px;
   padding: 10px 14px;
   margin: 8px 0;
   font-size: 13px;
-  color: #60646c;
+  color: var(--goclub-muted-text);
 }
 .goclub-chatbot-msg .tool-call::before {
   content: "🔧 tool_call";
   font-weight: 600;
-  color: #1c2024;
+  color: var(--body-font-color);
   display: block;
   margin-bottom: 4px;
 }
 .goclub-chatbot-input-area {
   padding: 12px 16px;
-  border-top: 1px solid rgba(112, 121, 120, 0.14);
+  border-top: 1px solid var(--goclub-border);
   display: flex;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.84);
+  background: var(--goclub-surface-strong);
 }
 .goclub-chatbot-input {
   flex: 1;
   padding: 10px 14px;
-  border: 1px solid rgba(112, 121, 120, 0.2);
+  border: 1px solid var(--goclub-border);
   border-radius: 999px;
   font-size: 14px;
   outline: none;
   resize: none;
   font-family: inherit;
   max-height: 100px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #1b1c1a;
+  background: rgba(var(--goclub-surface-rgb), 0.92);
+  color: var(--body-font-color);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 .goclub-chatbot-input:focus {
-  border-color: rgba(0, 75, 73, 0.4);
-  box-shadow: 0 0 0 3px rgba(149, 209, 206, 0.28);
+  border-color: rgba(var(--goclub-primary-rgb), 0.42);
+  box-shadow: 0 0 0 3px rgba(var(--goclub-primary-rgb), 0.14);
 }
 .goclub-chatbot-send {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #003331, #004b49);
-  color: white;
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -336,20 +336,20 @@
   justify-content: center;
   flex-shrink: 0;
   transition: transform 0.18s ease, box-shadow 0.18s ease;
-  box-shadow: 0 4px 12px rgba(0, 51, 49, 0.18);
+  box-shadow: 0 4px 12px rgba(var(--goclub-primary-rgb), 0.18);
 }
 .goclub-chatbot-send:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 51, 49, 0.24);
+  box-shadow: 0 6px 16px rgba(var(--goclub-primary-rgb), 0.24);
 }
 .goclub-chatbot-send:disabled {
-  background: rgba(112, 121, 120, 0.3);
+  background: rgba(var(--goclub-ink-rgb), 0.18);
   cursor: not-allowed;
   box-shadow: none;
 }
 .goclub-chatbot-welcome {
   text-align: center;
-  color: rgba(27, 28, 26, 0.54);
+  color: var(--goclub-muted-text);
   padding: 24px 20px;
   font-size: 14px;
 }

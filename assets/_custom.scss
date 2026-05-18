@@ -6,266 +6,469 @@
 */
 
 :root {
-  --body-background: #faf9f5;
+  --body-background: #f4f1eb;
   --body-background-tint:
-    radial-gradient(circle at top right, rgba(255, 223, 150, 0.22), transparent 24rem),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0));
-  --body-font-color: #1b1c1a;
+    radial-gradient(circle at 88% -10%, rgba(213, 195, 145, 0.14), transparent 26rem),
+    radial-gradient(circle at 8% 4%, rgba(105, 113, 171, 0.09), transparent 24rem),
+    linear-gradient(180deg, rgba(255, 253, 248, 0.58), rgba(255, 253, 248, 0));
+  --body-font-color: #26232a;
 
-  --color-link: #0d4d4b;
+  --color-link: #48548f;
   --color-visited-link: var(--color-link);
 
   --icon-filter: none;
 
-  --gray-100: #f4f4f0;
-  --gray-200: #dad7cf;
-  --gray-500: #6f716b;
+  --gray-100: #f0eee7;
+  --gray-200: #dcd7cc;
+  --gray-500: #7c7984;
 
-  --color-accent-default: #0d4d4b;
-  --color-accent-default-tint: rgba(13, 77, 75, 0.16);
-  --color-accent-note: #375c77;
-  --color-accent-note-tint: rgba(55, 92, 119, 0.14);
-  --color-accent-tip: #56704f;
-  --color-accent-tip-tint: rgba(86, 112, 79, 0.14);
-  --color-accent-important: #7a5b3d;
-  --color-accent-important-tint: rgba(122, 91, 61, 0.14);
-  --color-accent-warning: #aa5d36;
-  --color-accent-warning-tint: rgba(170, 93, 54, 0.16);
-  --color-accent-caution: #8f4740;
-  --color-accent-caution-tint: rgba(143, 71, 64, 0.15);
-  --color-accent-info: #375c77;
-  --color-accent-info-tint: rgba(55, 92, 119, 0.14);
-  --color-accent-success: #56704f;
-  --color-accent-success-tint: rgba(86, 112, 79, 0.14);
-  --color-accent-danger: #8f4740;
-  --color-accent-danger-tint: rgba(143, 71, 64, 0.15);
+  --color-accent-default: #48548f;
+  --color-accent-default-tint: rgba(72, 84, 143, 0.13);
+  --color-accent-note: #5c748d;
+  --color-accent-note-tint: rgba(92, 116, 141, 0.13);
+  --color-accent-tip: #7b6a9f;
+  --color-accent-tip-tint: rgba(123, 106, 159, 0.13);
+  --color-accent-important: #7b6a8b;
+  --color-accent-important-tint: rgba(123, 106, 139, 0.13);
+  --color-accent-warning: #9a7246;
+  --color-accent-warning-tint: rgba(154, 114, 70, 0.14);
+  --color-accent-caution: #9a5c50;
+  --color-accent-caution-tint: rgba(154, 92, 80, 0.14);
+  --color-accent-info: #5c748d;
+  --color-accent-info-tint: rgba(92, 116, 141, 0.13);
+  --color-accent-success: #6d6f9f;
+  --color-accent-success-tint: rgba(109, 111, 159, 0.13);
+  --color-accent-danger: #9a5c50;
+  --color-accent-danger-tint: rgba(154, 92, 80, 0.14);
 
   --goclub-sidebar-width: 18rem;
   --goclub-sidebar-collapsed-width: 5.25rem;
   --goclub-toc-width: 17rem;
   --goclub-page-width: 54rem;
 
-  --goclub-primary: #003331;
-  --goclub-primary-soft: #004b49;
-  --goclub-link-hover: #6b2bd9;
-  --goclub-secondary: #a33d23;
-  --goclub-secondary-soft: #ffdad2;
-  --goclub-tertiary: #ffdf96;
-  --goclub-tertiary-ink: #392a00;
+  --goclub-bg-rgb: 247, 245, 238;
+  --goclub-surface-rgb: 253, 252, 248;
+  --goclub-ink-rgb: 38, 35, 42;
+  --goclub-primary-rgb: 72, 84, 143;
+  --goclub-secondary-rgb: 176, 102, 80;
+  --goclub-tertiary-rgb: 199, 166, 91;
 
-  --goclub-surface: rgba(255, 255, 255, 0.84);
-  --goclub-surface-strong: rgba(244, 244, 240, 0.9);
-  --goclub-surface-muted: rgba(233, 232, 228, 0.84);
-  --goclub-border: rgba(112, 121, 120, 0.22);
-  --goclub-border-strong: rgba(112, 121, 120, 0.34);
-  --goclub-shadow: 0 24px 60px rgba(36, 48, 46, 0.08);
-  --goclub-shadow-soft: 0 16px 38px rgba(36, 48, 46, 0.06);
-  --goclub-shadow-card: 0 18px 42px rgba(36, 48, 46, 0.08);
+  --goclub-primary: #48548f;
+  --goclub-primary-soft: #6671ad;
+  --goclub-link-hover: #9b654d;
+  --goclub-secondary: #b06650;
+  --goclub-secondary-soft: rgba(176, 102, 80, 0.15);
+  --goclub-tertiary: #c7a65b;
+  --goclub-tertiary-ink: #332914;
+
+  --goclub-primary-action: #424f91;
+  --goclub-primary-action-strong: #343f76;
+  --goclub-on-primary-action: #fbfaf5;
+  --goclub-muted-text: rgba(38, 35, 42, 0.72);
+  --goclub-subtle-text: rgba(38, 35, 42, 0.56);
+
+  --goclub-surface: rgba(253, 252, 248, 0.9);
+  --goclub-surface-strong: rgba(246, 244, 238, 0.94);
+  --goclub-surface-muted: rgba(238, 235, 227, 0.88);
+  --goclub-border: rgba(70, 67, 78, 0.16);
+  --goclub-border-strong: rgba(70, 67, 78, 0.26);
+  --goclub-shadow: 0 24px 60px rgba(44, 40, 52, 0.08);
+  --goclub-shadow-soft: 0 16px 38px rgba(44, 40, 52, 0.06);
+  --goclub-shadow-card: 0 18px 42px rgba(44, 40, 52, 0.08);
   --goclub-radius-xl: 1.75rem;
   --goclub-radius-lg: 1.15rem;
   --goclub-radius-md: 0.9rem;
 }
 
 @mixin goclub-theme-dark {
-  --body-background: #0d1110;
-  --body-background-tint:
-    radial-gradient(circle at top right, rgba(0, 75, 73, 0.15), transparent 24rem),
-    linear-gradient(180deg, rgba(13, 17, 16, 0.45), rgba(13, 17, 16, 0));
-  --body-font-color: #e1e3df;
+  color-scheme: dark;
 
-  --color-link: #4fd1cd;
+  --body-background: #121117;
+  --body-background-tint:
+    radial-gradient(circle at 88% -10%, rgba(141, 151, 219, 0.09), transparent 28rem),
+    radial-gradient(circle at 12% 4%, rgba(207, 176, 107, 0.06), transparent 24rem),
+    linear-gradient(180deg, rgba(18, 17, 23, 0.88), rgba(17, 22, 19, 0));
+  --body-font-color: #dedbe4;
+
+  --color-link: #b8bfff;
   --color-visited-link: var(--color-link);
 
-  --icon-filter: brightness(0) invert(1);
+  --icon-filter: brightness(0) invert(0.9);
 
-  --gray-100: #1a1c1b;
-  --gray-200: #2a2c2b;
-  --gray-500: #8ba09e;
+  --gray-100: #1d1c23;
+  --gray-200: #2b2933;
+  --gray-500: #a29eaa;
 
-  --color-accent-default: #4fd1cd;
-  --color-accent-default-tint: rgba(79, 209, 205, 0.16);
-  --color-accent-note: #4fd1cd;
-  --color-accent-note-tint: rgba(79, 209, 205, 0.14);
-  --color-accent-tip: #a3be8c;
-  --color-accent-tip-tint: rgba(163, 190, 140, 0.14);
-  --color-accent-important: #b48ead;
-  --color-accent-important-tint: rgba(180, 142, 173, 0.14);
-  --color-accent-warning: #d08770;
-  --color-accent-warning-tint: rgba(208, 135, 112, 0.16);
-  --color-accent-caution: #bf616a;
-  --color-accent-caution-tint: rgba(191, 97, 106, 0.15);
+  --color-accent-default: #b8bfff;
+  --color-accent-default-tint: rgba(184, 191, 255, 0.13);
+  --color-accent-note: #9db8d9;
+  --color-accent-note-tint: rgba(157, 184, 217, 0.13);
+  --color-accent-tip: #c7b7ef;
+  --color-accent-tip-tint: rgba(199, 183, 239, 0.13);
+  --color-accent-important: #d0b5d4;
+  --color-accent-important-tint: rgba(208, 181, 212, 0.13);
+  --color-accent-warning: #ddbb79;
+  --color-accent-warning-tint: rgba(221, 187, 121, 0.14);
+  --color-accent-caution: #df998d;
+  --color-accent-caution-tint: rgba(223, 153, 141, 0.14);
+  --color-accent-info: #9db8d9;
+  --color-accent-info-tint: rgba(157, 184, 217, 0.13);
+  --color-accent-success: #b6b7ea;
+  --color-accent-success-tint: rgba(182, 183, 234, 0.13);
+  --color-accent-danger: #df998d;
+  --color-accent-danger-tint: rgba(223, 153, 141, 0.14);
 
-  --goclub-primary: #4fd1cd;
-  --goclub-primary-soft: #004b49;
-  --goclub-surface: rgba(26, 28, 27, 0.84);
-  --goclub-surface-strong: rgba(30, 32, 31, 0.9);
-  --goclub-surface-muted: rgba(13, 17, 16, 0.84);
-  --goclub-border: rgba(255, 255, 255, 0.1);
-  --goclub-border-strong: rgba(255, 255, 255, 0.18);
-  --goclub-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
-  --goclub-shadow-soft: 0 16px 38px rgba(0, 0, 0, 0.3);
-  --goclub-shadow-card: 0 18px 42px rgba(0, 0, 0, 0.35);
+  --goclub-bg-rgb: 18, 17, 23;
+  --goclub-surface-rgb: 28, 27, 35;
+  --goclub-ink-rgb: 222, 219, 228;
+  --goclub-primary-rgb: 184, 191, 255;
+  --goclub-secondary-rgb: 215, 155, 132;
+  --goclub-tertiary-rgb: 221, 187, 121;
+
+  --goclub-primary: #b8bfff;
+  --goclub-primary-soft: #949ef0;
+  --goclub-link-hover: #ddbb79;
+  --goclub-secondary: #d79b84;
+  --goclub-secondary-soft: rgba(215, 155, 132, 0.15);
+  --goclub-tertiary: #ddbb79;
+  --goclub-tertiary-ink: #211906;
+
+  --goclub-primary-action: #5863b7;
+  --goclub-primary-action-strong: #444d91;
+  --goclub-on-primary-action: #f7f7ff;
+  --goclub-muted-text: rgba(222, 219, 228, 0.72);
+  --goclub-subtle-text: rgba(222, 219, 228, 0.56);
+
+  --goclub-surface: rgba(28, 27, 35, 0.9);
+  --goclub-surface-strong: rgba(33, 32, 42, 0.94);
+  --goclub-surface-muted: rgba(23, 22, 29, 0.88);
+  --goclub-border: rgba(219, 216, 229, 0.12);
+  --goclub-border-strong: rgba(219, 216, 229, 0.2);
+  --goclub-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+  --goclub-shadow-soft: 0 16px 38px rgba(0, 0, 0, 0.32);
+  --goclub-shadow-card: 0 18px 42px rgba(0, 0, 0, 0.36);
 
   .book-menu .book-menu-content {
-    background: linear-gradient(180deg, rgba(26, 28, 27, 0.96), rgba(20, 22, 21, 0.9));
+    background:
+      radial-gradient(circle at top right, rgba(184, 191, 255, 0.08), transparent 13rem),
+      linear-gradient(180deg, rgba(28, 27, 35, 0.96), rgba(18, 17, 23, 0.92));
+    border-color: var(--goclub-border);
   }
-  
+
   .book-brand a {
     background:
-      radial-gradient(circle at top right, rgba(0, 75, 73, 0.4), transparent 9rem),
-      linear-gradient(135deg, rgba(38, 40, 39, 0.92), rgba(26, 28, 27, 0.88));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      radial-gradient(circle at top right, rgba(232, 200, 131, 0.12), transparent 9rem),
+      linear-gradient(135deg, rgba(var(--goclub-surface-rgb), 0.94), rgba(var(--goclub-bg-rgb), 0.9));
+    border: 1px solid var(--goclub-border);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
-  
+
+  .book-brand-mark,
+  .sidebar-toggle-icon,
+  .page-lead-badge,
+  .homepage-github-label,
+  .section-card-arrow,
+  .goclub-nav-card-icon {
+    background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+    color: var(--goclub-on-primary-action);
+  }
+
+  .book-brand-tag,
+  .goclub-mobile-header-label,
+  .book-menu #book-search-results small,
+  .book-toc-content::before,
+  .page-hero-copy,
+  .hero-metric-label,
+  .page-lead-summary,
+  .section-stat-label,
+  .section-card-summary,
+  .section-card-meta,
+  .homepage-github-callout p,
+  .goclub-nav-card-label {
+    color: var(--goclub-muted-text);
+    opacity: 1;
+  }
+
   .sidebar-toggle {
-    background: rgba(38, 40, 39, 0.94);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #4fd1cd;
+    background: rgba(var(--goclub-surface-rgb), 0.94);
+    border-color: var(--goclub-border);
+    color: var(--goclub-primary);
   }
 
   .book-header,
+  .book-page > article.book-article,
+  .book-page > .book-footer,
+  .book-page > .book-comments,
   .book-menu #book-search-results,
-  .book-toc .book-toc-content {
-    background: rgba(26, 28, 27, 0.92);
-    border-color: rgba(255, 255, 255, 0.1);
+  .book-toc .book-toc-content,
+  .goclub-mobile-header-button {
+    background: var(--goclub-surface);
+    border-color: var(--goclub-border);
   }
 
-  .goclub-mobile-header-button {
-    background: rgba(38, 40, 39, 0.88);
-    border-color: rgba(255, 255, 255, 0.1);
+  .book-footer > .flex.flex-wrap.justify-between:first-child,
+  .book-menu nav ul ul {
+    border-color: var(--goclub-border);
   }
 
   .book-menu .book-search input {
-    background: rgba(38, 40, 39, 0.92);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #e1e3df;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: rgba(var(--goclub-bg-rgb), 0.92);
+    border-color: var(--goclub-border);
+    color: var(--body-font-color);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .book-menu .book-search input::placeholder {
+    color: var(--goclub-subtle-text);
+  }
+
+  .book-menu .book-search input:focus,
+  .goclub-chatbot-settings-panel input:focus,
+  .goclub-chatbot-input:focus {
+    border-color: rgba(184, 191, 255, 0.42);
+    box-shadow: 0 0 0 0.22rem rgba(184, 191, 255, 0.14);
   }
 
   .book-menu #book-search-results a {
-    color: #e1e3df;
+    color: var(--body-font-color);
   }
 
   .book-menu a {
-    color: #e1e3df;
+    color: var(--body-font-color);
   }
 
   .book-menu a[href]:hover {
-    background: rgba(38, 40, 39, 0.95);
+    background: rgba(var(--goclub-surface-rgb), 0.88);
   }
 
   .book-menu a.active {
-    background: rgba(38, 40, 39, 0.98);
+    background: rgba(var(--goclub-surface-rgb), 0.92);
+    color: var(--goclub-primary);
+    border-inline-start-color: var(--goclub-secondary);
   }
 
   .book-toc nav a {
-    color: rgba(225, 227, 223, 0.82);
+    color: var(--goclub-muted-text);
   }
 
   .book-toc nav a:hover {
-    background: rgba(38, 40, 41, 0.9);
+    background: rgba(var(--goclub-surface-rgb), 0.84);
+    color: var(--body-font-color);
   }
 
   .markdown code {
-    background: rgba(79, 209, 205, 0.15);
+    background: rgba(184, 191, 255, 0.12);
+    border-color: var(--goclub-border);
+    color: #dce9e4;
   }
 
   .markdown pre {
-    background: rgba(26, 28, 27, 0.96);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: rgba(var(--goclub-bg-rgb), 0.96);
+    border-color: var(--goclub-border);
+    color: var(--body-font-color);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .markdown blockquote {
+    background: rgba(224, 160, 132, 0.11);
+    border-inline-start-color: var(--goclub-secondary);
+    color: var(--body-font-color);
   }
 
   .markdown table {
-    background: rgba(26, 28, 27, 0.78);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--goclub-surface-rgb), 0.78);
+    border-color: var(--goclub-border);
   }
 
   .markdown table tr th {
-    background: rgba(79, 209, 205, 0.1);
-    color: #e1e3df;
+    background: rgba(184, 191, 255, 0.1);
+    color: var(--body-font-color);
   }
 
+  .markdown table tr td,
+  .markdown table tr th {
+    border-color: var(--goclub-border);
+  }
+
+  .markdown .page-hero-button[href],
+  .markdown .page-hero-button[href]:visited,
+  .markdown .homepage-github-button[href],
+  .markdown .homepage-github-button[href]:visited {
+    background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3);
+    color: var(--goclub-on-primary-action);
+  }
+
+  .markdown .page-hero-button[href]:hover,
+  .markdown .page-hero-button[href]:focus-visible,
+  .markdown .homepage-github-button[href]:hover,
+  .markdown .homepage-github-button[href]:focus-visible {
+    background: linear-gradient(135deg, var(--goclub-primary-soft), var(--goclub-primary-action));
+    box-shadow: 0 20px 36px rgba(0, 0, 0, 0.38);
+    color: var(--goclub-on-primary-action);
+  }
+
+  .markdown .page-hero-button-secondary[href],
+  .markdown .page-hero-button-secondary[href]:visited,
+  .markdown .homepage-github-secondary[href],
+  .markdown .homepage-github-secondary[href]:visited {
+    background: rgba(var(--goclub-surface-rgb), 0.9);
+    border-color: var(--goclub-border);
+    color: var(--goclub-primary);
+  }
+
+  .markdown .page-hero-button-secondary[href]:hover,
+  .markdown .page-hero-button-secondary[href]:focus-visible,
+  .markdown .homepage-github-secondary[href]:hover,
+  .markdown .homepage-github-secondary[href]:focus-visible {
+    background: rgba(var(--goclub-surface-rgb), 0.96);
+    border-color: rgba(232, 200, 131, 0.32);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.26);
+    color: var(--goclub-link-hover);
+  }
+
+  .page-hero-kicker {
+    background: var(--goclub-tertiary);
+    color: var(--goclub-tertiary-ink);
+  }
+
+  .hero-metric,
+  .section-stat,
   .goclub-nav-card {
-    background: rgba(38, 40, 39, 0.82);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--goclub-surface-rgb), 0.84);
+    border-color: var(--goclub-border);
   }
 
+  .hero-metric-value,
+  .section-stat-value,
   .goclub-nav-card-title {
-    color: #e1e3df;
+    color: var(--body-font-color);
   }
 
   .section-card {
     background:
-      radial-gradient(circle at top right, rgba(0, 75, 73, 0.2), transparent 8rem),
-      linear-gradient(180deg, rgba(38, 40, 39, 0.98), rgba(26, 28, 27, 0.92));
-    border-color: rgba(255, 255, 255, 0.1);
+      radial-gradient(circle at top right, rgba(var(--goclub-primary-rgb), 0.1), transparent 8rem),
+      linear-gradient(180deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.94));
+    border-color: var(--goclub-border);
   }
 
-  .section-card-title {
-    color: #e1e3df;
+  .section-card::after {
+    background: radial-gradient(circle, rgba(184, 191, 255, 0.09), transparent 62%);
+  }
+
+  .section-card-kind {
+    background: rgba(224, 160, 132, 0.16);
+    color: #f0b39a;
+  }
+
+  .section-card-title,
+  .entry-cluster-title {
+    color: var(--body-font-color);
+  }
+
+  .section-card:hover {
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34);
+  }
+
+  .entry-cluster-title::before {
+    background: linear-gradient(135deg, var(--goclub-secondary), #c9856c);
+    box-shadow: 0 0 0 0.38rem rgba(224, 160, 132, 0.16);
+  }
+
+  .section-card-featured {
+    background:
+      radial-gradient(circle at top right, rgba(var(--goclub-primary-rgb), 0.18), transparent 12rem),
+      linear-gradient(110deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+    border-color: rgba(184, 191, 255, 0.22);
+    color: var(--goclub-on-primary-action);
+  }
+
+  .section-card-featured .section-card-kind {
+    background: var(--goclub-tertiary);
+    color: var(--goclub-tertiary-ink);
+  }
+
+  .section-card-featured .section-card-arrow {
+    background: var(--goclub-secondary);
+    color: #20120e;
   }
 
   .page-hero,
   .page-lead,
-  .homepage-github-callout {
+  .homepage-github-callout,
+  .section-overview {
     background:
-      radial-gradient(circle at top right, rgba(0, 75, 73, 0.3), transparent 12rem),
-      linear-gradient(135deg, rgba(30, 32, 31, 0.96), rgba(20, 22, 21, 0.94));
-    border-color: rgba(255, 255, 255, 0.1);
+      radial-gradient(circle at top right, rgba(184, 191, 255, 0.1), transparent 12rem),
+      radial-gradient(circle at bottom left, rgba(232, 200, 131, 0.07), transparent 15rem),
+      linear-gradient(135deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.94));
+    border-color: var(--goclub-border);
   }
 
   .page-hero h1,
   .page-lead-title,
   .homepage-github-title {
-    color: #4fd1cd;
+    color: var(--goclub-primary);
   }
 
   .page-lead-chip {
-    background: rgba(38, 40, 39, 0.82);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #4fd1cd;
+    background: rgba(var(--goclub-surface-rgb), 0.84);
+    border-color: var(--goclub-border);
+    color: var(--goclub-primary);
+  }
+
+  .markdown .page-lead-chip[href],
+  .markdown .page-lead-chip[href]:visited,
+  .markdown .homepage-github-url a[href],
+  .markdown .homepage-github-url a[href]:visited {
+    color: var(--goclub-primary);
+  }
+
+  .markdown .page-lead-chip[href]:hover,
+  .markdown .page-lead-chip[href]:focus-visible,
+  .markdown .homepage-github-url a[href]:hover,
+  .markdown .homepage-github-url a[href]:focus-visible {
+    color: var(--goclub-link-hover);
   }
 
   .contributor-card {
     background:
-      radial-gradient(circle at top right, rgba(79, 209, 205, 0.11), transparent 9rem),
-      linear-gradient(160deg, rgba(38, 40, 39, 0.98), rgba(26, 28, 27, 0.94));
-    border-color: rgba(79, 209, 205, 0.2);
+      radial-gradient(circle at top right, rgba(184, 191, 255, 0.09), transparent 9rem),
+      linear-gradient(160deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.94));
+    border-color: rgba(184, 191, 255, 0.18);
     box-shadow:
-      0 16px 34px rgba(0, 0, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      0 16px 34px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .contributor-card:hover {
-    border-color: rgba(79, 209, 205, 0.36);
+    border-color: rgba(184, 191, 255, 0.34);
     box-shadow:
-      0 20px 42px rgba(0, 0, 0, 0.36),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      0 20px 42px rgba(0, 0, 0, 0.38),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .contributor-avatar {
-    border-color: rgba(255, 255, 255, 0.18);
+    border-color: var(--goclub-border-strong);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
   }
 
   .markdown .contributor-name a[href],
   .markdown .contributor-name a[href]:visited,
   .contributor-name a {
-    color: #8ee7e4;
+    color: var(--goclub-primary);
   }
 
   .contributor-role,
   .contributor-fullname,
   .contributor-meta {
-    color: rgba(225, 227, 223, 0.86);
+    color: var(--goclub-muted-text);
     opacity: 1;
   }
 
   .markdown .contributor-meta a[href],
   .markdown .contributor-meta a[href]:visited,
   .contributor-meta a {
-    color: #b6d8ff;
+    color: #b9d3ff;
   }
 
   .markdown .contributor-meta a[href]:hover,
@@ -274,55 +477,116 @@
   .markdown .contributor-name a[href]:focus-visible,
   .contributor-meta a:hover,
   .contributor-name a:hover {
-    color: #d6c2ff;
+    color: var(--goclub-link-hover);
   }
 
   .contributor-prs strong {
-    background: rgba(79, 209, 205, 0.18);
-    color: #69e4df;
+    background: rgba(184, 191, 255, 0.14);
+    color: var(--goclub-primary);
   }
 
-  /* Chatbot Dark Mode */
-  .goclub-chatbot-window {
-    background: #1a1c1b;
-    border-color: rgba(255, 255, 255, 0.1);
+  .goclub-chatbot-toggle,
+  .goclub-chatbot-header,
+  .goclub-chatbot-msg.user,
+  .goclub-chatbot-send {
+    background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+    color: var(--goclub-on-primary-action);
   }
+
+  .goclub-chatbot-window {
+    background: rgba(var(--goclub-surface-rgb), 0.98);
+    border-color: var(--goclub-border);
+  }
+
   .goclub-chatbot-settings,
   .goclub-chatbot-presets {
-    background: rgba(38, 40, 39, 0.92);
-    border-bottom-color: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--goclub-surface-rgb), 0.94);
+    border-bottom-color: var(--goclub-border);
   }
+
   .goclub-chatbot-settings-toggle {
-    color: #4fd1cd;
+    color: var(--goclub-primary);
   }
+
+  .goclub-chatbot-settings-panel label,
+  .goclub-chatbot-welcome {
+    color: var(--goclub-subtle-text);
+  }
+
   .goclub-chatbot-settings-panel input,
   .goclub-chatbot-preset {
-    background: rgba(48, 50, 49, 0.92);
-    color: #e1e3df;
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(18, 17, 23, 0.92);
+    color: var(--body-font-color);
+    border-color: var(--goclub-border);
   }
+
+  .goclub-chatbot-preset:hover {
+    background: rgba(232, 200, 131, 0.14);
+    border-color: rgba(232, 200, 131, 0.34);
+  }
+
   .goclub-chatbot-messages {
-    background: #0d1110;
+    background: var(--body-background);
   }
+
   .goclub-chatbot-msg.assistant {
-    background: rgba(38, 40, 39, 0.92);
-    color: #e1e3df;
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--goclub-surface-rgb), 0.94);
+    color: var(--body-font-color);
+    border-color: var(--goclub-border);
   }
+
+  .goclub-chatbot-msg.error {
+    background: rgba(229, 139, 130, 0.14);
+    color: #f3aaa2;
+  }
+
+  .goclub-chatbot-msg code {
+    background: rgba(184, 191, 255, 0.12);
+  }
+
   .goclub-chatbot-msg pre {
-    background: rgba(26, 28, 27, 0.96);
-    color: #e1e3df;
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: rgba(var(--goclub-bg-rgb), 0.96);
+    color: var(--body-font-color);
+    border-color: var(--goclub-border);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
+
+  .goclub-chatbot-msg blockquote {
+    background: rgba(224, 160, 132, 0.11);
+    color: var(--goclub-muted-text);
+  }
+
+  .goclub-chatbot-msg th {
+    background: rgba(184, 191, 255, 0.1);
+    color: var(--body-font-color);
+  }
+
+  .goclub-chatbot-msg a {
+    color: var(--goclub-primary);
+  }
+
+  .goclub-chatbot-msg a:hover {
+    color: var(--goclub-link-hover);
+  }
+
+  .goclub-chatbot-msg .tool-call {
+    background: rgba(var(--goclub-surface-rgb), 0.92);
+    color: var(--goclub-muted-text);
+  }
+
+  .goclub-chatbot-msg .tool-call::before {
+    color: var(--body-font-color);
+  }
+
   .goclub-chatbot-input-area {
-    background: rgba(26, 28, 27, 0.92);
-    border-top-color: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--goclub-surface-rgb), 0.94);
+    border-top-color: var(--goclub-border);
   }
+
   .goclub-chatbot-input {
-    background: rgba(38, 40, 39, 0.92);
-    color: #e1e3df;
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(18, 17, 23, 0.92);
+    color: var(--body-font-color);
+    border-color: var(--goclub-border);
   }
 }
 
@@ -336,6 +600,407 @@
   @include goclub-theme-dark;
 }
 
+.book-menu .book-menu-content {
+  background:
+    radial-gradient(circle at top right, rgba(var(--goclub-tertiary-rgb), 0.14), transparent 11rem),
+    linear-gradient(180deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.9));
+}
+
+.sidebar-toggle {
+  border-color: var(--goclub-border);
+  background: rgba(var(--goclub-surface-rgb), 0.94);
+  box-shadow: 0 14px 30px rgba(var(--goclub-ink-rgb), 0.1);
+}
+
+.sidebar-toggle-icon,
+.book-brand-mark,
+.page-lead-badge,
+.homepage-github-label,
+.section-card-arrow,
+.goclub-nav-card-icon {
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
+}
+
+.book-brand a {
+  background:
+    radial-gradient(circle at top right, rgba(var(--goclub-tertiary-rgb), 0.18), transparent 9rem),
+    linear-gradient(135deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.2));
+  border-color: var(--goclub-border);
+}
+
+.book-brand-name,
+.book-header h3,
+.goclub-mobile-header-copy h3,
+.book-article h1,
+.book-article h2,
+.book-article h3,
+.book-article h4,
+.page-hero h1,
+.page-lead-title,
+.homepage-github-title,
+.hero-metric-value,
+.section-stat-value,
+.entry-cluster-title {
+  color: var(--goclub-primary);
+}
+
+.book-brand-tag,
+.goclub-mobile-header-label,
+.book-menu #book-search-results small,
+.book-toc-content::before,
+.page-hero-copy,
+.hero-metric-label,
+.page-lead-summary,
+.section-stat-label,
+.section-card-summary,
+.section-card-meta,
+.homepage-github-callout p,
+.goclub-nav-card-label {
+  color: var(--goclub-muted-text);
+  opacity: 1;
+}
+
+.book-menu .book-search input,
+.book-menu #book-search-results,
+.book-header,
+.book-toc .book-toc-content,
+.goclub-mobile-header-button,
+.book-page > article.book-article,
+.book-page > .book-footer,
+.book-page > .book-comments,
+.hero-metric,
+.section-stat,
+.goclub-nav-card,
+.book-page details.qa-answer {
+  background: var(--goclub-surface);
+  border-color: var(--goclub-border);
+}
+
+.book-menu .book-search input {
+  color: var(--body-font-color);
+  box-shadow: inset 0 1px 0 rgba(var(--goclub-surface-rgb), 0.72);
+}
+
+.book-menu .book-search input::placeholder {
+  color: var(--goclub-subtle-text);
+}
+
+.book-menu .book-search input:focus,
+.goclub-chatbot-settings-panel input:focus,
+.goclub-chatbot-input:focus {
+  border-color: rgba(var(--goclub-primary-rgb), 0.42);
+  box-shadow: 0 0 0 0.22rem rgba(var(--goclub-primary-rgb), 0.14);
+}
+
+.book-menu #book-search-results a,
+.book-menu a,
+.goclub-nav-card-title {
+  color: var(--body-font-color);
+}
+
+.book-menu a[href]:hover,
+.book-toc nav a:hover {
+  background: var(--goclub-surface-muted);
+}
+
+.book-menu a.active {
+  color: var(--goclub-primary);
+  background: var(--goclub-surface-muted);
+  border-inline-start-color: var(--goclub-secondary);
+}
+
+.book-toc nav a {
+  color: var(--goclub-muted-text);
+}
+
+.book-footer > .flex.flex-wrap.justify-between:first-child,
+.book-menu nav ul ul {
+  border-color: var(--goclub-border);
+}
+
+.markdown code {
+  background: rgba(var(--goclub-primary-rgb), 0.1);
+  border-color: var(--goclub-border);
+  color: var(--body-font-color);
+}
+
+.markdown pre {
+  background: rgba(var(--goclub-bg-rgb), 0.62);
+  border-color: var(--goclub-border);
+  color: var(--body-font-color);
+  box-shadow: inset 0 1px 0 rgba(var(--goclub-surface-rgb), 0.7);
+}
+
+.markdown blockquote,
+.goclub-chatbot-msg blockquote {
+  background: rgba(var(--goclub-secondary-rgb), 0.12);
+  border-inline-start-color: var(--goclub-secondary);
+  color: var(--body-font-color);
+}
+
+.markdown table {
+  background: rgba(var(--goclub-surface-rgb), 0.78);
+  border-color: var(--goclub-border);
+}
+
+.markdown table tr th,
+.goclub-chatbot-msg th {
+  background: rgba(var(--goclub-primary-rgb), 0.09);
+  color: var(--body-font-color);
+}
+
+.markdown table tr td,
+.markdown table tr th,
+.goclub-chatbot-msg th,
+.goclub-chatbot-msg td {
+  border-color: var(--goclub-border);
+}
+
+.page-hero,
+.page-lead,
+.homepage-github-callout,
+.section-overview {
+  background:
+    radial-gradient(circle at top right, rgba(var(--goclub-tertiary-rgb), 0.16), transparent 12rem),
+    radial-gradient(circle at bottom left, rgba(var(--goclub-primary-rgb), 0.08), transparent 16rem),
+    linear-gradient(135deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.22));
+  border-color: var(--goclub-border);
+}
+
+.page-hero-kicker {
+  background: rgba(var(--goclub-tertiary-rgb), 0.56);
+  color: var(--goclub-tertiary-ink);
+}
+
+.markdown .page-hero-button[href],
+.markdown .page-hero-button[href]:visited,
+.markdown .homepage-github-button[href],
+.markdown .homepage-github-button[href]:visited {
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
+  box-shadow: 0 16px 32px rgba(var(--goclub-primary-rgb), 0.18);
+}
+
+.markdown .page-hero-button[href]:hover,
+.markdown .page-hero-button[href]:focus-visible,
+.markdown .homepage-github-button[href]:hover,
+.markdown .homepage-github-button[href]:focus-visible {
+  background: linear-gradient(135deg, var(--goclub-primary-soft), var(--goclub-primary-action));
+  color: var(--goclub-on-primary-action);
+  box-shadow: 0 20px 36px rgba(var(--goclub-primary-rgb), 0.24);
+}
+
+.markdown .page-hero-button-secondary[href],
+.markdown .page-hero-button-secondary[href]:visited,
+.markdown .homepage-github-secondary[href],
+.markdown .homepage-github-secondary[href]:visited {
+  background: var(--goclub-surface-muted);
+  color: var(--goclub-primary);
+  border-color: var(--goclub-border);
+}
+
+.markdown .page-hero-button-secondary[href]:hover,
+.markdown .page-hero-button-secondary[href]:focus-visible,
+.markdown .homepage-github-secondary[href]:hover,
+.markdown .homepage-github-secondary[href]:focus-visible {
+  background: rgba(var(--goclub-tertiary-rgb), 0.14);
+  border-color: rgba(var(--goclub-tertiary-rgb), 0.34);
+  color: var(--goclub-link-hover);
+  box-shadow: 0 18px 34px rgba(var(--goclub-ink-rgb), 0.12);
+}
+
+.page-lead-chip,
+.markdown .page-lead-chip[href],
+.markdown .page-lead-chip[href]:visited,
+.markdown .homepage-github-url a[href],
+.markdown .homepage-github-url a[href]:visited {
+  color: var(--goclub-primary);
+}
+
+.page-lead-chip {
+  background: rgba(var(--goclub-surface-rgb), 0.78);
+  border-color: var(--goclub-border);
+}
+
+.section-card {
+  background:
+    radial-gradient(circle at top right, rgba(var(--goclub-tertiary-rgb), 0.1), transparent 8rem),
+    linear-gradient(180deg, rgba(var(--goclub-surface-rgb), 0.98), rgba(var(--goclub-bg-rgb), 0.24));
+  border-color: var(--goclub-border);
+}
+
+.section-card::after {
+  background: radial-gradient(circle, rgba(var(--goclub-primary-rgb), 0.08), transparent 62%);
+}
+
+.section-card-kind {
+  background: rgba(var(--goclub-secondary-rgb), 0.15);
+  color: var(--goclub-secondary);
+}
+
+.entry-cluster-title::before {
+  background: linear-gradient(135deg, var(--goclub-secondary), rgba(var(--goclub-tertiary-rgb), 0.8));
+  box-shadow: 0 0 0 0.38rem rgba(var(--goclub-secondary-rgb), 0.14);
+}
+
+.section-card-featured {
+  background:
+    radial-gradient(circle at top right, rgba(var(--goclub-tertiary-rgb), 0.14), transparent 12rem),
+    linear-gradient(110deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  border-color: rgba(var(--goclub-primary-rgb), 0.28);
+  color: var(--goclub-on-primary-action);
+}
+
+.section-card-featured .section-card-kind {
+  background: rgba(var(--goclub-tertiary-rgb), 0.72);
+  color: var(--goclub-tertiary-ink);
+}
+
+.section-card-featured .section-card-title,
+.section-card-featured .section-card-summary,
+.section-card-featured .section-card-meta {
+  color: var(--goclub-on-primary-action);
+}
+
+.section-card-featured .section-card-arrow {
+  background: var(--goclub-secondary);
+  color: var(--goclub-on-primary-action);
+}
+
+.contributor-card {
+  background:
+    radial-gradient(circle at top right, rgba(var(--goclub-primary-rgb), 0.07), transparent 9rem),
+    linear-gradient(160deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.2));
+  border-color: var(--goclub-border);
+  box-shadow:
+    0 8px 20px rgba(var(--goclub-ink-rgb), 0.07),
+    inset 0 1px 0 rgba(var(--goclub-surface-rgb), 0.7);
+}
+
+.contributor-card:hover {
+  border-color: rgba(var(--goclub-primary-rgb), 0.3);
+  box-shadow:
+    0 14px 28px rgba(var(--goclub-ink-rgb), 0.1),
+    inset 0 1px 0 rgba(var(--goclub-surface-rgb), 0.8);
+}
+
+.contributor-avatar {
+  border-color: var(--goclub-border-strong);
+  box-shadow: 0 8px 18px rgba(var(--goclub-ink-rgb), 0.14);
+}
+
+.contributor-role,
+.contributor-fullname,
+.contributor-meta {
+  color: var(--goclub-muted-text);
+  opacity: 1;
+}
+
+.contributor-prs strong {
+  background: rgba(var(--goclub-primary-rgb), 0.12);
+  color: var(--goclub-primary);
+}
+
+.goclub-chatbot-toggle,
+.goclub-chatbot-header,
+.goclub-chatbot-msg.user,
+.goclub-chatbot-send {
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
+}
+
+.goclub-chatbot-toggle,
+.goclub-chatbot-send {
+  box-shadow: 0 4px 12px rgba(var(--goclub-primary-rgb), 0.18);
+}
+
+.goclub-chatbot-window,
+.goclub-chatbot-msg.assistant {
+  background: var(--goclub-surface);
+  border-color: var(--goclub-border);
+}
+
+.goclub-chatbot-settings,
+.goclub-chatbot-presets,
+.goclub-chatbot-input-area {
+  background: var(--goclub-surface-strong);
+  border-color: var(--goclub-border);
+}
+
+.goclub-chatbot-messages {
+  background: var(--body-background);
+}
+
+.goclub-chatbot-settings-toggle,
+.goclub-chatbot-preset,
+.goclub-chatbot-msg a {
+  color: var(--goclub-primary);
+}
+
+.goclub-chatbot-settings-panel label,
+.goclub-chatbot-welcome,
+.goclub-chatbot-msg .tool-call {
+  color: var(--goclub-muted-text);
+}
+
+.goclub-chatbot-settings-panel input,
+.goclub-chatbot-preset,
+.goclub-chatbot-input {
+  background: rgba(var(--goclub-surface-rgb), 0.92);
+  color: var(--body-font-color);
+  border-color: var(--goclub-border);
+}
+
+.goclub-chatbot-preset:hover {
+  background: rgba(var(--goclub-tertiary-rgb), 0.14);
+  border-color: rgba(var(--goclub-tertiary-rgb), 0.34);
+}
+
+.goclub-chatbot-msg.assistant,
+.goclub-chatbot-msg pre,
+.goclub-chatbot-msg .tool-call {
+  color: var(--body-font-color);
+}
+
+.goclub-chatbot-msg code {
+  background: rgba(var(--goclub-primary-rgb), 0.1);
+}
+
+.goclub-chatbot-msg pre {
+  background: rgba(var(--goclub-bg-rgb), 0.62);
+  border-color: var(--goclub-border);
+  box-shadow: inset 0 1px 0 rgba(var(--goclub-surface-rgb), 0.7);
+}
+
+.goclub-chatbot-msg.error {
+  background: rgba(var(--goclub-secondary-rgb), 0.13);
+  border-color: rgba(var(--goclub-secondary-rgb), 0.24);
+  color: var(--goclub-secondary);
+}
+
+.goclub-chatbot-msg a:hover {
+  color: var(--goclub-link-hover);
+}
+
+.goclub-chatbot-msg .tool-call {
+  background: var(--goclub-surface-muted);
+  border-color: var(--goclub-border);
+}
+
+.goclub-chatbot-msg .tool-call::before {
+  color: var(--body-font-color);
+}
+
+.book-page details.qa-answer > summary.qa-answer-toggle {
+  border-color: rgba(var(--goclub-primary-rgb), 0.26);
+  background: rgba(var(--goclub-surface-rgb), 0.9);
+  color: var(--goclub-primary);
+}
+
+.book-page details.qa-answer[open] > summary.qa-answer-toggle {
+  background: rgba(var(--goclub-primary-rgb), 0.1);
+}
 
 html {
   scroll-padding-top: 2rem;
@@ -428,7 +1093,7 @@ select {
   height: 100%;
   border-radius: 999px;
   background: var(--goclub-primary);
-  color: #fff;
+  color: var(--goclub-on-primary-action);
   font-size: 1rem;
   line-height: 1;
 }
@@ -462,7 +1127,7 @@ select {
   height: 2.9rem;
   border-radius: 1rem;
   background: var(--goclub-primary);
-  color: #fff;
+  color: var(--goclub-on-primary-action);
   font-size: 1rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -502,7 +1167,7 @@ select {
   border-radius: 1rem;
   border: 1px solid rgba(112, 121, 120, 0.18);
   background: rgba(255, 255, 255, 0.92);
-  color: #1b1c1a;
+  color: var(--body-font-color);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
@@ -530,7 +1195,7 @@ select {
 
 .book-menu #book-search-results a {
   padding: 0.6rem 0.7rem 0 0.7rem;
-  color: #1b1c1a;
+  color: var(--body-font-color);
 }
 
 .book-menu #book-search-results small {
@@ -558,7 +1223,7 @@ select {
   align-items: center;
   gap: 0.7rem;
   padding: 0.8rem 0.95rem;
-  color: #1b1c1a;
+  color: var(--body-font-color);
   font-weight: 600;
   transition:
     background 0.18s ease,
@@ -917,7 +1582,7 @@ body.sidebar-collapsed .book-brand-mark {
 
 .markdown table tr th {
   background: rgba(0, 75, 73, 0.07);
-  color: #1b1c1a;
+  color: var(--body-font-color);
 }
 
 .markdown img {
@@ -1015,7 +1680,7 @@ body.sidebar-collapsed .book-brand-mark {
 .markdown .homepage-github-button[href],
 .markdown .homepage-github-button[href]:visited {
   background: linear-gradient(135deg, var(--goclub-primary), var(--goclub-primary-soft));
-  color: #fff;
+  color: var(--goclub-on-primary-action);
   box-shadow: 0 16px 32px rgba(0, 51, 49, 0.18);
   text-decoration: none;
 }
@@ -1034,10 +1699,10 @@ body.sidebar-collapsed .book-brand-mark {
 .markdown .page-hero-button[href]:focus-visible,
 .markdown .homepage-github-button[href]:hover,
 .markdown .homepage-github-button[href]:focus-visible {
-  background: linear-gradient(135deg, #00413e, #005b58);
+  background: linear-gradient(135deg, var(--goclub-primary-soft), var(--goclub-primary-action));
   box-shadow: 0 20px 36px rgba(0, 51, 49, 0.26);
   transform: translateY(-2px);
-  color: #fff;
+  color: var(--goclub-on-primary-action);
   text-decoration: none;
 }
 
@@ -1093,7 +1758,7 @@ body.sidebar-collapsed .book-brand-mark {
 
 .page-lead-badge {
   background: var(--goclub-primary);
-  color: #fff;
+  color: var(--goclub-on-primary-action);
 }
 
 .page-lead-title {
@@ -1288,7 +1953,7 @@ body.sidebar-collapsed .book-brand-mark {
   height: 2.5rem;
   border-radius: 999px;
   background: var(--goclub-primary);
-  color: #fff;
+  color: var(--goclub-on-primary-action);
   font-size: 1rem;
   font-weight: 800;
 }
@@ -1309,9 +1974,9 @@ body.sidebar-collapsed .book-brand-mark {
   min-height: 18rem;
   padding: 1.65rem;
   background:
-    linear-gradient(110deg, rgba(0, 75, 73, 0.98), rgba(0, 51, 49, 0.9)),
+    linear-gradient(110deg, var(--goclub-primary-action), var(--goclub-primary-action-strong)),
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0));
-  color: #fff;
+  color: var(--goclub-on-primary-action);
 }
 
 .section-card-featured::after {
@@ -1326,7 +1991,7 @@ body.sidebar-collapsed .book-brand-mark {
 .section-card-featured .section-card-title,
 .section-card-featured .section-card-summary,
 .section-card-featured .section-card-meta {
-  color: #fff;
+  color: var(--goclub-on-primary-action);
 }
 
 .section-card-featured .section-card-arrow {
@@ -1364,7 +2029,7 @@ body.sidebar-collapsed .book-brand-mark {
 
 .homepage-github-label {
   background: var(--goclub-primary);
-  color: #fff;
+  color: var(--goclub-on-primary-action);
 }
 
 .homepage-github-title {
@@ -1570,7 +2235,7 @@ body.sidebar-collapsed .book-brand-mark {
 
 .goclub-nav-card-title {
   margin-top: 0.35rem;
-  color: #1b1c1a;
+  color: var(--body-font-color);
   font-weight: 700;
 }
 
@@ -1582,7 +2247,7 @@ body.sidebar-collapsed .book-brand-mark {
   height: 2.45rem;
   border-radius: 999px;
   background: var(--goclub-primary);
-  color: #fff;
+  color: var(--goclub-on-primary-action);
   font-size: 1rem;
   flex: 0 0 auto;
 }
@@ -1749,4 +2414,980 @@ body.sidebar-collapsed .book-brand-mark {
 
 .book-page details.qa-answer .qa-answer-body {
   padding: 0 0.9rem 0.85rem;
+}
+
+/* GoClub visual refresh: quiet editorial system */
+:root {
+  --body-background: #f4f1eb;
+  --body-background-tint:
+    linear-gradient(135deg, rgba(83, 119, 108, 0.07), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(236, 231, 222, 0.36));
+  --body-font-color: #202621;
+  --color-link: #315f56;
+  --color-visited-link: #315f56;
+
+  --gray-100: #ece8df;
+  --gray-200: #d8d2c6;
+  --gray-500: #768077;
+
+  --color-accent-default: #315f56;
+  --color-accent-default-tint: rgba(49, 95, 86, 0.11);
+  --color-accent-note: #506f8c;
+  --color-accent-note-tint: rgba(80, 111, 140, 0.11);
+  --color-accent-tip: #60764e;
+  --color-accent-tip-tint: rgba(96, 118, 78, 0.11);
+  --color-accent-important: #756986;
+  --color-accent-important-tint: rgba(117, 105, 134, 0.11);
+  --color-accent-warning: #9b7541;
+  --color-accent-warning-tint: rgba(155, 117, 65, 0.12);
+  --color-accent-caution: #985a4e;
+  --color-accent-caution-tint: rgba(152, 90, 78, 0.12);
+  --color-accent-info: #506f8c;
+  --color-accent-info-tint: rgba(80, 111, 140, 0.11);
+  --color-accent-success: #60764e;
+  --color-accent-success-tint: rgba(96, 118, 78, 0.11);
+  --color-accent-danger: #985a4e;
+  --color-accent-danger-tint: rgba(152, 90, 78, 0.12);
+
+  --goclub-bg-rgb: 244, 241, 235;
+  --goclub-surface-rgb: 253, 252, 248;
+  --goclub-ink-rgb: 32, 38, 33;
+  --goclub-primary-rgb: 49, 95, 86;
+  --goclub-secondary-rgb: 164, 97, 78;
+  --goclub-tertiary-rgb: 188, 157, 82;
+
+  --goclub-primary: #315f56;
+  --goclub-primary-soft: #557e74;
+  --goclub-link-hover: #8c604c;
+  --goclub-secondary: #a4614e;
+  --goclub-secondary-soft: rgba(164, 97, 78, 0.12);
+  --goclub-tertiary: #bc9d52;
+  --goclub-tertiary-ink: #322817;
+  --goclub-primary-action: #315f56;
+  --goclub-primary-action-strong: #254940;
+  --goclub-on-primary-action: #fbfaf5;
+  --goclub-muted-text: rgba(32, 38, 33, 0.7);
+  --goclub-subtle-text: rgba(32, 38, 33, 0.5);
+
+  --goclub-surface: rgba(253, 252, 248, 0.92);
+  --goclub-surface-strong: rgba(249, 247, 242, 0.96);
+  --goclub-surface-muted: rgba(235, 231, 222, 0.78);
+  --goclub-border: rgba(56, 64, 58, 0.14);
+  --goclub-border-strong: rgba(56, 64, 58, 0.24);
+  --goclub-shadow: 0 18px 42px rgba(42, 52, 46, 0.08);
+  --goclub-shadow-soft: 0 12px 28px rgba(42, 52, 46, 0.06);
+  --goclub-shadow-card: 0 14px 32px rgba(42, 52, 46, 0.07);
+  --goclub-radius-xl: 0.9rem;
+  --goclub-radius-lg: 0.55rem;
+  --goclub-radius-md: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --body-background: #121117;
+    --body-background-tint:
+      linear-gradient(135deg, rgba(132, 142, 226, 0.08), transparent 34%),
+      linear-gradient(180deg, rgba(28, 27, 35, 0.82), rgba(18, 17, 23, 0));
+    --body-font-color: #dedbe4;
+    --color-link: #b8bfff;
+    --color-visited-link: #b8bfff;
+
+    --gray-100: #1d1c23;
+    --gray-200: #2b2933;
+    --gray-500: #a29eaa;
+
+    --color-accent-default: #b8bfff;
+    --color-accent-default-tint: rgba(184, 191, 255, 0.12);
+    --color-accent-note: #9cb8d4;
+    --color-accent-note-tint: rgba(156, 184, 212, 0.12);
+    --color-accent-tip: #c7b7ef;
+    --color-accent-tip-tint: rgba(199, 183, 239, 0.12);
+    --color-accent-important: #ccb6d4;
+    --color-accent-important-tint: rgba(204, 182, 212, 0.12);
+    --color-accent-warning: #d8bb79;
+    --color-accent-warning-tint: rgba(216, 187, 121, 0.13);
+    --color-accent-caution: #dc998d;
+    --color-accent-caution-tint: rgba(220, 153, 141, 0.13);
+    --color-accent-info: #9cb8d4;
+    --color-accent-info-tint: rgba(156, 184, 212, 0.12);
+    --color-accent-success: #b6b7ea;
+    --color-accent-success-tint: rgba(182, 183, 234, 0.12);
+    --color-accent-danger: #dc998d;
+    --color-accent-danger-tint: rgba(220, 153, 141, 0.13);
+
+    --goclub-bg-rgb: 18, 17, 23;
+    --goclub-surface-rgb: 28, 27, 35;
+    --goclub-ink-rgb: 222, 219, 228;
+    --goclub-primary-rgb: 184, 191, 255;
+    --goclub-secondary-rgb: 214, 151, 130;
+    --goclub-tertiary-rgb: 216, 187, 121;
+
+    --goclub-primary: #b8bfff;
+    --goclub-primary-soft: #949ef0;
+    --goclub-link-hover: #d8bb79;
+    --goclub-secondary: #d69782;
+    --goclub-secondary-soft: rgba(214, 151, 130, 0.13);
+    --goclub-tertiary: #d8bb79;
+    --goclub-tertiary-ink: #201805;
+    --goclub-primary-action: #5863b7;
+    --goclub-primary-action-strong: #444d91;
+    --goclub-on-primary-action: #f7f7ff;
+    --goclub-muted-text: rgba(222, 219, 228, 0.7);
+    --goclub-subtle-text: rgba(222, 219, 228, 0.5);
+
+    --goclub-surface: rgba(28, 27, 35, 0.92);
+    --goclub-surface-strong: rgba(33, 32, 42, 0.96);
+    --goclub-surface-muted: rgba(23, 22, 29, 0.84);
+    --goclub-border: rgba(219, 216, 229, 0.12);
+    --goclub-border-strong: rgba(219, 216, 229, 0.22);
+    --goclub-shadow: 0 18px 46px rgba(0, 0, 0, 0.36);
+    --goclub-shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.28);
+    --goclub-shadow-card: 0 14px 34px rgba(0, 0, 0, 0.3);
+  }
+}
+
+[data-theme="dark"] {
+  --body-background: #121117;
+  --body-background-tint:
+    linear-gradient(135deg, rgba(132, 142, 226, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(28, 27, 35, 0.82), rgba(18, 17, 23, 0));
+  --body-font-color: #dedbe4;
+  --color-link: #b8bfff;
+  --color-visited-link: #b8bfff;
+  --gray-100: #1d1c23;
+  --gray-200: #2b2933;
+  --gray-500: #a29eaa;
+  --goclub-bg-rgb: 18, 17, 23;
+  --goclub-surface-rgb: 28, 27, 35;
+  --goclub-ink-rgb: 222, 219, 228;
+  --goclub-primary-rgb: 184, 191, 255;
+  --goclub-secondary-rgb: 214, 151, 130;
+  --goclub-tertiary-rgb: 216, 187, 121;
+  --goclub-primary: #b8bfff;
+  --goclub-primary-soft: #949ef0;
+  --goclub-link-hover: #d8bb79;
+  --goclub-secondary: #d69782;
+  --goclub-secondary-soft: rgba(214, 151, 130, 0.13);
+  --goclub-tertiary: #d8bb79;
+  --goclub-tertiary-ink: #201805;
+  --goclub-primary-action: #5863b7;
+  --goclub-primary-action-strong: #444d91;
+  --goclub-on-primary-action: #f7f7ff;
+  --goclub-muted-text: rgba(222, 219, 228, 0.7);
+  --goclub-subtle-text: rgba(222, 219, 228, 0.5);
+  --goclub-surface: rgba(28, 27, 35, 0.92);
+  --goclub-surface-strong: rgba(33, 32, 42, 0.96);
+  --goclub-surface-muted: rgba(23, 22, 29, 0.84);
+  --goclub-border: rgba(219, 216, 229, 0.12);
+  --goclub-border-strong: rgba(219, 216, 229, 0.22);
+  --goclub-shadow: 0 18px 46px rgba(0, 0, 0, 0.36);
+  --goclub-shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.28);
+  --goclub-shadow-card: 0 14px 34px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  color: var(--body-font-color);
+  background-color: var(--body-background);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.container {
+  gap: 1.25rem;
+}
+
+.book-article h1,
+.book-article h2,
+.book-article h3,
+.book-article h4,
+.page-lead-title,
+.page-hero h1,
+.homepage-github-title {
+  letter-spacing: 0;
+}
+
+.book-menu .book-menu-content {
+  border-radius: var(--goclub-radius-xl);
+  background:
+    linear-gradient(180deg, rgba(var(--goclub-surface-rgb), 0.98), rgba(var(--goclub-bg-rgb), 0.62)),
+    linear-gradient(135deg, rgba(var(--goclub-primary-rgb), 0.08), rgba(var(--goclub-tertiary-rgb), 0.08));
+  border-color: var(--goclub-border);
+  box-shadow: var(--goclub-shadow-soft);
+}
+
+.book-brand a,
+.book-menu .book-search input,
+.book-menu #book-search-results,
+.book-header,
+.book-toc .book-toc-content,
+.book-page > article.book-article,
+.book-page > .book-footer,
+.book-page > .book-comments,
+.page-hero,
+.page-lead,
+.homepage-github-callout,
+.section-overview,
+.section-stat,
+.hero-metric,
+.section-card,
+.goclub-nav-card,
+.contributor-card,
+.goclub-chatbot-window,
+.book-page details.qa-answer {
+  background: var(--goclub-surface);
+  border-color: var(--goclub-border);
+  box-shadow: var(--goclub-shadow-soft);
+}
+
+.book-brand a {
+  border-radius: var(--goclub-radius-lg);
+  background:
+    linear-gradient(135deg, rgba(var(--goclub-primary-rgb), 0.09), rgba(var(--goclub-tertiary-rgb), 0.1)),
+    var(--goclub-surface);
+}
+
+.book-brand-mark,
+.sidebar-toggle-icon,
+.page-lead-badge,
+.homepage-github-label,
+.section-card-arrow,
+.goclub-nav-card-icon,
+.goclub-chatbot-toggle,
+.goclub-chatbot-header,
+.goclub-chatbot-msg.user,
+.goclub-chatbot-send {
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
+}
+
+.book-brand-name,
+.book-header h3,
+.goclub-mobile-header-copy h3,
+.book-article h1,
+.book-article h2,
+.book-article h3,
+.book-article h4,
+.page-hero h1,
+.page-lead-title,
+.homepage-github-title,
+.hero-metric-value,
+.section-stat-value,
+.entry-cluster-title,
+.section-card-title,
+.contributor-name a,
+.goclub-nav-card-title {
+  color: var(--goclub-primary);
+}
+
+.book-brand-tag,
+.goclub-mobile-header-label,
+.book-menu #book-search-results small,
+.book-toc-content::before,
+.book-toc nav a,
+.page-hero-copy,
+.hero-metric-label,
+.page-lead-summary,
+.section-stat-label,
+.section-card-summary,
+.section-card-meta,
+.homepage-github-callout p,
+.goclub-nav-card-label,
+.contributor-role,
+.contributor-fullname,
+.contributor-meta,
+.goclub-chatbot-settings-panel label,
+.goclub-chatbot-welcome {
+  color: var(--goclub-muted-text);
+  opacity: 1;
+}
+
+.book-menu a,
+.book-menu #book-search-results a,
+.book-menu .book-search input,
+.goclub-chatbot-settings-panel input,
+.goclub-chatbot-input,
+.goclub-chatbot-msg.assistant {
+  color: var(--body-font-color);
+}
+
+.book-menu a[href]:hover,
+.book-menu a.active,
+.book-toc nav a:hover,
+.goclub-chatbot-preset:hover {
+  background: var(--goclub-surface-muted);
+}
+
+.book-menu a.active {
+  color: var(--goclub-primary);
+  border-inline-start-color: var(--goclub-secondary);
+}
+
+.book-menu .book-search input,
+.goclub-chatbot-settings-panel input,
+.goclub-chatbot-input {
+  background: rgba(var(--goclub-surface-rgb), 0.92);
+  border-color: var(--goclub-border);
+}
+
+.book-menu .book-search input:focus,
+.goclub-chatbot-settings-panel input:focus,
+.goclub-chatbot-input:focus {
+  border-color: rgba(var(--goclub-primary-rgb), 0.42);
+  box-shadow: 0 0 0 0.22rem rgba(var(--goclub-primary-rgb), 0.14);
+}
+
+.book-article h1 {
+  color: var(--body-font-color);
+}
+
+.book-article h2 {
+  border-top-color: var(--goclub-border);
+}
+
+.book-article p,
+.book-article li {
+  opacity: 0.94;
+}
+
+.markdown a[href],
+.markdown a[href]:visited,
+.goclub-chatbot-msg a {
+  color: var(--color-link);
+}
+
+.markdown a[href]:hover,
+.markdown a[href]:focus-visible,
+.goclub-chatbot-msg a:hover,
+.contributor-name a:hover,
+.contributor-meta a:hover {
+  color: var(--goclub-link-hover);
+}
+
+.markdown code,
+.goclub-chatbot-msg code {
+  background: rgba(var(--goclub-primary-rgb), 0.1);
+  border-color: var(--goclub-border);
+  color: var(--body-font-color);
+}
+
+.markdown pre,
+.goclub-chatbot-msg pre {
+  background: rgba(var(--goclub-bg-rgb), 0.64);
+  border-color: var(--goclub-border);
+  color: var(--body-font-color);
+  box-shadow: inset 0 1px 0 rgba(var(--goclub-surface-rgb), 0.65);
+}
+
+.markdown blockquote,
+.goclub-chatbot-msg blockquote {
+  background: rgba(var(--goclub-secondary-rgb), 0.12);
+  border-inline-start-color: var(--goclub-secondary);
+  color: var(--body-font-color);
+}
+
+.markdown table,
+.goclub-chatbot-msg table {
+  background: rgba(var(--goclub-surface-rgb), 0.78);
+  border-color: var(--goclub-border);
+}
+
+.markdown table tr th,
+.goclub-chatbot-msg th {
+  background: rgba(var(--goclub-primary-rgb), 0.09);
+  color: var(--body-font-color);
+}
+
+.markdown table tr td,
+.markdown table tr th,
+.goclub-chatbot-msg th,
+.goclub-chatbot-msg td {
+  border-color: var(--goclub-border);
+}
+
+.page-hero,
+.page-lead,
+.homepage-github-callout,
+.section-overview {
+  background:
+    linear-gradient(135deg, rgba(var(--goclub-primary-rgb), 0.09), rgba(var(--goclub-tertiary-rgb), 0.1)),
+    var(--goclub-surface);
+}
+
+.page-hero-kicker,
+.section-card-kind {
+  background: rgba(var(--goclub-secondary-rgb), 0.13);
+  color: var(--goclub-secondary);
+}
+
+.page-lead-chip {
+  background: rgba(var(--goclub-surface-rgb), 0.78);
+  border-color: var(--goclub-border);
+  color: var(--goclub-primary);
+}
+
+.markdown .page-hero-button[href],
+.markdown .page-hero-button[href]:visited,
+.markdown .homepage-github-button[href],
+.markdown .homepage-github-button[href]:visited {
+  background: linear-gradient(135deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
+  color: var(--goclub-on-primary-action);
+  box-shadow: 0 14px 26px rgba(var(--goclub-primary-rgb), 0.18);
+}
+
+.markdown .page-hero-button[href]:hover,
+.markdown .page-hero-button[href]:focus-visible,
+.markdown .homepage-github-button[href]:hover,
+.markdown .homepage-github-button[href]:focus-visible {
+  background: linear-gradient(135deg, var(--goclub-primary-soft), var(--goclub-primary-action));
+  color: var(--goclub-on-primary-action);
+}
+
+.markdown .page-hero-button-secondary[href],
+.markdown .page-hero-button-secondary[href]:visited,
+.markdown .homepage-github-secondary[href],
+.markdown .homepage-github-secondary[href]:visited {
+  background: var(--goclub-surface-muted);
+  border-color: var(--goclub-border);
+  color: var(--goclub-primary);
+}
+
+.section-card {
+  background:
+    linear-gradient(180deg, rgba(var(--goclub-surface-rgb), 0.98), rgba(var(--goclub-bg-rgb), 0.38));
+}
+
+.section-card::after {
+  opacity: 0.45;
+  background: linear-gradient(135deg, rgba(var(--goclub-primary-rgb), 0.12), transparent);
+}
+
+.entry-cluster-title::before {
+  background: linear-gradient(135deg, var(--goclub-secondary), rgba(var(--goclub-tertiary-rgb), 0.85));
+  box-shadow: 0 0 0 0.35rem rgba(var(--goclub-secondary-rgb), 0.12);
+}
+
+.section-card-featured {
+  background:
+    linear-gradient(120deg, var(--goclub-primary-action), var(--goclub-primary-action-strong)),
+    var(--goclub-surface);
+  border-color: rgba(var(--goclub-primary-rgb), 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .section-card-featured {
+    background:
+      radial-gradient(circle at 78% 20%, rgba(184, 191, 255, 0.18), transparent 15rem),
+      linear-gradient(120deg, #5863b7, #444d91);
+    border-color: rgba(184, 191, 255, 0.28);
+  }
+}
+
+[data-theme="dark"] .section-card-featured {
+  background:
+    radial-gradient(circle at 78% 20%, rgba(184, 191, 255, 0.18), transparent 15rem),
+    linear-gradient(120deg, #5863b7, #444d91);
+  border-color: rgba(184, 191, 255, 0.28);
+}
+
+.section-card-featured .section-card-kind {
+  background: rgba(var(--goclub-tertiary-rgb), 0.72);
+  color: var(--goclub-tertiary-ink);
+}
+
+.section-card-featured .section-card-title,
+.section-card-featured .section-card-summary,
+.section-card-featured .section-card-meta {
+  color: var(--goclub-on-primary-action);
+}
+
+.contributor-card {
+  background:
+    linear-gradient(160deg, rgba(var(--goclub-surface-rgb), 0.98), rgba(var(--goclub-bg-rgb), 0.32));
+}
+
+.contributor-prs strong {
+  background: rgba(var(--goclub-primary-rgb), 0.11);
+  color: var(--goclub-primary);
+}
+
+.goclub-chatbot-settings,
+.goclub-chatbot-presets,
+.goclub-chatbot-input-area {
+  background: var(--goclub-surface-strong);
+  border-color: var(--goclub-border);
+}
+
+.goclub-chatbot-messages {
+  background: var(--body-background);
+}
+
+.goclub-chatbot-preset {
+  background: rgba(var(--goclub-surface-rgb), 0.92);
+  border-color: var(--goclub-border);
+  color: var(--goclub-primary);
+}
+
+.goclub-chatbot-msg.error {
+  background: rgba(var(--goclub-secondary-rgb), 0.13);
+  border-color: rgba(var(--goclub-secondary-rgb), 0.24);
+  color: var(--goclub-secondary);
+}
+
+.goclub-chatbot-msg .tool-call {
+  background: var(--goclub-surface-muted);
+  border-color: var(--goclub-border);
+  color: var(--goclub-muted-text);
+}
+
+.goclub-chatbot-msg .tool-call::before {
+  color: var(--body-font-color);
+}
+
+.book-page details.qa-answer > summary.qa-answer-toggle {
+  border-color: rgba(var(--goclub-primary-rgb), 0.26);
+  background: rgba(var(--goclub-surface-rgb), 0.9);
+  color: var(--goclub-primary);
+}
+
+.book-page details.qa-answer[open] > summary.qa-answer-toggle {
+  background: rgba(var(--goclub-primary-rgb), 0.1);
+}
+
+@media screen and (max-width: 56rem) {
+  body {
+    background-color: var(--body-background);
+  }
+
+  .container {
+    gap: 0;
+    padding: 0;
+  }
+
+  .book-page {
+    width: 100%;
+  }
+
+  .book-page > .book-header {
+    margin: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    background: rgba(var(--goclub-bg-rgb), 0.96);
+    box-shadow: none;
+  }
+
+  .book-page > article.book-article {
+    padding: 1.35rem 1.15rem 2rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .book-page > .book-footer,
+  .book-page > .book-comments {
+    margin: 0;
+    padding: 1.1rem 1.15rem;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .book-menu .book-menu-content {
+    background: var(--goclub-surface-strong);
+  }
+
+  .page-lead,
+  .page-hero,
+  .homepage-github-callout,
+  .section-overview {
+    margin: 0 0 1.25rem;
+    padding: 0 0 1.25rem;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .page-lead-badge,
+  .homepage-github-label,
+  .page-hero-kicker {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--goclub-muted-text);
+    box-shadow: none;
+  }
+
+  .page-lead-title,
+  .page-hero h1,
+  .homepage-github-title {
+    margin-top: 0.6rem;
+    font-size: 2rem;
+    line-height: 1.22;
+    color: var(--body-font-color);
+  }
+
+  .page-lead-summary,
+  .page-hero-copy,
+  .homepage-github-callout p {
+    color: var(--body-font-color);
+    line-height: 1.78;
+    opacity: 0.84;
+  }
+
+  .page-lead-meta {
+    gap: 0.45rem;
+  }
+
+  .page-lead-chip {
+    min-height: 0;
+    padding: 0.35rem 0;
+    border: none;
+    background: transparent;
+    color: var(--goclub-muted-text);
+  }
+
+  .section-index-shell {
+    gap: 1rem;
+  }
+
+  .section-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+    padding: 0;
+  }
+
+  .section-stat {
+    min-width: 0;
+    padding: 0.85rem 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .section-stat-value {
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .section-card-grid {
+    display: block;
+    margin-top: 0.65rem;
+  }
+
+  .section-card,
+  .section-card-featured {
+    display: block;
+    min-height: 0;
+    padding: 1.05rem 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+    overflow: visible;
+  }
+
+  .section-card:first-child,
+  .section-card-featured:first-child {
+    border-top-width: 0;
+  }
+
+  .section-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .section-card::after,
+  .section-card-featured::after,
+  .section-card-visual {
+    display: none;
+  }
+
+  .section-card-kind,
+  .section-card-featured .section-card-kind {
+    display: block;
+    width: fit-content;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--goclub-muted-text);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+  }
+
+  .section-card-title,
+  .section-card-featured .section-card-title {
+    margin-top: 0.4rem;
+    font-size: 1.28rem;
+    line-height: 1.26;
+    color: var(--body-font-color);
+  }
+
+  .section-card-summary,
+  .section-card-featured .section-card-summary {
+    margin-top: 0.55rem;
+    color: var(--body-font-color);
+    opacity: 0.86;
+    line-height: 1.72;
+  }
+
+  .section-card-meta,
+  .section-card-featured .section-card-meta {
+    margin-top: 0.65rem;
+    justify-content: flex-start;
+    color: var(--goclub-muted-text);
+    opacity: 1;
+  }
+
+  .section-card-arrow,
+  .section-card-featured .section-card-arrow {
+    width: auto;
+    height: auto;
+    margin-left: 0.25rem;
+    border-radius: 0;
+    background: transparent;
+    color: var(--goclub-primary);
+    font-size: 0.95rem;
+  }
+
+  .book-footer .goclub-prev-next {
+    display: block;
+    margin-top: 0.8rem;
+  }
+
+  .goclub-nav-card {
+    min-height: 0;
+    padding: 0.85rem 0;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .goclub-nav-card + .goclub-nav-card {
+    margin-top: 0;
+  }
+
+  .goclub-nav-card-icon {
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: transparent;
+    color: var(--goclub-primary);
+  }
+}
+
+@media screen and (max-width: 56rem) {
+  body,
+  .container,
+  .book-page,
+  .book-page > article.book-article,
+  .book-page > .book-footer,
+  .book-page > .book-comments,
+  .page-lead,
+  .page-hero,
+  .homepage-github-callout,
+  .section-overview,
+  .section-card,
+  .section-card-featured,
+  .section-stat,
+  .goclub-nav-card,
+  .book-page details.qa-answer {
+    background: var(--body-background);
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .container {
+    display: block;
+    padding: 0;
+  }
+
+  .book-page {
+    width: 100%;
+    padding: 0;
+  }
+
+  .book-page > article.book-article {
+    max-width: none;
+    padding: 1.15rem 1.05rem 2.2rem;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .book-page > .book-header {
+    margin: 0;
+    border-width: 0 0 1px;
+    border-radius: 0;
+    background: var(--body-background);
+    box-shadow: none;
+  }
+
+  .book-page > .book-footer,
+  .book-page > .book-comments {
+    max-width: none;
+    margin: 0;
+    padding: 1rem 1.05rem;
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
+
+  .page-lead,
+  .page-hero,
+  .homepage-github-callout,
+  .section-overview {
+    margin: 0 0 1.1rem;
+    padding: 0 0 1rem;
+    border-width: 0 0 1px;
+    border-radius: 0;
+  }
+
+  .page-lead-meta {
+    display: block;
+    margin-top: 0.75rem;
+  }
+
+  .page-lead-chip,
+  .markdown .page-lead-chip[href],
+  .markdown .page-lead-chip[href]:visited,
+  .page-lead-badge,
+  .homepage-github-label,
+  .page-hero-kicker,
+  .section-card-kind,
+  .section-card-featured .section-card-kind {
+    display: inline;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--goclub-muted-text);
+    box-shadow: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .page-lead-chip + .page-lead-chip::before {
+    content: " / ";
+    color: var(--goclub-subtle-text);
+  }
+
+  .page-lead-title,
+  .page-hero h1,
+  .homepage-github-title,
+  .book-article h1 {
+    margin-top: 0.45rem;
+    font-size: 1.75rem;
+    line-height: 1.28;
+    color: var(--body-font-color);
+  }
+
+  .page-lead-summary,
+  .page-hero-copy,
+  .homepage-github-callout p,
+  .book-article p,
+  .book-article li {
+    font-size: 1rem;
+    line-height: 1.82;
+    color: var(--body-font-color);
+    opacity: 0.88;
+  }
+
+  .section-stats {
+    display: none;
+  }
+
+  .section-index-shell {
+    display: block;
+    margin-top: 1.1rem;
+  }
+
+  .section-card-grid {
+    display: block;
+    margin: 0;
+  }
+
+  .section-card,
+  .section-card-featured {
+    min-height: 0;
+    padding: 0.85rem 0;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    color: inherit;
+    overflow: visible;
+    transform: none;
+  }
+
+  .section-card:first-child,
+  .section-card-featured:first-child {
+    border-top-width: 1px;
+  }
+
+  .section-card:hover,
+  .section-card-featured:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .section-card::after,
+  .section-card-featured::after,
+  .section-card-visual {
+    display: none;
+  }
+
+  .section-card-title,
+  .section-card-featured .section-card-title {
+    margin-top: 0.18rem;
+    font-family: var(--goclub-font-body);
+    font-size: 1.08rem;
+    font-weight: 700;
+    line-height: 1.36;
+    color: var(--body-font-color);
+  }
+
+  .section-card-summary,
+  .section-card-featured .section-card-summary {
+    margin-top: 0.28rem;
+    font-size: 0.95rem;
+    line-height: 1.68;
+    color: var(--body-font-color);
+    opacity: 0.76;
+  }
+
+  .section-card-meta,
+  .section-card-featured .section-card-meta {
+    display: block;
+    margin-top: 0.28rem;
+    font-size: 0.86rem;
+    color: var(--goclub-muted-text);
+    opacity: 1;
+  }
+
+  .section-card-arrow,
+  .section-card-featured .section-card-arrow,
+  .goclub-nav-card-icon {
+    display: inline;
+    width: auto;
+    height: auto;
+    margin-left: 0.25rem;
+    border-radius: 0;
+    background: transparent;
+    color: var(--goclub-primary);
+    font-size: 0.95rem;
+  }
+
+  .goclub-nav-card {
+    min-height: 0;
+    padding: 0.75rem 0;
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
 }
