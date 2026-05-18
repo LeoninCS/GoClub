@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Go 后端 Feed 系统 -- 学习工具</title>
+<style>
+/* ═══════════ DESIGN TOKENS ═══════════ */
+:root {
+  --bg: #fafafa; --bg2: #f0f0f0; --bg3: #e4e4e7; --fg: #18181b; --fg2: #71717a; --fg3: #a1a1aa;
+  --accent: #6366f1; --accent2: #4f46e5; --accent-soft: #eef2ff; --accent-glow: rgba(99,102,241,.15);
+  --border: #e4e4e7; --card: #ffffff; --card-hover: #fafafa;
+  --code-bg: #f4f4f5; --code-border: #e4e4e7;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.05); --shadow-md: 0 4px 12px rgba(0,0,0,.08); --shadow-lg: 0 8px 30px rgba(0,0,0,.12);
+  --success: #22c55e; --success-soft: #f0fdf4; --warn: #f59e0b; --warn-soft: #fffbeb; --danger: #ef4444; --danger-soft: #fef2f2;
+  --info: #3b82f6; --info-soft: #eff6ff;
+  --sidebar-w: 280px; --topnav-h: 56px; --radius: 10px; --radius-sm: 6px;
+  --tag-bg: #eef2ff; --tag-fg: #4338ca;
+  --font-body: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  --lv1: #22c55e; --lv1-soft: #f0fdf4; --lv1-border: rgba(34,197,94,.3);
+  --lv2: #3b82f6; --lv2-soft: #eff6ff; --lv2-border: rgba(59,130,246,.3);
+  --lv3: #f59e0b; --lv3-soft: #fffbeb; --lv3-border: rgba(245,158,11,.3);
+}
+[data-theme="dark"] {
+  --bg: #09090b; --bg2: #18181b; --bg3: #27272a; --fg: #fafafa; --fg2: #a1a1aa; --fg3: #71717a;
+  --accent: #818cf8; --accent2: #6366f1; --accent-soft: #1e1b4b; --accent-glow: rgba(129,140,248,.12);
+  --border: #27272a; --card: #18181b; --card-hover: #1f1f23;
+  --code-bg: #1e1e22; --code-border: #2e2e33;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3); --shadow-md: 0 4px 12px rgba(0,0,0,.4); --shadow-lg: 0 8px 30px rgba(0,0,0,.5);
+  --success-soft: #052e16; --warn-soft: #451a03; --danger-soft: #450a0a; --info-soft: #172554;
+  --tag-bg: #1e1b4b; --tag-fg: #c7d2fe;
+  --lv1-soft: #052e16; --lv2-soft: #172554; --lv3-soft: #451a03;
+}
+/* ═══════════ RESET ═══════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg);line-height:1.7;font-size:15px;transition:background .4s,color .4s;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:var(--noise);pointer-events:none;z-index:9999;opacity:.4}
+a{color:var(--accent);text-decoration:none}
+button{cursor:pointer;border:none;font-family:inherit;font-size:inherit;background:none}
+::selection{background:var(--accent);color:#fff}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--fg3);border-radius:10px}
+/* ═══════════ TOPNAV ═══════════ */
+.topnav{display:flex;align-items:center;gap:10px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;height:var(--topnav-h);backdrop-filter:blur(12px)}
+.topnav::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto;white-space:nowrap}
+.brand-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;box-shadow:0 2px 8px var(--accent-glow)}
+.brand-text{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.brand-sub{font-size:11px;color:var(--fg3);margin-left:4px}
+.mode-tabs{display:flex;background:var(--bg2);border-radius:8px;padding:3px;gap:2px}
+.mode-btn{padding:5px 14px;border-radius:6px;font-size:13px;font-weight:500;color:var(--fg2);transition:all .25s}
+.mode-btn.active{background:var(--accent);color:#fff;box-shadow:0 2px 8px var(--accent-glow)}
+.mode-btn:not(.active):hover{color:var(--fg);background:var(--bg3)}
+.search-wrap{position:relative}
+.search-box{padding:6px 12px 6px 32px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--fg);width:220px;font-size:13px;font-family:var(--font-body);transition:all .25s;outline:none}
+.search-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);width:280px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--fg3);font-size:13px;pointer-events:none}
+.theme-btn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--fg2);transition:all .25s;font-size:16px}
+.theme-btn:hover{background:var(--bg2);color:var(--fg);transform:rotate(15deg)}
+.progress-pill{display:flex;align-items:center;gap:6px;padding:4px 12px;background:var(--success-soft);border-radius:20px;font-size:12px;font-weight:500;color:var(--success);border:1px solid rgba(34,197,94,.2)}
+.progress-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* ═══════════ LAYOUT ═══════════ */
+.app{display:flex;height:calc(100vh - var(--topnav-h));overflow:hidden}
+/* ═══════════ SIDEBAR ═══════════ */
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--border);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:2px}
+.sidebar::-webkit-scrollbar{width:3px}
+.ch-group{border-radius:var(--radius-sm);overflow:hidden}
+.ch-header{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-radius:var(--radius-sm);transition:all .2s;font-size:13.5px;font-weight:500;color:var(--fg2);user-select:none}
+.ch-header:hover{background:var(--bg2);color:var(--fg)}
+.ch-header.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.ch-arrow{font-size:10px;transition:transform .25s;color:var(--fg3);flex-shrink:0}
+.ch-header.active .ch-arrow,.ch-header.open .ch-arrow{transform:rotate(90deg)}
+.ch-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch-badge{font-size:10px;padding:1px 6px;border-radius:10px;background:var(--bg3);color:var(--fg3);flex-shrink:0;font-weight:500}
+.ch-header.active .ch-badge{background:var(--accent);color:#fff}
+.ch-bar{height:3px;background:var(--bg3);border-radius:2px;margin:0 10px 4px;overflow:hidden;opacity:0;transition:opacity .2s}
+.ch-header.active+.ch-bar,.ch-header.open+.ch-bar{opacity:1}
+.ch-bar-fill{height:100%;background:linear-gradient(90deg,var(--success),#4ade80);border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.ch-subs{max-height:0;overflow:hidden;transition:max-height .3s cubic-bezier(.4,0,.2,1);padding-left:8px}
+.ch-subs.open{max-height:800px}
+.sub-item{font-size:12.5px;padding:5px 10px;cursor:pointer;border-radius:var(--radius-sm);color:var(--fg3);transition:all .15s;margin:1px 0;position:relative}
+.sub-item::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:2px;height:0;background:var(--accent);border-radius:1px;transition:height .2s}
+.sub-item:hover{color:var(--fg);background:var(--bg2)}
+.sub-item.active{color:var(--accent);font-weight:500;background:var(--accent-soft)}
+.sub-item.active::before{height:60%}
+.dim-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;cursor:pointer;border-radius:var(--radius-sm);font-size:13px;color:var(--fg2);transition:all .2s}
+.dim-item:hover{background:var(--bg2);color:var(--fg)}
+.dim-item.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.dim-badge{font-size:10px;padding:1px 6px;border-radius:10px;background:var(--bg3);color:var(--fg3)}
+.dim-item.active .dim-badge{background:var(--accent);color:#fff}
+/* ═══════════ MAIN CONTENT ═══════════ */
+.main{flex:1;overflow-y:auto;padding:32px 40px 60px;scroll-behavior:smooth}
+.main::-webkit-scrollbar{width:4px}
+.content-header{margin-bottom:28px;animation:fadeUp .4s ease}
+.content-header h1{font-size:26px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,var(--fg) 60%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3}
+.content-header .subtitle{font-size:13px;color:var(--fg3);margin-top:4px}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;margin-bottom:20px;box-shadow:var(--shadow-sm);transition:all .25s;animation:fadeUp .4s ease}
+.section-card:hover{box-shadow:var(--shadow-md);border-color:var(--accent-glow)}
+.section-card h2{font-size:18px;font-weight:700;margin-bottom:16px;color:var(--fg);display:flex;align-items:center;gap:8px}
+.section-card h2::before{content:'';width:3px;height:20px;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:2px;flex-shrink:0}
+.section-card p{margin:10px 0;color:var(--fg2);font-size:14.5px;line-height:1.8}
+.section-card ul,.section-card ol{margin:10px 0 10px 20px;color:var(--fg2);font-size:14.5px}
+.section-card li{margin:6px 0;line-height:1.7}
+.section-card li strong{color:var(--fg);font-weight:600}
+.section-card code.inline{background:var(--code-bg);padding:2px 7px;border-radius:4px;font-size:13px;font-family:var(--font-mono);color:var(--accent);border:1px solid var(--code-border)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+pre{background:var(--code-bg);border:1px solid var(--code-border);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;margin:16px 0;font-size:13px;line-height:1.65;position:relative;font-family:var(--font-mono)}
+pre::before{content:'Go';position:absolute;top:8px;right:12px;font-size:10px;color:var(--fg3);font-weight:500;letter-spacing:1px;text-transform:uppercase;opacity:.5}
+pre code{font-family:var(--font-mono);color:var(--fg)}
+.kw{color:#d73a49;font-weight:500}.cm{color:#6a9955;font-style:italic}.str{color:#032f62}.fn{color:#6f42c1}.num{color:#005cc5}
+[data-theme="dark"] .kw{color:#ff7b72}[data-theme="dark"] .cm{color:#7ee787}[data-theme="dark"] .str{color:#a5d6ff}[data-theme="dark"] .fn{color:#d2a8ff}[data-theme="dark"] .num{color:#79c0ff}
+/* ═══════════ LV1/LV2/LV3 ACCORDION ═══════════ */
+.lv-block{margin:12px 0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);transition:border-color .2s}
+.lv-block.lv1{border-left:3px solid var(--lv1)}
+.lv-block.lv2{border-left:3px solid var(--lv2)}
+.lv-block.lv3{border-left:3px solid var(--lv3)}
+.lv-header{display:flex;align-items:center;gap:8px;padding:12px 16px;cursor:pointer;font-size:14px;font-weight:600;transition:background .15s;user-select:none}
+.lv-block.lv1 .lv-header{color:var(--lv1);background:var(--lv1-soft)}
+.lv-block.lv2 .lv-header{color:var(--lv2);background:var(--lv2-soft)}
+.lv-block.lv3 .lv-header{color:var(--lv3);background:var(--lv3-soft)}
+.lv-header:hover{filter:brightness(.95)}
+.lv-arrow{font-size:10px;transition:transform .25s;color:var(--fg3);flex-shrink:0}
+.lv-header.open .lv-arrow{transform:rotate(90deg)}
+.lv-tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+.lv-block.lv1 .lv-tag{background:var(--lv1);color:#fff}
+.lv-block.lv2 .lv-tag{background:var(--lv2);color:#fff}
+.lv-block.lv3 .lv-tag{background:var(--lv3);color:#fff}
+.lv-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);padding:0 16px}
+.lv-body.open{max-height:3000px;padding:0 16px 16px}
+.lv-body p{margin:8px 0;color:var(--fg2);font-size:14px;line-height:1.8}
+.lv-body ul,.lv-body ol{margin:8px 0 8px 20px;color:var(--fg2);font-size:14px}
+.lv-body li{margin:4px 0;line-height:1.7}
+.lv-body strong{color:var(--fg);font-weight:600}
+.lv-body code.inline{background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:12.5px;font-family:var(--font-mono);color:var(--accent);border:1px solid var(--code-border)}
+.lv-body pre{font-size:12.5px;padding:14px 16px;margin:12px 0}
+.lv-why{margin:10px 0;padding:10px 14px;background:var(--warn-soft);border-radius:var(--radius-sm);font-size:13px;color:var(--fg2);border-left:3px solid var(--warn)}
+.lv-why::before{content:'💡 ';font-weight:700}
+/* ═══════════ QUIZ ═══════════ */
+.quiz-section{margin-top:8px}
+.quiz-section h2{font-size:20px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.quiz-section h2::before{content:'';width:3px;height:20px;background:linear-gradient(180deg,var(--warn),#f59e0b);border-radius:2px}
+.quiz-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden;transition:all .25s;animation:fadeUp .3s ease}
+.quiz-item:hover{border-color:var(--accent-glow);box-shadow:var(--shadow-sm)}
+.quiz-q{padding:14px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;font-size:14px;font-weight:500;line-height:1.6;transition:background .15s}
+.quiz-q:hover{background:var(--bg2)}
+.quiz-q .q-num{flex-shrink:0;width:24px;height:24px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:1px}
+.quiz-q .q-text{flex:1}
+.quiz-q .q-toggle{flex-shrink:0;font-size:10px;color:var(--fg3);transition:transform .25s;margin-top:6px}
+.quiz-q .q-toggle.open{transform:rotate(90deg)}
+.quiz-status{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;flex-shrink:0;margin-top:3px}
+.status-mastered{background:var(--success-soft);color:var(--success);border:1px solid rgba(34,197,94,.2)}
+.status-unmastered{background:var(--danger-soft);color:var(--danger);border:1px solid rgba(239,68,68,.2)}
+.quiz-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
+.quiz-body.open{max-height:800px}
+.quiz-hint{margin:0 18px 14px;padding:14px 16px;background:var(--warn-soft);border-radius:var(--radius-sm);font-size:13.5px;line-height:1.7;color:var(--fg2);border-left:3px solid var(--warn)}
+.quiz-btns{display:flex;gap:8px;margin:0 18px 14px}
+.quiz-btn{padding:5px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;transition:all .2s}
+.quiz-btn.mastered{background:var(--success);color:#fff;box-shadow:0 2px 6px rgba(34,197,94,.2)}
+.quiz-btn.mastered:hover{background:#16a34a;transform:translateY(-1px)}
+.quiz-btn.unmastered{background:var(--danger);color:#fff;box-shadow:0 2px 6px rgba(239,68,68,.2)}
+.quiz-btn.unmastered:hover{background:#dc2626;transform:translateY(-1px)}
+/* ═══════════ INTERVIEW CARDS ═══════════ */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}
+.card{perspective:1200px;height:320px;cursor:pointer;animation:fadeUp .4s ease}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);overflow-y:auto;transition:border-color .2s,box-shadow .2s}
+.card-face::-webkit-scrollbar{width:3px}
+.card:hover .card-face{border-color:var(--accent-glow);box-shadow:var(--shadow-md)}
+.card-front{display:flex;flex-direction:column;padding:20px}
+.card-idx{font-size:11px;font-weight:700;color:var(--fg3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.card-title{font-size:15px;font-weight:600;line-height:1.6;flex:1;color:var(--fg)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
+.card-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;background:var(--tag-bg);color:var(--tag-fg);font-size:11px;font-weight:600}
+.card-status{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px}
+.card-back{transform:rotateY(180deg);padding:18px;font-size:13px;line-height:1.7}
+.card-back h4{font-size:12px;font-weight:700;color:var(--accent);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.5px}
+.card-back h4:first-child{margin-top:0}
+.card-back p{color:var(--fg2);font-size:13px;line-height:1.7}
+.card-back .code-link{font-size:12px;color:var(--fg3);font-family:var(--font-mono);font-style:normal;word-break:break-all}
+.card-back .follow-q{color:var(--warn);font-size:12.5px}
+.card-back pre{font-size:11.5px;padding:10px 12px;margin:6px 0}
+.card-actions{display:flex;gap:6px;margin-top:auto;padding-top:10px;border-top:1px solid var(--border)}
+.card-action{padding:4px 12px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;transition:all .2s}
+.card-action.practice{background:var(--success);color:#fff}
+.card-action.review{background:var(--warn);color:#fff}
+.card-action:hover{transform:translateY(-1px);filter:brightness(1.1)}
+/* ═══════════ SCENARIO CARDS ═══════════ */
+.scenario-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:16px}
+.scenario-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .25s;animation:fadeUp .4s ease;cursor:pointer}
+.scenario-card:hover{box-shadow:var(--shadow-md);border-color:var(--accent-glow)}
+.scenario-card h3{font-size:16px;font-weight:700;margin-bottom:12px;color:var(--fg);display:flex;align-items:center;gap:8px}
+.scenario-card h3 .sc-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.scenario-card.e2e h3 .sc-icon{background:var(--info-soft);color:var(--info)}
+.scenario-card.fault h3 .sc-icon{background:var(--danger-soft);color:var(--danger)}
+.scenario-card .sc-desc{font-size:13.5px;color:var(--fg2);margin-bottom:12px;line-height:1.6}
+.scenario-card .sc-steps{display:none;margin-top:12px}
+.scenario-card.open .sc-steps{display:block}
+.sc-step{display:flex;gap:12px;margin:8px 0;position:relative}
+.sc-step::before{content:'';position:absolute;left:13px;top:28px;bottom:-8px;width:2px;background:var(--border)}
+.sc-step:last-child::before{display:none}
+.sc-num{width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.sc-step-content{flex:1}
+.sc-step-content .sc-loc{font-size:11px;color:var(--fg3);font-family:var(--font-mono);margin-top:2px}
+.sc-step-content p{font-size:13.5px;color:var(--fg2);line-height:1.6}
+.fault-tree{margin:8px 0;padding:12px 16px;background:var(--danger-soft);border-radius:var(--radius-sm);border-left:3px solid var(--danger)}
+.fault-tree .ft-title{font-size:13px;font-weight:700;color:var(--danger);margin-bottom:6px}
+.fault-tree p{font-size:13px;color:var(--fg2);line-height:1.6}
+.fix-box{margin:8px 0;padding:12px 16px;background:var(--success-soft);border-radius:var(--radius-sm);border-left:3px solid var(--success)}
+.fix-box .fx-title{font-size:13px;font-weight:700;color:var(--success);margin-bottom:6px}
+.fix-box p{font-size:13px;color:var(--fg2);line-height:1.6}
+/* ═══════════ TOOLBAR ═══════════ */
+.toolbar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;animation:fadeUp .3s}
+.tool-btn{display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;background:var(--accent);color:#fff;transition:all .2s;box-shadow:0 2px 6px var(--accent-glow)}
+.tool-btn:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 4px 12px var(--accent-glow)}
+.timer-display{font-size:22px;font-family:var(--font-mono);font-weight:600;color:var(--accent);min-width:90px;letter-spacing:2px;padding:4px 12px;background:var(--accent-soft);border-radius:var(--radius-sm)}
+.timer-btn{padding:7px 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;border:1px solid var(--border);color:var(--fg2);transition:all .2s}
+.timer-btn:hover{border-color:var(--accent);color:var(--accent)}
+.timer-btn.running{background:var(--danger);color:#fff;border-color:var(--danger)}
+/* ═══════════ APPENDIX ═══════════ */
+.appendix-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;animation:fadeUp .4s}
+.appendix-table th{background:var(--bg2);font-weight:600;padding:10px 16px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--fg3);border-bottom:1px solid var(--border)}
+.appendix-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--fg2);transition:background .15s}
+.appendix-table tr:last-child td{border-bottom:none}
+.appendix-table tr:hover td{background:var(--accent-soft)}
+/* ═══════════ SEARCH ═══════════ */
+.search-results{animation:fadeUp .3s}
+.search-result{padding:14px 18px;border:1px solid var(--border);border-radius:var(--radius);margin:8px 0;cursor:pointer;transition:all .2s;background:var(--card)}
+.search-result:hover{border-color:var(--accent);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.search-result .sr-mode{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);margin-bottom:4px}
+.search-result .sr-title{font-size:14px;font-weight:600;color:var(--fg)}
+.search-result .sr-snippet{font-size:13px;color:var(--fg3);margin-top:4px;line-height:1.5}
+mark{background:var(--accent-glow);color:var(--accent);padding:1px 3px;border-radius:3px;font-weight:600}
+.sidebar-empty{display:flex;align-items:center;justify-content:center;color:var(--fg3);font-size:13px;padding:40px 20px;text-align:center}
+.intro-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-sm);animation:fadeUp .4s}
+.intro-card h3{font-size:17px;font-weight:700;margin-bottom:14px;color:var(--fg)}
+.intro-card p{font-size:14.5px;line-height:1.8;color:var(--fg2)}
+.intro-card .code-link{font-family:var(--font-mono);font-size:12px;color:var(--fg3);margin-top:10px;display:block}
+.intro-card .follow-tag{margin-top:10px;padding:8px 12px;background:var(--warn-soft);border-radius:var(--radius-sm);font-size:12.5px;color:var(--fg2);border-left:3px solid var(--warn)}
+/* Nav buttons */
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);gap:12px}
+.nav-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;transition:all .2s;border:1px solid var(--border);color:var(--fg2)}
+.nav-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.nav-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 8px var(--accent-glow)}
+.nav-btn.primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.nav-btn .arrow-icon{font-size:11px;transition:transform .2s}
+.nav-btn:hover .arrow-icon{transform:translateX(2px)}
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:900px){
+  .sidebar{width:220px;min-width:220px}
+  .main{padding:20px 24px 40px}
+  .card-grid,.scenario-grid{grid-template-columns:1fr}
+  .brand-sub{display:none}
+  .search-box{width:160px}.search-box:focus{width:200px}
+}
+@media(max-width:640px){
+  .sidebar{display:none}
+  .main{padding:16px 18px 40px}
+  .topnav{padding:0 12px;gap:6px}
+  .brand-text{font-size:13px}
+  .mode-btn{padding:4px 10px;font-size:12px}
+  .search-box{width:120px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="topnav">
+  <div class="brand">
+    <div class="brand-icon">G</div>
+    <div><span class="brand-text">Go Feed 系统</span><span class="brand-sub">学习工具</span></div>
+  </div>
+  <div class="mode-tabs">
+    <button class="mode-btn active" data-mode="learn" onclick="switchMode('learn')">知识学习</button>
+    <button class="mode-btn" data-mode="interview" onclick="switchMode('interview')">面试模拟</button>
+    <button class="mode-btn" data-mode="scenario" onclick="switchMode('scenario')">场景还原</button>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" class="search-box" id="searchInput" placeholder="搜索内容..." oninput="handleSearch(this.value)">
+  </div>
+  <button class="theme-btn" onclick="toggleTheme()" title="切换主题"><span id="themeIcon">☽</span></button>
+  <div class="progress-pill"><span class="dot"></span><span id="progressText">0/0</span></div>
+</div>
+<div class="app" id="app"></div>
+<script>
+/* ═══════════════════════════════════════════════════
+   DATA — 学习文档 6 章 (问答驱动 Lv1/Lv2/Lv3)
+   ═══════════════════════════════════════════════════ */
+const learnData=[
+{id:1,title:"第1章：项目架构总览",topics:[
+{q:"为什么采用 API + Worker 双进程架构？",
+lv1:`<p>传统单进程架构中，HTTP 请求处理和后台任务（如消息消费、定时轮询）耦合在同一个进程里。这带来几个问题：</p><ul><li><strong>资源竞争</strong>：消息消费占用 CPU/内存，影响请求响应延迟</li><li><strong>扩缩容不灵活</strong>：请求量大时需要扩容 API，但 Worker 可能不需要同比扩容</li><li><strong>故障隔离</strong>：Worker panic 会拖垮整个 API 服务</li></ul><p>双进程分离后，API 专注处理在线请求（低延迟），Worker 专注消费 MQ 消息（高吞吐），各自独立扩缩容、独立部署、独立重启。</p>`,
+lv2:`<p>项目中两个进程的初始化代码分别在 <code class="inline">cmd/main.go</code>（API）和 <code class="inline">cmd/worker/main.go</code>（Worker）。</p><p><strong>API 进程初始化链</strong>（cmd/main.go）：</p><pre><code><span class="cm">// 1. 加载配置</span>
+cfg, _, err := config.LoadLocalDev(configPath)
+<span class="cm">// 2. 连接 MySQL + AutoMigrate</span>
+sqlDB, err := db.NewDB(cfg.Database)
+db.AutoMigrate(sqlDB)
+<span class="cm">// 3. 连接 Redis（失败降级为 nil）</span>
+cache, err := rediscache.NewFromEnv(&amp;cfg.Redis)
+<span class="kw">if</span> err != <span class="kw">nil</span> { cache = <span class="kw">nil</span> }
+<span class="cm">// 4. 连接 RabbitMQ（失败降级为 nil）</span>
+rbq, err := rabbitmq.NewRabbitMQ(&amp;cfg.RabbitMQ)
+<span class="kw">if</span> err != <span class="kw">nil</span> { rbq = <span class="kw">nil</span> }
+<span class="cm">// 5. 注册路由 + 依赖注入</span>
+r := apphttp.SetRouter(sqlDB, cache, rbq)
+<span class="cm">// 6. 异步启动 + 优雅停机</span>
+<span class="kw">go</span> apphttp.StartServer(srv, &amp;cfg.Server)
+apphttp.GracefulShutdown(srv)</code></pre><p><strong>Worker 进程初始化链</strong>（cmd/worker/main.go）：</p><pre><code><span class="cm">// 1-4 同 API（配置、MySQL、Redis、RabbitMQ）</span>
+<span class="cm">// 注意：Worker 不做 AutoMigrate（API 已做过）</span>
+<span class="cm">// 5. 声明 MQ 拓扑（Exchange + Queue + Binding）</span>
+declareSocialTopology(rbq)
+declareLikeTopology(rbq)
+declareCommentTopology(rbq)
+declarePopularityTopology(rbq)
+<span class="cm">// 6. 设置 QoS 预取数量</span>
+rbq.Ch.Qos(<span class="num">50</span>, <span class="num">0</span>, <span class="kw">false</span>)
+<span class="cm">// 7. 启动 4 个 Worker goroutine</span>
+<span class="kw">go</span> socialWorker.Run(ctx)
+<span class="kw">go</span> likeWorker.Run(ctx)
+<span class="kw">go</span> commentWorker.Run(ctx)
+<span class="kw">go</span> popularityWorker.Run(ctx)
+<span class="cm">// 8. 阻塞等待错误或信号</span>
+err = &lt;-errCh</code></pre><p><strong>关键区别</strong>：</p><ul><li>API 做 AutoMigrate，Worker 不做（避免重复迁移竞争）</li><li>Worker 声明 MQ 拓扑，API 不做（Worker 是消费者，需要确保队列存在）</li><li>Worker 设置 prefetchCount=50，限制一次推送给 Worker 的未确认消息数量</li></ul>`,
+lv3:`<p><strong>Q: 如果把 API 和 Worker 合并成单进程会怎样？</strong></p><ul><li>消息消费会占用 HTTP handler 的 goroutine 资源，高吞吐时请求延迟升高</li><li>无法独立扩缩容：如果 MQ 消息积压，只能整体扩容，浪费 API 资源</li><li>Worker panic 会杀死整个进程，API 服务中断</li></ul><p><strong>Q: 扩缩容策略怎么变？</strong></p><ul><li>API 水平扩容：前面加 Nginx/ALB 负载均衡，无状态直接加实例</li><li>Worker 水平扩容：多个 Worker 竞争消费同一个队列（RabbitMQ 默认 round-robin 分发），但要注意同一用户的请求可能被不同 Worker 处理，需要幂等消费</li><li>两者扩容比例独立：大促时 API 扩 10 倍，Worker 可能只需扩 2 倍</li></ul><p><strong>Q: Redis 或 RabbitMQ 连接失败会怎样？</strong></p><p>项目采用了<strong>优雅降级</strong>策略：Redis 连接失败 → <code class="inline">cache = nil</code>，所有缓存操作跳过，直接查 MySQL。RabbitMQ 连接失败 → <code class="inline">rbq = nil</code>，所有 MQ 操作跳过，降级为同步 MySQL 事务。核心功能不受影响，只是性能下降。</p>`},
+{q:"Handler → Service → Repository 三层架构的职责边界是什么？",
+lv1:`<p>三层架构是 Go Web 项目最经典的分层模式：</p><ul><li><strong>Handler</strong>（表现层）：解析 HTTP 请求参数、调用 Service、组装响应。通过 <code class="inline">binding:"required"</code> 做基础参数校验。</li><li><strong>Service</strong>（业务层）：核心业务逻辑，编排 Repository 调用、MQ 投递、缓存操作。不直接访问 DB。</li><li><strong>Repository</strong>（数据层）：纯数据访问，封装 GORM 查询。提供事务版本和普通版本方法。</li></ul><p>依赖方向：Handler → Service → Repository，上层依赖下层接口，不依赖具体实现。</p>`,
+lv2:`<p>以 Feed 模块为例，依赖注入在 <code class="inline">router.go</code> 中完成：</p><pre><code><span class="cm">// internal/http/router.go</span>
+feedRepository := feed.NewFeedRepository(db)
+feedService := feed.NewFeedService(feedRepository, likeRepository, cache)
+feedHandler := feed.NewFeedHandler(feedService)
+feedGroup := r.Group(<span class="str">"/feed"</span>)
+feedGroup.Use(jwt.SoftJWTAuth(accountRepository, cache))
+feedGroup.POST(<span class="str">"/listLatest"</span>, feedHandler.ListLatest)</code></pre><p><strong>Service 层不直接访问 repo.db</strong>，事务通过 <code class="inline">Transaction</code> 方法获取：</p><pre><code><span class="cm">// internal/video/like_service.go:Like</span>
+err := s.likeRepo.Transaction(ctx, <span class="kw">func</span>(tx *gorm.DB) <span class="fn">error</span> {
+    <span class="cm">// 在事务内调用 InTx 方法</span>
+    <span class="kw">if</span> err := s.likeRepo.LikeInTx(ctx, tx, like); err != <span class="kw">nil</span> {
+        <span class="kw">return</span> err
+    }
+    <span class="kw">if</span> err := s.videoRepo.ChangeLikesCount(ctx, tx, videoID, <span class="num">1</span>); err != <span class="kw">nil</span> {
+        <span class="kw">return</span> err
+    }
+    <span class="kw">return</span> <span class="kw">nil</span>
+})</code></pre><p><strong>Repository 的 InTx 模式</strong>：ChangeLikesCount 接受 <code class="inline">tx *gorm.DB</code> 参数，事务内传 tx，非事务时传 nil 自动降级为 r.db：</p><pre><code><span class="cm">// internal/video/video_repo.go:ChangeLikesCount</span>
+<span class="kw">func</span> (r *VideoRepository) ChangeLikesCount(ctx, tx, id, change) {
+    db := tx
+    <span class="kw">if</span> db == <span class="kw">nil</span> { db = r.db }
+    <span class="kw">return</span> db.Model(&amp;Video{}).Where(<span class="str">"id = ?"</span>, id).
+        UpdateColumn(<span class="str">"likes_count"</span>,
+            gorm.Expr(<span class="str">"GREATEST(likes_count + ?, 0)"</span>, change)).Error
+}</code></pre>`,
+lv3:`<p><strong>Q: 如果 Service 直接访问 repo.db 会怎样？</strong></p><ul><li>事务管理混乱：Service 里自己开事务，和 Repository 的事务可能嵌套或冲突</li><li>分层被破坏：Service 依赖了 Repository 的内部实现细节（db 字段）</li><li>测试困难：无法 mock Repository 层</li></ul><p><strong>Q: Handler 层的 binding:"required" 和 Service 层的手动校验分别负责什么？</strong></p><ul><li>Handler：参数格式校验（字段是否存在、类型是否正确）→ 快速返回 400</li><li>Service：业务规则校验（视频是否存在、用户是否有权限）→ 返回业务错误</li></ul><p><strong>Q: 为什么需要 InTx 模式而不是直接在 Service 里开事务？</strong></p><p>InTx 模式让事务控制权在 Service 层，但事务内的数据操作仍由 Repository 负责。这样 Service 决定"哪些操作在同一个事务里"，Repository 决定"怎么操作数据"，职责清晰。</p>`},
+{q:"一个点赞请求从用户点击到数据持久化的完整链路是什么？",
+lv1:`<p>点赞是项目中最复杂的链路之一，涉及 <strong>API 进程</strong>（参数校验、MQ 投递）、<strong>Worker 进程</strong>（消费消息、写 MySQL）、<strong>Redis</strong>（热度更新）三个组件协作。</p><p>核心设计思想：<strong>MQ 优先异步写入，MQ 不可用时降级为同步 MySQL 事务</strong>。这样既保证了正常情况下的高性能（API 快速返回），又保证了异常情况下的数据不丢失。</p>`,
+lv2:`<p>完整链路（以点赞为例，源码在 <code class="inline">like_service.go:Like</code> 第 50 行）：</p><pre><code><span class="cm">// Step 1: 参数校验</span>
+<span class="kw">if</span> accountID == <span class="num">0</span> || videoID == <span class="num">0</span> {
+    <span class="kw">return</span> errors.New(<span class="str">"video_id and account_id are required"</span>)
+}
+<span class="cm">// Step 2: 确认视频存在</span>
+ok, err := s.videoRepo.IsExist(ctx, videoID)
+<span class="cm">// Step 3: 构造 Like 结构体</span>
+like := &amp;Like{VideoID: videoID, AccountID: accountID}
+<span class="cm">// Step 4: MQ 优先路径（并发投递两条 MQ）</span>
+likeMQSent := s.likeMQ.Like(ctx, accountID, videoID) == <span class="kw">nil</span>
+popularityMQSent := s.popularityMQ.Update(ctx, videoID, <span class="num">1</span>) == <span class="kw">nil</span>
+<span class="cm">// Step 5: 两条都成功 → 直接返回</span>
+<span class="kw">if</span> likeMQSent &amp;&amp; popularityMQSent { <span class="kw">return</span> <span class="kw">nil</span> }
+<span class="cm">// Step 6: 降级路径（LikeMQ 失败）</span>
+<span class="kw">if</span> !likeMQSent {
+    s.likeRepo.Transaction(ctx, <span class="kw">func</span>(tx) {
+        s.likeRepo.LikeInTx(ctx, tx, like)        <span class="cm">// 插入点赞记录</span>
+        s.videoRepo.ChangeLikesCount(ctx, tx, id, <span class="num">1</span>) <span class="cm">// 原子+1</span>
+        s.videoRepo.ChangePopularity(ctx, tx, id, <span class="num">1</span>) <span class="cm">// 原子+1</span>
+    })
+}
+<span class="cm">// Step 7: PopularityMQ 失败 → 同步更新 Redis</span>
+<span class="kw">if</span> !popularityMQSent {
+    UpdatePopularityCache(ctx, s.cache, videoID, <span class="num">1</span>)
+}</code></pre><p><strong>Worker 消费侧</strong>（likeworker.go）：</p><pre><code><span class="cm">// 从 like.events 队列消费消息</span>
+<span class="cm">// 1. 确认视频存在</span>
+<span class="cm">// 2. LikeIgnoreDuplicate（幂等插入，catch 1062）</span>
+created, _ := likeRepo.LikeIgnoreDuplicate(like)
+<span class="cm">// 3. created == true → 更新计数 + 热度</span>
+<span class="kw">if</span> created {
+    videoRepo.ChangeLikesCount(videoID, <span class="num">1</span>)
+    videoRepo.ChangePopularity(videoID, <span class="num">1</span>)
+}
+<span class="cm">// 4. created == false → 跳过（重复消息，幂等）</span>
+msg.Ack(<span class="kw">false</span>)</code></pre>`,
+lv3:`<p><strong>Q: 哪一步可能失败？各自的降级策略是什么？</strong></p><ul><li><strong>Step 2 视频不存在</strong>：直接返回错误 "video not found"</li><li><strong>Step 4 LikeMQ 失败</strong>：降级到同步 MySQL 事务（Step 6）</li><li><strong>Step 4 PopularityMQ 失败</strong>：直接调用 UpdatePopularityCache（Step 7）</li><li><strong>Step 6 MySQL 事务失败</strong>：返回错误，点赞未生效</li><li><strong>Worker 消费失败</strong>：Nack + requeue=true，重新入队重试</li></ul><p><strong>Q: 为什么 MQ 路径不检查是否已点赞？</strong></p><p>因为检查和插入之间存在 TOCTOU 竞态窗口。MQ 路径把去重责任交给消费者，消费者用 <code class="inline">LikeIgnoreDuplicate</code> 依赖唯一索引（1062 错误码）做幂等，不需要预检查。</p><p><strong>Q: 如果两条 MQ 一条成功一条失败怎么办？</strong></p><p>LikeMQ 成功但 PopularityMQ 失败：点赞记录会由 Worker 写入 MySQL，但热度缓存由 API 同步更新。两条路径最终都会更新热度，不会数据丢失。</p>`},
+{q:"模块依赖关系和初始化顺序是怎样的？为什么 Redis/RabbitMQ 失败时降级为 nil？",
+lv1:`<p>项目的核心外部依赖有三个：<strong>MySQL</strong>（必须可用）、<strong>Redis</strong>（可选，降级）、<strong>RabbitMQ</strong>（可选，降级）。</p><p>MySQL 是必须的，连接失败直接 <code class="inline">log.Fatalf</code> 退出。Redis 和 RabbitMQ 是增强组件，连接失败时降级为 nil，所有操作跳过或走同步路径，保证核心功能可用。</p>`,
+lv2:`<p>初始化顺序（cmd/main.go）和 nil 降级逻辑：</p><pre><code><span class="cm">// Redis：连接失败或 Ping 超时 → cache = nil</span>
+cache, err := rediscache.NewFromEnv(&amp;cfg.Redis)
+<span class="kw">if</span> err != <span class="kw">nil</span> { cache = <span class="kw">nil</span> }
+<span class="kw">if</span> err := cache.Ping(pingCtx); err != <span class="kw">nil</span> {
+    cache = <span class="kw">nil</span>  <span class="cm">// Ping 300ms 超时也降级</span>
+}
+<span class="cm">// RabbitMQ：连接失败 → rbq = nil</span>
+rbq, err := rabbitmq.NewRabbitMQ(&amp;cfg.RabbitMQ)
+<span class="kw">if</span> err != <span class="kw">nil</span> { rbq = <span class="kw">nil</span> }</code></pre><p>下游使用时检查 nil：</p><pre><code><span class="cm">// 限流中间件：cache == nil 时直接放行</span>
+<span class="kw">if</span> cache == <span class="kw">nil</span> || keyFunc == <span class="kw">nil</span> {
+    c.Next(); <span class="kw">return</span>
+}
+<span class="cm">// LikeMQ：rbq == nil 时 MQ 投递跳过</span>
+<span class="kw">if</span> s.likeMQ != <span class="kw">nil</span> {
+    likeMQSent = s.likeMQ.Like(ctx, ...) == <span class="kw">nil</span>
+}
+<span class="cm">// 分布式锁：cache == nil 时返回 locked=false</span>
+<span class="kw">if</span> c == <span class="kw">nil</span> || c.rdb == <span class="kw">nil</span> {
+    <span class="kw">return</span> <span class="str">""</span>, <span class="kw">false</span>, <span class="kw">nil</span>
+}</code></pre>`,
+lv3:`<p><strong>Q: 如果 Redis 和 RabbitMQ 都挂了，系统还能工作吗？</strong></p><p>能，但功能降级：</p><ul><li>缓存全部失效 → 每次请求直接查 MySQL（延迟升高）</li><li>分布式锁失效 → 所有请求直接穿透到 DB（可能击穿）</li><li>限流失效 → fail-open 放行（可能被打爆）</li><li>MQ 投递跳过 → 所有写操作走同步 MySQL 事务（API 变慢）</li><li>Token 吊销 → 降级到 MySQL 查询（每次请求多一次 DB 查询）</li></ul><p><strong>Q: 这种设计的优缺点？</strong></p><ul><li>优点：高可用，核心功能不受外部依赖故障影响</li><li>缺点：降级后性能下降明显，且用户无感知（不知道自己被降级了）</li><li>改进：可以加监控告警，Redis/MQ 故障时通知运维</li></ul>`}
+],quiz:[
+{q:"API 进程和 Worker 进程各自连接了哪些外部依赖？为什么 Worker 不需要 AutoMigrate？",hint:"API 连接 MySQL+Redis+RabbitMQ，Worker 也连接这三个。AutoMigrate 只需要在 API 启动时执行一次建表，Worker 不做避免重复迁移竞争。"},
+{q:"Handler 层的 binding:\"required\" 和 Service 层的手动校验分别负责什么？",hint:"Handler 负责参数格式校验（必填字段、类型），Service 负责业务规则校验（视频是否存在、用户权限）。"},
+{q:"点赞的 MQ 优先路径和降级路径在数据一致性上有什么区别？",hint:"MQ 路径异步写入（最终一致性，延迟低），降级路径同步事务写入（强一致性，延迟高）。"},
+{q:"为什么 VideoRepository.ChangeLikesCount 需要接受 tx *gorm.DB 参数？",hint:"为了在事务内调用时使用同一个 tx，非事务时传 nil 自动降级为 r.db。这是 InTx 模式的核心。"},
+{q:"Worker 进程的 prefetchCount 设为 50 有什么作用？",hint:"限制 RabbitMQ 一次推送给 Worker 的未确认消息数量，防止 Worker 被压垮。太大内存溢出，太小吞吐低。"},
+{q:"signal.NotifyContext 和 signal.Notify 在优雅停机中的区别是什么？",hint:"NotifyContext 返回可取消的 context，可以传播取消信号到所有 goroutine。Notify 返回 channel，需要手动 select。"},
+{q:"API 进程中 SetRouter 函数承担了哪些职责？为什么 MQ 拓扑声明在 Worker 进程而不是 API 进程？",hint:"SetRouter 负责依赖注入（repo→service→handler）和路由注册。MQ 拓扑在 Worker 声明是因为 Worker 是消费者，需要确保队列存在。"},
+{q:"如果 Redis 或 RabbitMQ 连接失败，API 进程会怎样处理？这种设计有什么优缺点？",hint:"Redis 失败 cache=nil 降级，RabbitMQ 失败 rbq=nil 降级。优点高可用，缺点是降级后性能下降且无感知。"}
+]},
+
+{id:2,title:"第2章：Redis 深度应用",topics:[
+{q:"三级缓存架构（L1→L2→L3）是怎么设计的？为什么需要 L1 本地缓存？",
+lv1:`<p>三级缓存的核心思想是<strong>分层防御，逐级兜底</strong>：</p><ul><li><strong>L1 本地缓存</strong>（go-cache，5s TTL）：进程内存，零网络开销，亚毫秒响应</li><li><strong>L2 Redis</strong>（1h TTL）：跨实例共享，MGet 批量查询</li><li><strong>L3 MySQL</strong>：源数据，最终来源</li></ul><p>为什么需要 L1？Redis 虽然快（~0.5ms/次），但每次查询还是要走一次网络往返。对于热点数据（如首页 Feed 流反复访问的视频详情），L1 能把 Redis 的 QPS 压力降低 90%+。</p>`,
+lv2:`<p>核心实现在 <code class="inline">internal/feed/service.go:GetVideoByIDs</code>（第 408 行）：</p><pre><code><span class="cm">// L1: 本地缓存逐个查找</span>
+<span class="kw">for</span> _, id := <span class="kw">range</span> videoIDs {
+    cacheKey := fmt.Sprintf(<span class="str">"video:entity:%d"</span>, id)
+    <span class="kw">if</span> v, found := f.localcache.Get(cacheKey); found {
+        videoMap[id] = &amp;data  <span class="cm">// 命中 L1，直接使用</span>
+    } <span class="kw">else</span> {
+        missedL1 = append(missedL1, id)
+    }
+}
+<span class="cm">// L2: Redis MGet 批量查询 L1 未命中的 key</span>
+results, err := f.rediscache.MGet(cancelCtx, cacheKeys...)
+<span class="cm">// 命中的写回 L1 (5s TTL)</span>
+f.localcache.Set(cacheKeys[i], video, <span class="num">5</span>*time.Second)
+<span class="cm">// L3: MySQL + singleflight 防穿透</span>
+v, err, _ := f.requestGroup.Do(sfKey, <span class="kw">func</span>() {
+    videoList, _ := f.repo.GetByIDs(ctx, []<span class="fn">uint</span>{videoID})
+    <span class="cm">// 异步回写 Redis (1h TTL)</span>
+    <span class="kw">go</span> f.rediscache.SetBytes(setCtx, k, b, time.Hour)
+    <span class="kw">return</span> videoList[<span class="num">0</span>], err
+})
+<span class="cm">// 写回 L1 (5s TTL)</span>
+f.localcache.Set(cacheKey, safeCopy, <span class="num">5</span>*time.Second)</code></pre><p><strong>关键设计点</strong>：</p><ul><li>L2 用 <code class="inline">MGet</code> 批量查询，一次网络往返获取多个 key</li><li>L3 用 singleflight 合并同一个 videoID 的并发请求</li><li>L2→L1 是同步写回（进程内操作，开销极小）</li><li>L3→L2 是异步写回（<code class="inline">go func()</code>，不阻塞请求）</li><li>L2 查询失败时，直接将 missedL1 降级到 L3</li></ul>`,
+lv3:`<p><strong>Q: L1 缓存的多实例一致性怎么保证？</strong></p><p>不保证强一致性。L1 TTL 只有 5 秒，最多延迟 5 秒感知到变化。对于视频详情这种变化频率低的数据，5 秒延迟完全可接受。如果需要强一致性（如点赞数），不走 L1 缓存，直接查 DB。</p><p><strong>Q: go-cache 的过期清理机制是什么？</strong></p><p>go-cache 启动一个后台 goroutine，每 10 秒扫描一次过期 item 并删除。默认清理间隔在 <code class="inline">cache.New(3*time.Second, 5*time.Second)</code> 中配置（第一个参数是默认 TTL，第二个是清理间隔）。</p><p><strong>Q: TTL 怎么调？5 秒会不会太短？</strong></p><ul><li>5 秒适合变化频率中等的数据（视频详情）</li><li>如果数据几乎不变（如用户信息），可以调到 30 秒</li><li>如果数据实时性要求高（如点赞数），不走 L1，直接查 DB 或 Redis</li><li>TTL 越长 → 命中率越高 → 一致性越差，需要根据业务权衡</li></ul>`},
+{q:"Redis 分布式锁怎么实现的？为什么解锁必须用 Lua 脚本？",
+lv1:`<p>分布式锁用于<strong>跨实例保护共享资源</strong>。比如多个 API 实例同时缓存未命中，只有一个实例去查 DB 并回写缓存，其他实例等待。</p><p>加锁用 <code class="inline">SET key random_token NX PX ttl</code>：</p><ul><li><strong>NX</strong>：只有 key 不存在时才能设置成功（互斥）</li><li><strong>PX ttl</strong>：毫秒级过期，防止死锁</li><li><strong>random_token</strong>：随机字符串，标识锁的持有者</li></ul>`,
+lv2:`<p>实现在 <code class="inline">internal/middleware/redis/redis.go</code>：</p><pre><code><span class="cm">// 加锁（第 84 行）</span>
+<span class="kw">func</span> (c *Client) Lock(ctx, key, ttl) (string, <span class="fn">bool</span>, error) {
+    token, _ := randToken(<span class="num">16</span>)  <span class="cm">// 随机 16 字节 hex</span>
+    ok, _ := c.rdb.SetNX(ctx, key, token, ttl).Result()
+    <span class="kw">return</span> token, ok, <span class="kw">nil</span>
+}
+<span class="cm">// Lua 解锁脚本（第 99 行）</span>
+<span class="kw">var</span> unlockScript = redis.NewScript(<span class="str">\`
+    local token = redis.call('GET',KEYS[1])
+    if token==ARGV[1] then
+        return redis.call('DEL',KEYS[1])
+    else
+        return 0
+    end\`</span>)
+<span class="cm">// 解锁（第 110 行）</span>
+<span class="kw">func</span> (c *Client) UnLock(ctx, key, token) error {
+    _, err := unlockScript.Run(ctx, c.rdb, []<span class="fn">string</span>{key}, token).Result()
+    <span class="kw">return</span> err
+}</code></pre><p><strong>为什么必须用 Lua？</strong>如果用两步操作（GET + DEL），存在竞态：</p><pre><code>时间线    客户端A              客户端B
+T1        GET key -> tokenA
+T2        (A 处理超时，锁自动过期)
+T3                              Lock(key) -> tokenB
+T4        DEL key
+T5                              (B 的锁被 A 误删了!)</code></pre><p>Lua 脚本在 Redis 中原子执行 GET + 比较 + DEL，保证只有持有正确 token 的客户端才能释放锁。</p>`,
+lv3:`<p><strong>Q: Redis 主从切换时锁会丢失吗？</strong></p><p>会。如果主节点宕机，从节点提升为主节点，但锁数据可能还没同步到从节点，导致锁丢失。解决方案是 Redlock（在 N 个独立 Redis 节点上同时加锁，多数成功才算加锁成功），但实现复杂度高。本项目单机 Redis，不考虑这个问题。</p><p><strong>Q: 锁续期问题怎么解决？</strong></p><p>本项目锁 TTL 是 500ms（ListByFollowing），很短。如果业务执行超过 500ms，锁会自动过期。改进方案是"看门狗机制"：后台 goroutine 定期续期锁 TTL。但本项目场景简单（查 DB + 回写缓存），500ms 绑绑有余。</p><p><strong>Q: 除了 Redis，还有哪些实现分布式锁的方案？</strong></p><ul><li>Zookeeper：临时顺序节点 + Watch，强一致性但性能较差</li><li>etcd：Raft 共识，lease 续期，适合 Kubernetes 生态</li><li>数据库：SELECT FOR UPDATE，简单但性能最差</li></ul>`},
+{q:"限流 Lua 脚本为什么必须原子执行？固定窗口限流有什么缺点？",
+lv1:`<p>限流的核心是<strong>计数 + 过期时间</strong>必须原子执行。如果 INCR 成功但 PEXPIRE 未执行，key 将永不过期，该 IP/用户被永久限流。</p><p>Redis 的单线程模型下，Lua 脚本内的所有命令原子执行，中间不会被其他命令插入。</p>`,
+lv2:`<p>限流 Lua 脚本在 <code class="inline">redis.go</code> 第 48 行：</p><pre><code><span class="kw">var</span> incrementWithExpireScript = redis.NewScript(<span class="str">\`
+    local count = redis.call('INCR',KEYS[1])
+    if count==1 then
+        redis.call('PEXPIRE',KEYS[1],ARGV[1])
+    end
+    return count\`</span>)
+<span class="cm">// 调用方（redis.go:IncrementWithExpire 第 59 行）</span>
+<span class="kw">func</span> (c *Client) IncrementWithExpire(ctx, key, expireTime) (int64, error) {
+    <span class="kw">return</span> incrementWithExpireScript.Run(ctx, c.rdb,
+        []<span class="fn">string</span>{key}, expireTime.Milliseconds()).Int64()
+}</code></pre><p><strong>为什么只在 count==1 时设置 PEXPIRE？</strong></p><p>如果每次都重置 PEXPIRE，持续不断的请求会让 key 永不过期，限流窗口被无限延长，失去"固定窗口"语义。只在首次设置，保证窗口从第一个请求开始计时。</p><p><strong>限流中间件</strong>（ratelimit.go）：</p><pre><code>count, _ := cache.IncrementWithExpire(ctx, key, window)
+<span class="kw">if</span> count > maxRequests {
+    c.AbortWithStatusJSON(<span class="num">429</span>, gin.H{<span class="str">"error"</span>: <span class="str">"too many requests"</span>})
+}
+<span class="cm">// Redis 故障时 fail-open（放行）</span>
+<span class="kw">if</span> cache == <span class="kw">nil</span> { c.Next(); <span class="kw">return</span> }</code></pre>`,
+lv3:`<p><strong>Q: 固定窗口限流的临界问题是什么？</strong></p><p>在窗口边界处可能突发 2x 流量。例如限制 100 次/分钟，用户在第 59 秒发 100 次，第 60 秒（新窗口）又发 100 次，实际 2 秒内发了 200 次。</p><p><strong>改进方案：</strong></p><ul><li><strong>滑动窗口</strong>：用 ZSET 存每次请求的时间戳，ZRANGEBYSCORE 统计窗口内请求数</li><li><strong>滑动窗口计数器</strong>：当前窗口 + 上一窗口加权</li><li><strong>令牌桶</strong>：允许突发流量（桶满时可以一次性发完）</li><li><strong>漏桶</strong>：平滑流量（固定速率处理）</li></ul><p><strong>Q: key 被手动删了怎么办？</strong></p><p>计数归零，新的请求开始新窗口。不会有问题，只是这个窗口的计数丢失了。</p>`},
+{q:"ZSET 在项目中的三个应用场景分别是什么？",
+lv1:`<p>ZSET（有序集合）是 Redis 中最适合做<strong>排行榜 + 时间线</strong>的数据结构。每个 member 关联一个 score，支持按 score 范围查询、排名查询、增量更新。</p><p>项目中三个场景：</p><ol><li><strong>时间线</strong>：score = 视频创建时间，按时间倒序分页</li><li><strong>热度窗口</strong>：score = 互动量，每分钟一个窗口</li><li><strong>合并热榜</strong>：ZUNIONSTORE 合并多个窗口</li></ol>`,
+lv2:`<p><strong>场景 1：全局时间线</strong>（outboxworker.go:StartConsumer 第 79 行）</p><pre><code>timelineKey := <span class="str">"feed:global_timeline"</span>
+redisClient.ZAdd(ctx, timelineKey, redis.Z{
+    Member: fmt.Sprintf(<span class="str">"%d"</span>, val.VideoID),
+    Score:  float64(val.CreateTime),  <span class="cm">// 毫秒时间戳</span>
+})
+<span class="cm">// 裁剪，只保留最新 1000 条</span>
+redisClient.ZRemRangeByRank(ctx, timelineKey, <span class="num">0</span>, -<span class="num">1001</span>)</code></pre><p><strong>场景 2：热度窗口</strong>（popularity_cache.go:UpdatePopularityCache 第 25 行）</p><pre><code>windowKey := <span class="str">"hot:video:1m:"</span> + now.Format(<span class="str">"200601021504"</span>)
+cache.ZincrBy(opCtx, windowKey, member, float64(change))
+cache.Expire(opCtx, windowKey, <span class="num">2</span>*time.Hour)  <span class="cm">// 2h 自动过期</span></code></pre><p><strong>场景 3：合并热榜</strong>（feed/service.go:ListByPopularity 第 314 行）</p><pre><code><span class="kw">const</span> win = <span class="num">60</span>
+keys := <span class="kw">make</span>([]<span class="fn">string</span>, <span class="num">0</span>, win)
+<span class="kw">for</span> i := <span class="num">0</span>; i &lt; win; i++ {
+    keys = append(keys, <span class="str">"hot:video:1m:"</span>+asOf.Add(-time.Duration(i)*time.Minute).Format(<span class="str">"200601021504"</span>))
+}
+dest := <span class="str">"hot:video:merge:1m:"</span> + asOf.Format(<span class="str">"200601021504"</span>)
+<span class="kw">if</span> !exists {
+    f.rediscache.ZUnionStore(opCtx, dest, keys, <span class="str">"SUM"</span>)
+    f.rediscache.Expire(opCtx, dest, <span class="num">2</span>*time.Minute)
+}</code></pre>`,
+lv3:`<p><strong>Q: ZSET 的时间复杂度？</strong></p><ul><li>ZADD：O(log N)</li><li>ZINCRBY：O(log N)</li><li>ZREVRANGEBYSCORE：O(log N + M)（M 为返回数量）</li><li>ZREMRANGEBYRANK：O(log N)</li><li>ZUNIONSTORE：O(N*K)（N=总成员数，K=集合数）</li></ul><p><strong>Q: 只保留 1000 条够吗？会不会丢数据？</strong></p><p>ZREMRANGEBYRANK 裁剪掉的是最老的数据，这些数据不会丢失——它们在 MySQL 中仍然存在。冷查询（reqTime &lt;= watermark）会走 MySQL 查这些数据。ZSET 只是热数据的缓存层。</p><p><strong>Q: ZUNIONSTORE 合并 60 个 key 性能开销大吗？</strong></p><p>O(N*K)，如果每个窗口 1000 条，60 个窗口最多 60000 条。实际中很多视频在多个窗口出现（ZINCRBY 累加），合并后远少于 60000 条。项目做了缓存：合并结果缓存 2 分钟，Exists 检查避免重复合并。</p>`},
+{q:"缓存击穿的四重防护机制分别是什么？怎么协同工作？",
+lv1:`<p>缓存击穿：热点 key 过期，大量并发请求同时涌向 DB。四重防护层层递进：</p><ol><li><strong>singleflight</strong>：同进程内合并并发请求（第一道防线）</li><li><strong>分布式锁</strong>：跨实例保护，只有一个实例回源（第二道防线）</li><li><strong>double-check</strong>：获锁后再查一次缓存（防止在等待锁期间其他请求已回填）</li><li><strong>spin-wait</strong>：未获锁时短暂等待重试（避免穿透到 DB）</li></ol>`,
+lv2:`<p>完整实现在 <code class="inline">ListByFollowing</code>（feed/service.go 第 212 行）：</p><pre><code><span class="cm">// 1. 尝试从 Redis 缓存读取</span>
+b, err := f.rediscache.GetBytes(cacheCtx, cacheKey)
+<span class="kw">if</span> err == <span class="kw">nil</span> { <span class="kw">return</span> cached, <span class="kw">nil</span> }  <span class="cm">// 缓存命中</span>
+
+<span class="cm">// 2. 缓存未命中，尝试加分布式锁</span>
+lockKey := <span class="str">"lock:"</span> + cacheKey
+token, locked, _ := f.rediscache.Lock(cacheCtx, lockKey, <span class="num">500</span>*time.Millisecond)
+<span class="kw">if</span> locked {
+    <span class="kw">defer</span> f.rediscache.UnLock(context.Background(), lockKey, token)
+    <span class="cm">// 3. double-check：拿到锁后再查一次缓存</span>
+    <span class="kw">if</span> b, err := f.rediscache.GetBytes(cacheCtx, cacheKey); err == <span class="kw">nil</span> {
+        <span class="kw">return</span> cached, <span class="kw">nil</span>  <span class="cm">// 已被其他请求回填</span>
+    }
+    <span class="cm">// 4. 仍未命中，查 DB 并回写缓存</span>
+    resp, _ := doListByFollowingFromDB()
+    f.rediscache.SetBytes(cacheCtx, cacheKey, b, f.cacheTTL)
+    <span class="kw">return</span> resp, <span class="kw">nil</span>
+}
+<span class="cm">// 5. 没拿到锁，spin-wait 自旋等待缓存回填</span>
+<span class="kw">for</span> i := <span class="num">0</span>; i &lt; <span class="num">5</span>; i++ {
+    time.Sleep(<span class="num">20</span> * time.Millisecond)  <span class="cm">// 最多等 100ms</span>
+    <span class="kw">if</span> b, err := f.rediscache.GetBytes(cacheCtx, cacheKey); err == <span class="kw">nil</span> {
+        <span class="kw">return</span> cached, <span class="kw">nil</span>
+    }
+}
+<span class="cm">// 6. 5 次都没等到，降级直接查 DB</span>
+<span class="kw">return</span> doListByFollowingFromDB()</code></pre>`,
+lv3:`<p><strong>Q: 四重机制的开销权衡？</strong></p><ul><li>singleflight：零网络开销（进程内），但只能单实例去重</li><li>分布式锁：一次 Redis 网络往返（~0.5ms），跨实例保护</li><li>double-check：一次 Redis GET（~0.5ms），防止无效回源</li><li>spin-wait：最多 100ms 延迟 + 5 次 Redis GET，换取不穿透到 DB</li></ul><p><strong>Q: singleflight 和分布式锁的选择原则？</strong></p><ul><li>全局 key（如 video:entity:123）：用 singleflight，每个实例内部都会去重</li><li>用户维度 key（如 feed:listByFollowing:accountID=42）：用分布式锁，不同实例的请求可能同时缓存未命中</li></ul><p><strong>Q: 如果分布式锁的持有者宕机了怎么办？</strong></p><p>锁有 500ms TTL，自动过期。其他请求可以重新获取锁。不会死锁。</p>`},
+{q:"缓存一致性怎么保证？三种策略分别适用于什么场景？",
+lv1:`<p>严格的一致性很难做到（需要分布式事务），项目采用<strong>最终一致性</strong>策略，不同场景用不同方式：</p><ul><li><strong>视频详情</strong>：异步回写 + TTL 自然过期</li><li><strong>热度缓存</strong>：事件驱动失效（写时主动删除）</li><li><strong>时间线</strong>：Outbox 模式保证写 DB 和发 MQ 的原子性</li></ul>`,
+lv2:`<p><strong>策略一：异步回写 + TTL</strong>（视频实体缓存）</p><pre><code><span class="cm">// feed/service.go:GetVideoByIDs 第 499 行</span>
+<span class="kw">go</span> <span class="kw">func</span>(k string, b []<span class="fn">byte</span>) {
+    setCtx, setCancel := context.WithTimeout(context.Background(), <span class="num">50</span>*time.Millisecond)
+    <span class="kw">defer</span> setCancel()
+    f.rediscache.SetBytes(setCtx, k, b, time.Hour)  <span class="cm">// 1h TTL</span>
+}(cachekey, b)</code></pre><p><strong>策略二：事件驱动失效</strong>（热度缓存）</p><pre><code><span class="cm">// popularity_cache.go:UpdatePopularityCache</span>
+cache.Del(context.Background(), fmt.Sprintf(<span class="str">"video:detail:id=%d"</span>, videoID))
+cache.ZincrBy(opCtx, windowKey, member, float64(change))</code></pre><p><strong>策略三：Outbox 模式</strong>（时间线）</p><pre><code><span class="cm">// video_repo.go:PublishVideo</span>
+r.db.Transaction(<span class="kw">func</span>(db *gorm.DB) error {
+    db.Create(video)        <span class="cm">// 写 video 表</span>
+    db.Create(&amp;outboxMsg)   <span class="cm">// 写 outbox 表（同一事务）</span>
+})
+<span class="cm">// outboxworker.go:StartOutboxPoller</span>
+<span class="cm">// 轮询 pending 记录 → 投递 MQ → 删除 outbox 记录</span></code></pre>`,
+lv3:`<p><strong>Q: DEL 缓存和更新 DB 之间有延迟怎么办？</strong></p><p>存在短暂不一致窗口：DEL 之后、DB 更新之前，如果有请求读到旧数据并回写缓存，会缓存脏数据。解决方案：</p><ul><li>先更新 DB，再删缓存（Cache Aside 模式）</li><li>或者用延迟双删：删缓存 → 更新 DB → 延迟 500ms → 再删缓存</li><li>本项目选择了"先删缓存再更新 DB + TTL 兜底"，最坏情况延迟 1 小时（Redis TTL）</li></ul><p><strong>Q: 为什么不用 Canal 监听 binlog？</strong></p><p>Canal 需要额外部署一套组件（Canal Server + Client），增加运维复杂度。本项目规模下，事件驱动 + TTL 兜底够用。</p>`},
+{q:"singleflight 和分布式锁分别在什么场景用？能组合使用吗？",
+lv1:`<p>两者都是防并发的机制，但适用场景不同：</p><ul><li><strong>singleflight</strong>：单进程去重，零网络开销，适用于全局 key</li><li><strong>分布式锁</strong>：跨实例保护，一次 Redis 往返，适用于用户维度 key</li></ul><p>选择原则：如果多个实例查询同一个 key，用 singleflight 就够了（每个实例内部都会去重）。如果 key 是用户维度的，不同实例的请求可能同时缓存未命中，需要分布式锁。</p>`,
+lv2:`<p><strong>singleflight 使用</strong>（GetVideoByIDs 第 486 行）：</p><pre><code>sfKey := fmt.Sprintf(<span class="str">"sf:entity:%d"</span>, videoID)
+v, err, _ := f.requestGroup.Do(sfKey, <span class="kw">func</span>() (<span class="kw">interface</span>{}, error) {
+    <span class="kw">return</span> f.repo.GetByIDs(ctx, []<span class="fn">uint</span>{videoID})
+})</code></pre><p><strong>分布式锁使用</strong>（ListByFollowing 第 253 行）：</p><pre><code>lockKey := <span class="str">"lock:"</span> + cacheKey
+token, locked, _ := f.rediscache.Lock(cacheCtx, lockKey, <span class="num">500</span>*time.Millisecond)
+<span class="kw">if</span> locked {
+    <span class="kw">defer</span> f.rediscache.UnLock(context.Background(), lockKey, token)
+    <span class="cm">// double-check → 查 DB → 回写缓存</span>
+}</code></pre><p><strong>组合使用场景</strong>：singleflight 在前减少锁竞争（同实例内只有一个请求去抢锁），分布式锁在后跨实例保护。例如 GetVideoByIDs 先用 singleflight 合并同实例请求，再用分布式锁跨实例保护。</p>`,
+lv3:`<p><strong>Q: singleflight 的 shared 返回值有什么含义？</strong></p><p><code class="inline">shared=true</code> 表示本次结果是从其他请求"搭便车"获得的，不是自己执行的。项目中用 shared 判断是否需要重新查询（ListLatest 中 ZSET 为空重建后，shared=true 时重新递归查询）。</p><p><strong>Q: 如果分布式锁的持有者处理时间超过 TTL？</strong></p><p>锁自动过期，其他请求可以获取锁。原持有者的 defer UnLock 会尝试释放锁，但 Lua 脚本检查 token 不一致，返回 0，不影响新持有者。</p>`}
+],quiz:[
+{q:"三级缓存中 L1 的作用是什么？为什么不能只用 L2+L3？",hint:"L1 在进程内存，零网络开销，热点数据亚毫秒响应。只用 L2+L3 每次都要走 Redis 网络往返（~0.5ms）。"},
+{q:"分布式锁释放为什么必须用 Lua 脚本？",hint:"GET+DEL 非原子，可能在 GET 之后锁过期被别人获取，DEL 释放了别人的锁。Lua 保证 GET+比较+DEL 原子执行。"},
+{q:"限流脚本中为什么只在 count==1 时设置 PEXPIRE？",hint:"每次都设置会重置窗口，持续请求让 key 永不过期，失去固定窗口语义。"},
+{q:"ZSET 时间线的 watermark 是什么？如何判断热/冷查询？",hint:"watermark 是 ZSET 最老一条的 score。reqTime &gt; watermark 走 Redis 热查询，&lt;= 走 MySQL 冷查询。"},
+{q:"singleflight 的 shared 返回值有什么含义？",hint:"shared=true 表示本次结果是从其他请求搭便车获得的，不是自己执行的。"},
+{q:"spin-wait 模式的优缺点？",hint:"优点：避免所有请求穿透到 DB。缺点：增加延迟（最多 100ms），消耗 CPU 做空轮询。"},
+{q:"缓存穿透、击穿、雪崩分别是什么？本项目如何应对？",hint:"穿透：EMPTY_DB 短路标记。击穿：singleflight+锁+double-check+spin-wait。雪崩：不同 TTL 错开过期时间。"},
+{q:"为什么冷数据不回写 ZSET？",hint:"防止冷数据污染热点时间线，ZSET 只保留最新 1000 条热数据。冷数据流量极小，MySQL 索引够用。"}
+]},
+
+{id:3,title:"第3章：消息队列设计",topics:[
+{q:"为什么用 RabbitMQ 的 Topic Exchange？5 个 Topic 分别承载什么业务？",
+lv1:`<p>消息队列的核心价值：<strong>解耦</strong>（API 和持久化分离）、<strong>异步</strong>（API 快速返回）、<strong>削峰</strong>（点赞突发缓冲）。</p><p>Topic Exchange 支持通配符路由（<code class="inline">*</code> 匹配一个词，<code class="inline">#</code> 匹配零或多个词），比 Direct Exchange 更灵活。</p><p>5 个 Topic：</p><ul><li><code class="inline">like.events</code>：点赞/取消点赞</li><li><code class="inline">comment.events</code>：评论/删除评论</li><li><code class="inline">social.events</code>：关注/取关</li><li><code class="inline">video.popularity.events</code>：热度更新</li><li><code class="inline">video.timeline.update</code>：视频发布（写入时间线）</li></ul>`,
+lv2:`<p>拓扑声明在 <code class="inline">cmd/worker/main.go</code>：</p><pre><code><span class="cm">// Exchange + Queue + Binding 声明</span>
+<span class="kw">func</span> declareLikeTopology(rbq *rabbitmq.RabbitMQ) error {
+    <span class="kw">return</span> rbq.DeclareTopic(<span class="str">"like.events"</span>, <span class="str">"like.events"</span>, <span class="str">"like.*"</span>)
+}
+<span class="cm">// DeclareTopic 内部（rabbitmq.go）：</span>
+ch.ExchangeDeclare(exchange, <span class="str">"topic"</span>, <span class="kw">true</span>, <span class="kw">false</span>, <span class="kw">false</span>, <span class="kw">false</span>, <span class="kw">nil</span>)
+ch.QueueDeclare(queue, <span class="kw">true</span>, <span class="kw">false</span>, <span class="kw">false</span>, <span class="kw">false</span>, <span class="kw">nil</span>)
+ch.QueueBind(queue, bindingKey, exchange, <span class="kw">false</span>, <span class="kw">nil</span>)</code></pre><p><strong>durable=true</strong>：Exchange 和 Queue 都持久化，RabbitMQ 重启后不丢失。</p>`,
+lv3:`<p><strong>Q: Topic vs Direct Exchange 性能差异？</strong></p><p>Topic Exchange 需要匹配通配符，略慢于 Direct 的精确匹配。但在 5 个队列的规模下，差异可以忽略。Topic 的灵活性更重要：未来新增事件类型不需要改 Exchange。</p><p><strong>Q: 为什么用 RabbitMQ 而不是 Kafka？</strong></p><ul><li>RabbitMQ：低延迟（微秒级）、支持复杂路由、消息确认机制完善</li><li>Kafka：高吞吐（百万级/秒）、持久化日志、适合大数据流</li><li>本项目规模（短视频社交），RabbitMQ 的延迟优势更重要</li></ul>`},
+{q:"消息可靠性怎么保证？三层保障分别是什么？",
+lv1:`<p>消息从 Producer 到 Consumer 可能丢失的三个环节：</p><ol><li><strong>Producer → Broker</strong>：网络抖动、Broker 宕机</li><li><strong>Broker 存储</strong>：内存消息未持久化到磁盘</li><li><strong>Broker → Consumer</strong>：Consumer 处理失败但已 Ack</li></ol><p>三层保障对应这三个环节。</p>`,
+lv2:`<p><strong>Producer 端</strong>：消息设为 Persistent（delivery_mode=2），写入磁盘。</p><p><strong>Broker 端</strong>：durable exchange + durable queue，RabbitMQ 重启后不丢失。</p><p><strong>Consumer 端</strong>：手动 Ack/Nack，处理成功才 Ack：</p><pre><code><span class="cm">// likeworker.go:Run</span>
+msgs, _ := ch.Consume(queue, <span class="str">""</span>, <span class="kw">false</span>, <span class="kw">false</span>, <span class="kw">false</span>, <span class="kw">false</span>, <span class="kw">nil</span>)
+<span class="kw">for</span> msg := <span class="kw">range</span> msgs {
+    err := process(msg)
+    <span class="kw">if</span> err != <span class="kw">nil</span> {
+        msg.Nack(<span class="kw">false</span>, <span class="kw">true</span>)  <span class="cm">// requeue=true，重新入队</span>
+    } <span class="kw">else</span> {
+        msg.Ack(<span class="kw">false</span>)
+    }
+}</code></pre><p><strong>Nack(false, true)</strong>：第一个 false 只 nack 当前消息，第二个 true 重新入队。</p>`,
+lv3:`<p><strong>Q: Nack 一直重试怎么办？</strong></p><p>如果消息格式错误（反序列化失败），重试多少次都会失败，形成"毒消息"。解决方案：</p><ul><li>死信队列（DLQ）：重试 N 次后路由到死信队列，人工处理</li><li>本项目当前没有 DLQ，反序列化失败直接 Nack 重入队（简单但有风险）</li></ul><p><strong>Q: 持久化性能影响？</strong></p><p>Persistent 消息需要写磁盘，比内存消息慢 ~10x。但在本项目规模下（每秒几十到几百条消息），影响可忽略。</p>`},
+{q:"Outbox 模式解决了什么问题？怎么实现的？",
+lv1:`<p>核心问题：<strong>写 DB 和发 MQ 不能原子</strong>。</p><p>如果先写 DB 再发 MQ：DB 成功但 MQ 失败 → 数据不一致。如果先发 MQ 再写 DB：MQ 成功但 DB 失败 → 消费者处理了不存在的数据。</p><p>Outbox 模式：在同一个 DB 事务中写业务表 + outbox 表，然后由轮询器异步投递 MQ。</p>`,
+lv2:`<p><strong>写入端</strong>（video_repo.go:PublishVideo）：</p><pre><code><span class="kw">func</span> (r *VideoRepository) PublishVideo(ctx, video) error {
+    <span class="kw">return</span> r.db.WithContext(ctx).Transaction(<span class="kw">func</span>(db *gorm.DB) error {
+        <span class="cm">// 1. 写 video 表</span>
+        <span class="kw">if</span> err := db.Create(video).Error; err != <span class="kw">nil</span> { <span class="kw">return</span> err }
+        <span class="cm">// 2. 写 outbox 表（同一事务，含 AuthorID）</span>
+        msg := OutboxMsg{
+            VideoID: video.ID, AuthorID: video.AuthorID,
+            EventType: <span class="str">"video_published"</span>, Status: <span class="str">"pending"</span>,
+        }
+        <span class="kw">if</span> err := db.Create(&amp;msg).Error; err != <span class="kw">nil</span> { <span class="kw">return</span> err }
+        <span class="kw">return</span> <span class="kw">nil</span>
+    })
+}</code></pre><p><strong>轮询端 -- 双投递</strong>（outboxworker.go:StartOutboxPoller）：</p><pre><code><span class="cm">// 签名：func StartOutboxPoller(db, tmq, fmq)</span>
+<span class="kw">go</span> <span class="kw">func</span>() {
+    <span class="kw">for</span> {
+        db.Where(<span class="str">"status = ?"</span>, <span class="str">"pending"</span>).Limit(<span class="num">100</span>).Find(&amp;msgs)
+        <span class="kw">if</span> <span class="kw">len</span>(msgs) == <span class="num">0</span> { time.Sleep(<span class="num">1</span>*time.Second); <span class="kw">continue</span> }
+        <span class="kw">for</span> _, msg := <span class="kw">range</span> msgs {
+            err1 := tmq.PublishVideo(ctx, msg.VideoID, msg.CreateTime)  <span class="cm">// 时间线</span>
+            err2 := fmq.PublishFanout(ctx, msg.VideoID, msg.AuthorID, msg.CreateTime)  <span class="cm">// fanout</span>
+            <span class="kw">if</span> err1 == <span class="kw">nil</span> &amp;&amp; err2 == <span class="kw">nil</span> { db.Delete(&amp;msg) }  <span class="cm">// 都成功才删除</span>
+        }
+    }
+}()</code></pre>`,
+lv3:`<p><strong>Q: 轮询延迟怎么控制？</strong></p><p>当前无记录时 sleep 1 秒，有记录时逐条处理不 sleep。最坏延迟 1 秒。改进：用 LISTEN/NOTIFY 或 binlog CDC 触发实时通知。</p><p><strong>Q: OutboxPoller 投递成功但 DELETE 失败会怎样？</strong></p><p>下次轮询会重复投递。但消费者是幂等的（ZADD 同一个 video_id 会覆盖 score），不影响正确性。</p><p><strong>Q: vs CDC（Debezium）？</strong></p><ul><li>Outbox 轮询：简单、无额外依赖、有延迟</li><li>CDC：延迟低（毫秒级）、需要额外部署 Debezium、增加运维复杂度</li></ul>`},
+{q:"幂等消费怎么实现？At-least-once + 幂等 = 效果上 Exactly-once？",
+lv1:`<p>消息队列的三种投递语义：</p><ul><li><strong>At-most-once</strong>：可能丢消息，性能最好</li><li><strong>At-least-once</strong>：不丢但可能重复（本项目用的）</li><li><strong>Exactly-once</strong>：不丢不重，实现极难</li></ul><p>At-least-once + 幂等消费 = 效果上 Exactly-once。幂等的关键：<strong>数据库唯一索引</strong>。</p>`,
+lv2:`<p><strong>LikeIgnoreDuplicate</strong>（like_repo.go 第 31 行）：</p><pre><code><span class="kw">func</span> (r *LikeRepository) LikeIgnoreDuplicate(ctx, like) (created <span class="fn">bool</span>, err error) {
+    err = r.db.WithContext(ctx).Create(like).Error
+    <span class="kw">if</span> err == <span class="kw">nil</span> { <span class="kw">return</span> <span class="kw">true</span>, <span class="kw">nil</span> }  <span class="cm">// 新创建</span>
+    <span class="kw">if</span> isDuplicateKey(err) { <span class="kw">return</span> <span class="kw">false</span>, <span class="kw">nil</span> }  <span class="cm">// 已存在，幂等返回</span>
+    <span class="kw">return</span> <span class="kw">false</span>, err
+}
+<span class="cm">// isDuplicateKey 判断 MySQL 1062 错误码</span>
+<span class="kw">func</span> isDuplicateKey(err error) <span class="fn">bool</span> {
+    <span class="kw">var</span> mysqlErr *mysql.MySQLError
+    <span class="kw">return</span> errors.As(err, &amp;mysqlErr) &amp;&amp; mysqlErr.Number == <span class="num">1062</span>
+}</code></pre><p><strong>Worker 消费逻辑</strong>（likeworker.go）：</p><pre><code>created, _ := likeRepo.LikeIgnoreDuplicate(like)
+<span class="kw">if</span> created {
+    <span class="cm">// 新创建 → 更新计数 + 热度</span>
+    videoRepo.ChangeLikesCount(videoID, <span class="num">1</span>)
+    videoRepo.ChangePopularity(videoID, <span class="num">1</span>)
+}
+<span class="cm">// created == false → 跳过（重复消息）</span>
+msg.Ack(<span class="kw">false</span>)</code></pre>`,
+lv3:`<p><strong>Q: 如果不适合加唯一索引怎么办？</strong></p><p>其他幂等方式：</p><ul><li>Redis SETNX：消息 ID 作为 key，处理前检查是否已处理</li><li>状态机：消息体带 status 字段，只处理特定状态</li><li>版本号：乐观锁，WHERE version = N</li></ul><p><strong>Q: 消息体带唯一 ID？</strong></p><p>可以，但不如数据库唯一索引可靠。唯一索引是数据库层面的保证，不依赖应用逻辑。</p>`},
+{q:"MQ 不可用时系统怎么降级？降级后有什么影响？",
+lv1:`<p>项目的核心设计：<strong>MQ 优先 + 同步降级</strong>。MQ 可用时走异步路径（低延迟），MQ 不可用时自动降级到同步 MySQL 事务（数据不丢）。</p>`,
+lv2:`<p>以点赞为例（like_service.go:Like 第 50 行）：</p><pre><code><span class="cm">// MQ 优先路径</span>
+likeMQSent := s.likeMQ.Like(ctx, accountID, videoID) == <span class="kw">nil</span>
+popularityMQSent := s.popularityMQ.Update(ctx, videoID, <span class="num">1</span>) == <span class="kw">nil</span>
+<span class="kw">if</span> likeMQSent &amp;&amp; popularityMQSent { <span class="kw">return</span> <span class="kw">nil</span> }
+
+<span class="cm">// 降级路径</span>
+<span class="kw">if</span> !likeMQSent {
+    s.likeRepo.Transaction(ctx, <span class="kw">func</span>(tx) {
+        s.likeRepo.LikeInTx(ctx, tx, like)
+        s.videoRepo.ChangeLikesCount(ctx, tx, videoID, <span class="num">1</span>)
+        s.videoRepo.ChangePopularity(ctx, tx, videoID, <span class="num">1</span>)
+    })
+}
+<span class="kw">if</span> !popularityMQSent {
+    UpdatePopularityCache(ctx, s.cache, videoID, <span class="num">1</span>)
+}</code></pre>`,
+lv3:`<p><strong>Q: 降级后性能影响？</strong></p><ul><li>MQ 路径：API 投递 ~1ms，立即返回</li><li>降级路径：MySQL 事务 ~5-10ms，API 响应变慢</li><li>高并发时，降级路径可能成为瓶颈（MySQL 连接池耗尽）</li></ul><p><strong>Q: MySQL 也挂了怎么办？</strong></p><p>返回错误，点赞未生效。用户需要重试。这是系统可用性的底线——至少不会数据不一致。</p>`}
+],quiz:[
+{q:"Topic Exchange 和 Direct Exchange 的区别？",hint:"Topic 支持通配符匹配（* 和 #），Direct 只能精确匹配 routing key。"},
+{q:"为什么消息要设为 Persistent？",hint:"Persistent 让消息写入磁盘，即使 RabbitMQ 重启也不会丢失。"},
+{q:"Outbox 模式解决了什么问题？",hint:"解决写 DB 和发 MQ 不能原子的问题。事务写 video+outbox 表，轮询器异步投递。"},
+{q:"消费者 Nack(false, true) 的两个参数分别是什么意思？",hint:"第一个 multiple=false 只 nack 当前消息，第二个 requeue=true 重新入队。"},
+{q:"1062 错误码代表什么？为什么是幂等的基石？",hint:"1062 是 MySQL 唯一键冲突。重复插入触发 1062 静默忽略，保证幂等。"},
+{q:"MQ 优先路径和降级路径的数据一致性有什么区别？",hint:"MQ 路径异步写入（最终一致性），降级路径同步事务（强一致性但延迟更高）。"},
+{q:"At-least-once 和 Exactly-once 的区别？",hint:"At-least-once 不丢但可能重复，Exactly-once 不丢不重很难实现。用 At-least-once+幂等消费达到效果。"},
+{q:"如果 OutboxPoller 投递成功但 DELETE 失败会怎样？",hint:"下次轮询会重复投递，但消费者是幂等的（ZADD 同一个 video_id 会覆盖），不影响正确性。"}
+]},
+
+{id:4,title:"第4章：Feed 流设计",topics:[
+{q:"推拉结合怎么实现的？大V阈值怎么定？",
+lv1:`<p>三种 Feed 流模型：</p><ul><li><strong>推模型</strong>：发布时写入粉丝收件箱。读取快，但大V写放大（1亿粉丝发一条 = 1亿次写入）</li><li><strong>拉模型</strong>：读取时实时查询。写入快，但读放大</li><li><strong>推拉结合</strong>：普通用户（粉丝 &lt; 10000）推，大V（粉丝 >= 10000）拉。读取时两路归并</li></ul><p>本项目实现了<strong>推拉结合</strong>。FanoutWorker 消费 fanout 消息后写 user_videos 发件箱，判断粉丝数决定是否 fanout。读取时并行读 inbox + bigV 列表，k-way merge 归并。</p>`,
+lv2:`<p><strong>写入路径</strong>（fanoutworker.go）：</p><pre><code><span class="cm">// 1. 所有作者写 user_videos:{authorID} (cap 50, 24h)</span>
+redisClient.ZAdd(ctx, userVideosKey, redis.Z{Member: videoID, Score: createTime})
+<span class="cm">// 2. 查询粉丝数（Redis → MySQL）</span>
+followerCount := getFollowerCount(ctx, authorID)
+<span class="cm">// 3. 大V → 不 fanout</span>
+<span class="kw">if</span> followerCount >= BigVThreshold { <span class="kw">return</span> <span class="kw">nil</span> }
+<span class="cm">// 4. 普通用户 → Pipeline 批量写 inbox (每批100人)</span>
+<span class="kw">for</span> _, batch := <span class="kw">range</span> chunk(followerIDs, <span class="num">100</span>) {
+    pipe := redisClient.GetRedisClient().Pipeline()
+    <span class="kw">for</span> _, fid := <span class="kw">range</span> batch {
+        pipe.ZAdd(ctx, fmt.Sprintf(<span class="str">"inbox:%d"</span>, fid), ...)
+        <span class="kw">if</span> rand.Float64() &lt; <span class="num">0.01</span> { <span class="cm">// 1% 概率裁剪</span>
+            pipe.ZRemRangeByRank(ctx, inboxKey, <span class="num">0</span>, -<span class="num">501</span>)
+        }
+    }
+    pipe.Exec(ctx)
+}</code></pre><p><strong>读取路径</strong>（feed/service.go:ListByFollowing）：并行读 inbox + bigV 列表 → 提前终止 → Pipeline 拉取 → k-way merge。</p>`,
+lv3:`<p><strong>Q: 大V阈值怎么定？</strong></p><ul><li>Twitter ~500,000（用户基数大）</li><li>微博 ~5,000-10,000</li><li>本项目 10,000，可通过 Redis 配置中心动态调整</li></ul><p><strong>Q: 取关后收件箱怎么清理？</strong></p><p>不清理 inbox，靠自然 cap（500）淘汰。取关时只从 following:bigv SET 移除。简单且不影响正确性。</p><p><strong>Q: 概率裁剪的意义？</strong></p><p>每次写入都 ZREMRANGEBYRANK 开销大。1% 概率裁剪（参考 Stream-Framework）保证 inbox 不会无限增长，同时避免每次写入都裁剪的 CPU 开销。</p>`},
+{q:"冷热分离怎么做的？watermark 是什么？",
+lv1:`<p>冷热分离的核心思想：<strong>热数据放 Redis（快），冷数据放 MySQL（省）</strong>。</p><p>ZSET 只保留最新 1000 条视频，最老一条的 score 就是 <strong>watermark</strong>（冷热分界线）。</p><ul><li>reqTime > watermark：走 Redis 热查询</li><li>reqTime &lt;= watermark：走 MySQL 冷查询</li></ul>`,
+lv2:`<p>实现在 <code class="inline">ListLatest</code>（feed/service.go 第 41 行）：</p><pre><code><span class="cm">// 获取 watermark（ZSET 最老一条的 score）</span>
+zsetTail, _ := f.rediscache.ZRangeWithScores(ctx, <span class="str">"feed:global_timeline"</span>, <span class="num">0</span>, <span class="num">0</span>)
+watermark := int64(zsetTail[<span class="num">0</span>].Score)
+
+<span class="kw">if</span> reqTime &lt;= watermark {
+    <span class="cm">// 冷查询：MySQL，singleflight 防并发</span>
+    sfKey := fmt.Sprintf(<span class="str">"sf:cold:listLatest:%d:%d"</span>, limit, reqTime)
+    v, _, _ := f.requestGroup.Do(sfKey, <span class="kw">func</span>() {
+        <span class="kw">return</span> f.repo.ListLatest(ctx, limit, latestBefore)
+    })
+    <span class="cm">// 不回写 ZSET，防止冷数据污染热点</span>
+} <span class="kw">else</span> {
+    <span class="cm">// 热查询：ZSET 按 score 范围分页</span>
+    videoIDStr, _ := f.rediscache.ZRevRangeByScore(ctx,
+        <span class="str">"feed:global_timeline"</span>, maxScore, <span class="str">"-inf"</span>, <span class="num">0</span>, int64(limit))
+    <span class="cm">// 热数据不足时补冷尾</span>
+    <span class="kw">if</span> <span class="kw">len</span>(baseVideos) &lt; limit {
+        coldVideos, _ := f.repo.ListLatest(ctx, remainlimit, OldMax)
+        baseVideos = append(baseVideos, coldVideos...)
+    }
+}</code></pre><p><strong>ZSET 为空时重建</strong>（第 51 行）：singleflight 从 MySQL 查 1000 条 → ZADD 回写 ZSET。</p>`,
+lv3:`<p><strong>Q: 1000 条够吗？</strong></p><p>取决于视频发布频率。如果每分钟 10 个视频，1000 条覆盖 ~7 天。如果每秒 10 个视频，1000 条只覆盖 ~2 分钟。需要根据业务调整。</p><p><strong>Q: 冷数据不回写 ZSET 会不会导致反复查 MySQL？</strong></p><p>会，但冷数据流量极小（用户很少翻到 7 天前的内容）。MySQL 索引 + 分页查询性能足够。如果冷查询频繁，可以加 LRU 缓存。</p>`},
+{q:"游标分页和 offset 分页的区别？三字段游标怎么处理并列？",
+lv1:`<p><strong>offset 分页</strong>：LIMIT 10 OFFSET 100。问题：</p><ul><li>大偏移量 O(N)：数据库需要扫描前 100 条再跳过</li><li>数据错位：翻页过程中有新数据插入，会导致重复或遗漏</li></ul><p><strong>游标分页</strong>：WHERE create_time &lt; ? LIMIT 10。优点：</p><ul><li>O(log N + limit)：利用索引直接定位</li><li>稳定：不受数据变化影响</li></ul>`,
+lv2:`<p>项目中三种游标设计：</p><pre><code><span class="cm">// 1. 时间游标（ListLatest）</span>
+WHERE create_time &lt; ? ORDER BY create_time DESC LIMIT ?
+
+<span class="cm">// 2. 双字段游标（ListLikesCount）</span>
+WHERE (likes_count, id) &lt; (?, ?)
+ORDER BY likes_count DESC, id DESC LIMIT ?
+
+<span class="cm">// 3. 三字段游标（ListByPopularity）</span>
+WHERE (popularity &lt; ?)
+   OR (popularity = ? AND create_time &lt; ?)
+   OR (popularity = ? AND create_time = ? AND id &lt; ?)
+ORDER BY popularity DESC, create_time DESC, id DESC
+LIMIT ?</code></pre><p><strong>为什么需要多字段？</strong>单一字段可能并列（多个视频 likes_count 相同），需要 tiebreaker 字段保证排序稳定。id 自增，天然唯一。</p>`,
+lv3:`<p><strong>Q: 游标分页的缺点？</strong></p><ul><li>不能跳到第 N 页（只能"上一页/下一页"）</li><li>不能显示总页数</li><li>适合信息流（无限滚动），不适合后台管理（需要跳页）</li></ul><p><strong>Q: WHERE 条件能用索引吗？</strong></p><p>三字段游标需要联合索引 <code class="inline">(popularity, create_time, id)</code>，否则全表扫描。</p>`},
+{q:"热度排行怎么实现的？ZUNIONSTORE 合并 60 个窗口的性能开销？",
+lv1:`<p>热度排行的核心：<strong>实时更新 + 查询合并 + 稳定分页</strong>。</p><ol><li>每次点赞/评论 → ZINCRBY 更新分钟窗口</li><li>查询时 → ZUNIONSTORE 合并过去 60 个窗口</li><li>分页 → as_of + offset 保证同一批次基于同一快照</li></ol>`,
+lv2:`<p><strong>实时更新</strong>（popularity_cache.go）：</p><pre><code>windowKey := <span class="str">"hot:video:1m:"</span> + now.Format(<span class="str">"200601021504"</span>)
+cache.ZincrBy(opCtx, windowKey, member, float64(change))
+cache.Expire(opCtx, windowKey, <span class="num">2</span>*time.Hour)</code></pre><p><strong>查询合并</strong>（feed/service.go:ListByPopularity 第 314 行）：</p><pre><code><span class="kw">const</span> win = <span class="num">60</span>
+keys := <span class="kw">make</span>([]<span class="fn">string</span>, <span class="num">0</span>, win)
+<span class="kw">for</span> i := <span class="num">0</span>; i &lt; win; i++ {
+    keys = append(keys, <span class="str">"hot:video:1m:"</span>+asOf.Add(-time.Duration(i)*time.Minute).Format(<span class="str">"200601021504"</span>))
+}
+dest := <span class="str">"hot:video:merge:1m:"</span> + asOf.Format(<span class="str">"200601021504"</span>)
+exists, _ := f.rediscache.Exists(opCtx, dest)
+<span class="kw">if</span> !exists {
+    f.rediscache.ZUnionStore(opCtx, dest, keys, <span class="str">"SUM"</span>)
+    f.rediscache.Expire(opCtx, dest, <span class="num">2</span>*time.Minute)
+}</code></pre><p><strong>Redis 失败降级</strong>：MySQL 三字段游标分页（popularity, create_time, id）。</p>`,
+lv3:`<p><strong>Q: ZUNIONSTORE 时间复杂度？</strong></p><p>O(N*K)，N=总成员数，K=集合数。60 个窗口，每个最多 1000 条，理论最多 60000 条。实际中很多视频在多个窗口出现（ZINCRBY 累加），合并后远少于 60000。</p><p><strong>Q: 为什么 60 个窗口？</strong></p><p>60 分钟 = 1 小时。覆盖最近 1 小时的热度数据。窗口数越多 → 覆盖越广 → 合并越慢。</p><p><strong>Q: 热度衰减怎么实现？</strong></p><p>当前没有衰减。改进：给不同时间窗口加权重（最近的窗口权重更高），或者用指数衰减公式。</p>`},
+{q:"SoftJWTAuth 的设计思路？公共接口怎么同时服务登录和未登录用户？",
+lv1:`<p>公共接口（如 Feed 流浏览）不需要强制登录，但登录用户能看到个性化数据（如 is_liked 状态）。</p><p>SoftJWTAuth：有 token 解析身份，没有 token 也放行。</p><ul><li>有 token → 解析 accountID，设置到 context</li><li>无 token → accountID = 0，放行</li><li>token 无效 → 也放行（accountID = 0）</li></ul>`,
+lv2:`<p>实现在 <code class="inline">jwt.go:SoftJWTAuth</code> 第 92 行：</p><pre><code><span class="kw">func</span> SoftJWTAuth(accountRepo, cache) gin.HandlerFunc {
+    <span class="kw">return</span> <span class="kw">func</span>(c *gin.Context) {
+        authHeader := c.GetHeader(<span class="str">"Authorization"</span>)
+        <span class="kw">if</span> authHeader == <span class="str">""</span> {
+            c.Next()  <span class="cm">// 无 token，直接放行</span>
+            <span class="kw">return</span>
+        }
+        <span class="cm">// 有 token → 解析 + 验证</span>
+        claims, err := auth.ParseToken(tokenString)
+        <span class="kw">if</span> err != <span class="kw">nil</span> {
+            c.AbortWithStatusJSON(<span class="num">401</span>, ...)  <span class="cm">// token 格式错误才拦截</span>
+            <span class="kw">return</span>
+        }
+        check(c, claims, tokenString, accountRepo, cache)
+    }
+}</code></pre><p><strong>路由配置</strong>（router.go）：</p><pre><code>feedGroup := r.Group(<span class="str">"/feed"</span>)
+feedGroup.Use(jwt.SoftJWTAuth(accountRepo, cache))
+feedGroup.POST(<span class="str">"/listLatest"</span>, feedHandler.ListLatest)
+<span class="cm">// 需要登录的接口用 JWTAuth（强制认证）</span>
+protectedFeedGroup.Use(jwt.JWTAuth(accountRepo, cache))
+protectedFeedGroup.POST(<span class="str">"/listByFollowing"</span>, feedHandler.ListByFollowing)</code></pre>`,
+lv3:`<p><strong>Q: SoftJWTAuth 和 JWTAuth 的核心区别？</strong></p><ul><li>JWTAuth：无 token → Abort 401（强制认证）</li><li>SoftJWTAuth：无 token → Next（可选认证）</li></ul><p><strong>Q: token 无效时 SoftJWTAuth 怎么处理？</strong></p><p>分两种情况：</p><ul><li>token 格式错误（解析失败）→ Abort 401</li><li>token 已过期或被吊销 → check 函数内部 Abort 401</li><li>无 token → 放行（accountID = 0）</li></ul>`},
+{q:"推拉结合的读取路径怎么优化的？恒定 RTT 怎么做到？",
+lv1:`<p>读取 ListByFollowing 时，需要合并<strong>推路径</strong>（inbox 收件箱）和<strong>拉路径</strong>（大V发件箱）两路数据。五个优化点保证恒定 RTT：</p><ol><li><strong>并行读取</strong>：inbox 和 bigV 列表 goroutine 并行，2 RTT → 1 RTT</li><li><strong>提前终止</strong>：inbox 够用且大V无新内容时，跳过整个拉路径</li><li><strong>Pipeline 批量</strong>：N 个大V查询合并为 1 次 Redis 往返</li><li><strong>动态拉取数量</strong>：按需拉取，减少传输量</li><li><strong>恒定 RTT</strong>：无论大V数量，网络往返恒定 1-2 次</li></ol>`,
+lv2:`<p>核心实现在 <code class="inline">feed/service.go:ListByFollowing</code>：</p><pre><code><span class="cm">// Step 1: 并行读取 (1 RTT)</span>
+<span class="kw">go</span> <span class="kw">func</span>() { inbox, _ = ZREVRANGEWITHSCORES(<span class="str">"inbox:"</span>+viewerID, limit*<span class="num">2</span>) }()
+<span class="kw">go</span> <span class="kw">func</span>() { bigvList, _ = SMEMBERS(<span class="str">"following:bigv:"</span>+viewerID) }()
+
+<span class="cm">// Step 2: 提前终止</span>
+<span class="kw">if</span> len(inbox) >= limit && inboxOldest > bigvNewest {
+    <span class="kw">goto</span> merge  <span class="cm">// 跳过拉取</span>
+}
+
+<span class="cm">// Step 3: Pipeline 批量拉取 (1 RTT)</span>
+pullPerBigV = min(limit - len(inbox), <span class="num">10</span>)
+pipe := redisClient.Pipeline()
+<span class="kw">for</span> _, bigvID := <span class="kw">range</span> bigvList {
+    pipe.ZRevRangeWithScores(<span class="str">"user_videos:"</span>+bigvID, pullPerBigV)
+}
+pipe.Exec(ctx)
+
+<span class="cm">// Step 4: k-way merge</span>
+mergeAndDedup(streams, limit)  <span class="cm">// O(N log K)</span></code></pre>`,
+lv3:`<p><strong>Q: 提前终止的采样策略？</strong></p><p>只检查第一个大V的最新内容（1 次 Redis），如果它比 inbox 最老还老，其他大V更不可能排进前 N。O(1) 判断代替 O(N) 查询。</p><p><strong>Q: inbox 为空怎么办？</strong></p><p>pushStream 为空，pullPerBigV = limit，每个大V取 limit 条。纯拉模式，退化为优化前的行为。</p><p><strong>Q: Pipeline 失败怎么办？</strong></p><p>降级为逐个读取（sequential reads）。如果 Redis 整体不可用，降级到 MySQL 子查询。</p>`}
+],quiz:[
+{q:"推拉结合怎么实现的？大V阈值怎么定？",hint:"普通用户推inbox，大V拉outbox。阈值10000粉丝，可通过Redis配置中心动态调整。"},
+{q:"watermark 如何确定？为什么用 ZSET 最老一条的 score？",hint:"ZRangeWithScores(key,0,0) 返回 score 最小的成员。最老 score 自然成为冷热分界线。"},
+{q:"双字段游标如何解决并列问题？",hint:"(likes_count, id) 双字段，likes_count 相同时用 id 做 tiebreaker，保证分页稳定。"},
+{q:"ZUNIONSTORE 的时间复杂度？如何优化？",hint:"O(N*K)，N=总成员数，K=集合数。优化：缓存合并结果 2 分钟，Exists 检查避免重复合并。"},
+{q:"为什么热度排行用 as_of + offset 而不是游标？",hint:"as_of 固定基准时间，同一批次分页基于同一快照，避免数据变化导致重复或遗漏。"},
+{q:"冷热分离时，跨边界拼接的逻辑是什么？",hint:"热数据不足 limit 条时，用最后一条的 create_time 作为冷查询起点，补足剩余条数。"},
+{q:"SoftJWTAuth 和 JWTAuth 的区别？",hint:"SoftJWTAuth 没有 token 也放行（c.Next），JWTAuth 没有 token 直接 401（Abort）。"},
+{q:"buildFeedVideos 中 is_liked 是怎么批量查询的？",hint:"likeRepo.BatchGetLiked 一次查询 account 对所有 videoIDs 的点赞状态，返回 map[videoID]bool。"},
+{q:"k-way merge 的时间复杂度？提前终止的条件是什么？",hint:"O(N log K)，container/heap 最大堆。提前终止：inbox >= limit 且 inbox 最老 > 大V最新。"},
+{q:"关注大V和关注普通用户时 inbox 分别怎么处理？",hint:"关注大V：SAdd 到 following:bigV SET。关注普通用户：backfillInbox 从 user_videos 复制最近50条到 inbox。"}
+]},
+
+{id:5,title:"第5章：认证安全限流",topics:[
+{q:"JWT 怎么实现的？Redis 吊销机制怎么工作？",
+lv1:`<p>JWT（JSON Web Token）由三部分组成：</p><ul><li><strong>Header</strong>：算法（HS256）+ 类型（JWT）</li><li><strong>Payload</strong>：account_id、username、exp、iat、nbf</li><li><strong>Signature</strong>：HMAC-SHA256 签名，防篡改</li></ul><p>吊销机制：登录时将 token 存入 Redis（key: account:{id}），每次请求比对。不一致则返回 401。</p>`,
+lv2:`<p><strong>生成 Token</strong>（auth/jwt.go:GenerateToken 第 41 行）：</p><pre><code>claims := Claims{
+    AccountID: accountID, Username: Username,
+    RegisteredClaims: jwt.RegisteredClaims{
+        ExpiresAt: jwt.NewNumericDate(now.Add(<span class="num">24</span> * time.Hour)),
+        IssuedAt:  jwt.NewNumericDate(now),
+        NotBefore: jwt.NewNumericDate(now),
+    },
+}
+token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+<span class="kw">return</span> token.SignedString(jwtSecret())</code></pre><p><strong>验证 + 吊销检查</strong>（jwt.go:check 第 46 行）：</p><pre><code>key := fmt.Sprintf(<span class="str">"account:%d"</span>, claims.AccountID)
+<span class="cm">// 1. 先查 Redis</span>
+trueToken, _ := cache.GetBytes(cacheCtx, key)
+<span class="kw">if</span> string(trueToken) != tokenString {
+    c.AbortWithStatusJSON(<span class="num">401</span>, <span class="str">"token has been revoked"</span>)
+    <span class="kw">return</span>
+}
+<span class="cm">// 2. Redis 异常 → MySQL 兜底</span>
+accountInfo, _ := accountRepo.FindByID(ctx, claims.AccountID)
+<span class="kw">if</span> accountInfo.Token != tokenString {
+    c.AbortWithStatusJSON(<span class="num">401</span>, <span class="str">"token has been revoked"</span>)
+}
+<span class="cm">// 3. MySQL 查询成功 → 回写 Redis</span>
+cache.SetBytes(cacheCtx, key, []<span class="fn">byte</span>(accountInfo.Token), <span class="num">24</span>*time.Hour)</code></pre>`,
+lv3:`<p><strong>Q: 多设备登录怎么处理？</strong></p><p>当前设计：一个 account_id 只存一个 token（Redis key: account:{id}）。新设备登录会覆盖旧 token，旧设备被踢下线。如果要支持多设备，需要改 Redis key 为 account:{id}:{device_id}。</p><p><strong>Q: JWT 过期时间设多长？</strong></p><p>当前 24 小时。安全建议：access token 15 分钟 ~ 2 小时，refresh token 7 天。短 token + refresh token 更安全。</p>`},
+{q:"TOCTOU 竞态问题是什么？点赞和关注的处理方式为什么不同？",
+lv1:`<p>TOCTOU（Time-of-Check to Time-of-Use）：检查到使用之间的竞态窗口。</p><p>例如点赞：先检查"是否已点赞" → 再插入。两个并发请求可能同时通过检查，导致重复插入。</p><p><strong>解决方案</strong>：不预检查，依赖数据库唯一索引消除竞态窗口。</p>`,
+lv2:`<p><strong>点赞：不预检查</strong>（like_service.go 第 74 行注释）：</p><pre><code><span class="cm">// MQ 路径不检查是否已点赞——唯一索引校验由消费者负责</span>
+<span class="cm">// 消费者遇 1062 重复键时静默跳过（幂等）</span>
+likeMQSent := s.likeMQ.Like(ctx, accountID, videoID) == <span class="kw">nil</span></code></pre><p><strong>关注：保留预检查 + 唯一索引兜底</strong>（social/service.go 第 26 行注释）：</p><pre><code><span class="cm">// 注意：IsFollowed 预检查存在 TOCTOU 竞态窗口</span>
+<span class="cm">// 但 uniqueIndex 会兜底防止重复插入</span>
+<span class="cm">// 保留预检查是为了给用户明确的错误提示</span>
+isFollowed, _ := s.repo.IsFollowed(ctx, social)
+<span class="kw">if</span> isFollowed {
+    <span class="kw">return</span> errors.New(<span class="str">"already followed"</span>)
+}
+<span class="cm">// MQ 通知下游（错误静默忽略）</span>
+s.socialMQ.Follow(ctx, followerID, vloggerID)
+<span class="cm">// 同步写库</span>
+<span class="kw">return</span> s.repo.Follow(ctx, social)</code></pre>`,
+lv3:`<p><strong>Q: 为什么点赞不预检查，关注保留预检查？</strong></p><ul><li>点赞是高频操作（每秒可能上百次），预检查成本不值得，直接依赖唯一索引</li><li>关注是低频操作（每秒几次），预检查可以给用户友好提示（"已经关注了" vs 数据库 1062 错误）</li><li>这是<strong>用户体验优先</strong>的设计取舍</li></ul><p><strong>Q: 唯一索引 vs 乐观锁？</strong></p><ul><li>唯一索引：适合"不能重复"的场景（点赞、关注）</li><li>乐观锁（version 字段）：适合"不能并发修改"的场景（余额扣减）</li></ul>`},
+{q:"限流中间件怎么实现的？固定窗口限流的临界问题怎么解决？",
+lv1:`<p>限流的核心：<strong>计数器 + 时间窗口</strong>。基于 Redis + Lua 的固定窗口限流：</p><ul><li>Key 策略：按用户 ID（KeyByAccount）或 IP（KeyByIP）</li><li>阈值：30 次/分钟（点赞）、10 次/分钟（评论）</li><li>超限返回 429 Too Many Requests</li><li>Redis 故障时 fail-open（放行）</li></ul>`,
+lv2:`<p>限流中间件（ratelimit.go:Limit 第 23 行）：</p><pre><code><span class="kw">func</span> Limit(cache, keyPrefix, maxRequests, window, keyFunc) gin.HandlerFunc {
+    <span class="kw">return</span> <span class="kw">func</span>(c *gin.Context) {
+        <span class="kw">if</span> cache == <span class="kw">nil</span> { c.Next(); <span class="kw">return</span> }  <span class="cm">// fail-open</span>
+        subject, _ := keyFunc(c)
+        key := fmt.Sprintf(<span class="str">"feedsystem:ratelimit:%s:%s"</span>, keyPrefix, subject)
+        count, _ := cache.IncrementWithExpire(ctx, key, window)
+        <span class="kw">if</span> count > maxRequests {
+            c.AbortWithStatusJSON(<span class="num">429</span>, gin.H{<span class="str">"error"</span>: <span class="str">"too many requests"</span>})
+            <span class="kw">return</span>
+        }
+        c.Next()
+    }
+}</code></pre><p><strong>路由配置</strong>（router.go）：</p><pre><code>likeLimiter := ratelimit.Limit(cache, <span class="str">"like_write"</span>, <span class="num">30</span>, time.Minute, ratelimit.KeyByAccount)
+protectedLikeGroup.POST(<span class="str">"/like"</span>, likeLimiter, likeHandler.Like)</code></pre>`,
+lv3:`<p><strong>Q: 固定窗口的临界问题？</strong></p><p>窗口边界可能突发 2x 流量。改进方案：</p><ul><li>滑动窗口：ZSET 存时间戳，ZRANGEBYSCORE 统计</li><li>令牌桶：允许突发（桶满时一次性发完）</li><li>漏桶：平滑流量（固定速率）</li></ul><p><strong>Q: fail-open 还是 fail-close？</strong></p><ul><li>fail-open：Redis 故障时放行（本项目用的）→ 可用性优先</li><li>fail-close：Redis 故障时拒绝 → 安全优先</li></ul>`},
+{q:"bcrypt 相比 MD5/SHA256 做密码哈希的优势是什么？",
+lv1:`<p>密码哈希的核心要求：<strong>不可逆</strong>（不能从哈希还原密码）、<strong>抗暴力破解</strong>（计算足够慢）、<strong>抗彩虹表</strong>（自带 salt）。</p><ul><li>MD5/SHA256：太快（每秒可算数十亿次），不适合密码</li><li>bcrypt：自带 salt + 计算慢（~100ms）+ 可调 cost</li></ul>`,
+lv2:`<p>项目中 bcrypt 的使用（account/service.go）：</p><pre><code><span class="cm">// 注册时哈希密码</span>
+hashedPassword, _ := bcrypt.GenerateFromPassword([]<span class="fn">byte</span>(password), bcrypt.DefaultCost)
+<span class="cm">// 登录时验证</span>
+err := bcrypt.CompareHashAndPassword(hashedPassword, []<span class="fn">byte</span>(password))</code></pre><p><strong>bcrypt 原理</strong>：</p><ul><li>基于 Blowfish 加密算法</li><li>自带随机 salt（每次哈希不同，防彩虹表）</li><li>可调 cost 参数（默认 10，每增加 1 计算时间翻倍）</li><li>~100ms 计算时间，暴力破解成本极高</li></ul>`,
+lv3:`<p><strong>Q: cost 参数选多大？</strong></p><p>默认 cost=10（~100ms）。建议：根据服务器性能调整，目标是登录验证不超过 500ms。cost=12 ~400ms，cost=14 ~1.6s。</p><p><strong>Q: argon2 vs bcrypt？</strong></p><p>Argon2 是 2015 年密码哈希竞赛冠军，抗 GPU/ASIC 攻击更强。Go 标准库没有内置，需要第三方库。bcrypt 足够安全，项目规模下不需要换。</p>`}
+],quiz:[
+{q:"JWT 吊销的实现方式有哪些？本项目用的哪种？",hint:"本项目用 Redis Token 存储：登录时存 Redis，每次请求比对。还有黑名单、短 token+refresh token 等方式。"},
+{q:"TOCTOU 是什么？为什么点赞不用预检查？",hint:"检查到使用之间的竞态窗口。点赞是高频操作，预检查成本不值得，直接依赖唯一索引兜底。"},
+{q:"固定窗口限流的临界问题怎么解决？",hint:"窗口边界可能突发 2x 流量。改进：滑动窗口、滑动窗口计数器、令牌桶、漏桶。"},
+{q:"SoftJWTAuth 在什么时候有用？",hint:"公共接口（如 feed/listLatest），未登录也能访问，但登录用户能拿到 is_liked 个性化数据。"},
+{q:"bcrypt 相比 MD5/SHA256 做密码哈希的优势？",hint:"自带 salt（防彩虹表）+ 计算慢（~100ms，防暴力破解）+ 可调 cost。MD5/SHA256 太快不适合。"}
+]},
+
+{id:6,title:"第6章：架构工程实践",topics:[
+{q:"分层架构中事务怎么管理？InTx 模式是什么？",
+lv1:`<p>Service 层不直接访问 repo.db，事务通过 <code class="inline">Transaction</code> 方法获取 tx，再调用 repo 的 InTx 方法。</p><p>好处：事务控制权在 Service 层（决定哪些操作在同一个事务里），数据操作在 Repository 层（怎么操作数据），职责清晰。</p>`,
+lv2:`<pre><code><span class="cm">// like_service.go:Like</span>
+err := s.likeRepo.Transaction(ctx, <span class="kw">func</span>(tx *gorm.DB) error {
+    <span class="cm">// 在事务内调用 InTx 方法</span>
+    created, _ := s.likeRepo.LikeInTx(ctx, tx, like)
+    <span class="kw">if</span> created {
+        s.videoRepo.ChangeLikesCount(ctx, tx, videoID, <span class="num">1</span>)
+        s.videoRepo.ChangePopularity(ctx, tx, videoID, <span class="num">1</span>)
+    }
+    <span class="kw">return</span> <span class="kw">nil</span>
+})
+<span class="cm">// like_repo.go:Transaction</span>
+<span class="kw">func</span> (r *LikeRepository) Transaction(ctx, fn) error {
+    <span class="kw">return</span> r.db.WithContext(ctx).Transaction(fn)
+}
+<span class="cm">// video_repo.go:ChangeLikesCount</span>
+<span class="kw">func</span> (r *VideoRepository) ChangeLikesCount(ctx, tx, id, change) {
+    db := tx
+    <span class="kw">if</span> db == <span class="kw">nil</span> { db = r.db }  <span class="cm">// 非事务时降级</span>
+    <span class="kw">return</span> db.Model(&amp;Video{}).UpdateColumn(...)
+}</code></pre>`,
+lv3:`<p><strong>Q: 如果不传 tx 会怎样？</strong></p><p>ChangeLikesCount 检测到 tx==nil，自动使用 r.db（非事务模式）。适合不需要事务的场景。</p><p><strong>Q: 嵌套事务？</strong></p><p>GORM 的 Transaction 方法支持嵌套（内部使用 SavePoint），但项目中没有嵌套场景。</p>`},
+{q:"GREATEST 函数防负数是什么设计？还有哪些防御性编程？",
+lv1:`<p><strong>并发取消赞</strong>可能导致点赞计数减成负数。GREATEST 函数兜底：</p><pre><code>UPDATE videos SET likes_count = GREATEST(likes_count + ?, 0) WHERE id = ?</code></pre><p>即使并发扣减导致负数，也会被修正为 0。</p>`,
+lv2:`<p>实现在 video_repo.go:ChangeLikesCount 第 73 行：</p><pre><code>db.WithContext(ctx).Model(&amp;Video{}).
+    Where(<span class="str">"id = ?"</span>, id).
+    UpdateColumn(<span class="str">"likes_count"</span>,
+        gorm.Expr(<span class="str">"GREATEST(likes_count + ?, 0)"</span>, change)).Error</code></pre><p><strong>其他防御措施</strong>：</p><ul><li>空指针检查：redis.go 中 <code class="inline">if c == nil || c.rdb == nil { return }</code></li><li>超时设置：Redis 操作 50ms 超时，避免阻塞请求</li><li>错误码判断：1062 唯一键冲突静默忽略</li></ul>`,
+lv3:`<p><strong>Q: 为什么不用乐观锁（version 字段）？</strong></p><p>乐观锁适合"读-改-写"场景（余额扣减），需要先读 version 再 WHERE version=N。点赞只需要原子 +1/-1，GORM 的 UpdateColumn + GREATEST 更简单高效。</p>`},
+{q:"WaitGroup + Mutex 并行查询是怎么用的？",
+lv1:`<p>多个 video ID 需要查询 DB 时，串行查询太慢。用 WaitGroup + Mutex 实现并行查询：</p><ul><li><strong>WaitGroup</strong>：等待所有 goroutine 完成</li><li><strong>Mutex</strong>：保护共享 map 的并发写入</li></ul>`,
+lv2:`<p>实现在 GetVideoByIDs 第 480 行：</p><pre><code><span class="kw">var</span> wg sync.WaitGroup
+<span class="kw">var</span> mu sync.Mutex
+<span class="kw">for</span> _, id := <span class="kw">range</span> missedL2 {
+    wg.Add(<span class="num">1</span>)
+    <span class="kw">go</span> <span class="kw">func</span>(videoID uint) {
+        <span class="kw">defer</span> wg.Done()
+        sfKey := fmt.Sprintf(<span class="str">"sf:entity:%d"</span>, videoID)
+        v, _, _ := f.requestGroup.Do(sfKey, <span class="kw">func</span>() {
+            <span class="kw">return</span> f.repo.GetByIDs(ctx, []<span class="fn">uint</span>{videoID})
+        })
+        <span class="kw">if</span> v != <span class="kw">nil</span> {
+            mu.Lock()
+            videoMap[id] = safeCopy
+            mu.Unlock()
+            <span class="cm">// 写回 L1 缓存</span>
+            f.localcache.Set(cacheKey, safeCopy, <span class="num">5</span>*time.Second)
+        }
+    }(id)
+}
+wg.Wait()</code></pre>`,
+lv3:`<p><strong>Q: sync.Map vs Mutex+Map？</strong></p><ul><li>sync.Map：适合读多写少、key 稳定的场景</li><li>Mutex+Map：适合写多、key 频繁变化的场景</li><li>本项目写入频率不高（每次请求最多写几个 key），Mutex 更简单</li></ul><p><strong>Q: errgroup vs WaitGroup？</strong></p><p>errgroup 自动收集第一个错误并取消其他 goroutine。本项目需要所有 ID 都查询（即使部分失败），所以用 WaitGroup 更合适。</p>`},
+{q:"优雅停机怎么实现的？Worker 和 API 的停机流程有什么区别？",
+lv1:`<p>优雅停机的核心：<strong>停止接收新请求 → 等待活跃请求完成 → 释放资源 → 退出</strong>。</p><p>不优雅的停机：直接 kill 进程，活跃请求中断，MQ 消息可能丢失。</p>`,
+lv2:`<p><strong>API 进程</strong>（router.go:GracefulShutdown 第 220 行）：</p><pre><code><span class="kw">func</span> GracefulShutdown(srv *http.Server) {
+    stop := <span class="kw">make</span>(<span class="kw">chan</span> os.Signal, <span class="num">1</span>)
+    signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+    &lt;-stop  <span class="cm">// 阻塞直到收到信号</span>
+    log.Printf(<span class="str">"api server is shutting down..."</span>)
+    ctx, cancel := context.WithTimeout(context.Background(), <span class="num">5</span>*time.Second)
+    <span class="kw">defer</span> cancel()
+    srv.Shutdown(ctx)  <span class="cm">// 等待活跃请求完成</span>
+}</code></pre><p><strong>Worker 进程</strong>（cmd/worker/main.go 第 148 行）：</p><pre><code>ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+<span class="kw">defer</span> stop()
+<span class="cm">// 4 个 Worker goroutine 共享 ctx</span>
+<span class="kw">go</span> socialWorker.Run(ctx)
+<span class="kw">go</span> likeWorker.Run(ctx)
+<span class="cm">// ...</span>
+err = &lt;-errCh  <span class="cm">// 等待第一个错误或 ctx 取消</span></code></pre><p><strong>区别</strong>：API 用 signal.Notify + Shutdown（HTTP 层面优雅停机），Worker 用 signal.NotifyContext（传播取消信号到所有 Worker goroutine）。</p>`,
+lv3:`<p><strong>Q: K8s preStop hook？</strong></p><p>K8s 发送 SIGTERM 前先执行 preStop hook（如 sleep 10s），给负载均衡器时间摘除 Pod。配合 terminationGracePeriodSeconds（默认 30s）使用。</p><p><strong>Q: MQ 消费中的消息怎么处理？</strong></p><p>Worker 收到 SIGTERM 后，ctx 被取消，正在处理的消息完成后再退出。未 Ack 的消息会重新入队，由其他 Worker 处理。</p>`}
+],quiz:[
+{q:"为什么 Service 层不直接访问 repo.db？",hint:"保持分层清晰，事务通过 Transaction 方法获取 tx，调用 InTx 方法操作。"},
+{q:"GREATEST 函数的作用是什么？",hint:"GREATEST(likes_count + ?, 0) 保证即使并发扣减导致负数，也会被修正为 0。"},
+{q:"singleflight 和 sync.Once 的区别？",hint:"singleflight 按 key 去重，不同 key 并行执行。sync.Once 只执行一次，不管 key。"},
+{q:"优雅停机的流程是什么？",hint:"signal.NotifyContext 监听 SIGTERM → srv.Shutdown 等待活跃请求完成（5s 超时）→ 退出。"},
+{q:"Dockerfile 多阶段构建的好处？",hint:"最终镜像只有二进制+最小运行时（alpine），编译工具链不进入最终镜像，体积小安全性好。"}
+]}
+];
+
+/* ═══════════════════════════════════════════════════
+   INTERVIEW DATA — 8 维度 51 题（深化版）
+   ═══════════════════════════════════════════════════ */
+const interviewData=[{dim:"项目介绍话术",questions:[{q:"请介绍一下你的短视频 Feed 系统项目",a:"这是一个基于 Go + Gin + GORM + Redis + RabbitMQ 的短视频信息流后端系统。整体架构是 API + Worker 双进程模型，API 负责接收 HTTP 请求和返回结果，Worker 负责异步消费 MQ 消息做持久化。核心功能有五个：视频发布、点赞评论、关注关系、Feed 流浏览、热度排行。技术亮点方面：第一是三级缓存（L1 go-cache 5s + L2 Redis 1h + L3 MySQL），用 singleflight 防击穿；第二是 Outbox 模式保证写 DB 和发 MQ 的最终一致性；第三是冷热分离，ZSET 存最新 1000 条热数据，超出走 MySQL；第四是幂等消费，MySQL 1062 唯一键冲突静默忽略；第五是 MQ 降级，MQ 不可用时自动切同步 MySQL 事务。第六是推拉结合，普通用户（粉丝&lt;10000）发布时通过 FanoutMQ 推送到粉丝收件箱，大V不推送，读取时从发件箱拉取，k-way merge 归并排序，网络 RTT 恒定1-2次。",code:"cmd/main.go, cmd/worker/main.go, internal/feed/service.go, internal/worker/fanoutworker.go",follow:"项目规模？你负责哪些模块？遇到的最大挑战？如何保证高可用？"}]},{dim:"Redis",questions:[{q:"缓存穿透、击穿、雪崩分别是什么？你的项目怎么解决的？",a:"这三个是经典的缓存问题。缓存穿透是查根本不存在的数据，缓存和 DB 都没有。项目用 EMPTY_DB 短路标记：查完 DB 发现为空，也往缓存写一个特殊值，下次直接返回。缓存击穿是热点 key 过期，大量并发涌向 DB。项目用四重防护：singleflight 合并同进程请求、分布式锁跨实例保护、double-check 获锁后再查缓存、spin-wait 未获锁时短暂等待。缓存雪崩是大量 key 同时过期。项目用不同 TTL 错开：L1 5s、L2 1h、热度窗口 2h。",code:"internal/feed/service.go:GetVideoByIDs (singleflight), ListByFollowing (分布式锁+double-check+spin-wait), ListLatest (EMPTY_DB)",follow:"singleflight 和分布式锁区别？EMPTY_DB 数据后来创建了怎么办？雪崩除了随机 TTL 还有什么方案？"},{q:"Redis 分布式锁怎么实现的？为什么解锁要用 Lua？",a:"加锁用 SET key random_token NX PX ttl，NX 保证互斥，PX 防死锁，random_token 标识持有者。解锁必须用 Lua 脚本，因为要保证 GET + 比较 + DEL 三步原子执行。如果不原子，可能出现：我 GET 发现 token 是我的，准备 DEL，但在这之间锁过期了，别人拿到了锁，我把别人的锁删了。Lua 脚本先 GET 比较 token，一致才 DEL，不一致返回 0，整个过程原子。",code:"internal/middleware/redis/redis.go:Lock (第84行), UnLock (第110行), unlockScript (第99行)",follow:"Redis 主从切换锁丢失？锁续期问题？其他分布式锁方案？"},{q:"ZSET 在你项目中的四个应用场景？",a:"第一个是时间线，key feed:global_timeline，score 是视频创建时间毫秒时间戳。第二个是热度窗口，key hot:video:1m:YYYYMMDDHHmm，每分钟一个窗口，score 是互动量。第三个是合并热榜，ZUNIONSTORE 合并 60 个窗口。第四个是推拉结合的收件箱和发件箱，inbox:{userID} 存推送视频（cap 500），user_videos:{authorID} 存作者最近视频（cap 50），读取时 k-way merge 归并。",code:"outboxworker.go:StartConsumer, popularity_cache.go, feed/service.go:ListByPopularity, fanoutworker.go:process, feed/service.go:ListByFollowing",follow:"ZSET 时间复杂度？inbox cap？概率裁剪？"},{q:"三级缓存架构怎么设计的？为什么需要 L1？",a:"L1 是 go-cache 本地缓存存在进程内存，TTL 5 秒。L2 是 Redis 分布式缓存，TTL 1 小时。L3 是 MySQL 源数据。查询时先 L1 命中直接返回，没命中查 L2 命中写回 L1，L2 也没命中查 L3 异步回写 L2 同步写回 L1。需要 L1 是因为 Redis 虽然快但每次查询还有 0.5-1ms 网络往返，L1 在进程内存亚毫秒返回。对于热点数据如首页 Feed 流反复访问的视频详情，L1 能把 Redis QPS 压力降低 90%+。",code:"internal/feed/service.go:GetVideoByIDs (第408行), NewFeedService (go-cache 初始化)",follow:"L1 一致性？go-cache 过期清理？多实例 L1 同步？"},{q:"singleflight 和分布式锁分别在什么场景用？",a:"singleflight 是 Go 标准库提供的单进程去重，并发请求只有一个执行其他共享结果。分布式锁用 Redis SETNX 跨实例去重。项目中：singleflight 用于全局 key 如 video entity sf:entity:{id}，同一实例内多个 goroutine 只有一个查 DB。分布式锁用于用户维度 key 如 feed:listByFollowing:accountID=123，因为不同实例的请求可能同时缓存未命中。组合使用：singleflight 在前减少锁竞争，分布式锁在后跨实例保护。",code:"GetVideoByIDs 用 singleflight, ListByFollowing 用分布式锁",follow:"shared 返回值？锁持有者宕机？两种机制组合使用？"},{q:"Redis 和 MySQL 双写一致性怎么保证？",a:"采用最终一致性策略。视频详情：异步回写加 TTL 自然过期，MySQL 查询成功后 go func 异步写 Redis 1h TTL。热度缓存：事件驱动失效，点赞评论后主动 DEL 详情缓存再 ZINCRBY 更新分钟窗口。时间线：Outbox 模式，事务写 video+outbox 表，轮询器投递 MQ，消费者 ZADD 到 ZSET。总结：读路径靠缓存加 TTL 兜底，写路径靠主动失效加事件驱动更新。",code:"popularity_cache.go:UpdatePopularityCache, video_repo.go:PublishVideo, outboxworker.go",follow:"DEL 和更新 DB 之间有延迟？为什么不用 Canal？Cache Aside 模式？"},{q:"Lua 脚本在你项目中的两个用途？",a:"第一个是限流，Lua 把 INCR 和 PEXPIRE 合成原子操作。先 INCR key，如果 count 等于 1 就设置 PEXPIRE 过期时间，保证计数和过期设置原子。第二个是分布式锁解锁，Lua 把 GET+比较+DEL 合成原子操作。先 GET key 的值和传入 token 比较，一致才 DEL，不一致返回 0。Redis 单线程模型下 Lua 脚本内所有命令原子执行中间不会被其他命令插入。",code:"redis.go:incrementWithExpireScript (第48行), unlockScript (第99行)",follow:"Lua 会阻塞其他命令？执行时间过长？其他保证原子性方式？"},{q:"Redis 为什么这么快？",a:"三个原因：单线程事件循环避免锁竞争和上下文切换、内存存储纳秒级访问、IO 多路复用 epoll/kqueue 单线程处理万级连接。ZSET 底层用跳表加哈希表，跳表支持 O(log N) 范围查询。Redis 6.0 引入多线程 IO 但命令执行仍是单线程。",code:"internal/middleware/redis/目录",follow:"Redis 6.0 多线程 IO？单线程利用多核？Redis vs Memcached？"},{q:"Redis 持久化 RDB vs AOF？",a:"RDB 是快照恢复快但可能丢最后一次快照后的数据。AOF 是日志更安全但文件大恢复慢。本项目 ZSET 可以从 MySQL 重建，RDB 够用。如果 Redis 丢了数据，singleflight 触发从 MySQL 重建 ZSET。",code:"internal/feed/service.go:ListLatest (ZSET 为空时 singleflight 重建)",follow:"AOF 重写？混合持久化？RDB fork 影响性能？"},{q:"限流的 Lua 脚本为什么必须原子执行？",a:"防止 INCR 成功但 PEXPIRE 未执行导致 key 永不过期，该 IP 或用户被永久限流。Lua 在 Redis 单线程中原子执行保证这两个操作要么都成功要么都失败。",code:"redis.go:incrementWithExpireScript, ratelimit.go:Limit",follow:"key 被手动删了？固定窗口缺点？令牌桶 vs 漏桶？"}]},{dim:"消息队列",questions:[{q:"为什么要用消息队列？",a:"三个原因：解耦让 API 和持久化分离互不影响、异步让 API 快速返回不等 MQ 处理完、削峰让点赞突发流量被缓冲不至于压垮 DB。项目用 5 个 Topic Exchange 分别承载 like、comment、social、popularity、timeline 事件。",code:"likeMQ.go, socialMQ.go, likeworker.go",follow:"MQ 带来什么问题？什么场景不适合？RabbitMQ vs Kafka？"},{q:"如何保证消息不丢失？",a:"三层保障：Producer 端消息设为 Persistent delivery_mode=2 写入磁盘、Broker 端 durable exchange 加 durable queue 重启不丢失、Consumer 端手动 Ack/Nack 处理成功才 Ack 处理失败 Nack 重新入队。",code:"likeworker.go:Run (manual Ack), rabbitmq.go (durable exchange+queue)",follow:"Nack 一直重试？镜像队列？持久化性能影响？"},{q:"如何保证消息不重复消费？",a:"幂等消费用数据库唯一索引。LikeIgnoreDuplicate 插入点赞记录遇到 1062 唯一键冲突直接返回 created=false 静默忽略。Worker 消费时 created=true 才更新计数和热度，created=false 跳过。At-least-once 加幂等消费等于效果上 Exactly-once。",code:"likeworker.go:applyLike, like_repo.go:LikeIgnoreDuplicate (第31行)",follow:"不适合加唯一索引？其他幂等方式？消息体带唯一 ID？"},{q:"什么是 Outbox 模式？",a:"解决写 DB 和发 MQ 不能原子的问题。事务写 video+outbox 表（含 AuthorID），轮询器每秒扫描 pending 记录双投递：先投递 TimelineMQ（写全局时间线），成功后投递 FanoutMQ（推送到粉丝收件箱），两者都成功才删除 outbox 记录。",code:"video_repo.go:PublishVideo, outboxworker.go:StartOutboxPoller (双投递), fanoutMQ.go",follow:"轮询延迟控制？vs CDC Debezium？双投递顺序？"},{q:"MQ 不可用时系统怎么降级？",a:"MQ 优先加同步降级。LikeMQ 失败时降级到同步 MySQL 事务执行 LikeInTx 加 ChangeLikesCount 加 ChangePopularity。PopularityMQ 失败时直接调用 UpdatePopularityCache 更新 Redis。核心数据不丢只是 API 变慢。",code:"like_service.go:Like (likeMQSent/popularityMQSent 标记)",follow:"降级后性能影响？MySQL 也挂了？监控 MQ 可用性？"},{q:"RabbitMQ Exchange 类型有哪些？",a:"Direct 精确匹配 routing key、Fanout 广播到所有绑定队列、Topic 通配符匹配星号匹配一个词井号匹配零或多词本项目用的、Headers 很少用按消息头匹配。",code:"likeMQ.go, socialMQ.go (Topic Exchange 声明)",follow:"Topic vs Direct 性能？绑定很多队列？死信队列？"},{q:"At-least-once vs At-most-once vs Exactly-once？",a:"At-most-once 可能丢消息性能最好。At-least-once 不丢但可能重复本项目用的。Exactly-once 不丢不重实现极难。用 At-least-once 加幂等消费达到效果上 Exactly-once。",code:"likeworker.go:Run+applyLike",follow:"Kafka Exactly-once？幂等 Producer？事务消息？"},{q:"Outbox 轮询 vs CDC？",a:"轮询简单无额外依赖有延迟当前 1 秒。CDC 如 Debezium 延迟低毫秒级但需要额外部署增加运维复杂度。本项目每秒轮询 1 秒延迟可接受。",code:"outboxworker.go:StartOutboxPoller",follow:"Outbox 表膨胀？Debezium 影响 MySQL 性能？其他 CDC 工具？"}]},{dim:"Feed 流设计",questions:[{q:"推拉结合怎么实现的？",a:"普通用户（粉丝&lt;10000）发布时 FanoutMQ 推送到粉丝 inbox ZSET，大V（>=10000）不推送。FanoutWorker 写 user_videos 发件箱后判断粉丝数，普通用户 Pipeline 批量写 inbox（1%概率裁剪）。读取时并行读 inbox+bigV 列表，提前终止判断，Pipeline 批量拉取，k-way merge 归并。RTT 恒定1-2次。",code:"fanoutworker.go:process, feed/service.go:ListByFollowing, socialworker.go:onFollow",follow:"大V阈值？取关后inbox清理？k-way merge复杂度？"},{q:"冷热分离怎么做的？",a:"ZSET 保留最新 1000 条视频最老的 score 作为 watermark。reqTime 大于 watermark 走 Redis 热查询用 ZREVRANGEBYSCORE 分页。reqTime 小于等于 watermark 走 MySQL 冷查询。热数据不足时补冷尾用最后一条的 create_time 作为冷查询起点。冷数据不回写 ZSET 防污染热点。",code:"feed/service.go:ListLatest (第41行), outboxworker.go:StartConsumer (ZADD+裁剪)",follow:"watermark 变化？1000 条够吗？冷数据回写问题？"},{q:"游标分页 vs offset 分页？",a:"offset 大偏移 O(N) 需要扫描前 N 条再跳过且数据变化导致错位。游标 O(log N+limit) 利用索引直接定位且稳定。项目三种游标：时间游标 create_time、双字段 likes_count 加 id 解决并列、三字段 popularity 加 create_time 加 id。",code:"ListLatest, ListLikesCount, ListByPopularity",follow:"游标缺点？为什么需要多字段？跳到第 N 页？"},{q:"热度排行怎么实现的？",a:"实时更新用 ZINCRBY 更新分钟窗口 hot:video:1m:。查询合并用 ZUNIONSTORE 合并过去 60 个窗口 score 求和。稳定分页用 as_of 加 offset 保证同一批次基于同一快照。降级方案 MySQL 三字段游标。",code:"popularity_cache.go, feed/service.go:ListByPopularity (第305行)",follow:"为什么 60 个窗口？ZUNIONSTORE 时间复杂度？热度衰减？"},{q:"三字段游标怎么处理并列？",a:"popularity 加 create_time 加 id 三重排序。WHERE 条件用 OR 连接三种情况：popularity 小于、popularity 相等且 create_time 小于、popularity 相等且 create_time 相等且 id 小于。id 自增保证唯一做最终 tiebreaker。",code:"feed/repo.go:ListByPopularity",follow:"不用 id 做第三字段？WHERE 条件能用索引？四字段游标？"},{q:"为什么冷数据不回写 ZSET？",a:"防污染热点时间线 ZSET 只保留最新 1000 条。冷数据流量极小 MySQL 索引够用。如果回写会导致 ZSET 膨胀失去热缓存意义。",code:"feed/service.go:ListLatest 第110行注释",follow:"频繁翻到冷数据？冷数据单独建 ZSET？监控冷热比例？"},{q:"SoftJWTAuth 的设计思路？",a:"公共接口可选认证。有 token 时解析身份写入 context 获取 accountID 用于查 is_liked。没有 token 也放行 accountID 设为 0 is_liked 全 false。token 格式错误才拦截 401。",code:"jwt.go:SoftJWTAuth (第92行), router.go (feedGroup), feed/service.go:buildFeedVideos",follow:"token 无效时处理？按什么 key 限流？其他 SoftJWTAuth 场景？"},{q:"如何支持亿级用户？",a:"MySQL 分库分表加 Redis Cluster 加 API 水平扩容加 RabbitMQ 集群或换 Kafka 加 CDN 视频。已实现推拉结合，可通过调整大V阈值优化 fanout 范围。Worker 独立扩缩容。",code:"cmd/main.go, cmd/worker/main.go",follow:"分库后全局唯一 ID？跨分片查询？Redis Cluster 数据迁移？"},
+{q:"推拉结合的读取路径怎么优化的？",a:"五个优化：并行读取（inbox+bigV goroutine 并行，2RTT→1RTT）、提前终止（inbox够用且大V无新内容时跳过拉取）、Pipeline批量（N个大V查询合并为1次RTT）、动态拉取数量（按需取，减少传输）、恒定RTT（不随大V数量增长）。",code:"feed/service.go:ListByFollowing",follow:"提前终止采样策略？Pipeline失败降级？inbox为空？"},
+{q:"k-way merge 怎么实现的？",a:"用 container/heap 实现最大堆。把 inbox 推路径和每个大V拉路径的所有元素放入堆，每次弹出 createTime 最大的，检查 videoID 去重，取 top N。O(N log K) 时间复杂度。",code:"feed/service.go:mergeAndDedup, videoTimeHeap",follow:"最大堆还是最小堆？去重数据结构？大V发件箱为空？"}]},{dim:"系统设计",questions:[{q:"设计一个短视频信息流系统",a:"上传走 OSS。发布用 Outbox 模式双投递 TimelineMQ+FanoutMQ，FanoutWorker 写发件箱+推inbox。浏览用推拉结合加冷热分离加三级缓存。互动用 MQ 优先加同步降级加幂等消费。认证用 JWT 加 Redis 吊销。限流用 Lua 脚本固定窗口。",code:"cmd/main.go, router.go, feed/service.go, fanoutworker.go, like_service.go",follow:"视频转码？推荐算法？内容审核？"},{q:"点赞数实时更新如何设计？",a:"API 投递两条 MQ：LikeMQ 负责点赞记录、PopularityMQ 负责热度更新。Worker 消费后 MySQL 原子更新用 GREATEST 防负数加 Redis 热度更新 ZINCRBY。MQ 失败降级同步事务。幂等消费用唯一索引 1062。",code:"like_service.go:Like, likeworker.go:applyLike, video_repo.go:ChangeLikesCount",follow:"为什么用 MQ？GREATEST 防什么？并发更新精度？"},{q:"如何处理热门视频的流量突增？",a:"限流 KeyByAccount 30 次每分钟防恶意刷赞。singleflight 合并并发请求。L1 本地缓存 5s 减少 Redis 压力。降级 Redis 挂了走 MySQL。四重防护防缓存击穿。",code:"router.go (likeLimiter), GetVideoByIDs, like_service.go",follow:"限流触发后用户体验？singleflight 超时？MySQL 也扛不住？"},{q:"如果流量增大 10 倍？",a:"API 水平扩容加 Nginx 负载均衡。Redis Cluster 分片。MySQL 读写分离或分库分表。RabbitMQ 集群或换 Kafka。CDN 加速视频。推拉结合替代纯拉模型。Worker 独立扩缩容。",code:"",follow:"灰度发布？分库中间件？容量评估？"},{q:"CAP 理论？你的系统偏向哪个？",a:"偏向 AP 最终一致性加高可用。Redis 缓存短暂不一致最多延迟 5 秒。Outbox 秒级延迟保证最终一致。MQ 降级保可用。GREATEST 容忍不一致。核心设计：可用性优先一致性兜底。",code:"like_service.go, video_repo.go:PublishVideo",follow:"什么场景用 CP？Raft vs Paxos？监控一致性延迟？"},{q:"分布式 ID 生成方案？",a:"当前 randToken random hex 无序。建议 Snowflake 时间有序 64 位或 UUID v7 或 Leaf 号段模式。Snowflake 结构：1 位符号+41 位时间戳+10 位机器+12 位序列号。",code:"redis.go:randToken (第76行)",follow:"Snowflake 时钟回拨？ID 长度对索引影响？自增 ID 分布式问题？"}]},{dim:"Go 语言与工程",questions:[{q:"singleflight 的原理？",a:"内部维护一个 map，key 对应一个 call 结构体。相同 key 并发请求只有一个执行函数，其他等待并共享结果。shared=true 表示搭便车。执行完成后所有等待者同时收到结果。",code:"GetVideoByIDs, ListLatest",follow:"map 内存泄漏？vs errgroup？panic 了怎么办？"},{q:"Go 中 context 的作用？",a:"三个作用：取消传播父 context 取消子 context 自动取消、超时控制 WithTimeout 自动取消、值传递 WithValue 传递请求级数据。Redis 操作用独立 context 50ms 超时不依赖请求 context 避免被取消。",code:"popularity_cache.go (独立 context 50ms), GracefulShutdown",follow:"context.WithValue 的 key 类型？内存泄漏？context.AfterFunc？"},{q:"WaitGroup 和 Mutex 的使用场景？",a:"WaitGroup 等待 goroutine 完成用于并行扇出查询。Mutex 保护共享资源如 videoMap 并发写入。本项目 GetVideoByIDs 用 WaitGroup 等待所有查询 goroutine 完成用 Mutex 保护 videoMap 写入。",code:"GetVideoByIDs (第480行)",follow:"WaitGroup vs channel？sync.Map？RWMutex？"},{q:"Gin 中间件执行顺序？",a:"按注册顺序执行。c.Next() 传递到下一个中间件。c.Abort() 终止链路。限流超限 AbortWithStatusJSON 429。JWT 认证失败 Abort 401。SoftJWTAuth 无 token 时 Next 放行。",code:"ratelimit.go:Limit, jwt.go:JWTAuth, router.go",follow:"c.Next() 和 c.Set() 顺序？后置逻辑？路由树组织？"},{q:"GORM 事务使用方式？",a:"db.Transaction(func(tx)error{}) 自动 commit/rollback。Service 通过 repo.Transaction 获取 tx 调用 InTx 方法。ChangeLikesCount 接受 tx 参数非事务时传 nil 自动降级为 r.db。",code:"like_service.go, video_repo.go:ChangeLikesCount, PublishVideo",follow:"隔离级别？嵌套事务？大事务问题？"},{q:"Go 错误处理哲学？",a:"错误是值显式返回检查 err!=nil。errors.Is 判断错误类型。errors.As 提取特定错误类型。项目中 isDuplicateKey 用 errors.As 提取 mysql.MySQLError 判断 1062。",code:"like_service.go, like_repo.go:isDuplicateKey",follow:"error wrapping？panic vs error？自定义错误类型？"},{q:"优雅停机怎么实现？",a:"API 用 signal.Notify 监听 SIGTERM 加 http.Server.Shutdown 5 秒超时等待活跃请求完成。Worker 用 signal.NotifyContext 传播取消信号到所有 Worker goroutine 加 errCh 收集错误。",code:"router.go:GracefulShutdown, cmd/worker/main.go (signal.NotifyContext)",follow:"MQ 消费处理？K8s preStop？测试优雅停机？"},{q:"Dockerfile 多阶段构建的好处？",a:"编译阶段用 golang 镜像编译二进制。运行阶段用 alpine 最小镜像只复制二进制。好处：最终镜像小只有几十 MB、安全性好没有编译工具链、构建独立不依赖宿主机 Go 环境。api 和 worker 两个 target。",code:"backend_repeat/Dockerfile",follow:"scratch vs alpine？减小 Go 二进制体积？Docker 层缓存？"}]},{dim:"认证与安全",questions:[{q:"JWT 的组成？",a:"Header 包含算法 HS256 和类型 JWT。Payload 包含 account_id、username、exp 过期时间、iat 签发时间、nbf 生效时间。Signature 用 HMAC-SHA256 对 Header+Payload 签名防篡改。HS256 对称密钥 vs RS256 非对称密钥。",code:"auth/jwt.go:GenerateToken (第41行), ParseToken (第56行)",follow:"Payload 放敏感数据？过期时间设多长？JWT vs OAuth2？"},{q:"JWT vs Session？",a:"JWT 无状态水平扩展好但不能主动吊销。Session 有状态可主动失效但需要共享存储。本项目 JWT 加 Redis Token 存储实现吊销：登录时存 Redis 每次请求比对不一致即吊销。",code:"auth/jwt.go, jwt.go:check",follow:"JWT 续期？Refresh Token？分布式 Session？"},{q:"如何实现 JWT 吊销？",a:"Redis 存 token key 为 account:{id}。每次请求 check 函数先查 Redis 比对 token。不一致返回 401 token has been revoked。Redis 异常降级 MySQL 查 account 表的 token 字段。退出时删除 Redis key。",code:"jwt.go:check (第46行), account/service.go (Login 时存 Redis)",follow:"多设备登录？Token 黑白名单？踢掉其他设备？"},{q:"什么是 TOCTOU？",a:"Time-of-Check to Time-of-Use 检查到使用之间的竞态窗口。点赞不预检查依赖唯一索引消除窗口。关注保留预检查加 uniqueIndex 兜底属于用户体验优先给用户友好提示 already followed。",code:"like_service.go:Like, social/service.go:Follow",follow:"唯一索引 vs 乐观锁？其他防重方式？version 字段？"},{q:"bcrypt 的原理？",a:"基于 Blowfish 加密算法。自带随机 salt 防彩虹表。计算慢约 100ms 防暴力破解。可调 cost 参数默认 10 每增加 1 计算时间翻倍。MD5/SHA256 太快每秒数十亿次不适合密码。",code:"account/service.go",follow:"cost 参数选多大？argon2 vs bcrypt？SHA256+salt 为什么不行？"}]},{dim:"场景题与开放题",questions:[{q:"如果 Redis 挂了？",a:"缓存降级 L1 在加 L3 兜底直接查 MySQL。分布式锁失效 nil 返回放行所有请求直接穿透。限流失效 fail-open 放行。Token 吊销降级 MySQL 查询。核心功能可用但性能下降。",code:"redis.go (nil check), jwt.go:check (MySQL 降级), ratelimit.go",follow:"监控 Redis？集群单节点挂？Redis 高可用？"},{q:"如果 RabbitMQ 宕机？",a:"自动降级同步路径 likeMQSent=false 走同步 MySQL 事务。Outbox 轮询器持续重试 MQ 恢复后自动补发。影响 API 变慢但数据不丢。",code:"like_service.go:Like, outboxworker.go, cmd/main.go (rbq=nil)",follow:"监控 MQ？积压消息处理？消息乱序？"},{q:"限流算法的缺点？",a:"固定窗口临界问题窗口边界突发 2x 流量。改进：滑动窗口用 ZSET 存时间戳、滑动窗口计数器当前加上一窗口加权、令牌桶允许突发、漏桶平滑流量。",code:"ratelimit.go, redis.go:incrementWithExpireScript",follow:"令牌桶 vs 漏桶？分布式限流？拒绝状态码？"},{q:"如何监控系统健康？",a:"pprof 看 CPU 内存 goroutine。Redis Ping 检测连接。RabbitMQ 管理界面看队列积压。日志记录错误。进一步 Prometheus 加 Grafana 加 Jaeger 加告警。",code:"observability/pprof.go, cmd/main.go",follow:"pprof profile 类型？goroutine 泄漏？Prometheus 四种 Metric？"},{q:"如果重新设计，你会改什么？",a:"分布式 ID 用 Snowflake 替代 random hex。JWT 用 access 加 refresh token 分离。限流用滑动窗口替代固定窗口。CDC 用 Debezium 替代 Outbox 轮询。Redis Cluster 替代单机。加死信队列处理毒消息。",code:"redis.go:randToken, auth/jwt.go, ratelimit.go, outboxworker.go",follow:"改进优先级？线上改动保证？其他优化？"}]},{dim:"高频追问速查表",questions:[]}];
+
+const appendixData=[["singleflight 和分布式锁区别","单进程去重 vs 跨实例保护"],["为什么解锁用 Lua","保证 GET+比较+DEL 原子，防释放别人锁"],["限流 Lua 为什么必须原子","防 INCR 后 PEXPIRE 未执行导致 key 永不过期"],["三级缓存为什么需要 L1","减少 Redis 网络往返，热点亚毫秒响应"],["ZSET 项目用途","时间线分页+热度窗口计数+合并热榜"],["Outbox 解决什么","写 DB 和发 MQ 不能原子"],["冷热分离 watermark","ZSET 最老 score，区分走 Redis 还是 MySQL"],["冷数据不回写 ZSET","防污染热点，只保留最新 1000 条"],["TOCTOU 怎么解决","点赞不预检查依赖唯一索引，关注预检查+兜底"],["MQ 不可用怎么办","降级同步 MySQL 事务，数据不丢"],["幂等消费","MySQL 唯一索引+catch 1062 静默忽略"],["JWT 吊销","Redis 存 token 每次比对，不一致即吊销"],["GREATEST 防什么","防点赞计数减成负数"],["SoftJWTAuth 场景","公共接口可选认证，有 token 解析身份没有放行"],["游标 vs offset","O(log N+limit) 不因偏移量变慢"],["三字段游标为什么三个","打破 popularity 和 create_time 并列"],["固定窗口缺点","窗口边界突发 2x 流量"],["bcrypt vs SHA256","自带 salt+计算慢防暴力破解"],["优雅停机","signal.NotifyContext+Shutdown 等待请求完成"],["多阶段构建好处","最终镜像只有二进制，体积小安全性好"],["推拉结合怎么实现","普通用户推inbox大V拉outbox读时归并"],["k-way merge 复杂度","O(N log K) container/heap 最大堆"],["恒定 RTT 怎么做到","并行读取+Pipeline批量+提前终止"]];
+
+/* ═══════════════════════════════════════════════════
+   SCENARIO DATA — 端到端 + 故障排查
+   ═══════════════════════════════════════════════════ */
+const scenarioData={e2e:[
+{title:"用户发布视频",desc:"从请求到 Feed 流可见的完整链路",steps:[
+{s:"用户上传视频文件",loc:"POST /video/uploadVideo"},
+{s:"用户上传封面图片",loc:"POST /video/uploadCover"},
+{s:"用户点击发布",loc:"POST /video/publish → videoHandler.PublishVideo"},
+{s:"参数校验 + 事务写入",loc:"video_repo.go:PublishVideo → db.Transaction",detail:"在同一个 MySQL 事务中写 video 表 + outbox 表（status=pending）"},
+{s:"API 返回成功",loc:"video_service.go → return nil",detail:"此时视频还不可见，异步处理中"},
+{s:"OutboxPoller 轮询",loc:"outboxworker.go:StartOutboxPoller",detail:"每秒扫描 outbox_msgs WHERE status=pending"},
+{s:"投递到 TimelineMQ",loc:"tmq.PublishVideo(ctx, videoID, createTime)"},
+{s:"成功后删除 outbox 记录",loc:"db.Delete(&msg)"},
+{s:"Timeline Consumer 消费",loc:"outboxworker.go:StartConsumer"},
+{s:"ZADD 写入时间线",loc:"redisClient.ZAdd(ctx, feed:global_timeline, Z{Score:createTime, Member:videoID})"},
+{s:"ZREMRANGEBYRANK 裁剪",loc:"redisClient.ZRemRangeByRank(ctx, key, 0, -1001)",detail:"只保留最新 1000 条"},
+{s:"视频在 Feed 流中可见",loc:"GET /feed/listLatest → ZSET 查询"}
+]},
+{title:"用户点赞",desc:"MQ 优先 + 同步降级 + 幂等消费",steps:[
+{s:"用户点击点赞",loc:"POST /like/like → likeHandler.Like"},
+{s:"参数校验",loc:"like_service.go:Like → accountID==0 || videoID==0"},
+{s:"确认视频存在",loc:"videoRepo.IsExist(ctx, videoID)"},
+{s:"投递 LikeMQ",loc:"likeMQ.Like(ctx, accountID, videoID)"},
+{s:"投递 PopularityMQ",loc:"popularityMQ.Update(ctx, videoID, 1)"},
+{s:"两条都成功 → 直接返回",loc:"if likeMQSent && popularityMQSent { return nil }"},
+{s:"LikeWorker 消费",loc:"likeworker.go:Run → handleDelivery"},
+{s:"幂等插入",loc:"likeRepo.LikeIgnoreDuplicate → catch 1062"},
+{s:"created=true → 更新计数",loc:"videoRepo.ChangeLikesCount + ChangePopularity"},
+{s:"更新热度缓存",loc:"UpdatePopularityCache → DEL detail + ZINCRBY window"},
+{s:"Ack 确认",loc:"msg.Ack(false)"}
+]},
+{title:"用户刷 Feed 流",desc:"冷热分离 + 三级缓存 + is_liked",steps:[
+{s:"请求到达",loc:"POST /feed/listLatest → SoftJWTAuth 解析身份"},
+{s:"获取 watermark",loc:"ZRangeWithScores(feed:global_timeline, 0, 0)"},
+{s:"判断热/冷路径",loc:"if reqTime > watermark → 热查询"},
+{s:"热查询：ZSET 分页",loc:"ZRevRangeByScore(feed:global_timeline, maxScore, -inf, 0, limit)"},
+{s:"解析 video IDs",loc:"strconv.ParseUint → []uint"},
+{s:"三级缓存查视频详情",loc:"GetVideoByIDs → L1 → L2 → L3"},
+{s:"热数据不足补冷尾",loc:"if len < limit → MySQL 冷查询"},
+{s:"批量查 is_liked",loc:"likeRepo.BatchGetLiked(ctx, videoIDs, viewerAccountID)"},
+{s:"组装 FeedVideoItem",loc:"buildFeedVideos → 返回带 is_liked 的列表"}
+]},
+{title:"用户查看热榜",desc:"ZUNIONSTORE 合并 + 降级 MySQL",steps:[
+{s:"请求到达",loc:"POST /feed/listByPopularity"},
+{s:"计算 as_of 时间",loc:"time.Now().UTC().Truncate(time.Minute)"},
+{s:"生成 60 个窗口 key",loc:"hot:video:1m:YYYYMMDDHHmm × 60"},
+{s:"检查合并结果缓存",loc:"rediscache.Exists(dest)"},
+{s:"缓存未命中 → ZUNIONSTORE",loc:"rediscache.ZUnionStore(dest, keys, SUM)"},
+{s:"设置 2 分钟 TTL",loc:"rediscache.Expire(dest, 2min)"},
+{s:"ZRevRange 分页",loc:"rediscache.ZRevRange(dest, start, stop)"},
+{s:"GetByIDs 查视频详情",loc:"repo.GetByIDs(ctx, ids)"},
+{s:"组装返回",loc:"buildFeedVideos → ListByPopularityResponse"}
+]},
+{title:"推送到粉丝收件箱",desc:"FanoutWorker 推拉结合写入链路",steps:[
+{s:"OutboxPoller 双投递",loc:"outboxworker.go:StartOutboxPoller",detail:"先 TimelineMQ 再 FanoutMQ，都成功才删除 outbox"},
+{s:"FanoutWorker 消费",loc:"fanoutworker.go:process"},
+{s:"写 user_videos 发件箱",loc:"ZADD user_videos:{authorID}",detail:"所有作者都写，cap 50，24h TTL"},
+{s:"查询粉丝数",loc:"getFollowerCount → Redis 缓存 → MySQL CountFollowers"},
+{s:"判断是否大V",loc:"followerCount >= 10000 ?",detail:"大V只写发件箱，不 fanout"},
+{s:"分批 fanout",loc:"Pipeline ZADD inbox:{followerID}",detail:"每批 100 人，1% 概率裁剪 cap=500"},
+{s:"粉丝收件箱更新完成",loc:"inbox:{followerID} ZSET 已写入"}
+]}
+],fault:[
+{title:"Redis 宕机",desc:"所有 Redis 依赖降级",impacts:[
+{what:"缓存降级",detail:"L2 Redis miss → 直接降级到 L3 MySQL",fix:"每次请求都查 MySQL，延迟升高但数据正确"},
+{what:"分布式锁失效",detail:"Lock 返回 locked=false",fix:"所有请求直接穿透到 DB，可能击穿"},
+{what:"推拉结合降级",detail:"inbox/outbox 不可用 → ListByFollowing 降级 MySQL 子查询",fix:"功能正常，但失去推拉结合的性能优势"},
+{what:"限流失效",detail:"IncrementWithExpire 返回 0",fix:"fail-open 放行，可能被打爆"},
+{what:"Token 吊销失效",detail:"check 函数 Redis 失败 → 降级 MySQL",fix:"每次请求多一次 DB 查询"},
+{what:"热度排行失效",detail:"ZUNIONSTORE 失败 → 降级 MySQL 三字段游标",fix:"功能正常但性能下降"}
+]},
+{title:"RabbitMQ 宕机",desc:"异步路径降级为同步",impacts:[
+{what:"点赞降级",detail:"likeMQSent=false → 同步 MySQL 事务",fix:"API 响应变慢（~10ms vs ~1ms）但数据不丢"},
+{what:"热度更新降级",detail:"popularityMQSent=false → 直接调 UpdatePopularityCache",fix:"同步更新 Redis 热度"},
+{what:"Outbox 轮询持续重试",detail:"StartOutboxPoller 投递失败 → log 记录",fix:"MQ 恢复后自动补发"},
+{what:"视频发布延迟",detail:"Outbox 记录堆积在 pending 状态",fix:"MQ 恢复后批量补发到时间线"}
+]},
+{title:"缓存击穿",desc:"热点 key 过期并发穿透",impacts:[
+{what:"第一道防线：singleflight",detail:"同实例内多个 goroutine 只有一个执行",fix:"减少 90%+ 的 DB 查询"},
+{what:"第二道防线：分布式锁",detail:"跨实例保护，只有一个实例回源",fix:"500ms TTL，自动过期防死锁"},
+{what:"第三道防线：double-check",detail:"获锁后再查一次缓存",fix:"防止在等待锁期间其他请求已回填"},
+{what:"第四道防线：spin-wait",detail:"未获锁时 5×20ms 等待",fix:"避免穿透到 DB，最多等 100ms"}
+]},
+{title:"消息积压",desc:"Worker 消费跟不上生产速度",impacts:[
+{what:"prefetchCount=50",detail:"一次推送给 Worker 50 条未确认消息",fix:"太大内存溢出，太小吞吐低"},
+{what:"水平扩容 Worker",detail:"多个 Worker 竞争消费同一队列",fix:"RabbitMQ round-robin 分发"},
+{what:"监控队列深度",detail:"RabbitMQ 管理界面查看 messages ready",fix:"积压超过阈值告警"}
+]},
+{title:"并发点赞",desc:"同一用户同时多次点赞",impacts:[
+{what:"唯一索引兜底",detail:"(video_id, account_id) 联合唯一索引",fix:"第二次插入触发 1062，静默忽略"},
+{what:"GREATEST 防负数",detail:"likes_count = GREATEST(likes_count + ?, 0)",fix:"并发取消赞不会减成负数"},
+{what:"幂等消费",detail:"Worker LikeIgnoreDuplicate catch 1062",fix:"重复消息不影响最终结果"}
+]},
+{title:"优雅停机",desc:"进程收到 SIGTERM 信号",impacts:[
+{what:"API 停机",detail:"signal.Notify → srv.Shutdown(5s 超时)",fix:"等待活跃请求完成再退出"},
+{what:"Worker 停机",detail:"signal.NotifyContext → ctx 取消",fix:"4 个 Worker goroutine 感知取消信号"},
+{what:"MQ 消息处理",detail:"未 Ack 的消息重新入队",fix:"其他 Worker 接手处理"},
+{what:"Outbox 轮询",detail:"轮询 goroutine 随进程退出",fix:"下次启动时继续处理 pending 记录"}
+]}
+]};
+
+/* ═══════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════ */
+let S={mode:'learn',ch:0,sec:0,topic:0,dim:0,q:'',timer:null,secs:0,running:false};
+
+const P=()=>{try{return JSON.parse(localStorage.getItem('sp')||'{}')}catch{return{}}};
+const save=(p)=>localStorage.setItem('sp',JSON.stringify(p));
+const getT=()=>localStorage.getItem('st')||'light';
+const setT=(t)=>{localStorage.setItem('st',t);document.documentElement.setAttribute('data-theme',t);document.getElementById('themeIcon').textContent=t==='dark'?'☀':'☽'};
+
+function toggleTheme(){setT(getT()==='light'?'dark':'light')}
+function switchMode(m){
+  S.mode=m;
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));
+  render();
+}
+function handleSearch(v){S.q=v.trim().toLowerCase();render()}
+function hl(t,q){if(!q)return t;return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>')}
+function strip(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent||''}
+
+/* ═══════════ RENDER ═══════════ */
+function render(){
+  const app=document.getElementById('app');
+  if(S.q){renderSearch(app);updateProg();return}
+  if(S.mode==='learn')renderLearn(app);
+  else if(S.mode==='interview')renderInterview(app);
+  else renderScenario(app);
+  updateProg();
+}
+
+function updateProg(){
+  const p=P(),el=document.getElementById('progressText');
+  if(S.mode==='learn'){
+    let m=0,t=0;learnData.forEach((c,ci)=>c.quiz.forEach((_,qi)=>{t++;if(p[`l_${ci}_${qi}`]==='m')m++}));
+    el.textContent=`${m}/${t} 已掌握`;
+  }else if(S.mode==='interview'){
+    let m=0,t=0;interviewData.forEach((d,di)=>d.questions.forEach((_,qi)=>{t++;if(p[`i_${di}_${qi}`])m++}));
+    el.textContent=`${m}/${t} 已练习`;
+  }else{
+    el.textContent='场景还原';
+  }
+}
+
+/* ═══════════ LEARN MODE ═══════════ */
+function renderLearn(app){
+  const ch=learnData[S.ch],p=P();
+  let sb='<div class="sidebar">';
+  learnData.forEach((c,ci)=>{
+    const tot=c.quiz.length;let m=0;
+    c.quiz.forEach((_,qi)=>{if(p[`l_${ci}_${qi}`]==='m')m++});
+    const pct=tot?Math.round(m/tot*100):0;
+    const isOpen=ci===S.ch;
+    sb+=`<div class="ch-group"><div class="ch-header ${isOpen?'open active':''}" onclick="S.ch=${ci};S.topic=0;S.sec=0;render()">
+      <span class="ch-arrow">▶</span><span class="ch-title">${c.title}</span><span class="ch-badge">${m}/${tot}</span></div>
+      <div class="ch-bar"><div class="ch-bar-fill" style="width:${pct}%"></div></div>
+      <div class="ch-subs ${isOpen?'open':''}">`;
+    c.topics.forEach((t,ti)=>{
+      sb+=`<div class="sub-item ${isOpen&&ti===S.topic&&S.sec>=0?'active':''}" onclick="event.stopPropagation();S.ch=${ci};S.topic=${ti};S.sec=0;render()">${t.q.length>20?t.q.substring(0,20)+'...':t.q}</div>`;
+    });
+    sb+=`<div class="sub-item ${isOpen&&S.sec===-1?'active':''}" onclick="event.stopPropagation();S.ch=${ci};S.sec=-1;render()">📝 自检题</div>`;
+    sb+='</div></div>';
+  });
+  sb+='</div>';
+
+  let mn='<div class="main">';
+  if(S.sec>=0){
+    const topic=ch.topics[S.topic];
+    mn+=`<div class="content-header"><h1>${ch.title}</h1><div class="subtitle">${topic.q}</div></div>`;
+    mn+=`<div class="section-card"><h2>${topic.q}</h2>`;
+    mn+=`<div class="lv-block lv1"><div class="lv-header" onclick="toggleLv(this)"><span class="lv-arrow">▶</span><span class="lv-tag">Lv1 概念</span><span style="flex:1;margin-left:8px">是什么、为什么</span></div><div class="lv-body">${topic.lv1}</div></div>`;
+    mn+=`<div class="lv-block lv2"><div class="lv-header" onclick="toggleLv(this)"><span class="lv-arrow">▶</span><span class="lv-tag">Lv2 实现</span><span style="flex:1;margin-left:8px">项目里怎么做的</span></div><div class="lv-body">${topic.lv2}</div></div>`;
+    mn+=`<div class="lv-block lv3"><div class="lv-header" onclick="toggleLv(this)"><span class="lv-arrow">▶</span><span class="lv-tag">Lv3 推演</span><span style="flex:1;margin-left:8px">如果...会怎样</span></div><div class="lv-body">${topic.lv3}</div></div>`;
+    mn+='</div>';
+    mn+='<div class="nav-bar">';
+    if(S.topic>0)mn+=`<button class="nav-btn" onclick="S.topic--;S.sec=0;render();scrollMain()"><span class="arrow-icon">←</span> 上一个知识点</button>`;
+    else mn+='<div></div>';
+    if(S.topic<ch.topics.length-1)mn+=`<button class="nav-btn primary" onclick="S.topic++;S.sec=0;render();scrollMain()">下一个知识点 <span class="arrow-icon">→</span></button>`;
+    else mn+=`<button class="nav-btn primary" onclick="S.sec=-1;render();scrollMain()">查看自检题 <span class="arrow-icon">→</span></button>`;
+    mn+='</div>';
+  }else{
+    mn+=`<div class="content-header"><h1>${ch.title}</h1><div class="subtitle">自检题 — 检验你的理解</div></div>`;
+    mn+='<div class="quiz-section">';
+    ch.quiz.forEach((q,qi)=>{
+      const st=p[`l_${S.ch}_${qi}`];
+      const badge=st==='m'?'<span class="quiz-status status-mastered">已掌握</span>':st==='u'?'<span class="quiz-status status-unmastered">未掌握</span>':'';
+      mn+=`<div class="quiz-item" style="animation-delay:${qi*50}ms"><div class="quiz-q" onclick="toggleQuiz(this)">
+        <span class="q-num">${qi+1}</span><span class="q-text">${q.q}</span>${badge}<span class="q-toggle">▶</span></div>
+        <div class="quiz-body"><div class="quiz-hint">${q.hint}</div>
+        <div class="quiz-btns"><button class="quiz-btn mastered" onclick="event.stopPropagation();markL(${S.ch},${qi},'m')">✓ 已掌握</button>
+        <button class="quiz-btn unmastered" onclick="event.stopPropagation();markL(${S.ch},${qi},'u')">✗ 未掌握</button></div></div></div>`;
+    });
+    mn+='</div>';
+    mn+='<div class="nav-bar">';
+    mn+=`<button class="nav-btn" onclick="S.sec=0;S.topic=${ch.topics.length-1};render();scrollMain()"><span class="arrow-icon">←</span> 返回知识点</button>`;
+    if(S.ch<learnData.length-1)mn+=`<button class="nav-btn primary" onclick="S.ch++;S.topic=0;S.sec=0;render();scrollMain()">下一章 <span class="arrow-icon">→</span></button>`;
+    else mn+='<div></div>';
+    mn+='</div>';
+  }
+  mn+='</div>';
+  app.innerHTML=sb+mn;
+}
+
+function toggleLv(el){const body=el.nextElementSibling;body.classList.toggle('open');el.classList.toggle('open')}
+function scrollMain(){const m=document.querySelector('.main');if(m)m.scrollTop=0}
+function toggleQuiz(el){const body=el.nextElementSibling;const arrow=el.querySelector('.q-toggle');body.classList.toggle('open');arrow.classList.toggle('open')}
+function markL(ci,qi,st){const p=P();p[`l_${ci}_${qi}`]=st;save(p);render()}
+
+/* ═══════════ INTERVIEW MODE ═══════════ */
+function renderInterview(app){
+  const dim=interviewData[S.dim],p=P();
+  let sb='<div class="sidebar">';
+  interviewData.forEach((d,di)=>{
+    const tot=d.questions.length;let m=0;
+    d.questions.forEach((_,qi)=>{if(p[`i_${di}_${qi}`])m++});
+    sb+=`<div class="dim-item ${di===S.dim?'active':''}" onclick="S.dim=${di};render()">
+      <span>${d.dim}</span><span class="dim-badge">${m}/${tot}</span></div>`;
+  });
+  sb+='</div>';
+
+  let mn='<div class="main">';
+  if(dim.dim==='项目介绍话术'){
+    const q=dim.questions[0];
+    mn+=`<div class="content-header"><h1>${dim.dim}</h1></div>`;
+    mn+=`<div class="intro-card"><h3>${q.q}</h3><p>${q.a}</p>`;
+    if(q.code)mn+=`<span class="code-link">📎 ${q.code}</span>`;
+    if(q.follow)mn+=`<div class="follow-tag">💡 追问方向：${q.follow}</div>`;
+    mn+='</div>';
+  }else if(S.dim===interviewData.length-1){
+    mn+=`<div class="content-header"><h1>高频追问速查表</h1><div class="subtitle">面试中常见的追问，一句话速答</div></div>`;
+    mn+='<div class="toolbar"><div class="search-wrap"><span class="search-icon">⌕</span><input type="text" class="search-box" placeholder="搜索追问..." oninput="filterAppendix(this.value)" style="width:300px"></div></div>';
+    mn+='<table class="appendix-table" id="appTable"><thead><tr><th>问题</th><th>要点</th></tr></thead><tbody>';
+    appendixData.forEach(([k,v])=>{mn+=`<tr><td>${k}</td><td>${v}</td></tr>`});
+    mn+='</tbody></table>';
+  }else{
+    mn+=`<div class="content-header"><h1>${dim.dim}</h1><div class="subtitle">${dim.questions.length} 道面试题 — 点击卡片翻转查看答案</div></div>`;
+    mn+='<div class="toolbar"><button class="tool-btn" onclick="randomQ()">🎲 随机抽题</button>';
+    mn+=`<span class="timer-display" id="timerDisp">00:00</span>`;
+    mn+=`<button class="timer-btn" id="timerBtn" onclick="toggleTimer()">⏱ 开始计时</button></div>`;
+    mn+='<div class="card-grid">';
+    dim.questions.forEach((q,qi)=>{
+      const st=p[`i_${S.dim}_${qi}`];
+      const sLabel=st==='p'?'已练习':st==='r'?'需复习':'';
+      const sColor=st==='p'?'var(--success)':st==='r'?'var(--warn)':'transparent';
+      mn+=`<div class="card" onclick="this.classList.toggle('flipped')" style="animation-delay:${qi*40}ms"><div class="card-inner">
+        <div class="card-face card-front"><div class="card-idx">Q${qi+1}</div><div class="card-title">${q.q}</div>
+        <div class="card-footer">${sLabel?`<span class="card-status" style="color:${sColor}">[${sLabel}]</span>`:''}<span class="card-tag">${dim.dim}</span></div></div>
+        <div class="card-face card-back"><h4>参考答案</h4><p>${q.a}</p>
+        ${q.code?`<h4>代码关联</h4><p class="code-link">${q.code}</p>`:''}
+        ${q.follow?`<h4>追问方向</h4><p class="follow-q">${q.follow}</p>`:''}
+        <div class="card-actions"><button class="card-action practice" onclick="event.stopPropagation();markI(${S.dim},${qi},'p')">✓ 已练习</button>
+        <button class="card-action review" onclick="event.stopPropagation();markI(${S.dim},${qi},'r')">⚑ 需复习</button></div></div></div></div>`;
+    });
+    mn+='</div>';
+  }
+  mn+='</div>';
+  app.innerHTML=sb+mn;
+}
+
+function markI(di,qi,st){const p=P();p[`i_${di}_${qi}`]=st;save(p);render()}
+function randomQ(){const dim=interviewData[S.dim],p=P(),un=[];dim.questions.forEach((_,qi)=>{if(!p[`i_${S.dim}_${qi}`])un.push(qi)});if(!un.length){alert('该维度所有题目已练习完毕！');return}const idx=un[Math.floor(Math.random()*un.length)];const cards=document.querySelectorAll('.card');if(cards[idx]){cards[idx].scrollIntoView({behavior:'smooth',block:'center'});cards[idx].classList.add('flipped');cards[idx].style.outline='2px solid var(--accent)';cards[idx].style.outlineOffset='3px';setTimeout(()=>{cards[idx].style.outline='';cards[idx].style.outlineOffset=''},3000)}}
+function toggleTimer(){if(S.running){clearInterval(S.timer);S.running=false;const b=document.getElementById('timerBtn');if(b){b.textContent='⏱ 开始计时';b.classList.remove('running')}}else{S.secs=0;S.running=true;const b=document.getElementById('timerBtn');if(b){b.textContent='⏹ 停止计时';b.classList.add('running')}S.timer=setInterval(()=>{S.secs++;const m=Math.floor(S.secs/60).toString().padStart(2,'0');const s=(S.secs%60).toString().padStart(2,'0');const d=document.getElementById('timerDisp');if(d)d.textContent=`${m}:${s}`},1000)}}
+function filterAppendix(v){const rows=document.querySelectorAll('#appTable tbody tr');v=v.toLowerCase();rows.forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v)?'':'none'})}
+
+/* ═══════════ SCENARIO MODE ═══════════ */
+function renderScenario(app){
+  let sb='<div class="sidebar">';
+  sb+=`<div class="dim-item active" onclick="S.sec=0;render()"><span>端到端流程</span><span class="dim-badge">${scenarioData.e2e.length}</span></div>`;
+  sb+=`<div class="dim-item" onclick="S.sec=1;render()"><span>故障排查</span><span class="dim-badge">${scenarioData.fault.length}</span></div>`;
+  sb+='</div>';
+
+  let mn='<div class="main">';
+  if(S.sec===0){
+    mn+=`<div class="content-header"><h1>端到端场景还原</h1><div class="subtitle">追踪请求从入口到出口的完整链路</div></div>`;
+    mn+='<div class="scenario-grid">';
+    scenarioData.e2e.forEach((sc,si)=>{
+      mn+=`<div class="scenario-card e2e" onclick="this.classList.toggle('open')" style="animation-delay:${si*60}ms">
+        <h3><span class="sc-icon">→</span>${sc.title}</h3><p class="sc-desc">${sc.desc}</p><div class="sc-steps">`;
+      sc.steps.forEach((st,sti)=>{
+        mn+=`<div class="sc-step"><div class="sc-num">${sti+1}</div><div class="sc-step-content"><p><strong>${st.s}</strong></p><p class="sc-loc">${st.loc}</p>${st.detail?`<p style="font-size:12.5px;color:var(--fg3);margin-top:2px">${st.detail}</p>`:''}</div></div>`;
+      });
+      mn+='</div></div>';
+    });
+    mn+='</div>';
+  }else{
+    mn+=`<div class="content-header"><h1>故障排查场景</h1><div class="subtitle">当组件故障时系统如何响应</div></div>`;
+    mn+='<div class="scenario-grid">';
+    scenarioData.fault.forEach((sc,si)=>{
+      mn+=`<div class="scenario-card fault" onclick="this.classList.toggle('open')" style="animation-delay:${si*60}ms">
+        <h3><span class="sc-icon">⚠</span>${sc.title}</h3><p class="sc-desc">${sc.desc}</p><div class="sc-steps">`;
+      sc.impacts.forEach(im=>{
+        mn+=`<div class="fault-tree"><div class="ft-title">${im.what}</div><p>${im.detail}</p></div>`;
+        mn+=`<div class="fix-box"><div class="fx-title">修复/降级</div><p>${im.fix}</p></div>`;
+      });
+      mn+='</div></div>';
+    });
+    mn+='</div>';
+  }
+  mn+='</div>';
+  app.innerHTML=sb+mn;
+}
+
+/* ═══════════ SEARCH ═══════════ */
+function renderSearch(app){
+  const q=S.q,res=[];
+  learnData.forEach((ch,ci)=>{
+    ch.topics.forEach((t,ti)=>{
+      const txt=t.q+t.lv1+t.lv2+t.lv3;
+      if(txt.toLowerCase().includes(q))
+        res.push({m:'learn',ci,ti,title:`${ch.title} > ${t.q}`,snip:strip(t.lv1).substring(0,120)});
+    });
+    ch.quiz.forEach((quiz,qi)=>{
+      if(quiz.q.toLowerCase().includes(q)||quiz.hint.toLowerCase().includes(q))
+        res.push({m:'learn',ci,ti:-1,title:`${ch.title} > 自检题 Q${qi+1}`,snip:quiz.q});
+    });
+  });
+  interviewData.forEach((dim,di)=>{
+    dim.questions.forEach((qu,qi)=>{
+      if(qu.q.toLowerCase().includes(q)||qu.a.toLowerCase().includes(q))
+        res.push({m:'interview',di,title:`${dim.dim} > Q${qi+1}`,snip:qu.q});
+    });
+  });
+  scenarioData.e2e.forEach(sc=>{
+    if(sc.title.toLowerCase().includes(q)||sc.desc.toLowerCase().includes(q))
+      res.push({m:'scenario',sec:0,title:`端到端 > ${sc.title}`,snip:sc.desc});
+  });
+  scenarioData.fault.forEach(sc=>{
+    if(sc.title.toLowerCase().includes(q)||sc.desc.toLowerCase().includes(q))
+      res.push({m:'scenario',sec:1,title:`故障排查 > ${sc.title}`,snip:sc.desc});
+  });
+  appendixData.forEach(([k,v])=>{
+    if(k.toLowerCase().includes(q)||v.toLowerCase().includes(q))
+      res.push({m:'interview',di:interviewData.length-1,title:`追问速查表 > ${k}`,snip:v});
+  });
+
+  let h='<div class="sidebar"><div class="sidebar-empty">搜索模式<br><small>侧边栏已隐藏</small></div></div>';
+  h+='<div class="main search-results">';
+  h+=`<div class="content-header"><h1>搜索结果</h1><div class="subtitle">"${S.q}" — 找到 ${res.length} 条匹配</div></div>`;
+  if(!res.length)h+='<p style="color:var(--fg3);text-align:center;padding:40px;">未找到匹配内容，换个关键词试试？</p>';
+  res.forEach(r=>{
+    h+=`<div class="search-result" onclick='jump(${JSON.stringify(r).replace(/'/g,"\\'")})'>
+      <div class="sr-mode">${r.m==='learn'?'知识学习':r.m==='interview'?'面试模拟':'场景还原'}</div>
+      <div class="sr-title">${hl(r.title,S.q)}</div>
+      <div class="sr-snippet">${hl(r.snip,S.q)}</div></div>`;
+  });
+  h+='</div>';
+  app.innerHTML=h;
+}
+
+function jump(r){
+  S.q='';document.getElementById('searchInput').value='';
+  if(r.m==='learn'){S.mode='learn';S.ch=r.ci;S.topic=Math.max(0,r.ti);S.sec=r.ti>=0?0:-1}
+  else if(r.m==='interview'){S.mode='interview';S.dim=r.di}
+  else{S.mode='scenario';S.sec=r.sec}
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===S.mode));
+  render();
+}
+
+/* ═══════════ INIT ═══════════ */
+setT(getT());
+render();
+</script>
+</body>
+</html>
