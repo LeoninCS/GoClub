@@ -1,0 +1,878 @@
+---
+title: "视频Feed流系统（hard）学习"
+description: "视频Feed流系统（hard）15天项目学习与面试问答工具"
+layout: "study-feed"
+bookSearchExclude: true
+BookComments: false
+BookToC: false
+aliases:
+  - /docs/project-study/study-gcfeed/
+---
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>视频Feed流系统（hard）学习</title>
+<style>
+:root{
+  --bg:#fafafa;--bg2:#f0f0f0;--bg3:#e4e4e7;--fg:#18181b;--fg2:#71717a;--fg3:#a1a1aa;
+  --card:#fff;--border:#e4e4e7;--accent:#6366f1;--accent2:#4f46e5;--accent-soft:#eef2ff;--accent-glow:rgba(99,102,241,.16);
+  --success:#22c55e;--success-soft:#f0fdf4;--warn:#f59e0b;--warn-soft:#fffbeb;--danger:#ef4444;--danger-soft:#fef2f2;--info:#3b82f6;--info-soft:#eff6ff;
+  --code-bg:#f4f4f5;--code-border:#e4e4e7;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 14px rgba(0,0,0,.08);
+  --sidebar-w:292px;--topnav-h:56px;--radius:10px;--radius-sm:6px;--font-body:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-mono:'JetBrains Mono','Fira Code',Consolas,monospace;
+  --lv1:#22c55e;--lv1-soft:#f0fdf4;--lv2:#3b82f6;--lv2-soft:#eff6ff;--lv3:#f59e0b;--lv3-soft:#fffbeb;
+  --noise:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+[data-theme="dark"]{
+  --bg:#09090b;--bg2:#18181b;--bg3:#27272a;--fg:#fafafa;--fg2:#a1a1aa;--fg3:#71717a;
+  --card:#18181b;--border:#27272a;--accent:#818cf8;--accent2:#6366f1;--accent-soft:#1e1b4b;--accent-glow:rgba(129,140,248,.14);
+  --success-soft:#052e16;--warn-soft:#451a03;--danger-soft:#450a0a;--info-soft:#172554;--code-bg:#1e1e22;--code-border:#2e2e33;--shadow-sm:0 1px 2px rgba(0,0,0,.35);--shadow-md:0 4px 16px rgba(0,0,0,.45);
+  --lv1-soft:#052e16;--lv2-soft:#172554;--lv3-soft:#451a03;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.7;transition:background .25s,color .25s}
+a{color:var(--accent);text-decoration:none}
+button{border:0;background:none;color:inherit;font:inherit;cursor:pointer}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--fg3);border-radius:10px}
+.topnav{height:var(--topnav-h);display:flex;align-items:center;gap:10px;padding:0 20px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto;white-space:nowrap}
+.brand-icon{width:32px;height:32px;border-radius:9px;background:#e0f7fa;border:1px solid rgba(15,118,140,.18);display:grid;place-items:center;box-shadow:0 2px 8px var(--accent-glow);overflow:hidden}
+.brand-icon svg{width:30px;height:30px}
+.brand-text{font-size:15px;font-weight:800}.brand-sub{font-size:11px;color:var(--fg3);margin-left:4px}
+.mode-tabs{display:flex;background:var(--bg2);border-radius:8px;padding:3px;gap:2px}
+.mode-btn{padding:5px 14px;border-radius:6px;font-size:13px;font-weight:600;color:var(--fg2);transition:all .2s}
+.mode-btn.active{background:var(--accent);color:#fff;box-shadow:0 2px 8px var(--accent-glow)}
+.mode-btn:hover{background:var(--bg3);color:var(--fg)}
+.mode-btn.active:hover{background:var(--accent);color:#fff}
+.repo-link,.light-link{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--fg2);font-size:13px;font-weight:600;line-height:1;white-space:nowrap;transition:all .2s}
+.repo-link:hover,.light-link:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.search-wrap{position:relative}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--fg3);pointer-events:none}
+.search-box{width:210px;padding:6px 12px 6px 32px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--fg);font-size:13px;outline:none;transition:all .2s}
+.search-box:focus{width:280px;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.theme-btn{width:32px;height:32px;border-radius:8px;color:var(--fg2);display:grid;place-items:center;font-size:16px}.theme-btn:hover{background:var(--bg2);color:var(--fg)}
+.progress-pill{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;background:var(--success-soft);border:1px solid rgba(34,197,94,.24);font-size:12px;font-weight:700;color:var(--success)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--success)}
+.app{display:flex;height:calc(100vh - var(--topnav-h));overflow:hidden}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--border);overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:3px}
+.side-title{padding:8px 10px 4px;color:var(--fg3);font-size:11px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+.side-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-sm);color:var(--fg2);font-size:13px;cursor:pointer;transition:all .16s}
+.side-item:hover{background:var(--bg2);color:var(--fg)}
+.side-item.active{background:var(--accent-soft);color:var(--accent);font-weight:800}
+.side-main{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{font-size:10px;padding:1px 7px;border-radius:12px;background:var(--bg3);color:var(--fg3);font-weight:700;flex-shrink:0}
+.side-item.active .badge{background:var(--accent);color:#fff}
+.sub-list{margin-left:10px;padding-left:8px;border-left:1px solid var(--border);display:none}
+.sub-list.open{display:block}
+.sub-item{padding:5px 8px;border-radius:var(--radius-sm);font-size:12.5px;color:var(--fg3);cursor:pointer;line-height:1.45;margin:1px 0}
+.sub-item:hover{background:var(--bg2);color:var(--fg)}
+.sub-item.active{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.main{flex:1;overflow-y:auto;padding:32px 40px 64px}
+.content-header{margin-bottom:24px;animation:fadeUp .35s ease}
+.content-header h1{font-size:26px;line-height:1.3;font-weight:900;background:linear-gradient(135deg,var(--fg) 58%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{margin-top:5px;color:var(--fg3);font-size:13px}
+.hero,.section-card,.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);animation:fadeUp .35s ease}
+.hero{padding:30px 34px;margin-bottom:20px}
+.kicker{font-size:11px;font-weight:900;color:var(--accent);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.hero h2{font-size:28px;line-height:1.28;font-weight:900;margin-bottom:10px}
+.hero p{color:var(--fg2);font-size:14.5px;line-height:1.85;max-width:900px}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.pill{padding:4px 10px;border-radius:20px;background:var(--accent-soft);border:1px solid var(--accent-glow);color:var(--accent);font-size:12px;font-weight:800}
+.mentor-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:0 0 20px}
+.mentor-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow-sm);animation:fadeUp .3s ease}
+.mentor-card strong{display:block;font-size:13px;font-weight:850;color:var(--fg);margin-bottom:5px}
+.mentor-card p{font-size:12.8px;color:var(--fg2);line-height:1.65;margin:0}
+.answer-framework{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0 4px}
+.framework-step{background:var(--accent-soft);border:1px solid var(--accent-glow);border-radius:var(--radius-sm);padding:10px 12px;color:var(--accent);font-size:12.5px;font-weight:850;line-height:1.45}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:10px}
+.score-card{padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2)}
+.score-card strong{display:block;font-size:13px;color:var(--fg);margin-bottom:4px}
+.score-card p{font-size:12.8px;color:var(--fg2);line-height:1.6;margin:0}
+.microcopy{margin-top:10px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--info-soft);border-left:3px solid var(--info);font-size:13px;color:var(--fg2);line-height:1.7}
+.markdown-doc{max-width:940px;margin:0 auto;animation:fadeUp .35s}
+.markdown-doc h1{font-size:30px;line-height:1.25;font-weight:900;color:var(--fg);margin:4px 0 12px}
+.markdown-doc h2{font-size:21px;line-height:1.35;font-weight:850;color:var(--fg);margin:32px 0 12px;padding-top:18px;border-top:1px solid var(--border)}
+.markdown-doc h3{font-size:15px;font-weight:850;color:var(--fg);margin:18px 0 8px}
+.markdown-doc p{font-size:15px;color:var(--fg2);line-height:1.9;margin:10px 0}
+.markdown-doc ul,.markdown-doc ol{margin:10px 0 10px 22px;color:var(--fg2);font-size:14.5px;line-height:1.85}
+.markdown-doc li{margin:5px 0}
+.markdown-doc blockquote{margin:18px 0;padding:12px 16px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 var(--radius-sm) var(--radius-sm) 0;color:var(--fg2)}
+.markdown-doc hr{border:0;border-top:1px solid var(--border);margin:26px 0}
+.markdown-doc code{font-family:var(--font-mono);font-size:13px;color:var(--accent);background:var(--code-bg);border:1px solid var(--code-border);border-radius:4px;padding:2px 6px}
+.md-kicker{font-size:11px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.md-section{padding:2px 0 8px;border-radius:var(--radius-sm)}
+.md-section.active{background:linear-gradient(90deg,var(--accent-soft),transparent 72%);padding-left:14px;margin-left:-14px}
+.md-pill-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 22px}
+.md-pill{padding:4px 10px;border-radius:20px;background:var(--accent-soft);border:1px solid var(--accent-glow);color:var(--accent);font-size:12px;font-weight:800}
+/* ═══════════ PREMIUM GLASS SKIN ═══════════ */
+:root{
+  --glass:rgba(255,255,255,.72);
+  --glass-strong:rgba(255,255,255,.86);
+  --glass-soft:rgba(255,255,255,.48);
+  --glass-border:rgba(255,255,255,.66);
+  --hairline:rgba(24,24,27,.09);
+  --shadow-glass:0 18px 46px rgba(15,23,42,.10),0 1px 0 rgba(255,255,255,.72) inset;
+  --shadow-float:0 10px 28px rgba(15,23,42,.08);
+}
+[data-theme="dark"]{
+  --glass:rgba(24,24,27,.64);
+  --glass-strong:rgba(39,39,42,.78);
+  --glass-soft:rgba(39,39,42,.42);
+  --glass-border:rgba(255,255,255,.10);
+  --hairline:rgba(255,255,255,.08);
+  --shadow-glass:0 18px 48px rgba(0,0,0,.34),0 1px 0 rgba(255,255,255,.08) inset;
+  --shadow-float:0 12px 34px rgba(0,0,0,.28);
+}
+body{background:linear-gradient(180deg,#f7f8fb 0%,#eef2f7 46%,#fbfcfd 100%) fixed}
+[data-theme="dark"] body{background:linear-gradient(180deg,#09090b 0%,#111318 48%,#08090b 100%) fixed}
+body::before{content:'';position:fixed;inset:0;background:var(--noise);pointer-events:none;z-index:9999;opacity:.24;mix-blend-mode:multiply}
+[data-theme="dark"] body::before{opacity:.12;mix-blend-mode:screen}
+.topnav{background:var(--glass-strong);border-bottom:1px solid var(--glass-border);box-shadow:0 10px 30px rgba(15,23,42,.06);backdrop-filter:blur(24px) saturate(1.35);-webkit-backdrop-filter:blur(24px) saturate(1.35)}
+.sidebar{background:var(--glass);border-right:1px solid var(--glass-border);box-shadow:1px 0 0 var(--hairline),12px 0 38px rgba(15,23,42,.04);backdrop-filter:blur(26px) saturate(1.35);-webkit-backdrop-filter:blur(26px) saturate(1.35)}
+.mode-tabs,.search-box,.repo-link,.light-link,.theme-btn{background:var(--glass-soft);border:1px solid var(--glass-border);box-shadow:0 1px 0 rgba(255,255,255,.45) inset}
+.mode-btn.active{background:linear-gradient(180deg,#24242a,#111113);color:#fff;box-shadow:0 8px 20px rgba(17,17,19,.18),0 1px 0 rgba(255,255,255,.18) inset}
+[data-theme="dark"] .mode-btn.active{background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.10));box-shadow:0 8px 24px rgba(0,0,0,.32),0 1px 0 rgba(255,255,255,.16) inset}
+.hero,.section-card,.panel,.quiz-item,.card-face,.search-result,.mentor-card,.score-card,.lv-block{background:var(--glass);border:1px solid var(--glass-border);box-shadow:var(--shadow-glass);backdrop-filter:blur(22px) saturate(1.28);-webkit-backdrop-filter:blur(22px) saturate(1.28)}
+.hero:hover,.section-card:hover,.panel:hover,.search-result:hover,.mentor-card:hover{box-shadow:var(--shadow-glass),0 0 0 1px rgba(99,102,241,.10);transform:translateY(-1px)}
+.source-item,pre,.framework-step,.md-pill,.pill,.sub-item.active,.side-item.active,.badge{background:rgba(255,255,255,.56);border-color:var(--glass-border);box-shadow:0 1px 0 rgba(255,255,255,.55) inset}
+[data-theme="dark"] .source-item,[data-theme="dark"] pre,[data-theme="dark"] .framework-step,[data-theme="dark"] .md-pill,[data-theme="dark"] .pill,[data-theme="dark"] .sub-item.active,[data-theme="dark"] .side-item.active,[data-theme="dark"] .badge{background:rgba(255,255,255,.07);border-color:var(--glass-border);box-shadow:0 1px 0 rgba(255,255,255,.08) inset}
+.markdown-doc blockquote,.microcopy,.progress-pill{background:var(--glass-soft);border:1px solid var(--glass-border);box-shadow:var(--shadow-float);backdrop-filter:blur(18px) saturate(1.25);-webkit-backdrop-filter:blur(18px) saturate(1.25)}
+.markdown-doc h1,.content-header h1{text-shadow:0 1px 0 rgba(255,255,255,.35)}
+[data-theme="dark"] .markdown-doc h1,[data-theme="dark"] .content-header h1{text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:20px}
+.panel{padding:22px 24px}
+.panel h3,.section-card h2{font-size:17px;font-weight:850;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.panel h3::before,.section-card h2::before{content:'';width:3px;height:18px;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:2px}
+.panel p,.section-card p{color:var(--fg2);font-size:14px;line-height:1.8;margin:8px 0}
+.panel ul,.section-card ul,.section-card ol{margin:8px 0 8px 20px;color:var(--fg2);font-size:14px}
+.panel li,.section-card li{margin:5px 0;line-height:1.7}
+.source-list{display:flex;flex-direction:column;gap:8px}
+.source-item{padding:9px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--bg2);font-family:var(--font-mono);font-size:12px;color:var(--fg2);line-height:1.45;word-break:break-all}
+.checkline{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--fg2)}
+.checkline:last-child{border-bottom:0}.checkline span:first-child{width:18px;height:18px;border-radius:5px;background:var(--success-soft);color:var(--success);display:grid;place-items:center;font-size:11px;font-weight:900;flex-shrink:0;margin-top:2px}
+.section-card{padding:28px 32px;margin-bottom:20px}
+.lv-block{margin:12px 0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)}
+.lv-block.lv1{border-left:3px solid var(--lv1)}.lv-block.lv2{border-left:3px solid var(--lv2)}.lv-block.lv3{border-left:3px solid var(--lv3)}
+.lv-header{display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:14px;font-weight:800;cursor:pointer;user-select:none}
+.lv-block.lv1 .lv-header{background:var(--lv1-soft);color:var(--lv1)}.lv-block.lv2 .lv-header{background:var(--lv2-soft);color:var(--lv2)}.lv-block.lv3 .lv-header{background:var(--lv3-soft);color:var(--lv3)}
+.lv-arrow{font-size:10px;transition:transform .2s;color:var(--fg3)}.lv-header.open .lv-arrow{transform:rotate(90deg)}
+.lv-tag{font-size:10px;padding:2px 8px;border-radius:10px;color:#fff;letter-spacing:.5px;text-transform:uppercase}.lv1 .lv-tag{background:var(--lv1)}.lv2 .lv-tag{background:var(--lv2)}.lv3 .lv-tag{background:var(--lv3)}
+.lv-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1);padding:0 16px}.lv-body.open{max-height:4000px;padding:0 16px 16px}
+.lv-body p,.lv-body li{color:var(--fg2);font-size:14px;line-height:1.8}.lv-body ul,.lv-body ol{margin:8px 0 8px 20px}.lv-body strong{color:var(--fg)}
+code.inline{background:var(--code-bg);border:1px solid var(--code-border);border-radius:4px;padding:2px 6px;color:var(--accent);font-family:var(--font-mono);font-size:12.5px}
+pre{background:var(--code-bg);border:1px solid var(--code-border);border-radius:var(--radius);padding:16px 18px;overflow:auto;font-family:var(--font-mono);font-size:12.5px;line-height:1.6;margin:12px 0;color:var(--fg)}
+.quiz-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden;animation:fadeUp .25s ease}
+.quiz-q{padding:14px 18px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-weight:700;font-size:14px}.quiz-q:hover{background:var(--bg2)}
+.q-num{width:24px;height:24px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-size:11px;flex-shrink:0}.q-text{flex:1}.q-toggle{font-size:10px;color:var(--fg3);margin-top:6px;transition:transform .2s}.q-toggle.open{transform:rotate(90deg)}
+.quiz-body{max-height:0;overflow:hidden;transition:max-height .28s}.quiz-body.open{max-height:900px}
+.quiz-hint{margin:0 18px 14px;padding:14px 16px;background:var(--warn-soft);border-left:3px solid var(--warn);border-radius:var(--radius-sm);font-size:13.5px;color:var(--fg2);line-height:1.7}
+.quiz-btns{display:flex;gap:8px;margin:0 18px 14px}.quiz-btn{padding:5px 14px;border-radius:var(--radius-sm);font-size:12px;font-weight:800;color:#fff}.quiz-btn.mastered{background:var(--success)}.quiz-btn.review{background:var(--warn)}
+.quiz-status{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:800;margin-top:3px}.status-mastered{background:var(--success-soft);color:var(--success);border:1px solid rgba(34,197,94,.22)}.status-review{background:var(--warn-soft);color:var(--warn);border:1px solid rgba(245,158,11,.22)}
+.nav-bar{display:flex;justify-content:space-between;gap:12px;margin-top:26px;padding-top:18px;border-top:1px solid var(--border)}
+.nav-btn,.tool-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:800;border:1px solid var(--border);color:var(--fg2);transition:all .2s}
+.nav-btn:hover,.tool-btn:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.nav-btn.primary,.tool-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 2px 8px var(--accent-glow)}
+.nav-btn.primary:hover,.tool-btn.primary:hover{background:var(--accent2);color:#fff}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.timer{font-family:var(--font-mono);font-size:21px;font-weight:800;letter-spacing:1px;color:var(--accent);background:var(--accent-soft);border-radius:var(--radius-sm);padding:4px 12px;min-width:88px;text-align:center}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{perspective:1200px;height:330px;cursor:pointer;animation:fadeUp .3s ease}.card-inner{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}.card.flipped .card-inner{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);overflow:auto}.card-front{padding:20px;display:flex;flex-direction:column}.card-back{transform:rotateY(180deg);padding:18px;font-size:13px}
+.card-idx{font-size:11px;font-weight:900;color:var(--fg3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}.card-title{font-size:15px;font-weight:800;line-height:1.6;flex:1}.card-tag{align-self:flex-start;margin-top:12px;padding:3px 10px;border-radius:16px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:900}
+.card-back h4{font-size:12px;font-weight:900;color:var(--accent);margin:10px 0 4px;letter-spacing:.5px;text-transform:uppercase}.card-back h4:first-child{margin-top:0}.card-back p{font-size:13px;color:var(--fg2);line-height:1.75}.code-link{font-family:var(--font-mono);font-size:12px;color:var(--fg3);word-break:break-all}
+.card-actions{display:flex;gap:8px;margin-top:12px;border-top:1px solid var(--border);padding-top:10px}.card-action{padding:5px 12px;border-radius:var(--radius-sm);font-size:11px;font-weight:900;color:#fff}.card-action.practice{background:var(--success)}.card-action.review{background:var(--warn)}
+.table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;font-size:13.5px}.table th{background:var(--bg2);color:var(--fg3);text-align:left;padding:10px 14px;font-size:12px;text-transform:uppercase}.table td{padding:10px 14px;border-top:1px solid var(--border);color:var(--fg2)}
+.search-result{padding:14px 18px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);margin:8px 0;cursor:pointer}.search-result:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}.sr-mode{font-size:10px;font-weight:900;color:var(--accent);letter-spacing:.6px;text-transform:uppercase}.sr-title{font-size:14px;font-weight:800;color:var(--fg);margin-top:2px}.sr-snippet{font-size:13px;color:var(--fg3);line-height:1.55;margin-top:4px}mark{background:var(--accent-glow);color:var(--accent);border-radius:3px;padding:1px 3px;font-weight:800}
+/* ═══════════ PREMIUM SURFACE FINAL PASS ═══════════ */
+.hero,.section-card,.panel,.quiz-item,.card-face,.search-result,.mentor-card,.score-card,.lv-block,.table{background:var(--glass);border:1px solid var(--glass-border);box-shadow:var(--shadow-glass);backdrop-filter:blur(22px) saturate(1.28);-webkit-backdrop-filter:blur(22px) saturate(1.28)}
+.hero:hover,.section-card:hover,.panel:hover,.search-result:hover,.mentor-card:hover{border-color:var(--glass-border);box-shadow:var(--shadow-glass),0 0 0 1px rgba(99,102,241,.10);transform:translateY(-1px)}
+.source-item,pre,.framework-step,.md-pill,.pill,.sub-item.active,.side-item.active,.badge,.timer,.table th{background:rgba(255,255,255,.56);border-color:var(--glass-border);box-shadow:0 1px 0 rgba(255,255,255,.55) inset}
+[data-theme="dark"] .source-item,[data-theme="dark"] pre,[data-theme="dark"] .framework-step,[data-theme="dark"] .md-pill,[data-theme="dark"] .pill,[data-theme="dark"] .sub-item.active,[data-theme="dark"] .side-item.active,[data-theme="dark"] .badge,[data-theme="dark"] .timer,[data-theme="dark"] .table th{background:rgba(255,255,255,.07);border-color:var(--glass-border);box-shadow:0 1px 0 rgba(255,255,255,.08) inset}
+.table td{border-color:var(--glass-border)}
+/* ═══════════ PREMIUM DEPTH SYSTEM ═══════════ */
+:root{
+  --layer-page:
+    linear-gradient(135deg,rgba(99,102,241,.14) 0%,rgba(99,102,241,0) 34%),
+    linear-gradient(225deg,rgba(20,184,166,.12) 0%,rgba(20,184,166,0) 38%),
+    linear-gradient(180deg,#fbfcff 0%,#edf2f8 46%,#f8fafc 100%);
+  --layer-main:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.08));
+  --glass-nav:rgba(255,255,255,.78);
+  --glass-sidebar:rgba(255,255,255,.58);
+  --glass-card:rgba(255,255,255,.68);
+  --glass-card-strong:rgba(255,255,255,.84);
+  --glass-chip:rgba(255,255,255,.50);
+  --stroke-strong:rgba(255,255,255,.82);
+  --shadow-nav:0 18px 55px rgba(15,23,42,.10),0 1px 0 rgba(255,255,255,.82) inset;
+  --shadow-side:14px 0 44px rgba(15,23,42,.07),1px 0 0 rgba(255,255,255,.70) inset;
+  --shadow-card-rich:0 22px 64px rgba(15,23,42,.12),0 8px 22px rgba(15,23,42,.06),0 1px 0 rgba(255,255,255,.80) inset;
+  --shadow-card-hover-rich:0 28px 76px rgba(15,23,42,.16),0 10px 26px rgba(15,23,42,.08),0 1px 0 rgba(255,255,255,.86) inset;
+  --shadow-hero-rich:0 30px 90px rgba(15,23,42,.16),0 1px 0 rgba(255,255,255,.88) inset;
+}
+[data-theme="dark"]{
+  --layer-page:
+    linear-gradient(135deg,rgba(99,102,241,.18) 0%,rgba(99,102,241,0) 34%),
+    linear-gradient(225deg,rgba(20,184,166,.12) 0%,rgba(20,184,166,0) 38%),
+    linear-gradient(180deg,#09090b 0%,#101216 48%,#08090b 100%);
+  --layer-main:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));
+  --glass-nav:rgba(20,20,23,.76);
+  --glass-sidebar:rgba(20,20,23,.62);
+  --glass-card:rgba(24,24,27,.64);
+  --glass-card-strong:rgba(32,32,36,.74);
+  --glass-chip:rgba(255,255,255,.07);
+  --stroke-strong:rgba(255,255,255,.13);
+  --shadow-nav:0 18px 58px rgba(0,0,0,.42),0 1px 0 rgba(255,255,255,.08) inset;
+  --shadow-side:14px 0 46px rgba(0,0,0,.28),1px 0 0 rgba(255,255,255,.06) inset;
+  --shadow-card-rich:0 24px 68px rgba(0,0,0,.38),0 8px 22px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.08) inset;
+  --shadow-card-hover-rich:0 30px 78px rgba(0,0,0,.48),0 12px 30px rgba(0,0,0,.26),0 1px 0 rgba(255,255,255,.10) inset;
+  --shadow-hero-rich:0 34px 92px rgba(0,0,0,.50),0 1px 0 rgba(255,255,255,.10) inset;
+}
+body{background:var(--layer-page) fixed}
+.app{background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,.02) 42%,rgba(255,255,255,.08))}
+[data-theme="dark"] .app{background:linear-gradient(90deg,rgba(255,255,255,.025),rgba(255,255,255,.008) 42%,rgba(255,255,255,.018))}
+.main{background:var(--layer-main)}
+.topnav{background:var(--glass-nav);border-bottom:1px solid var(--stroke-strong);box-shadow:var(--shadow-nav)}
+.sidebar{background:var(--glass-sidebar);border-right:1px solid var(--stroke-strong);box-shadow:var(--shadow-side)}
+.mode-tabs{background:rgba(255,255,255,.42);border:1px solid var(--stroke-strong);box-shadow:0 1px 0 rgba(255,255,255,.72) inset,0 10px 26px rgba(15,23,42,.06);padding:4px}
+[data-theme="dark"] .mode-tabs{background:rgba(255,255,255,.055);box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 12px 30px rgba(0,0,0,.26)}
+.mode-btn{position:relative;font-weight:800}
+.mode-btn.active{background:linear-gradient(180deg,#2b2b31,#111114);box-shadow:0 12px 28px rgba(17,17,19,.24),0 1px 0 rgba(255,255,255,.22) inset}
+[data-theme="dark"] .mode-btn.active{background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.08));box-shadow:0 12px 30px rgba(0,0,0,.36),0 1px 0 rgba(255,255,255,.14) inset}
+.search-box,.repo-link,.light-link,.theme-btn,.timer{background:var(--glass-chip);border:1px solid var(--stroke-strong);box-shadow:0 1px 0 rgba(255,255,255,.62) inset,0 10px 26px rgba(15,23,42,.05);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2)}
+[data-theme="dark"] .search-box,[data-theme="dark"] .repo-link,[data-theme="dark"] .light-link,[data-theme="dark"] .theme-btn,[data-theme="dark"] .timer{box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 12px 30px rgba(0,0,0,.22)}
+.side-title{padding:10px 12px 8px;color:var(--fg3);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.side-item{position:relative;min-height:36px;padding:8px 10px 8px 14px;border-radius:var(--radius-sm);font-weight:650;transition:background .18s,color .18s,box-shadow .18s,transform .18s}
+.side-item::before{content:'';position:absolute;left:6px;top:9px;bottom:9px;width:2px;border-radius:2px;background:transparent;transition:background .18s,top .18s,bottom .18s}
+.side-item:hover{background:rgba(255,255,255,.36);color:var(--fg);transform:translateX(1px)}
+[data-theme="dark"] .side-item:hover{background:rgba(255,255,255,.055)}
+.side-item.active{background:rgba(255,255,255,.62);color:var(--accent);font-weight:850;box-shadow:0 10px 24px rgba(99,102,241,.10),0 1px 0 rgba(255,255,255,.62) inset}
+[data-theme="dark"] .side-item.active{background:rgba(255,255,255,.08);box-shadow:0 12px 28px rgba(0,0,0,.24),0 1px 0 rgba(255,255,255,.08) inset}
+.side-item.active::before{top:7px;bottom:7px;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.badge{background:rgba(24,24,27,.06);color:var(--fg3);border:1px solid rgba(24,24,27,.06)}
+[data-theme="dark"] .badge{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.08)}
+.side-item.active .badge{background:linear-gradient(180deg,var(--accent),var(--accent2));color:#fff;border-color:transparent;box-shadow:0 6px 16px var(--accent-glow)}
+.markdown-doc{background:var(--glass-card-strong);border:1px solid var(--stroke-strong);border-radius:var(--radius);box-shadow:var(--shadow-hero-rich);padding:36px 42px;position:relative;overflow:hidden;backdrop-filter:blur(26px) saturate(1.24);-webkit-backdrop-filter:blur(26px) saturate(1.24)}
+.markdown-doc::before{content:'';position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.92),transparent)}
+[data-theme="dark"] .markdown-doc::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent)}
+.markdown-doc h1{font-size:32px;letter-spacing:0}
+.markdown-doc h2{border-top-color:rgba(24,24,27,.09)}
+[data-theme="dark"] .markdown-doc h2{border-top-color:rgba(255,255,255,.09)}
+.md-section{padding:2px 0 12px;border-radius:var(--radius-sm);transition:background .22s,padding .22s,margin .22s,box-shadow .22s}
+.md-section.active{background:linear-gradient(90deg,rgba(99,102,241,.13),rgba(20,184,166,.07),transparent 78%);padding-left:16px;margin-left:-16px;box-shadow:inset 3px 0 0 var(--accent)}
+[data-theme="dark"] .md-section.active{background:linear-gradient(90deg,rgba(129,140,248,.16),rgba(20,184,166,.07),transparent 78%)}
+.hero{background:var(--glass-card-strong);border-color:var(--stroke-strong);box-shadow:var(--shadow-hero-rich)}
+.section-card,.panel,.quiz-item,.card-face,.search-result,.mentor-card,.score-card,.lv-block,.table{background:var(--glass-card);border-color:var(--stroke-strong);box-shadow:var(--shadow-card-rich)}
+.hero:hover,.section-card:hover,.panel:hover,.quiz-item:hover,.search-result:hover,.mentor-card:hover{border-color:rgba(99,102,241,.28);box-shadow:var(--shadow-card-hover-rich);transform:translateY(-2px)}
+.source-item,pre,.framework-step,.md-pill,.pill,.sub-item.active,.badge,.timer,.table th{background:var(--glass-chip);border-color:var(--stroke-strong);box-shadow:0 1px 0 rgba(255,255,255,.62) inset}
+[data-theme="dark"] .source-item,[data-theme="dark"] pre,[data-theme="dark"] .framework-step,[data-theme="dark"] .md-pill,[data-theme="dark"] .pill,[data-theme="dark"] .sub-item.active,[data-theme="dark"] .badge,[data-theme="dark"] .timer,[data-theme="dark"] .table th{background:var(--glass-chip);border-color:var(--stroke-strong);box-shadow:0 1px 0 rgba(255,255,255,.08) inset}
+.nav-btn,.tool-btn{box-shadow:0 10px 24px rgba(15,23,42,.08),0 1px 0 rgba(255,255,255,.55) inset}
+.nav-btn.primary,.tool-btn.primary{box-shadow:0 14px 30px var(--accent-glow),0 1px 0 rgba(255,255,255,.24) inset}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1080px){.light-link{display:none}.search-box{width:170px}.search-box:focus{width:220px}.main{padding:24px}.card-grid{grid-template-columns:1fr}}
+@media(max-width:720px){
+  body::before{display:none}
+  .topnav{height:auto;min-height:var(--topnav-h);padding:10px 12px;flex-direction:column;align-items:stretch}.brand{width:100%;margin-right:0}.brand-sub{display:none}.mode-tabs{flex-direction:column}.mode-btn{width:100%;padding:8px 10px}.repo-link,.light-link{display:flex;justify-content:center}.search-box,.search-box:focus{width:100%}.app{display:block;height:auto;min-height:calc(100dvh - 180px)}.sidebar{display:none}.main{padding:16px 14px 48px}.hero,.section-card,.panel{padding:18px 16px}.hero h2{font-size:23px}.content-header h1{font-size:22px}.grid{grid-template-columns:1fr}.nav-bar{flex-direction:column}.nav-btn{width:100%}.card{height:380px}.quiz-q{padding:12px}.quiz-btns{flex-direction:column}.quiz-btn{width:100%;padding:8px 12px}.table{display:block;overflow:auto;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<div class="topnav">
+  <div class="brand">
+    <div class="brand-icon" aria-label="Go Gopher">
+      <svg viewBox="0 0 64 64" role="img" aria-hidden="true">
+        <ellipse cx="18" cy="24" rx="9" ry="11" fill="#6fd4e6"/><ellipse cx="46" cy="24" rx="9" ry="11" fill="#6fd4e6"/><ellipse cx="32" cy="35" rx="24" ry="20" fill="#74d7e8"/>
+        <ellipse cx="23" cy="32" rx="4" ry="5" fill="#111827"/><ellipse cx="41" cy="32" rx="4" ry="5" fill="#111827"/><ellipse cx="32" cy="39" rx="6" ry="4" fill="#27252a"/>
+        <rect x="27" y="45" width="10" height="7" rx="2" fill="#fff"/><path d="M32 43v10" stroke="#27252a" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div><span class="brand-text">视频Feed流系统</span><span class="brand-sub">（hard）学习</span></div>
+  </div>
+  <div class="mode-tabs">
+    <button class="mode-btn active" data-mode="intro" onclick="switchMode('intro')">前言</button>
+    <button class="mode-btn" data-mode="learn" onclick="switchMode('learn')">知识学习</button>
+    <button class="mode-btn" data-mode="breakdown" onclick="switchMode('breakdown')">项目拆解</button>
+    <button class="mode-btn" data-mode="interview" onclick="switchMode('interview')">面试模拟</button>
+    <button class="mode-btn" data-mode="scenario" onclick="switchMode('scenario')">场景还原</button>
+  </div>
+  <a class="repo-link" href="https://github.com/LeoninCS/GCFeed" target="_blank" rel="noopener">GitHub 仓库</a>
+  <a class="light-link" href="/docs/project-study/study-feed/">medium 版</a>
+  <div class="search-wrap"><span class="search-icon">⌕</span><input id="searchInput" class="search-box" type="text" placeholder="搜索内容..." oninput="handleSearch(this.value)"></div>
+  <button class="theme-btn" onclick="toggleTheme()" title="切换主题"><span id="themeIcon">☽</span></button>
+  <div class="progress-pill"><span class="dot"></span><span id="progressText">0/15</span></div>
+</div>
+<div class="app" id="app"></div>
+<script>
+const introData={
+  title:"视频Feed流系统（hard）15天项目学习",
+  desc:"视频Feed流系统（hard）基于 GCFeed 仓库，是一个更完整的短视频 Feed 工程：后端采用 Domain、Application、Infrastructure、Interfaces 四层结构，覆盖账户、视频、Feed、互动、关系、推荐、曝光、Embedding、Web 客户端和测试。hard 版学习目标是把“能跑的项目”拆成可讲、可改、可面试的工程闭环。",
+  repo:"https://github.com/LeoninCS/GCFeed",
+  pillars:[
+    {title:"项目介绍",text:"这是一个短视频 Feed 流 hard 版项目学习页，基于 LeoninCS/GCFeed 仓库整理。项目覆盖账户、视频发布、timeline、hot、following、recommend、互动、曝光、Embedding、Web 客户端和测试，适合把 Feed 系统从能运行一路学到能面试。"},
+    {title:"前置要求",text:"建议先具备 Go 基础、Gin/GORM、MySQL、Redis、RabbitMQ、HTTP API、JWT、React/Vite、Docker Compose、基础系统设计知识。掌握这些后，阅读源码、理解链路和回答追问会顺很多。"},
+    {title:"Level 1：能跑能演示",text:"这一层代表入门完成度：能启动项目，能演示注册、登录、发布视频、刷 Feed、点赞评论、关注、推荐曝光，知道每个功能解决什么业务问题。"},
+    {title:"Level 2：面试级理解",text:"这一层代表面试主线完成度：能讲清四层架构、模块边界、核心链路和常见面试问题，能用 2 分钟把项目讲成一个完整工程故事。"},
+    {title:"Level 3：抗追问能力",text:"这一层代表二三轮追问完成度：对缓存击穿、MQ 故障、幂等、游标分页、推拉结合、曝光去重、推荐降级等场景有判断和方案。"},
+    {title:"Level 4：可独立复刻",text:"这一层代表源码内化完成度：脑子里有目录结构、接口链路、数据表和关键代码形态，可以从零复刻一个可运行版本。"},
+    {title:"Level 5：Feed 流之神",text:"这一层代表抽象能力完成度：能把项目升维成通用 Feed 系统方法论，能主动讨论设计边界、容量估算、排序策略和工程演进。"},
+    {title:"学习方法",text:"你可以先看我的文档建立路线，再跟着页面每天学习；也可以让页面引导你走完目标、源码入口、核心问题、自检题、面试打法。每天只吃透一个主题。"},
+    {title:"最终产出",text:"学完后要有 2 分钟项目介绍、4 条核心链路图、8 个简历亮点、40+ 道面试问答、故障场景清单、扩展设计方案和一套可复盘的源码笔记。"},
+    {title:"Offer 冲刺",text:"这页的目标是帮你把项目讲得清楚、答得有证据、追问接得住。认真走完 15 天，你应该能把 Feed 项目变成大厂面试里的强项目。"}
+  ],
+  prerequisites:["Go 基础与并发模型","Gin / GORM / RESTful API","MySQL 表设计、事务、索引","Redis 缓存、ZSET、Lua、限流","RabbitMQ 消息投递、Ack、异步消费","JWT 鉴权与中间件","React / Vite 基础页面联调","Docker Compose 本地环境","缓存、MQ、一致性、Feed 流系统设计"],
+  levels:[
+    {title:"Level 1：能跑能演示",text:"学到可以完整演示功能，并能说明每个功能对应的业务价值。"},
+    {title:"Level 2：面试级理解",text:"学到可以讲清架构、链路、源码入口和常见面试题。"},
+    {title:"Level 3：抗追问能力",text:"学到可以处理特殊场景追问，并能给出工程权衡。"},
+    {title:"Level 4：可独立复刻",text:"学到可以关掉文档复刻核心模块，脑子里有代码结构。"},
+    {title:"Level 5：Feed 流之神",text:"学到可以抽象出 Feed 系统方法论，现场讨论边界、容量和演进。"}
+  ],
+  levelStandards:[
+    {standard:"能从本地启动到页面体验完整跑一遍。",proof:"能画出用户使用闭环：注册登录 -> 发布视频 -> Feed 分发 -> 互动 -> 曝光反馈。",next:"进入架构和源码入口学习。"},
+    {standard:"能用架构图讲清 Domain、Application、Infrastructure、Interfaces。",proof:"能用发布、刷 Feed、互动、推荐曝光四条链路回答主干面试题。",next:"开始准备故障、并发、一致性和降级追问。"},
+    {standard:"能解释缓存、MQ、幂等、游标、推拉、推荐、曝光的特殊场景。",proof:"面试官连续追问时，回答能回到源码证据和工程权衡。",next:"把代码结构背到可以复刻。"},
+    {standard:"能从零写出最小可运行版本。",proof:"能还原目录结构、接口设计、核心表、Service 编排和缓存/MQ 关键代码。",next:"把项目抽象成通用 Feed 系统设计框架。"},
+    {standard:"能从项目上升到系统设计方法论。",proof:"能主动讨论召回、排序、分发、曝光、容量、治理、灰度和演进路线。",next:"把它变成大厂面试的压轴项目。"}
+  ],
+  studyPath:[
+    {title:"看文档建地图",text:"先读项目 README、quickread、architecture，再看本页前言，建立系统地图。"},
+    {title:"跟 15 天走源码",text:"每天按目标、源码入口、核心知识点、自检题、面试打法推进。"},
+    {title:"把问题答成结构",text:"每道题都用结论、场景、源码、机制、权衡、扩展组织语言。"},
+    {title:"用输出倒逼学习",text:"每天沉淀一句介绍、一个链路图、一个源码证据、一个追问答案。"}
+  ],
+  outputs:["15 天源码阅读笔记","4 条主链路图：发布、刷 Feed、互动、推荐曝光","一份 2 分钟项目介绍稿","8 个技术亮点与源码依据","40+ 道 hard 版面试问答","故障场景与扩展方案清单"],
+  method:[
+    {title:"先运行",text:"先让项目跑起来，功能体验会给源码阅读提供坐标。"},
+    {title:"再分层",text:"从 router.Register 看依赖装配，再进入 Domain、Application、Infrastructure、Interfaces。"},
+    {title:"追链路",text:"用发布、刷 Feed、互动、推荐曝光四条主链路串起代码。"},
+    {title:"背表达",text:"把每个技术点整理成面试答案，并绑定源码文件。"},
+    {title:"抗追问",text:"用故障、并发、容量、降级、扩展场景训练二三轮追问。"},
+    {title:"拿 Offer",text:"把项目讲成可信工程经历，让它成为冲大厂的核心项目。"}
+  ],
+  answerFrame:["一句话结论","业务场景","源码证据","核心机制","权衡风险","生产扩展"],
+  scorecard:[
+    {title:"结构清晰",text:"回答有起点、链路、结果，面试官能快速跟上。"},
+    {title:"源码可信",text:"关键说法都能指到文件、函数和数据结构。"},
+    {title:"理论扎实",text:"能解释一致性、复杂度、缓存、MQ、事务的取舍。"},
+    {title:"可扩展",text:"能给出生产化演进方案和故障处理方案。"}
+  ]
+};
+
+const learnData=[
+{title:"第1章：系统边界与四层架构",topics:[
+{q:"hard 版 Feed 系统的核心边界是什么？",lv1:`<p>它覆盖内容供给、分发、消费、互动反馈和推荐曝光。用户发布视频后，内容进入 timeline、following、hot、recommend 等场景；用户浏览和互动后，系统记录曝光、计数和兴趣反馈。</p>`,lv2:`<p>源码入口集中在 <code class="inline">apps/api/internal/interfaces/http/router/router.go</code>。从 <code class="inline">router.Register</code> 可以看到账户、视频、Feed、互动、关系、推荐、曝光、Embedding 等模块如何装配。</p>`,lv3:`<p><strong>面试表达：</strong>这是一个完整短视频 Feed 闭环，重点展示工程分层、Feed 策略、缓存优化、异步互动、推荐曝光和前后端联调。</p>`},
+{q:"四层架构怎样降低项目复杂度？",lv1:`<p>Interfaces 处理 HTTP，Application 编排业务用例，Domain 定义实体和仓储接口，Infrastructure 提供 GORM、Redis、RabbitMQ、JWT 等实现。</p>`,lv2:`<p>读代码时按 Handler -> Service -> Domain Repository -> Infra Repository 的方向追。这样能把请求入口、业务决策和数据实现分开理解。</p>`,lv3:`<p><strong>面试表达：</strong>四层架构让业务逻辑依赖领域抽象，基础设施成为可替换实现，适合继续拆分推荐、曝光、互动等模块。</p>`}
+],quiz:[
+{q:"hard 版 Feed 系统的主业务闭环是什么？",hint:"发布 -> 分发 -> 浏览 -> 互动 -> 曝光反馈 -> 推荐。"},
+{q:"四层架构分别是什么？",hint:"Interfaces / Application / Domain / Infrastructure。"},
+{q:"源码装配入口在哪里？",hint:"apps/api/internal/interfaces/http/router/router.go。"}
+]},
+{title:"第2章：Feed 场景与游标分页",topics:[
+{q:"timeline、hot、following、recommend 如何区分？",lv1:`<p>timeline 解决全局最新内容，hot 解决短期热门内容，following 解决关注关系分发，recommend 解决个性化候选排序。</p>`,lv2:`<p>Feed Service 用 scene 策略注册表管理不同场景。timeline 按发布时间和 video_id 翻页，hot 用窗口与 offset，following 结合推拉，recommend 结合候选池、相似度、热度和新鲜度。</p>`,lv3:`<p><strong>面试表达：</strong>不同场景的排序目标、缓存策略和分页方式各有侧重，统一策略接口让系统容易扩展新 Feed 场景。</p>`},
+{q:"游标分页为什么适合 Feed？",lv1:`<p>Feed 流持续插入新内容，游标用上一页最后一条的排序字段定位下一页，翻页体验更稳定。</p>`,lv2:`<p>timeline cursor 保存 <code class="inline">published_at + video_id</code>。video_id 作为并列排序字段，可以处理同一发布时间下的稳定顺序。</p>`,lv3:`<p><strong>面试表达：</strong>游标分页把翻页从位置偏移转成排序边界，适合无限滚动和高频新增数据。</p>`}
+],quiz:[
+{q:"hard 版支持哪些 Feed scene？",hint:"timeline / hot / following / recommend。"},
+{q:"timeline cursor 保存哪些字段？",hint:"published_at + video_id。"},
+{q:"recommend 排序会考虑哪些因素？",hint:"相似度、热度、新鲜度、曝光过滤。"}
+]},
+{title:"第3章：缓存、MQ 与一致性",topics:[
+{q:"Feed 缓存为什么拆成页缓存、卡片缓存和计数缓存？",lv1:`<p>页缓存保存排序结果，卡片缓存保存标题封面作者等稳定信息，计数缓存保存点赞评论收藏等高频变化信息。</p>`,lv2:`<p><code class="inline">feed_cache.go</code> 管理 page、card、stat 等缓存。Service 先取轻量页，再批量 MGET 卡片和计数，缺失时批量回源。</p>`,lv3:`<p><strong>面试表达：</strong>拆分缓存能让排序结果稳定，也能给高频计数设置更短 TTL，减少整体失效成本。</p>`},
+{q:"Redis + RabbitMQ 如何支撑互动链路？",lv1:`<p>点赞收藏先写 Redis 快速状态，再通过 MQ 异步落库和更新计数，接口响应速度更稳。</p>`,lv2:`<p>互动服务负责写 Redis 状态和投递事件，Worker 负责消费事件、写 MySQL、更新计数和热度。</p>`,lv3:`<p><strong>面试表达：</strong>这是最终一致性设计，用 Redis 承接低延迟状态，用 MQ 平滑写库压力，用幂等保证重复消息下结果正确。</p>`}
+],quiz:[
+{q:"页缓存和卡片缓存分别保存什么？",hint:"页缓存保存排序结果，卡片缓存保存展示信息。"},
+{q:"互动链路为什么使用 MQ？",hint:"降低接口延迟，削峰写库，解耦状态更新。"},
+{q:"singleflight 解决什么问题？",hint:"同 key 并发回源合并成一次。"}
+]},
+{title:"第4章：推荐、曝光与 Embedding",topics:[
+{q:"推荐候选怎样形成？",lv1:`<p>推荐从候选池中选择视频，结合向量相似度、热度和新鲜度排序，并用曝光记录过滤已经看过的内容。</p>`,lv2:`<p>推荐模块读取用户兴趣和视频 embedding，曝光模块记录 view event 和聚合统计，Embedding 模块用 Hash N-gram 生成文本向量。</p>`,lv3:`<p><strong>面试表达：</strong>这个推荐系统偏工程展示，核心价值是把内容理解、候选排序和曝光反馈串成可运行闭环。</p>`},
+{q:"曝光日志在 Feed 系统里有什么价值？",lv1:`<p>曝光日志记录用户看过什么、看了多久、是否互动。它能用于去重、兴趣画像和推荐质量评估。</p>`,lv2:`<p>曝光服务接收浏览事件，记录曝光明细和聚合信息，推荐服务据此做 seen 过滤和兴趣更新。</p>`,lv3:`<p><strong>面试表达：</strong>曝光是推荐反馈闭环的基础，能把 Feed 从静态排序推进到基于用户反馈的动态分发。</p>`}
+],quiz:[
+{q:"推荐权重有哪些？",hint:"相似度、热度、新鲜度。"},
+{q:"Embedding 使用什么轻量方案？",hint:"Hash N-gram 文本向量。"},
+{q:"曝光日志的核心用途是什么？",hint:"去重、兴趣反馈、推荐评估。"}
+]},
+{title:"第5章：面试表达与工程扩展",topics:[
+{q:"hard 版项目介绍应该怎样组织？",lv1:`<p>先讲业务闭环，再讲后端四层架构，然后讲 Feed 策略、缓存/MQ、推荐曝光，最后补充前端联调和测试。</p>`,lv2:`<p>回答时绑定源码：router.Register 讲装配，feed/service.go 讲 Feed 策略，cache/feed_cache.go 讲缓存，recommendation/service.go 讲推荐，exposure/service.go 讲曝光。</p>`,lv3:`<p><strong>面试表达：</strong>用“结论 -> 场景 -> 源码 -> 机制 -> 权衡 -> 扩展”的结构回答，可信度最高。</p>`},
+{q:"系统扩展时优先关注什么？",lv1:`<p>优先关注容量、缓存命中、消息积压、推荐延迟、曝光数据量、数据库热点和降级策略。</p>`,lv2:`<p>可以从 API 水平扩容、Redis Cluster、MQ 独立 Worker、推荐异步化、曝光分表、监控告警等方向扩展。</p>`,lv3:`<p><strong>面试表达：</strong>扩展方案要先说明瓶颈，再给指标，再给演进路径。</p>`}
+],quiz:[
+{q:"项目介绍的回答结构是什么？",hint:"业务闭环 -> 架构 -> 核心链路 -> 技术亮点 -> 扩展。"},
+{q:"答题框架是什么？",hint:"结论 -> 场景 -> 源码 -> 机制 -> 权衡 -> 扩展。"},
+{q:"扩展方案先讲什么？",hint:"先讲瓶颈和指标。"}
+]}
+];
+
+const studyDays=[
+{day:1,title:"项目定位与系统上下文",goal:"建立视频Feed流系统（hard）的业务边界、模块地图和阅读顺序。",focus:["短视频 Feed 完整闭环","README 与 quickread","系统上下文图","P0/P1 能力边界"],sources:["README.md","docs/quickread.md","docs/architecture.md","docs/product.md"],topics:[
+{q:"hard 版在业务上比 medium 多了什么？",lv1:`<p>hard 版把视频 Feed 从一个后端练习项目扩展成完整工程闭环。除了发布、刷 Feed、点赞评论，还加入关注关系、推荐候选、曝光去重、Embedding、React Web、API 测试和模块设计文档。</p>`,lv2:`<p>从 <code class="inline">README.md</code> 的功能清单看，P0 覆盖账户、视频、Feed、曝光、推荐、互动；P1 补充资料页、关注、收藏、删除、上传和 Web 客户端。代码阅读入口集中在 <code class="inline">apps/api</code> 与 <code class="inline">apps/web</code>。</p>`,lv3:`<p><strong>面试表达：</strong>视频Feed流系统（hard）是一个短视频 Feed 系统工程，重点展示从内容供给、分发、消费、互动到曝光反馈的闭环能力。它适合讲工程分层、Feed 策略、缓存优化、异步落库、推荐曝光和前后端联调。</p>`},
+{q:"第一天应该怎样读项目？",lv1:`<p>第一天只做三件事：读 README 确定系统目标，读 quickread 确定阅读顺序，读 architecture 建立架构图。</p>`,lv2:`<p>推荐按四条主线归类：用户线对应 <code class="inline">account/relation</code>，内容线对应 <code class="inline">video/upload</code>，分发线对应 <code class="inline">feed/recommendation/exposure</code>，互动线对应 <code class="inline">interaction</code>。</p>`,lv3:`<p><strong>复盘问题：</strong>项目定位是什么？当前已实现哪些 P0 功能？后续规划模块有哪些？如果只给 2 分钟介绍，你会保留哪 5 个关键词？</p>`}
+],tasks:["画出系统上下文图：Web、API、MySQL、Redis、RabbitMQ、uploads","列出四条主线：用户、内容、分发、互动","写第一版 2 分钟项目介绍","标记 10 个优先阅读文件"],quiz:[
+{q:"hard 版的四条主线是什么？",hint:"用户、内容、分发、互动。"},
+{q:"后端代码集中在哪个目录？",hint:"apps/api。"},
+{q:"Web 客户端集中在哪个目录？",hint:"apps/web。"},
+{q:"第一天最重要的产出是什么？",hint:"系统上下文图和项目介绍初稿。"}
+]},
+{day:2,title:"四层架构与依赖装配",goal:"掌握 Domain、Application、Infrastructure、Interfaces 的职责和 router.Register 装配链路。",focus:["四层结构","router.Register","AutoMigrate","Repository -> Service -> Handler"],sources:["apps/api/cmd/feed/main.go","apps/api/internal/interfaces/http/router/router.go","apps/api/internal/domain","apps/api/internal/infra"],topics:[
+{q:"hard 版的四层架构怎么讲？",lv1:`<p>Interfaces 处理 HTTP 输入输出，Application 编排用例，Domain 放实体、错误和仓储接口，Infrastructure 实现 MySQL、Redis、RabbitMQ、JWT 等基础能力。</p>`,lv2:`<p><code class="inline">router.Register</code> 先把 <code class="inline">database/sql</code> 连接交给 GORM，再 AutoMigrate 模型，然后按模块创建 Repository、Service、Handler，最后注册 RESTful 路由和中间件。</p>`,lv3:`<p><strong>面试表达：</strong>依赖方向从外层进入应用层，再到领域抽象，基础设施提供实现。这个结构适合教学项目扩展成多服务，也方便替换 Redis、MQ 或仓储实现。</p>`},
+{q:"router.Register 里哪些装配点值得重点讲？",lv1:`<p>重点看数据库迁移、JWT Manager、Redis FeedCache、RabbitMQ、推荐服务、Feed 服务、互动服务、FanoutWorker 和 EmbeddingWorker。</p>`,lv2:`<p>Redis 存在时注入 <code class="inline">WithFeedCache</code> 和 <code class="inline">WithHotScoreRecorder</code>；RabbitMQ 存在时注入视频发布事件、曝光事件、互动异步管线，并启动 Worker。</p>`,lv3:`<p><strong>复盘问题：</strong>Redis 和 RabbitMQ 作为可选增强能力如何装配？Worker 为什么在 API 进程内启动？教学项目和生产部署会如何演进？</p>`}
+],tasks:["画出 Config -> DB/Redis/MQ/JWT -> Repo -> Service -> Handler -> Router 装配图","整理 AutoMigrate 的模型列表","列出 Redis 和 RabbitMQ 注入了哪些 Option","用 router.Register 找到每个模块的入口"],quiz:[
+{q:"Interfaces 层负责什么？",hint:"HTTP Handler、DTO、Router、中间件。"},
+{q:"Application 层负责什么？",hint:"业务用例编排和跨模块协作。"},
+{q:"Infrastructure 层负责什么？",hint:"GORM、Redis、RabbitMQ、JWT、配置等实现。"},
+{q:"router.Register 最核心的价值是什么？",hint:"集中完成依赖装配和路由注册。"}
+]},
+{day:3,title:"账户、JWT 与 HTTP 资源设计",goal:"熟悉注册登录、当前用户、公开资料和 RESTful 路由约定。",focus:["account domain","JWT Manager","JWTAuth / OptionalJWTAuth","RESTful 资源"],sources:["apps/api/internal/interfaces/http/account/handler.go","apps/api/internal/application/account/service.go","apps/api/internal/infra/jwt/jwt.go","apps/api/internal/interfaces/http/middleware/jwt_auth.go"],topics:[
+{q:"账户链路怎么读？",lv1:`<p>账户链路适合作为四层架构的入门样例。它包含注册、登录、退出、当前用户、更新资料和公开资料。</p>`,lv2:`<p>从路由 <code class="inline">POST /api/users</code> 和 <code class="inline">POST /api/sessions</code> 进入，读 Handler 的参数解析，再读 <code class="inline">application/account/service.go</code> 的业务校验，最后读 GORM 仓储。</p>`,lv3:`<p><strong>面试表达：</strong>账户模块展示了标准 CRUD 与 JWT 登录态。登录成功由 JWT Manager 签发 access token，受保护接口通过中间件解析用户身份。</p>`},
+{q:"OptionalJWTAuth 有什么价值？",lv1:`<p>Feed 浏览接口支持匿名访问，也支持登录用户带身份访问。OptionalJWTAuth 把身份解析变成增强能力，适合 Feed、评论列表、公开视频详情这类接口。</p>`,lv2:`<p>在 <code class="inline">router.go</code> 中，<code class="inline">GET /api/feed-items</code> 和 <code class="inline">POST /api/feed-queries</code> 使用 OptionalJWTAuth。Handler 可从上下文拿 viewerID，传给 Feed Service。</p>`,lv3:`<p><strong>复盘问题：</strong>登录用户的 Feed 和匿名用户有什么差异？哪些接口需要强鉴权？Token 过期后 Handler 如何拿到错误状态？</p>`}
+],tasks:["跑通注册、登录、Me 三个接口","画出 JWT 签发与解析流程","对比 JWTAuth 和 OptionalJWTAuth","整理账户模块的错误映射规则"],quiz:[
+{q:"会话资源对应哪些接口？",hint:"POST /api/sessions 登录，DELETE /api/sessions/current 退出。"},
+{q:"OptionalJWTAuth 主要用于哪些接口？",hint:"Feed 查询等可匿名接口。"},
+{q:"JWT Manager 被哪些地方使用？",hint:"账户服务签发 token，鉴权中间件校验 token。"},
+{q:"账户模块适合用来理解什么？",hint:"标准四层架构链路。"}
+]},
+{day:4,title:"视频发布、上传与幂等",goal:"理解视频主体、统计表、上传资源、软删除和 Idempotency-Key。",focus:["video / video_stat","uploads 静态文件","Idempotency-Key","软删除"],sources:["apps/api/internal/application/video/service.go","apps/api/internal/domain/video/entity.go","apps/api/internal/infra/persistence/video/gorm.go","apps/api/internal/interfaces/http/upload/handler.go"],topics:[
+{q:"发布视频链路怎么讲？",lv1:`<p>视频发布创建 video 主体记录，同时创建 video_stat 统计记录。视频主体保存标题、简介、媒体地址、封面、状态和发布时间；统计表保存点赞、收藏、评论计数。</p>`,lv2:`<p><code class="inline">CreatePublished</code> 会先检查 Idempotency-Key 命中，再创建领域实体，最后调用仓储 Save。保存成功后发布 <code class="inline">PublishedEvent</code>，用于 fanout 和 embedding。</p>`,lv3:`<p><strong>面试表达：</strong>幂等键解决客户端重试和并发创建问题。先查已有记录，插入冲突后再查一次，保证同一次请求拿到同一视频。</p>`},
+{q:"软删除和公开视频详情怎么处理？",lv1:`<p>删除视频采用状态更新。公开详情只返回已发布视频，删除或下线状态在公开接口里表现为查询失败。</p>`,lv2:`<p><code class="inline">Delete</code> 先查任意状态视频，再调用领域方法校验作者身份和目标状态。已经删除的记录再次删除返回成功，保证删除接口幂等。</p>`,lv3:`<p><strong>复盘问题：</strong>为什么主表和统计表拆开？删除为什么采用状态字段？上传文件如何通过 /uploads 访问？</p>`}
+],tasks:["画出上传文件 -> 发布视频 -> 创建统计表的链路","解释 Idempotency-Key 的并发冲突处理","整理 video 状态机","用测试文件验证重复发布返回同一结果"],quiz:[
+{q:"video_stat 保存哪些字段？",hint:"like_count、comment_count、favorite_count。"},
+{q:"发布视频时为什么创建 video_stat？",hint:"Feed 和详情读取计数时有稳定来源。"},
+{q:"软删除接口如何保证幂等？",hint:"已经删除再次删除仍返回成功。"},
+{q:"PublishedEvent 触发哪些后续能力？",hint:"fanout、预热、embedding。"}
+]},
+{day:5,title:"Timeline Feed 与游标分页",goal:"掌握 timeline scene、cursor 编码、limit+1 和轻量页结果。",focus:["Scene 策略注册表","TimelineStrategy","cursor + limit","FeedPageItem"],sources:["apps/api/internal/application/feed/service.go","apps/api/internal/domain/feed/entity.go","apps/api/internal/infra/persistence/feed/gorm.go","apps/api/internal/interfaces/http/feed/handler.go"],topics:[
+{q:"Feed scene 策略注册表是什么？",lv1:`<p>Feed Service 内部维护 scene 到 Strategy 的映射。timeline、hot、following、recommend 都是一个 Strategy，新增场景只要实现接口并注册。</p>`,lv2:`<p><code class="inline">New</code> 默认注册 Timeline、Hot、Following，<code class="inline">WithRecommender</code> 会注册 RecommendStrategy。<code class="inline">GetFeed</code> 根据 scene 找到策略并调用 List。</p>`,lv3:`<p><strong>面试表达：</strong>策略注册表让 Feed 能力从“一个大 if/else”演进为可扩展场景体系，适合扩展本地同城、关注、推荐、热榜等不同 feed。</p>`},
+{q:"timeline 游标分页怎么保证稳定？",lv1:`<p>timeline 按 published_at DESC、video_id DESC 排序。游标保存当前页最后一条的 published_at 和 video_id，下一页从它之后继续查。</p>`,lv2:`<p><code class="inline">listPageFromRepo</code> 多取 <code class="inline">limit+1</code> 判断 hasMore，返回时裁掉多余项。游标通过 JSON + Base64 编码返回客户端。</p>`,lv3:`<p><strong>复盘问题：</strong>为什么多取一条能判断 hasMore？同一发布时间下为什么还需要 video_id？cursor 解析失败应该返回什么错误？</p>`}
+],tasks:["读懂 GetFeed -> TimelineStrategy.List -> listPageFromRepo","手写 timeline cursor 编码内容","画出 limit+1 判断 hasMore","整理 FeedPageItem 与 FeedItem 的区别"],quiz:[
+{q:"hard 版支持哪些 Feed scene？",hint:"timeline、hot、following、recommend。"},
+{q:"timeline 游标保存哪些字段？",hint:"published_at 和 video_id。"},
+{q:"limit+1 技巧用于什么？",hint:"判断 has_more。"},
+{q:"FeedPageItem 保存什么？",hint:"轻量排序与组装字段。"}
+]},
+{day:6,title:"Feed 缓存、批量组装与 singleflight",goal:"理解页缓存、视频卡片缓存、计数缓存和批量回源。",focus:["page cache","video card cache","video stat cache","MGET + batch repo","singleflight"],sources:["apps/api/internal/application/feed/service.go:loadFeedPage","apps/api/internal/application/feed/service.go:assembleFeedItems","apps/api/internal/infra/cache/feed_cache.go","apps/api/internal/infra/persistence/feed/gorm.go"],topics:[
+{q:"为什么 Feed 页缓存只存轻量页？",lv1:`<p>页缓存只保存 video_id、author_id、published_at、hot_score 等轻量字段。视频标题、封面、作者信息和计数单独用 card/stat 缓存批量组装。</p>`,lv2:`<p><code class="inline">loadFeedPage</code> 负责页缓存和 singleflight。<code class="inline">assembleFeedItems</code> 先 MGET cards/stats，缺失的 ID 通过仓储批量回源，再写回 Redis。</p>`,lv3:`<p><strong>面试表达：</strong>轻量页缓存让分页排序结果稳定，card/stat 拆分让高频计数拥有更短 TTL。首页 5 秒，后续页 45 秒，卡片 15 分钟，计数 15 秒。</p>`},
+{q:"singleflight 在这里解决什么问题？",lv1:`<p>同一个 Feed 页缓存过期时，并发请求会争抢回源。singleflight 把同 key 的并发回源合并成一次，其他请求共享结果。</p>`,lv2:`<p>代码中 group key 使用 <code class="inline">feedPageCacheKey(scene,cursor,limit)</code>，回源前还会 double-check 一次缓存，回源成功后设置带抖动的 TTL。</p>`,lv3:`<p><strong>复盘问题：</strong>首页 TTL 为什么短？后续页 TTL 为什么更长？缓存 key 为什么要 hash cursor？MGET 失败时系统如何继续工作？</p>`}
+],tasks:["列出四类缓存 key 和 TTL","画出 assembleFeedItems 的 MGET -> missing -> batch repo -> set cache 流程","解释 singleflight 的 key 设计","分析首页缓存和后续页缓存差异"],quiz:[
+{q:"Feed 首页 TTL 是多少？",hint:"5 秒 + 抖动。"},
+{q:"Feed 后续页 TTL 是多少？",hint:"45 秒 + 抖动。"},
+{q:"视频卡片缓存 TTL 是多少？",hint:"15 分钟。"},
+{q:"视频计数缓存 TTL 是多少？",hint:"15 秒。"}
+]},
+{day:7,title:"Hot Feed 与分钟桶热榜",goal:"掌握热度分、分钟桶、窗口合并、offset 游标和降级仓储路径。",focus:["ZSET 分钟桶","ZUNIONSTORE","热度权重","window cursor"],sources:["apps/api/internal/application/feed/service.go:HotStrategy","apps/api/internal/infra/cache/feed_cache.go:AddHotScore","apps/api/internal/domain/feed/entity.go:ScoreHotFeedItem","apps/api/internal/application/interaction/service.go"],topics:[
+{q:"Hot Feed 怎么计算热度？",lv1:`<p>热度来自点赞、收藏、评论。权重为点赞 3 分、收藏 4 分、评论 5 分，取消行为写入负分。Redis 中每分钟一个 ZSET 桶。</p>`,lv2:`<p><code class="inline">AddHotScore</code> 写入 <code class="inline">feed:hot:minute:v1:{yyyyMMddHHmm}</code>，TTL 为 2 小时。查询时 <code class="inline">ZUNIONSTORE</code> 合并最近 60 个桶到窗口 key，窗口 key TTL 2 分钟。</p>`,lv3:`<p><strong>面试表达：</strong>分钟桶让写入实时、查询可缓存，窗口 key 复用当前一分钟内的热榜结果，offset 游标保证同一窗口翻页稳定。</p>`},
+{q:"Hot cursor 为什么用 windowEnd + offset？",lv1:`<p>Redis 热榜查询基于固定窗口快照，cursor 保存 windowEnd 和 offset。下一页复用同一窗口，避免第一页和第二页基于不同热榜快照。</p>`,lv2:`<p><code class="inline">listPageFromHotWindow</code> 解析 cursor 后固定 windowEnd，offset 从上一页延续。新请求无 cursor 时使用当前 UTC 分钟。</p>`,lv3:`<p><strong>复盘问题：</strong>ZUNIONSTORE 合并 60 个桶的复杂度怎么估算？为什么要移除分数小于等于 0 的条目？Redis 缓存故障时走哪条路径？</p>`}
+],tasks:["画出互动写入分钟桶、查询合并窗口的流程","整理热度权重和负分规则","解释 windowEnd + offset cursor","分析 60 分钟窗口的性能和准确性"],quiz:[
+{q:"点赞、收藏、评论权重分别是多少？",hint:"点赞 3，收藏 4，评论 5。"},
+{q:"分钟桶 TTL 是多少？",hint:"2 小时。"},
+{q:"窗口 key TTL 是多少？",hint:"2 分钟。"},
+{q:"Hot cursor 保存什么？",hint:"windowEnd 和 offset。"}
+]},
+{day:8,title:"互动 Redis 快速状态与 MQ 异步落库",goal:"理解点赞收藏如何快速返回、异步写 MySQL、更新热榜。",focus:["SetActionState","Redis Watch","counter shard","RabbitMQ ActionChangedEvent","同步兜底"],sources:["apps/api/internal/application/interaction/service.go","apps/api/internal/infra/cache/feed_cache.go:SetActionState","apps/api/internal/application/interaction/worker.go","apps/api/internal/infra/mq/rabbitmq.go"],topics:[
+{q:"点赞收藏为什么走 Redis 快速状态？",lv1:`<p>互动接口需要快速返回最新状态和计数。Service 先读取 MySQL 初始计数，再用 Redis 写用户行为状态和实时计数，随后投递 MQ 给 Worker 异步落库。</p>`,lv2:`<p><code class="inline">setActionAsync</code> 调用 <code class="inline">SetActionState</code>，Redis 使用 Watch + TxPipelined 保证行为状态和计数变更一致。Delta 为 0 时表示重复请求或状态相同。</p>`,lv3:`<p><strong>面试表达：</strong>Redis 承接在线读写体验，RabbitMQ 承接最终持久化；MQ 投递失败时回落到同步 SetAction，保证核心数据仍可写入。</p>`},
+{q:"计数分片有什么意义？",lv1:`<p>同一个视频的点赞收藏可能有大量并发写。项目把实时计数增量按用户分散到 16 个 shard hash，读取时汇总 base 和 shard delta。</p>`,lv2:`<p>关键常量 <code class="inline">actionStatCounterShardCount = 16</code>。<code class="inline">actionStat</code> 读取 base、JSON fallback 和 shard deltas，最后用 clamp 保护计数。</p>`,lv3:`<p><strong>复盘问题：</strong>Redis Watch 冲突会怎样？幂等键命中时 delta 如何处理？为什么 JSON stat TTL 只有 15 秒？</p>`}
+],tasks:["画出 Like API -> Redis -> MQ -> Worker -> MySQL 链路","解释 action state、base counter、shard counter、stat JSON 四类 key","整理 MQ 失败同步兜底路径","准备一段 Redis Watch 面试回答"],quiz:[
+{q:"ActionChangedEvent 写入哪里？",hint:"RabbitMQ，Worker 消费后写 MySQL。"},
+{q:"actionStatCounterShardCount 是多少？",hint:"16。"},
+{q:"Idempotency-Key 命中时 delta 怎么样？",hint:"delta 为 0。"},
+{q:"MQ 投递失败后怎么处理？",hint:"回落到同步仓储写入。"}
+]},
+{day:9,title:"评论、权限与游标分页",goal:"理解评论创建、删除、权限判断、计数更新和评论游标。",focus:["CreateComment","DeleteComment","评论权限","comment cursor","热度增量"],sources:["apps/api/internal/application/interaction/service.go","apps/api/internal/domain/interaction/entity.go","apps/api/internal/infra/persistence/interaction/gorm.go","apps/api/internal/interfaces/http/interaction/handler.go"],topics:[
+{q:"评论创建和点赞收藏有什么差异？",lv1:`<p>评论创建直接走仓储事务，支持幂等键命中返回已有评论。评论创建后更新 comment_count，并按评论权重写热度。</p>`,lv2:`<p><code class="inline">CreateComment</code> 先根据 userID + idempotencyKey 查已有评论，再创建领域 Comment，调用 repo.CreateComment，返回评论和评论数。</p>`,lv3:`<p><strong>面试表达：</strong>评论属于内容实体，需要保存文本、作者、状态和时间，适合事务写入；点赞收藏更适合状态变更和快速计数。</p>`},
+{q:"删除评论的权限怎么讲？",lv1:`<p>评论作者、视频作者、运营角色拥有不同删除权限。删除采用状态变更，并返回删除后的 comment_count。</p>`,lv2:`<p><code class="inline">DeleteComment</code> 调用仓储，由仓储确认评论存在、用户身份、视频归属和角色。删除成功后用 delta 写入热度变化。</p>`,lv3:`<p><strong>复盘问题：</strong>评论列表为什么用 created_at + comment_id 游标？评论删除如何影响热榜？运营角色如何扩展到审核后台？</p>`}
+],tasks:["画出评论创建事务链路","整理评论删除权限矩阵","手写评论分页 cursor 内容","解释评论对热榜的正负增量"],quiz:[
+{q:"评论默认 limit 是多少？",hint:"20。"},
+{q:"评论 cursor 保存哪些字段？",hint:"created_at 和 comment_id。"},
+{q:"谁可以删除评论？",hint:"评论作者、视频作者、运营角色。"},
+{q:"评论热度权重是多少？",hint:"5。"}
+]},
+{day:10,title:"关注关系与 Following Feed",goal:"掌握关注关系、回填、普通作者推送、大 V 拉取和 Redis 索引合并。",focus:["relation service","FollowFeedBackfiller","FanoutWorker","inbox/outbox","BigCreatorFollowerThreshold"],sources:["apps/api/internal/application/relation/service.go","apps/api/internal/interfaces/http/router/router.go:FollowFeedBackfiller","apps/api/internal/application/video/fanout_worker.go","apps/api/internal/infra/cache/feed_cache.go:ListFollowingIndexPage"],topics:[
+{q:"关注流推拉结合怎么实现？",lv1:`<p>普通作者发布后推入粉丝 inbox，大 V 发布后写作者 outbox。用户刷 following 时读取自己的 inbox 和关注大 V 的 outbox，排序去重后返回。</p>`,lv2:`<p>FanoutWorker 收到 PublishedEvent 后先预热视频卡片，再统计粉丝数。粉丝数达到 <code class="inline">BigCreatorFollowerThreshold = 10000</code> 时写 outbox；普通作者按批次写 inbox。</p>`,lv3:`<p><strong>面试表达：</strong>推拉结合平衡写放大和读放大。普通作者用推模型保证读取快，大 V 用拉模型控制发布瞬间写入压力。</p>`},
+{q:"FollowFeedBackfiller 有什么作用？",lv1:`<p>用户新关注一个作者时，可以把作者近期视频回填到该用户 inbox，让关注后马上看到近期内容。</p>`,lv2:`<p>router.Register 中 relationOptions 注入 <code class="inline">WithFollowFeedBackfiller</code>。Backfiller 通过 feedRepo 查作者近期视频，通过 feedCache.AddInboxItems 写入当前用户收件箱。</p>`,lv3:`<p><strong>复盘问题：</strong>取关后 inbox 如何处理？Redis 索引为空时为什么回退 MySQL？outbox 和 inbox 的 maxLen 分别是多少？</p>`}
+],tasks:["画出关注后回填链路","画出发布后 FanoutWorker 推拉判断链路","解释 inbox 与 outbox member 格式","分析 following index 为空时的 MySQL fallback"],quiz:[
+{q:"大 V 阈值是多少？",hint:"10000 粉丝。"},
+{q:"FanoutWorker 默认 follower batch size 是多少？",hint:"500。"},
+{q:"inbox 默认 maxLen 是多少？",hint:"1000。"},
+{q:"outbox 默认 maxLen 是多少？",hint:"500。"}
+]},
+{day:11,title:"推荐候选、排序与打散",goal:"理解 recommendation-candidates 的候选池、向量相似度、热度新鲜度和作者打散。",focus:["Candidate pool","rankScore","cosine similarity","freshness","interleaveByAuthor"],sources:["apps/api/internal/application/recommendation/service.go","apps/api/internal/domain/recommendation","apps/api/internal/infra/persistence/recommendation/gorm.go","docs/modules/recommendation.md"],topics:[
+{q:"推荐候选链路怎么讲？",lv1:`<p>推荐服务先取候选池，再加载视频向量和用户兴趣向量，计算相似度、新鲜度、热度，形成 rank_score，最后排序和打散。</p>`,lv2:`<p>候选池大小由 limit 推导：limit × 8，最小 50，最大 500。<code class="inline">rankScore</code> 在有用户向量时用相似度 70%、热度 20%、新鲜度 10%；无用户向量时用热度 65%、新鲜度 35%。</p>`,lv3:`<p><strong>面试表达：</strong>这是一个教学版推荐系统，重点展示召回、排序、打散、游标和曝光去重的基本闭环。模型复杂度适中，方便后续替换成真实推荐服务。</p>`},
+{q:"为什么需要作者打散？",lv1:`<p>排序后可能连续出现同一个作者的视频。打散能提升信息流多样性，让用户看到更多作者和内容类型。</p>`,lv2:`<p><code class="inline">interleaveByAuthor</code> 会在排序后重新排列候选，避免同一作者连续占据过多位置。游标仍基于 rank_score、published_at、video_id。</p>`,lv3:`<p><strong>复盘问题：</strong>打散会不会改变严格排序？如何平衡相关性和多样性？推荐 cursor 为什么比 timeline cursor 多 rank_score？</p>`}
+],tasks:["整理 candidatePoolLimit 的公式和边界","解释 rankScore 两套权重","画出 RecommendStrategy 调用 recommendationService 的链路","准备推荐服务面试回答"],quiz:[
+{q:"候选池 multiplier 是多少？",hint:"8。"},
+{q:"候选池最小和最大是多少？",hint:"最小 50，最大 500。"},
+{q:"有用户向量时相似度权重是多少？",hint:"0.70。"},
+{q:"推荐 cursor 保存哪些字段？",hint:"rank_score、published_at、video_id。"}
+]},
+{day:12,title:"曝光上报、去重与兴趣反馈",goal:"理解曝光事件如何写入、聚合、去重并驱动推荐反馈。",focus:["video-view-events","exposures","exposure decisions","request_id","ViewEventPublisher"],sources:["apps/api/internal/application/exposure/service.go","apps/api/internal/infra/persistence/exposure/gorm.go","apps/api/internal/application/recommendation/service.go:DecideExposures","apps/api/internal/application/embedding/worker.go"],topics:[
+{q:"曝光上报链路怎么走？",lv1:`<p>客户端在 Feed 展示和播放时上报 video-view-events。服务写入行为流水，并在 exposed 事件时维护 exposures 聚合索引。</p>`,lv2:`<p><code class="inline">RecordViewEvent</code> 创建 ViewEvent，调用仓储 SaveViewEvent，返回事件和曝光聚合，再发布 ViewEventRecordedEvent 给后续兴趣画像 Worker。</p>`,lv3:`<p><strong>面试表达：</strong>曝光是推荐系统的反馈闭环。它能避免短时间重复曝光，也能作为用户兴趣向量更新的行为信号。</p>`},
+{q:"曝光去重如何服务推荐？",lv1:`<p>推荐接口可以对候选视频做近期曝光校验，近期看过的视频返回 allow=false 和 recently_exposed 原因。</p>`,lv2:`<p><code class="inline">DecideExposures</code> 查 <code class="inline">RecentExposureWindow</code> 内的曝光记录，按 videoID 生成 allow/fresh 或 deny/recently_exposed 决策。</p>`,lv3:`<p><strong>复盘问题：</strong>request_id 有什么价值？曝光流水和聚合索引分别服务什么？完播、跳过、播放时长如何影响兴趣画像？</p>`}
+],tasks:["画出 view event -> exposure -> recommendation decision 的链路","整理 exposed/play/complete/skip 四类事件","解释 request_id 的追踪价值","准备曝光去重面试回答"],quiz:[
+{q:"曝光上报接口是什么？",hint:"POST /api/video-view-events。"},
+{q:"曝光聚合表记录哪些核心信息？",hint:"首次曝光、最近曝光、次数、最近 scene。"},
+{q:"推荐曝光决策接口是什么？",hint:"POST /internal/exposure-decisions。"},
+{q:"ViewEventPublisher 触发什么后续能力？",hint:"行为事件发布，供画像或 embedding worker 消费。"}
+]},
+{day:13,title:"Embedding 与兴趣向量",goal:"理解发布事件如何生成视频向量，推荐如何使用视频向量与用户兴趣向量。",focus:["HashNgramVectorizer","VideoEmbeddingWorker","CosineSimilarity","UserInterestVector"],sources:["apps/api/internal/application/embedding/service.go","apps/api/internal/application/embedding/worker.go","apps/api/internal/domain/embedding/hash_ngram.go","apps/api/internal/application/recommendation/service.go:rankCandidates"],topics:[
+{q:"hard 版的 embedding 是怎么生成的？",lv1:`<p>视频发布后，Embedding Service 把标题和简介拼成文本，用 Hash N-gram 向量器生成向量，并保存到 video_embedding 表。</p>`,lv2:`<p><code class="inline">GenerateForPublishedVideo</code> 接收 PublishedEvent，调用 <code class="inline">BuildVideoText</code> 和 <code class="inline">Vectorize</code>，序列化向量后保存。</p>`,lv3:`<p><strong>面试表达：</strong>这是轻量级文本向量方案，适合教学项目展示内容理解和推荐相似度。后续可替换成在线 embedding 服务或离线特征平台。</p>`},
+{q:"推荐排序如何使用 embedding？",lv1:`<p>推荐服务加载候选视频向量和用户兴趣向量，计算 cosine similarity。用户有向量时，相似度成为主要排序因子。</p>`,lv2:`<p><code class="inline">rankCandidates</code> 调用 <code class="inline">LoadVideoVectors</code> 和 <code class="inline">LoadUserInterestVector</code>，再用 <code class="inline">domainembedding.CosineSimilarity</code> 计算相似度。</p>`,lv3:`<p><strong>复盘问题：</strong>用户兴趣向量从哪里来？冷启动用户如何排序？Hash N-gram 的优点和局限是什么？</p>`}
+],tasks:["读 hash_ngram.go 并解释向量化流程","画出 PublishedEvent -> EmbeddingWorker -> video_embedding","解释 cosine similarity 的作用","设计一个用户兴趣向量更新方案"],quiz:[
+{q:"默认 vectorizer 是什么？",hint:"HashNgramVectorizer。"},
+{q:"视频向量文本来自哪里？",hint:"标题和简介。"},
+{q:"相似度计算函数是什么？",hint:"CosineSimilarity。"},
+{q:"冷启动排序主要依赖什么？",hint:"热度和新鲜度。"}
+]},
+{day:14,title:"Web 客户端、API 测试与联调",goal:"把后端能力和 React Web、API 测试串起来，理解端到端验证方式。",focus:["React + Vite","API tests","Docker Compose","start.sh","Web 生产构建"],sources:["apps/web/src/App.jsx","apps/web/src/styles.css","apps/api/test/*_api_test.go","apps/docker-compose.yml","scripts/start.sh"],topics:[
+{q:"Web 客户端承担什么角色？",lv1:`<p>Web 客户端提供登录注册、Feed 浏览、点赞收藏评论、关注、个人主页和发布页面。它把后端接口变成可体验的产品闭环。</p>`,lv2:`<p><code class="inline">apps/web/src/App.jsx</code> 集中组织页面状态和 API 调用。Docker Compose 同时启动 MySQL、Redis、RabbitMQ、API 和 Web，适合端到端验证。</p>`,lv3:`<p><strong>面试表达：</strong>这个项目有前后端闭环，说明接口设计经过真实交互验证。Feed、互动、关注、发布都能通过 Web 客户端跑通。</p>`},
+{q:"API 测试怎么帮助读代码？",lv1:`<p>测试文件把接口流程变成可执行文档。读测试能快速知道输入、输出、状态变化和边界条件。</p>`,lv2:`<p>推荐顺序是 account_api_test、video_api_test、feed_api_test、interaction_api_test、relation_api_test、recommendation_api_test、exposure_api_test。</p>`,lv3:`<p><strong>复盘问题：</strong>哪些测试覆盖幂等？哪些测试覆盖 Feed 游标？哪些测试能证明异步 worker 逻辑？如何把测试结果写进项目复盘？</p>`}
+],tasks:["运行 docker compose up --build","运行 cd apps/api && go test ./...","列出 5 个端到端用户操作","整理测试文件与模块的对应关系"],quiz:[
+{q:"Web 默认端口是多少？",hint:"127.0.0.1:5173。"},
+{q:"API 默认端口是多少？",hint:"127.0.0.1:8080。"},
+{q:"Docker Compose 启动哪些服务？",hint:"mysql、redis、rabbitmq、api、web。"},
+{q:"理解 Feed 测试应该先看哪个文件？",hint:"apps/api/test/feed_api_test.go。"}
+]},
+{day:15,title:"面试包装、扩展与治理",goal:"把 14 天学习内容整理成简历亮点、面试问答、扩展方案和风险清单。",focus:["项目介绍","简历亮点","故障场景","扩展路线","治理监控"],sources:["README.md","docs/system optimization.md","docs/modules/monitoring.md","docs/modules/governance.md","docs/modules/review.md"],topics:[
+{q:"hard 版项目亮点怎么写？",lv1:`<p>亮点应围绕工程复杂度和业务闭环：四层架构、scene 策略注册表、Feed 缓存、Redis+MQ 异步互动、推拉结合、推荐曝光、Embedding、前后端联调和测试。</p>`,lv2:`<p>每条亮点都配源码入口。例如 Feed 缓存对应 <code class="inline">application/feed/service.go</code> 和 <code class="inline">infra/cache/feed_cache.go</code>；推荐对应 <code class="inline">application/recommendation/service.go</code>；推拉结合对应 <code class="inline">application/video/fanout_worker.go</code>。</p>`,lv3:`<p><strong>面试表达：</strong>这个项目展示了从后端工程到 Feed 分发再到推荐反馈的完整闭环。讲述顺序建议先业务，再架构，再三条核心链路，最后给出扩展和风险处理。</p>`},
+{q:"如何回答系统扩展问题？",lv1:`<p>扩展路线从单体 API 演进到服务拆分：账户、视频、互动、Feed、推荐、曝光、审核和治理逐步拆分。基础设施升级 Redis Cluster、MQ 集群、对象存储、CDN 和监控告警。</p>`,lv2:`<p>现有代码已经把边界放在 domain/application/infra/interfaces 四层中，推荐、曝光、Feed、互动都有清晰接口。后续拆服务时可以把 Application Service 作为服务边界。</p>`,lv3:`<p><strong>复盘问题：</strong>哪些模块最先拆？Feed 高峰期如何降级？消息积压如何处理？推荐失效时如何回退 timeline 或 hot？</p>`}
+],tasks:["写 2 分钟项目介绍终稿","整理 8 条简历亮点，每条配源码路径","完成 hard 版 40 道面试题","准备扩展、降级、监控、治理四类开放题"],quiz:[
+{q:"hard 版最适合突出的 5 个亮点是什么？",hint:"四层架构、scene 策略、缓存、异步互动、推荐曝光。"},
+{q:"系统扩展时哪些模块适合先拆？",hint:"Feed、推荐、互动、曝光。"},
+{q:"推荐服务故障时可以回退到什么？",hint:"timeline 或 hot。"},
+{q:"最终复盘材料包含什么？",hint:"介绍稿、简历亮点、链路图、问答、风险清单。"}
+]}
+];
+
+const interviewData=[
+{dim:"项目介绍",questions:[
+{q:"请用 2 分钟介绍视频Feed流系统（hard）项目。",a:"视频Feed流系统（hard）是一个 Go + Gin + GORM + Redis + RabbitMQ + React 的短视频 Feed 系统。后端按 Domain、Application、Infrastructure、Interfaces 四层组织，业务覆盖账户、视频、Feed、互动、关系、推荐、曝光和 Embedding。核心亮点包括 Feed scene 策略注册表、Timeline 页缓存和批量组装、Hot Feed 分钟桶、Redis+MQ 异步互动落库、关注流推拉结合、推荐候选排序和曝光去重。源码来自 LeoninCS/GCFeed 仓库。",code:"README.md, docs/quickread.md, apps/api/internal/interfaces/http/router/router.go",follow:"项目规模？你负责模块？为什么称为 hard？"},
+{q:"hard 版和 medium 版最大的区别是什么？",a:"hard 版覆盖完整工程闭环。medium 更适合讲单个 Feed 后端；hard 版增加四层架构、Web 客户端、推荐曝光、Embedding、复杂 Feed scene、API 测试和模块文档，能展示更完整的系统设计能力。",code:"README.md, apps/api, apps/web, docs/modules",follow:"哪些内容适合写进简历？"},
+{q:"这个项目的业务闭环是什么？",a:"用户注册登录后发布视频，视频进入 timeline、following、recommend、hot 等 Feed 场景；用户浏览后上报曝光与观看事件；点赞收藏评论更新互动计数和热度；曝光与兴趣向量反哺推荐候选。",code:"router.go, feed/service.go, interaction/service.go, exposure/service.go, recommendation/service.go",follow:"推荐反馈延迟如何处理？"}
+]},
+{dim:"架构分层",questions:[
+{q:"四层架构分别负责什么？",a:"Interfaces 负责 HTTP、DTO、Router、中间件；Application 负责编排用例；Domain 负责实体、错误和仓储接口；Infrastructure 负责 GORM、Redis、RabbitMQ、JWT、配置等具体实现。",code:"apps/api/internal/{interfaces,application,domain,infra}",follow:"这和三层架构相比有什么收益？"},
+{q:"router.Register 做了哪些事？",a:"它创建 GORM 连接并 AutoMigrate，创建 JWT Manager，按模块组装 Repository、Service、Handler，按 Redis/RabbitMQ 配置注入缓存、异步管线和 Worker，最后注册 RESTful 路由。",code:"apps/api/internal/interfaces/http/router/router.go",follow:"Redis 和 RabbitMQ 故障时装配如何变化？"},
+{q:"为什么 Repository 接口放在 Domain？",a:"Domain 定义业务需要的数据能力，Infrastructure 提供具体实现。Application 依赖领域抽象，能降低对 GORM、Redis 等实现细节的耦合。",code:"apps/api/internal/domain/*/repository.go",follow:"如果切换数据库，改动范围在哪里？"}
+]},
+{dim:"Feed 核心",questions:[
+{q:"Feed scene 策略注册表怎么设计？",a:"Feed Service 用 map 维护 scene 到 Strategy 的映射。Timeline、Hot、Following、Recommend 都实现 Strategy 接口，GetFeed 根据 scene 分发。新增场景只需实现 Strategy 并注册。",code:"apps/api/internal/application/feed/service.go",follow:"为什么这种设计适合扩展？"},
+{q:"Timeline Feed 怎么分页？",a:"按 published_at DESC、video_id DESC 排序，cursor 保存最后一条的 published_at 和 video_id。查询时多取 limit+1 判断 has_more，并返回 next_cursor。",code:"TimelineStrategy.listPageFromRepo",follow:"同发布时间并列如何处理？"},
+{q:"Feed 为什么拆 page/card/stat 三类缓存？",a:"页缓存保存轻量排序结果；card 缓存保存相对稳定的视频展示字段；stat 缓存保存高频计数字段。三者 TTL 可分开设置，降低缓存刷新成本。",code:"loadFeedPage, assembleFeedItems, feed_cache.go",follow:"计数缓存过期后如何兜底？"},
+{q:"Hot Feed 如何保证翻页稳定？",a:"Hot cursor 保存 windowEnd 和 offset。翻页时复用同一个 windowEnd，基于同一窗口快照继续读取，避免跨分钟刷新导致排序漂移。",code:"HotStrategy.listPageFromHotWindow",follow:"窗口 key TTL 为何是 2 分钟？"}
+]},
+{dim:"Redis 与 MQ",questions:[
+{q:"互动链路为什么先写 Redis？",a:"点赞收藏需要快速返回状态和计数。Redis 保存用户行为状态和实时计数，接口返回最新结果；RabbitMQ 负责异步落库，MySQL 最终持久化。",code:"interaction/service.go:setActionAsync, feed_cache.go:SetActionState",follow:"Redis 写成功 MQ 失败怎么办？"},
+{q:"Redis Watch 在 SetActionState 中做什么？",a:"Watch 监听用户行为状态 key，事务内写状态、幂等键、base counter 和 shard delta。并发冲突时 Redis 会让事务失败，由调用方处理错误。",code:"feed_cache.go:SetActionState",follow:"高并发热点计数如何优化？"},
+{q:"计数分片为什么有价值？",a:"热门视频大量互动会集中写同一计数 key。项目把增量分散到 16 个 shard，读取时汇总 base 和 shard delta，降低单 hash field 写入压力。",code:"actionStatCounterShardCount, interactionStatCounterShardKey",follow:"分片数如何选择？"},
+{q:"RabbitMQ 在项目里承载哪些事件？",a:"视频发布事件、互动 ActionChangedEvent、曝光 ViewEventRecordedEvent 等。它们分别驱动 FanoutWorker、EmbeddingWorker、ActionWorker 和行为反馈。",code:"apps/api/internal/infra/mq/rabbitmq.go",follow:"消息重复如何保证安全？"}
+]},
+{dim:"推荐曝光",questions:[
+{q:"推荐候选排序公式是什么？",a:"有用户向量时 rank_score = similarity*0.70 + hot*0.20 + freshness*0.10；无用户向量时 rank_score = hot*0.65 + freshness*0.35。hot 使用 log1p 归一化，新鲜度按 72 小时衰减。",code:"application/recommendation/service.go:rankScore",follow:"冷启动用户如何推荐？"},
+{q:"候选池大小如何控制？",a:"poolLimit = limit * 8，最小 50，最大 500。这样给排序和打散留出空间，同时控制数据库查询成本。",code:"candidatePoolLimit",follow:"为什么需要候选池而非直接取 limit？"},
+{q:"曝光去重怎么实现？",a:"DecideExposures 查询近期曝光窗口内的记录，已曝光的视频返回 allow=false 和 recently_exposed；新视频返回 allow=true 和 fresh。",code:"application/recommendation/service.go:DecideExposures",follow:"曝光窗口多长更合适？"},
+{q:"Embedding 在推荐里起什么作用？",a:"视频发布后生成内容向量。推荐时加载视频向量和用户兴趣向量，计算 cosine similarity，作为排序主因子之一。",code:"application/embedding/service.go, domain/embedding/hash_ngram.go",follow:"用户兴趣向量如何更新？"}
+]},
+{dim:"关注与 Fanout",questions:[
+{q:"Following Feed 的推拉结合怎么实现？",a:"普通作者发布时写粉丝 inbox；粉丝数达到 10000 的大 V 写 author outbox。用户刷 following 时读取 inbox 和关注大 V 的 outbox，排序去重返回。",code:"video/fanout_worker.go, cache/feed_cache.go:ListFollowingIndexPage",follow:"取关后 inbox 如何处理？"},
+{q:"FanoutWorker 发布后做什么？",a:"先预热视频 card/stat，再构造 FeedPageItem。查询粉丝数后，大 V 写 outbox；普通作者按 batchSize=500 批量查询粉丝并写 inbox。",code:"application/video/fanout_worker.go",follow:"预热失败如何处理？"},
+{q:"FollowFeedBackfiller 的价值是什么？",a:"新关注作者后，把作者近期视频回填到用户 inbox，提升关注后的即时体验。",code:"router.go:FollowFeedBackfiller",follow:"回填多少条合适？"}
+]},
+{dim:"数据库与幂等",questions:[
+{q:"视频发布幂等怎么实现？",a:"CreatePublished 先用 authorID + Idempotency-Key 查询已有视频；插入时遇到幂等键冲突，再查一次已有视频返回。",code:"application/video/service.go:CreatePublished",follow:"幂等键由谁生成？"},
+{q:"评论创建幂等怎么实现？",a:"CreateComment 先根据 userID + Idempotency-Key 查询已有评论；命中时返回已有评论和计数。",code:"application/interaction/service.go:CreateComment",follow:"幂等键过期如何设计？"},
+{q:"删除视频为什么使用软删除？",a:"软删除保留业务历史和关联数据，公开详情只返回已发布状态，重复删除返回成功，接口具备幂等性。",code:"application/video/service.go:Delete",follow:"软删除数据如何归档？"}
+]},
+{dim:"前端与测试",questions:[
+{q:"Web 客户端证明了什么？",a:"Web 客户端把 API 变成真实用户流程：登录注册、刷 Feed、互动、关注、个人页和发布。它能验证接口设计的可用性。",code:"apps/web/src/App.jsx",follow:"前端状态如何管理？"},
+{q:"API 测试如何帮助面试表达？",a:"测试是可执行文档。feed_api_test 证明分页、缓存和场景查询；interaction_api_test 证明互动链路；recommendation_api_test 证明推荐候选和曝光决策。",code:"apps/api/test/*_api_test.go",follow:"如何写一个端到端测试？"},
+{q:"Docker Compose 启动了哪些服务？",a:"mysql、redis、rabbitmq、api、web 五个服务。它适合本地演示完整闭环。",code:"apps/docker-compose.yml",follow:"线上部署如何拆分？"}
+]},
+{dim:"高频速查",questions:[]}
+];
+
+const appendixData=[
+["四层架构","Interfaces / Application / Domain / Infrastructure"],
+["Feed scene","timeline / hot / following / recommend"],
+["timeline cursor","published_at + video_id"],
+["hot cursor","windowEnd + offset"],
+["首页页缓存 TTL","5 秒 + 抖动"],
+["后续页缓存 TTL","45 秒 + 抖动"],
+["卡片缓存 TTL","15 分钟"],
+["计数缓存 TTL","15 秒"],
+["热榜分钟桶 TTL","2 小时"],
+["热榜窗口 TTL","2 分钟"],
+["热度权重","点赞 3、收藏 4、评论 5"],
+["大 V 阈值","10000 粉丝"],
+["Fanout batch","500"],
+["inbox maxLen","1000"],
+["outbox maxLen","500"],
+["候选池范围","limit*8，50 到 500"],
+["推荐权重有向量","相似度 70%、热度 20%、新鲜度 10%"],
+["推荐权重冷启动","热度 65%、新鲜度 35%"],
+["互动异步链路","Redis 状态 + MQ 事件 + Worker 落库"],
+["计数分片","16 个 shard"],
+["Embedding","Hash N-gram 文本向量"],
+["曝光反馈","view event + exposure aggregate + decision"]
+];
+
+const scenarioData={e2e:[
+{title:"发布视频进入 Feed",desc:"从用户发布到 timeline、following、recommend 可见的完整路径。",steps:[
+{s:"用户提交发布请求",loc:"POST /api/videos"},
+{s:"Video Service 创建 video 与 video_stat",loc:"application/video/service.go"},
+{s:"发布 PublishedEvent",loc:"domain/video/event"},
+{s:"FanoutWorker 写作者发件箱和粉丝收件箱",loc:"application/video/fanout_worker.go"},
+{s:"Feed scene 查询组装卡片",loc:"application/feed/service.go"},
+{s:"Web 客户端展示视频流",loc:"apps/web/src/App.jsx"}
+]},
+{title:"刷推荐 Feed",desc:"从请求到候选排序、曝光过滤、返回卡片的链路。",steps:[
+{s:"用户请求 recommend scene",loc:"GET /api/feed-items?scene=recommend"},
+{s:"Feed Service 路由到 RecommendStrategy",loc:"application/feed/service.go"},
+{s:"Recommendation Service 生成候选",loc:"application/recommendation/service.go"},
+{s:"曝光服务过滤已看内容",loc:"application/exposure/service.go"},
+{s:"Feed Service 批量组装 cards/stats",loc:"assembleFeedItems"},
+{s:"返回 cursor 与 hasMore",loc:"interfaces/http/feed/handler.go"}
+]},
+{title:"点赞收藏评论",desc:"互动状态快速返回，事件异步落库并更新计数。",steps:[
+{s:"用户触发互动",loc:"POST /api/interactions"},
+{s:"Redis 写入快速状态",loc:"application/interaction/service.go"},
+{s:"RabbitMQ 投递互动事件",loc:"infra/mq"},
+{s:"Worker 消费并写 MySQL",loc:"interaction worker"},
+{s:"计数缓存和热度更新",loc:"feed_cache / hot recorder"},
+{s:"Feed 卡片读取最新计数",loc:"assembleFeedItems"}
+]}
+],fault:[
+{title:"Redis 故障",desc:"缓存、互动状态和热点能力降级。",impacts:[
+{what:"Feed 缓存失效",detail:"页缓存、卡片缓存、计数缓存读取失败。",fix:"回源 MySQL 批量查询，接口保留可用性。"},
+{what:"互动快速状态受影响",detail:"点赞收藏状态无法快速写 Redis。",fix:"走持久化路径或返回降级提示，恢复后由 DB 重建状态。"}
+]},
+{title:"RabbitMQ 故障",desc:"异步互动、曝光和 fanout 延迟。",impacts:[
+{what:"互动事件积压",detail:"点赞收藏评论的异步落库延迟。",fix:"同步兜底关键写入，MQ 恢复后继续消费。"},
+{what:"发布 fanout 延迟",detail:"关注流收件箱更新变慢。",fix:"timeline 仍可查，following 可用拉模式补偿。"}
+]},
+{title:"推荐服务退化",desc:"个性化候选不足或排序延迟。",impacts:[
+{what:"候选池为空",detail:"新用户或 embedding 不足时推荐效果弱。",fix:"回退 hot + fresh 排序。"},
+{what:"曝光过滤过强",detail:"可返回候选过少。",fix:"放宽时间窗口并补充 timeline 候选。"}
+]}
+]};
+
+let S={mode:'intro',day:0,sec:0,topic:0,dim:0,q:'',timer:null,secs:0,running:false};
+const P=()=>{try{return JSON.parse(localStorage.getItem('feed_hard_progress')||'{}')}catch{return{}}};
+const save=p=>localStorage.setItem('feed_hard_progress',JSON.stringify(p));
+const getT=()=>localStorage.getItem('feed_study_theme')||'light';
+const setT=t=>{localStorage.setItem('feed_study_theme',t);document.documentElement.setAttribute('data-theme',t);document.getElementById('themeIcon').textContent=t==='dark'?'☀':'☽'};
+function toggleTheme(){setT(getT()==='light'?'dark':'light')}
+function switchMode(m){S.mode=m;S.q='';if(m==='intro')S.sec=0;const input=document.getElementById('searchInput');if(input)input.value='';document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));render()}
+function handleSearch(v){S.q=v.trim().toLowerCase();render()}
+function strip(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent||''}
+function hl(t,q){if(!q)return t;return t.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>')}
+function scrollMain(){const m=document.querySelector('.main');if(m)m.scrollTop=0}
+
+function render(){const app=document.getElementById('app');if(S.q){renderSearch(app);updateProgress();return}if(S.mode==='intro')renderIntro(app);else if(S.mode==='learn')renderLearn(app);else if(S.mode==='breakdown')renderBreakdown(app);else if(S.mode==='interview')renderInterview(app);else renderScenario(app);updateProgress()}
+function updateProgress(){const p=P(),el=document.getElementById('progressText');if(S.mode==='intro'){el.textContent='前言'}else if(S.mode==='learn'){let m=0,t=0;learnData.forEach((c,ci)=>c.quiz.forEach((_,qi)=>{t++;if(p[`l_${ci}_${qi}`]==='mastered')m++}));el.textContent=`${m}/${t} 已掌握`}else if(S.mode==='breakdown'){let m=0;studyDays.forEach((_,i)=>{if(p[`d_${i}`]==='done')m++});el.textContent=`${m}/${studyDays.length} 天完成`}else if(S.mode==='interview'){let m=0,t=0;interviewData.forEach((d,di)=>d.questions.forEach((_,qi)=>{t++;if(p[`i_${di}_${qi}`])m++}));el.textContent=`${m}/${t} 已练习`}else{el.textContent='场景还原'}}
+
+function renderIntro(app){
+  let sb='<div class="sidebar"><div class="side-title">前言</div>';
+  introData.pillars.forEach((p,i)=>{sb+=`<div class="side-item ${i===S.sec?'active':''}" onclick="goIntro(${i})"><span class="side-main">${p.title}</span><span class="badge">${i+1}</span></div>`});
+  sb+='</div>';
+  let mn='<div class="main">';
+  mn+=`<article class="markdown-doc"><div class="md-kicker">Feed System Hard · 15 Days</div><h1>${introData.title}</h1><p>${introData.desc}</p><div class="md-pill-row"><span class="md-pill">仓库：LeoninCS/GCFeed</span><span class="md-pill">15 天</span><span class="md-pill">五模式学习</span><span class="md-pill">源码驱动</span></div><blockquote>Level 是学习深度标尺，用来告诉你这个项目需要学到什么程度，而不只是把页面看完。</blockquote>`;
+  introData.pillars.forEach((p,i)=>{
+    mn+=`<section id="intro-sec-${i}" class="md-section ${S.sec===i?'active':''}"><h2>${p.title}</h2><p>${p.text}</p>`;
+    if(i===1)mn+=`<ul>${introData.prerequisites.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+    if(i>=2&&i<=6){const lv=introData.levels[i-2],std=introData.levelStandards[i-2];mn+=`<h3>学习深度</h3><p>${lv.text}</p><h3>达标标准</h3><p>${std.standard}</p><h3>证明方式</h3><p>${std.proof}</p><h3>下一层目标</h3><p>${std.next}</p>`}
+    if(i===7)mn+=`<ol>${introData.studyPath.map(x=>`<li><strong>${x.title}</strong>：${x.text}</li>`).join('')}</ol>`;
+    if(i===8)mn+=`<ul>${introData.outputs.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+    if(i===9)mn+=`<p>把项目讲成一个完整工程故事：功能能演示，架构能画图，源码能定位，追问能扩展。愿你用这个项目拿到满意的大厂 offer。</p>`;
+    mn+='</section>';
+  });
+  mn+=`<hr><section class="md-section"><h2>hard 版答题框架</h2><ol>${introData.answerFrame.map(x=>`<li>${x}</li>`).join('')}</ol><h2>面试评分尺</h2><ul>${introData.scorecard.map(x=>`<li><strong>${x.title}</strong>：${x.text}</li>`).join('')}</ul></section></article>`;
+  mn+=`<div class="nav-bar"><div></div><button class="nav-btn primary" onclick="switchMode('learn')">进入知识学习</button></div></div>`;
+  app.innerHTML=sb+mn;
+  const main=document.querySelector('.main');
+  if(main){
+    let ticking=false;
+    main.addEventListener('scroll',()=>{
+      if(ticking)return;
+      ticking=true;
+      requestAnimationFrame(()=>{syncIntroActive();ticking=false});
+    },{passive:true});
+    if(S.sec>0)requestAnimationFrame(()=>goIntro(S.sec));
+    else syncIntroActive();
+  }
+}
+
+function syncIntroActive(){
+  if(S.mode!=='intro')return;
+  const main=document.querySelector('.main');
+  if(!main)return;
+  const sections=[...main.querySelectorAll('.md-section[id^="intro-sec-"]')];
+  if(!sections.length)return;
+  const mainTop=main.getBoundingClientRect().top;
+  let active=0,best=Infinity;
+  sections.forEach((el,idx)=>{
+    const delta=Math.abs(el.getBoundingClientRect().top-mainTop-28);
+    if(delta<best){best=delta;active=idx}
+  });
+  S.sec=active;
+  document.querySelectorAll('.sidebar .side-item').forEach((el,idx)=>el.classList.toggle('active',idx===active));
+  sections.forEach((el,idx)=>el.classList.toggle('active',idx===active));
+}
+
+function goIntro(i){
+  S.sec=i;
+  document.querySelectorAll('.sidebar .side-item').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+  document.querySelectorAll('[id^="intro-sec-"]').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+  const main=document.querySelector('.main');
+  const el=document.getElementById(`intro-sec-${i}`);
+  if(main&&el){
+    const next=main.scrollTop+el.getBoundingClientRect().top-main.getBoundingClientRect().top-18;
+    main.scrollTo({top:Math.max(0,next),behavior:'smooth'});
+  }
+}
+
+function renderLearn(app){
+  const ch=learnData[S.day]||learnData[0],p=P();
+  let sb='<div class="sidebar"><div class="side-title">知识学习</div>';
+  learnData.forEach((c,ci)=>{
+    let m=0;c.quiz.forEach((_,qi)=>{if(p[`l_${ci}_${qi}`]==='mastered')m++});
+    const open=ci===S.day;
+    sb+=`<div class="side-item ${open?'active':''}" onclick="S.day=${ci};S.sec=0;S.topic=0;render()"><span class="side-main">${c.title}</span><span class="badge">${m}/${c.quiz.length}</span></div>`;
+    sb+=`<div class="sub-list ${open?'open':''}">`;
+    c.topics.forEach((t,ti)=>{sb+=`<div class="sub-item ${open&&S.sec===0&&S.topic===ti?'active':''}" onclick="S.day=${ci};S.sec=0;S.topic=${ti};render()">${t.q}</div>`});
+    sb+=`<div class="sub-item ${open&&S.sec===1?'active':''}" onclick="S.day=${ci};S.sec=1;render()">自检题</div></div>`;
+  });
+  sb+='</div>';
+  let mn='<div class="main">';
+  if(S.sec===0){
+    const topic=ch.topics[S.topic]||ch.topics[0];
+    mn+=`<div class="content-header"><h1>${ch.title}</h1><div class="subtitle">${topic.q}</div></div>`;
+    mn+=`<div class="section-card"><h2>${topic.q}</h2>`;
+    mn+=lvBlock('lv1','Lv1 概念','先建立理解',topic.lv1)+lvBlock('lv2','Lv2 源码','回到项目文件',topic.lv2)+lvBlock('lv3','Lv3 面试','形成表达和追问',topic.lv3);
+    mn+='</div><div class="nav-bar">';
+    if(S.topic>0)mn+=`<button class="nav-btn" onclick="S.topic--;render();scrollMain()">上一个知识点</button>`;else mn+='<div></div>';
+    if(S.topic<ch.topics.length-1)mn+=`<button class="nav-btn primary" onclick="S.topic++;render();scrollMain()">下一个知识点</button>`;else mn+=`<button class="nav-btn primary" onclick="S.sec=1;render();scrollMain()">查看自检题</button>`;
+    mn+='</div>';
+  }else{
+    mn+=`<div class="content-header"><h1>${ch.title}</h1><div class="subtitle">自检题</div></div><div class="quiz-section">`;
+    ch.quiz.forEach((q,qi)=>{mn+=quizItem(q,`l_${S.day}_${qi}`,`markLearnQuiz(${S.day},${qi},'mastered')`,`markLearnQuiz(${S.day},${qi},'review')`,qi)});
+    mn+='</div><div class="nav-bar">';
+    mn+=`<button class="nav-btn" onclick="S.sec=0;S.topic=${ch.topics.length-1};render();scrollMain()">返回知识点</button>`;
+    if(S.day<learnData.length-1)mn+=`<button class="nav-btn primary" onclick="S.day++;S.sec=0;S.topic=0;render();scrollMain()">下一章</button>`;else mn+=`<button class="nav-btn primary" onclick="switchMode('breakdown')">进入项目拆解</button>`;
+    mn+='</div>';
+  }
+  mn+='</div>';app.innerHTML=sb+mn;
+}
+
+function markLearnQuiz(ci,qi,st){const p=P();p[`l_${ci}_${qi}`]=st;save(p);render()}
+
+function renderBreakdown(app){
+  const p=P(),day=studyDays[S.day]||studyDays[0];
+  let sb='<div class="sidebar"><div class="side-title">15 天项目拆解</div>';
+  studyDays.forEach((d,di)=>{
+    const done=p[`d_${di}`]==='done',open=di===S.day;
+    sb+=`<div class="side-item ${open?'active':''}" onclick="S.day=${di};S.sec=0;S.topic=0;render()"><span class="side-main">Day ${d.day}：${d.title}</span><span class="badge">${done?'完成':'学习'}</span></div>`;
+    sb+=`<div class="sub-list ${open?'open':''}">
+      <div class="sub-item ${open&&S.sec===0?'active':''}" onclick="S.day=${di};S.sec=0;S.topic=0;render()">今日拆解</div>`;
+    d.topics.forEach((t,ti)=>{sb+=`<div class="sub-item ${open&&S.sec===1&&S.topic===ti?'active':''}" onclick="S.day=${di};S.sec=1;S.topic=${ti};render()">${t.q}</div>`});
+    sb+=`<div class="sub-item ${open&&S.sec===2?'active':''}" onclick="S.day=${di};S.sec=2;render()">自检题</div></div>`;
+  });
+  sb+='</div>';
+  let mn='<div class="main">';
+  if(S.sec===0){
+    mn+=`<div class="content-header"><h1>Day ${day.day}：${day.title}</h1><div class="subtitle">${day.goal}</div></div>`;
+    mn+='<div class="grid">';
+    mn+=`<div class="panel"><h3>学习目标</h3><p>${day.goal}</p><h3>核心关注点</h3><ul>${day.focus.map(x=>`<li>${x}</li>`).join('')}</ul><h3>今日任务</h3>${day.tasks.map(t=>`<div class="checkline"><span>✓</span><div>${t}</div></div>`).join('')}</div>`;
+    mn+=`<div class="panel"><h3>源码入口</h3><div class="source-list">${day.sources.map(s=>`<div class="source-item">${s}</div>`).join('')}</div><button class="nav-btn primary" style="width:100%;margin-top:16px" onclick="markDay(${S.day})">标记 Day ${day.day} 完成</button></div>`;
+    mn+='</div>';
+    mn+=`<div class="section-card"><h2>今日面试打法</h2><div class="answer-framework">${introData.answerFrame.map(x=>`<div class="framework-step">${x}</div>`).join('')}</div><div class="microcopy">今日主线：${day.title}。回答时先给结论，再用 ${day.sources[0]} 作为源码证据，最后补充 ${day.focus[0]} 的权衡和扩展。</div><h2 style="margin-top:18px">通关标准</h2><div class="score-grid"><div class="score-card"><strong>白板表达</strong><p>能画出当天链路并讲清数据流。</p></div><div class="score-card"><strong>源码定位</strong><p>能指出入口文件和关键函数职责。</p></div><div class="score-card"><strong>追问承接</strong><p>能把问题延展到性能、一致性、故障和扩展。</p></div></div></div>`;
+    mn+='<div class="nav-bar">';
+    if(S.day>0)mn+=`<button class="nav-btn" onclick="S.day--;S.sec=0;S.topic=0;render();scrollMain()">上一天</button>`;else mn+='<div></div>';
+    mn+=`<button class="nav-btn primary" onclick="S.sec=1;S.topic=0;render();scrollMain()">进入今日知识点</button></div>`;
+  }else if(S.sec===1){
+    const topic=day.topics[S.topic]||day.topics[0];
+    mn+=`<div class="content-header"><h1>Day ${day.day}：${day.title}</h1><div class="subtitle">${topic.q}</div></div>`;
+    mn+=`<div class="section-card"><h2>${topic.q}</h2>`;
+    mn+=lvBlock('lv1','Lv1 概念','先建立理解',topic.lv1)+lvBlock('lv2','Lv2 源码','回到项目文件',topic.lv2)+lvBlock('lv3','Lv3 面试','形成表达和追问',topic.lv3);
+    mn+='</div><div class="nav-bar">';
+    if(S.topic>0)mn+=`<button class="nav-btn" onclick="S.topic--;render();scrollMain()">上一个知识点</button>`;else mn+=`<button class="nav-btn" onclick="S.sec=0;render();scrollMain()">返回今日拆解</button>`;
+    if(S.topic<day.topics.length-1)mn+=`<button class="nav-btn primary" onclick="S.topic++;render();scrollMain()">下一个知识点</button>`;else mn+=`<button class="nav-btn primary" onclick="S.sec=2;render();scrollMain()">查看自检题</button>`;
+    mn+='</div>';
+  }else{
+    mn+=`<div class="content-header"><h1>Day ${day.day}：${day.title}</h1><div class="subtitle">自检题</div></div><div class="quiz-section">`;
+    day.quiz.forEach((q,qi)=>{mn+=quizItem(q,`dq_${S.day}_${qi}`,`markDayQuiz(${S.day},${qi},'mastered')`,`markDayQuiz(${S.day},${qi},'review')`,qi)});
+    mn+='</div><div class="nav-bar">';
+    mn+=`<button class="nav-btn" onclick="S.sec=1;S.topic=${day.topics.length-1};render();scrollMain()">返回知识点</button>`;
+    if(S.day<studyDays.length-1)mn+=`<button class="nav-btn primary" onclick="markDay(${S.day});S.day++;S.sec=0;S.topic=0;render();scrollMain()">完成并进入下一天</button>`;else mn+=`<button class="nav-btn primary" onclick="markDay(${S.day});switchMode('interview')">进入面试模拟</button>`;
+    mn+='</div>';
+  }
+  mn+='</div>';app.innerHTML=sb+mn;
+}
+
+function lvBlock(cls,tag,title,body){return `<div class="lv-block ${cls}"><div class="lv-header" onclick="toggleLv(this)"><span class="lv-arrow">▶</span><span class="lv-tag">${tag}</span><span style="flex:1;margin-left:8px">${title}</span></div><div class="lv-body">${body}</div></div>`}
+function toggleLv(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
+function toggleQuiz(el){const body=el.nextElementSibling,arrow=el.querySelector('.q-toggle');body.classList.toggle('open');arrow.classList.toggle('open')}
+function markDay(i){const p=P();p[`d_${i}`]='done';save(p);render()}
+function markDayQuiz(di,qi,st){const p=P();p[`dq_${di}_${qi}`]=st;save(p);render()}
+function quizItem(q,key,master,review,idx){const st=P()[key],badge=st==='mastered'?'<span class="quiz-status status-mastered">已掌握</span>':st==='review'?'<span class="quiz-status status-review">需复习</span>':'';return `<div class="quiz-item" style="animation-delay:${idx*40}ms"><div class="quiz-q" onclick="toggleQuiz(this)"><span class="q-num">${idx+1}</span><span class="q-text">${q.q}</span>${badge}<span class="q-toggle">▶</span></div><div class="quiz-body"><div class="quiz-hint">${q.hint}</div><div class="quiz-btns"><button class="quiz-btn mastered" onclick="event.stopPropagation();${master}">已掌握</button><button class="quiz-btn review" onclick="event.stopPropagation();${review}">需复习</button></div></div></div>`}
+
+function renderInterview(app){
+  const p=P(),dim=interviewData[S.dim]||interviewData[0];
+  let sb='<div class="sidebar"><div class="side-title">面试问答</div>';
+  interviewData.forEach((d,di)=>{let m=0,t=d.questions.length;d.questions.forEach((_,qi)=>{if(p[`i_${di}_${qi}`])m++});sb+=`<div class="side-item ${di===S.dim?'active':''}" onclick="S.dim=${di};render()"><span class="side-main">${d.dim}</span><span class="badge">${t?m+'/'+t:'表'}</span></div>`});
+  sb+='</div>';
+  let mn='<div class="main">';
+  if(S.dim===interviewData.length-1){
+    mn+=`<div class="content-header"><h1>高频速查表</h1><div class="subtitle">面试前快速复盘关键数字和关键词</div></div><table class="table"><thead><tr><th>问题</th><th>答案</th></tr></thead><tbody>`;
+    appendixData.forEach(([k,v])=>{mn+=`<tr><td>${k}</td><td>${v}</td></tr>`});mn+='</tbody></table>';
+  }else{
+    mn+=`<div class="content-header"><h1>${dim.dim}</h1><div class="subtitle">${dim.questions.length} 道题，点击卡片翻转答案</div></div>`;
+    mn+=`<div class="toolbar"><button class="tool-btn primary" onclick="randomQ()">随机抽题</button><span class="timer" id="timerDisp">00:00</span><button class="tool-btn" id="timerBtn" onclick="toggleTimer()">开始计时</button></div><div class="card-grid">`;
+    dim.questions.forEach((q,qi)=>{const st=p[`i_${S.dim}_${qi}`];mn+=`<div class="card ${st?'':''}" onclick="this.classList.toggle('flipped')" style="animation-delay:${qi*35}ms"><div class="card-inner"><div class="card-face card-front"><div class="card-idx">Q${qi+1}</div><div class="card-title">${q.q}</div><span class="card-tag">${dim.dim}${st?' · 已标记':''}</span></div><div class="card-face card-back"><h4>参考答案</h4><p>${q.a}</p><h4>答题结构</h4><p>一句话结论 → 业务场景 → 源码证据 → 核心机制 → 权衡风险 → 生产扩展。</p>${q.code?`<h4>代码关联</h4><p class="code-link">${q.code}</p>`:''}${q.follow?`<h4>追问方向</h4><p>${q.follow}</p>`:''}<div class="card-actions"><button class="card-action practice" onclick="event.stopPropagation();markInterview(${S.dim},${qi},'practice')">已练习</button><button class="card-action review" onclick="event.stopPropagation();markInterview(${S.dim},${qi},'review')">需复习</button></div></div></div></div>`});
+    mn+='</div>';
+  }
+  mn+='</div>';app.innerHTML=sb+mn;
+}
+function markInterview(di,qi,st){const p=P();p[`i_${di}_${qi}`]=st;save(p);render()}
+function randomQ(){const dim=interviewData[S.dim],p=P(),un=[];dim.questions.forEach((_,qi)=>{if(!p[`i_${S.dim}_${qi}`])un.push(qi)});if(!un.length)return;const idx=un[Math.floor(Math.random()*un.length)],cards=document.querySelectorAll('.card');if(cards[idx]){cards[idx].scrollIntoView({behavior:'smooth',block:'center'});cards[idx].classList.add('flipped');cards[idx].style.outline='2px solid var(--accent)';cards[idx].style.outlineOffset='3px';setTimeout(()=>{cards[idx].style.outline='';cards[idx].style.outlineOffset=''},2200)}}
+function toggleTimer(){if(S.running){clearInterval(S.timer);S.running=false;const b=document.getElementById('timerBtn');if(b)b.textContent='开始计时'}else{S.secs=0;S.running=true;const b=document.getElementById('timerBtn');if(b)b.textContent='停止计时';S.timer=setInterval(()=>{S.secs++;const m=String(Math.floor(S.secs/60)).padStart(2,'0'),s=String(S.secs%60).padStart(2,'0'),d=document.getElementById('timerDisp');if(d)d.textContent=`${m}:${s}`},1000)}}
+
+function renderScenario(app){
+  let sb='<div class="sidebar"><div class="side-title">场景还原</div>';
+  sb+=`<div class="side-item ${S.sec===0?'active':''}" onclick="S.sec=0;render()"><span class="side-main">端到端流程</span><span class="badge">${scenarioData.e2e.length}</span></div>`;
+  sb+=`<div class="side-item ${S.sec===1?'active':''}" onclick="S.sec=1;render()"><span class="side-main">故障排查</span><span class="badge">${scenarioData.fault.length}</span></div>`;
+  sb+='</div>';
+  let mn='<div class="main">';
+  if(S.sec===0){
+    mn+=`<div class="content-header"><h1>端到端场景还原</h1><div class="subtitle">把请求从入口追到数据与返回</div></div><div class="grid">`;
+    scenarioData.e2e.forEach(sc=>{
+      mn+=`<div class="panel"><h3>${sc.title}</h3><p>${sc.desc}</p><div class="source-list">${sc.steps.map((st,i)=>`<div class="source-item">${i+1}. ${st.s}<br>${st.loc}</div>`).join('')}</div></div>`;
+    });
+    mn+='</div>';
+  }else{
+    mn+=`<div class="content-header"><h1>故障排查场景</h1><div class="subtitle">训练 Redis、MQ、推荐退化下的回答</div></div><div class="grid">`;
+    scenarioData.fault.forEach(sc=>{
+      mn+=`<div class="panel"><h3>${sc.title}</h3><p>${sc.desc}</p>${sc.impacts.map(im=>`<div class="score-card" style="margin-top:10px"><strong>${im.what}</strong><p>${im.detail}</p><p>${im.fix}</p></div>`).join('')}</div>`;
+    });
+    mn+='</div>';
+  }
+  mn+='</div>';app.innerHTML=sb+mn;
+}
+
+function renderSearch(app){
+  const q=S.q,res=[];
+  introData.pillars.forEach((p,i)=>{const txt=p.title+p.text;if(txt.toLowerCase().includes(q))res.push({m:'intro',sec:i,title:`前言 > ${p.title}`,snip:p.text})});
+  learnData.forEach((c,ci)=>{c.topics.forEach((t,ti)=>{const txt=t.q+t.lv1+t.lv2+t.lv3;if(txt.toLowerCase().includes(q))res.push({m:'learn',day:ci,sec:0,topic:ti,title:`知识学习 > ${c.title} > ${t.q}`,snip:strip(t.lv1).substring(0,120)})});c.quiz.forEach((z,qi)=>{if((z.q+z.hint).toLowerCase().includes(q))res.push({m:'learn',day:ci,sec:1,title:`知识学习 > ${c.title} > 自检题 ${qi+1}`,snip:z.q})})});
+  studyDays.forEach((d,di)=>{const dayTxt=d.title+d.goal+d.focus.join(' ')+d.sources.join(' ')+d.tasks.join(' ');if(dayTxt.toLowerCase().includes(q))res.push({m:'breakdown',day:di,sec:0,title:`项目拆解 > Day ${d.day}：${d.title}`,snip:d.goal});d.topics.forEach((t,ti)=>{const txt=t.q+t.lv1+t.lv2+t.lv3;if(txt.toLowerCase().includes(q))res.push({m:'breakdown',day:di,sec:1,topic:ti,title:`项目拆解 > Day ${d.day} > ${t.q}`,snip:strip(t.lv1).substring(0,120)})});d.quiz.forEach((z,qi)=>{if((z.q+z.hint).toLowerCase().includes(q))res.push({m:'breakdown',day:di,sec:2,title:`项目拆解 > Day ${d.day} > 自检题 ${qi+1}`,snip:z.q})})});
+  interviewData.forEach((d,di)=>d.questions.forEach((qu,qi)=>{if((qu.q+qu.a+(qu.follow||'')).toLowerCase().includes(q))res.push({m:'interview',dim:di,title:`面试问答 > ${d.dim} > Q${qi+1}`,snip:qu.q})}));
+  appendixData.forEach(([k,v])=>{if((k+v).toLowerCase().includes(q))res.push({m:'interview',dim:interviewData.length-1,title:`高频速查 > ${k}`,snip:v})});
+  scenarioData.e2e.forEach((sc,i)=>{if((sc.title+sc.desc).toLowerCase().includes(q))res.push({m:'scenario',sec:0,title:`场景还原 > ${sc.title}`,snip:sc.desc})});
+  scenarioData.fault.forEach((sc,i)=>{if((sc.title+sc.desc).toLowerCase().includes(q))res.push({m:'scenario',sec:1,title:`场景还原 > ${sc.title}`,snip:sc.desc})});
+  let h='<div class="sidebar"><div class="side-title">搜索</div><div class="side-item active"><span class="side-main">搜索结果</span><span class="badge">'+res.length+'</span></div></div><div class="main search-results">';
+  h+=`<div class="content-header"><h1>搜索结果</h1><div class="subtitle">"${S.q}"，找到 ${res.length} 条匹配</div></div>`;
+  if(!res.length)h+='<p style="color:var(--fg3);text-align:center;padding:40px">换个关键词再试。</p>';
+  res.forEach(r=>{h+=`<div class="search-result" onclick='jump(${JSON.stringify(r).replace(/'/g,"\\'")})'><div class="sr-mode">${r.m==='intro'?'前言':r.m==='learn'?'知识学习':r.m==='breakdown'?'项目拆解':r.m==='interview'?'面试模拟':'场景还原'}</div><div class="sr-title">${hl(r.title,S.q)}</div><div class="sr-snippet">${hl(r.snip,S.q)}</div></div>`});
+  h+='</div>';app.innerHTML=h;
+}
+function jump(r){S.q='';document.getElementById('searchInput').value='';S.mode=r.m;if(r.m==='intro'){S.sec=r.sec||0}else if(r.m==='learn'||r.m==='breakdown'){S.day=r.day||0;S.sec=r.sec||0;S.topic=r.topic||0}else if(r.m==='interview'){S.dim=r.dim||0}else{S.sec=r.sec||0}document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===S.mode));render()}
+
+setT(getT());render();
+</script>
+</body>
+</html>
