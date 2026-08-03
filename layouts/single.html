@@ -7,7 +7,7 @@
   {{ $hasToc := partial "docs/toc-show" . }}
   {{ $content := partial "goclub/stripped-content.html" . }}
 
-  <article class="markdown book-article">
+  <article class="markdown book-article{{ if .Params.preserveWhitespace }} preserve-whitespace{{ end }}">
     <section class="page-lead">
       <span class="page-lead-badge">{{ if $sectionTitle }}{{ $sectionTitle }}{{ else }}内容文档{{ end }}</span>
       <div class="page-lead-title">{{ partial "docs/title" . }}</div>

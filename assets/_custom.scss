@@ -3716,6 +3716,12 @@ body {
   scrollbar-width: none;
 }
 
+/* 每日一问兼容从普通文本粘贴的换行和连续空格。 */
+.markdown.preserve-whitespace p,
+.markdown.preserve-whitespace li {
+  white-space: pre-wrap;
+}
+
 .book-menu .book-menu-content::-webkit-scrollbar,
 .book-menu nav::-webkit-scrollbar {
   width: 0;
