@@ -1184,6 +1184,10 @@ body.sidebar-resizing .book-menu .book-menu-content {
   position: relative;
 }
 
+.book-search-filters {
+  display: none;
+}
+
 .book-search-clear {
   position: absolute;
   top: 50%;
@@ -1448,6 +1452,49 @@ body.sidebar-resizing .book-menu .book-menu-content {
   font-size: 0.74rem;
 }
 
+.book-search.is-expanded .book-search-filters {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+  padding: 0.05rem 0.1rem 0.2rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+
+.book-search-filter {
+  flex: 0 0 auto;
+  padding: 0.38rem 0.68rem;
+  border: 1px solid rgba(var(--goclub-primary-rgb), 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--goclub-muted-text);
+  font-size: 0.72rem;
+  font-weight: 750;
+  line-height: 1.35;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.book-search-filter:hover,
+.book-search-filter:focus-visible {
+  border-color: rgba(var(--goclub-primary-rgb), 0.34);
+  background: rgba(var(--goclub-primary-rgb), 0.08);
+  color: var(--goclub-primary);
+}
+
+.book-search-filter:focus-visible {
+  outline: 2px solid rgba(var(--goclub-primary-rgb), 0.28);
+  outline-offset: 2px;
+}
+
+.book-search-filter[aria-pressed="true"] {
+  border-color: var(--goclub-primary);
+  background: var(--goclub-primary);
+  color: var(--goclub-on-primary-action);
+}
+
 .book-search.is-expanded .book-search-status {
   margin: 0.6rem 0;
   padding: 0;
@@ -1606,20 +1653,24 @@ body.sidebar-collapsed .sidebar-toggle:hover {
   transform: translateX(50%) translateY(-1px);
 }
 
+body.sidebar-collapsed .goclub-umami-stats--sidebar,
 body.sidebar-collapsed .book-brand-copy,
+body.sidebar-collapsed .book-brand-container .theme-toggle,
 body.sidebar-collapsed .book-search,
 body.sidebar-collapsed .book-menu nav > ul {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
+  display: none;
 }
 
 body.sidebar-collapsed .book-brand a {
+  width: 100%;
   justify-content: center;
-  padding-inline: 0.6rem;
+  gap: 0;
+  padding: 0.3rem;
 }
 
+body.sidebar-collapsed .book-brand-container,
 body.sidebar-collapsed .book-brand {
+  width: 100%;
   margin-bottom: 0;
 }
 

@@ -74,6 +74,10 @@ jobs:
         if: steps.import.outputs.updated == 'true'
         run: hugo --minify
 
+      - name: 校验搜索索引收录
+        if: steps.import.outputs.updated == 'true'
+        run: python3 scripts/check_search_index.py --site public
+
       - name: 校验待提交文件
         if: steps.import.outputs.updated == 'true'
         shell: bash

@@ -28,6 +28,7 @@
   const clearButton = document.querySelector('#book-search-clear');
   const backdrop = document.querySelector('#book-search-backdrop');
   const searchPanel = document.querySelector('.book-search');
+  const filterButtons = Array.from(document.querySelectorAll('[data-search-category]'));
   const resultPageSize = 10;
   const autoLoadThreshold = 160;
   const searchHistoryKey = 'goclubSearch';
@@ -43,11 +44,12 @@
   let autoLoadFrame = null;
   let persistFrame = null;
   let suppressLastSearchRestore = false;
+  let activeCategory = '';
 
   scheduleSearchContextHighlight();
 
   if (!input || !status || !results || !closeButton || !clearButton || !backdrop
-    || !searchPanel) {
+    || !searchPanel || !filterButtons.length) {
     return;
   }
 
@@ -65,6 +67,7 @@
   closeButton.addEventListener('click', closeSearchPanel);
   backdrop.addEventListener('click', closeSearchPanel);
   clearButton.addEventListener('click', clearSearch);
+  filterButtons.forEach(button => button.addEventListener('click', selectCategory));
   document.addEventListener('keypress', focusSearchFieldOnKeyPress);
   document.addEventListener('keydown', closeSearchPanelOnEscape);
   window.addEventListener('pagehide', persistSearchState);
@@ -72,6 +75,7 @@
 
   pendingRestoreState = readSearchState();
   if (pendingRestoreState) {
+    setActiveCategory(pendingRestoreState.category);
     input.value = pendingRestoreState.query;
     clearButton.classList.remove('hidden');
     if (pendingRestoreState.panelOpen) {
@@ -143,6 +147,34 @@
     }, 250);
   }
 
+  function selectCategory(event) {
+    const category = event.currentTarget.getAttribute('data-search-category') || '';
+    if (category === activeCategory) {
+      return;
+    }
+
+    setActiveCategory(category);
+    results.scrollTop = 0;
+    if (input.value.trim()) {
+      search();
+    } else if (activeCategory) {
+      setStatus(`已选择“${activeCategory}”，请输入关键词。`, 'ready');
+    } else {
+      clearStatus();
+    }
+  }
+
+  function setActiveCategory(category) {
+    const nextCategory = filterButtons.some(button => {
+      return button.getAttribute('data-search-category') === category;
+    }) ? category : '';
+    activeCategory = nextCategory;
+    filterButtons.forEach(button => {
+      const isActive = (button.getAttribute('data-search-category') || '') === activeCategory;
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+  }
+
   function openSearchPanel() {
     searchPanel.classList.remove('is-results-collapsed');
     if (searchPanel.parentNode !== document.body) {
@@ -205,10 +237,11 @@
       return;
     }
 
-    const searchHits = searchIndex.search(query);
-    currentSearchHits = rankSearchHits(filterExactDateHits(searchHits, query));
+    const searchHits = filterCategoryHits(filterExactDateHits(searchIndex.search(query), query));
+    currentSearchHits = rankSearchHits(searchHits);
     if (!currentSearchHits.length) {
-      setStatus(`没有找到与“${query}”相关的内容。`, 'empty');
+      const categoryText = activeCategory ? `“${activeCategory}”栏目中` : '';
+      setStatus(`没有在${categoryText || '知识库中'}找到与“${query}”相关的内容。`, 'empty');
       persistSearchState();
       return;
     }
@@ -257,6 +290,13 @@
     });
   }
 
+  function filterCategoryHits(searchHits) {
+    if (!activeCategory) {
+      return searchHits;
+    }
+    return searchHits.filter(hit => hit.item.category === activeCategory);
+  }
+
   function contentPriorityFactor(page) {
     const href = page.href || '';
     if (page.category === '八股总结' || href.indexOf('/docs/baguwen/') === 0) {
@@ -284,7 +324,8 @@
       .slice(visibleResultCount, nextVisibleCount)
       .forEach(hit => results.appendChild(renderResult(hit.item, query)));
     visibleResultCount = nextVisibleCount;
-    setStatus(`找到 ${currentSearchHits.length} 条结果，当前显示 ${visibleResultCount} 条。`, 'ready');
+    const categoryText = activeCategory ? `在“${activeCategory}”栏目中` : '';
+    setStatus(`${categoryText}找到 ${currentSearchHits.length} 条结果，当前显示 ${visibleResultCount} 条。`, 'ready');
     persistSearchState();
   }
 
@@ -326,7 +367,8 @@
       query: query,
       visibleResultCount: visibleResultCount,
       resultsScrollTop: results.scrollTop,
-      panelOpen: searchPanel.classList.contains('is-expanded')
+      panelOpen: searchPanel.classList.contains('is-expanded'),
+      category: activeCategory
     };
     const currentState = window.history.state && typeof window.history.state === 'object'
       ? window.history.state
@@ -376,6 +418,7 @@
     }
 
     input.value = state.query;
+    setActiveCategory(state.category);
     clearButton.classList.remove('hidden');
     pendingRestoreState = state;
     if (searchIndex) {

@@ -21,16 +21,10 @@
   {{- end -}}
   {{- $href := $page.RelPermalink -}}
   {{- $section := (partial "docs/title" $page.Parent) | default $.Site.Title -}}
-  {{- $category := $section -}}
+  {{- $category := "其他" -}}
   {{- $type := "article" -}}
-  {{- if eq $page.Kind "section" -}}
-    {{- $type = "section" -}}
-  {{- else if hasPrefix $href "/docs/interview/" -}}
+  {{- if hasPrefix $href "/docs/interview/" -}}
     {{- $category = "面试真题" -}}
-    {{- $type = "interview" -}}
-  {{- else if or (hasPrefix $href "/docs/resources/epub-books/") (hasPrefix $href "/docs/resources/pdf-books/") (hasPrefix $href "/docs/resources/cloud-native-web3-fulltext/") (hasPrefix $href "/docs/resources/web3-books/") -}}
-    {{- $category = "资源荟萃" -}}
-    {{- $type = "book" -}}
   {{- else if hasPrefix $href "/docs/baguwen/" -}}
     {{- $category = "八股总结" -}}
   {{- else if hasPrefix $href "/docs/blog/" -}}
@@ -41,6 +35,13 @@
     {{- $category = "项目学习" -}}
   {{- else if hasPrefix $href "/docs/resources/" -}}
     {{- $category = "资源荟萃" -}}
+  {{- end -}}
+  {{- if eq $page.Kind "section" -}}
+    {{- $type = "section" -}}
+  {{- else if hasPrefix $href "/docs/interview/" -}}
+    {{- $type = "interview" -}}
+  {{- else if or (hasPrefix $href "/docs/resources/epub-books/") (hasPrefix $href "/docs/resources/pdf-books/") (hasPrefix $href "/docs/resources/cloud-native-web3-fulltext/") (hasPrefix $href "/docs/resources/web3-books/") -}}
+    {{- $type = "book" -}}
   {{- end -}}
 
   {{- $record := dict
