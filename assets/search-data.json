@@ -1,0 +1,139 @@
+[
+{{- $pages := where .Site.Pages "Kind" "in" (slice "page" "section") -}}
+{{- $pages = where $pages "Params.bookSearchExclude" "!=" true -}}
+{{- $pages = where $pages "Content" "!=" "" -}}
+{{- $records := slice -}}
+
+{{- range $page := $pages -}}
+  {{- $title := partial "docs/title" $page -}}
+  {{- $plain := $page.Plain -}}
+  {{- $description := $page.Description | default (truncate 180 $plain) -}}
+  {{- $headings := $page.TableOfContents | plainify | htmlUnescape -}}
+  {{- $aliases := slice $title (replaceRE `\s+` "" $title) -}}
+  {{- with $page.Params.aliases -}}
+    {{- $aliases = $aliases | append . -}}
+  {{- end -}}
+  {{- $breadcrumb := slice -}}
+  {{- range $page.Ancestors.Reverse -}}
+    {{- if and (ne .Kind "home") (ne .RelPermalink "/docs/") -}}
+      {{- $breadcrumb = $breadcrumb | append (partial "docs/title" .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $href := $page.RelPermalink -}}
+  {{- $section := (partial "docs/title" $page.Parent) | default $.Site.Title -}}
+  {{- $category := $section -}}
+  {{- $type := "article" -}}
+  {{- if eq $page.Kind "section" -}}
+    {{- $type = "section" -}}
+  {{- else if hasPrefix $href "/docs/interview/" -}}
+    {{- $category = "面试真题" -}}
+    {{- $type = "interview" -}}
+  {{- else if or (hasPrefix $href "/docs/resources/epub-books/") (hasPrefix $href "/docs/resources/pdf-books/") (hasPrefix $href "/docs/resources/cloud-native-web3-fulltext/") (hasPrefix $href "/docs/resources/web3-books/") -}}
+    {{- $category = "资源荟萃" -}}
+    {{- $type = "book" -}}
+  {{- else if hasPrefix $href "/docs/baguwen/" -}}
+    {{- $category = "八股总结" -}}
+  {{- else if hasPrefix $href "/docs/blog/" -}}
+    {{- $category = "技术博客" -}}
+  {{- else if hasPrefix $href "/docs/companion/" -}}
+    {{- $category = "配套文章" -}}
+  {{- else if hasPrefix $href "/docs/project-study/" -}}
+    {{- $category = "项目学习" -}}
+  {{- else if hasPrefix $href "/docs/resources/" -}}
+    {{- $category = "资源荟萃" -}}
+  {{- end -}}
+
+  {{- $record := dict
+    "href" $href
+    "title" $title
+    "aliases" $aliases
+    "section" $section
+    "category" $category
+    "type" $type
+    "breadcrumb" $breadcrumb
+    "description" $description
+    "headings" $headings
+    "content" $plain
+  -}}
+
+  {{- if and (eq $title "每日一问") (hasPrefix $href "/docs/baguwen/") -}}
+    {{- $records = $records | append (dict
+      "href" $href
+      "title" $title
+      "aliases" $aliases
+      "section" $section
+      "category" $category
+      "type" "article"
+      "breadcrumb" $breadcrumb
+      "description" $description
+      "headings" ""
+      "content" $description
+    ) -}}
+    {{- $renderedContent := printf "%s" $page.Content -}}
+    {{- $dateHeadings := slice -}}
+    {{- range $heading := $page.Fragments.Headings -}}
+      {{- if eq $heading.Level 2 -}}
+        {{- $dateHeadings = $dateHeadings | append $heading -}}
+      {{- else if eq $heading.Level 1 -}}
+        {{- range $childHeading := $heading.Headings -}}
+          {{- if eq $childHeading.Level 2 -}}
+            {{- $dateHeadings = $dateHeadings | append $childHeading -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range $dateHeading := $dateHeadings -}}
+      {{- if eq $dateHeading.Level 2 -}}
+        {{- range $questionHeading := $dateHeading.Headings -}}
+          {{- if eq $questionHeading.Level 3 -}}
+            {{- $questionContent := "" -}}
+            {{- $idParts := split $renderedContent (printf `id="%s"` $questionHeading.ID) -}}
+            {{- if gt (len $idParts) 1 -}}
+              {{- $headingParts := split (index $idParts 1) "</h3>" -}}
+              {{- if gt (len $headingParts) 1 -}}
+                {{- $sectionHTML := index $headingParts 1 -}}
+                {{- $sectionHTML = index (split $sectionHTML "<h2") 0 -}}
+                {{- $sectionHTML = index (split $sectionHTML "<h3") 0 -}}
+                {{- $questionContent = $sectionHTML | plainify | htmlUnescape -}}
+              {{- end -}}
+            {{- end -}}
+            {{- $questionTitle := $questionHeading.Title | plainify | htmlUnescape -}}
+            {{- $questionDescription := truncate 180 $questionContent -}}
+            {{- $questionBreadcrumb := $breadcrumb | append $title $dateHeading.Title -}}
+            {{- $records = $records | append (dict
+              "href" (printf "%s#%s" $href $questionHeading.ID)
+              "title" $questionTitle
+              "aliases" (slice $questionTitle (replaceRE `\s+` "" $questionTitle))
+              "section" $title
+              "category" $category
+              "type" "article"
+              "breadcrumb" $questionBreadcrumb
+              "description" $questionDescription
+              "headings" (printf "%s %s" $dateHeading.Title $questionTitle)
+              "content" $questionContent
+            ) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $records = $records | append $record -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $index, $record := $records }}
+{{ if gt $index 0}},{{ end }}{
+  "id": {{ $index }},
+  "href": {{ $record.href | jsonify }},
+  "title": {{ $record.title | jsonify }},
+  "aliases": {{ $record.aliases | jsonify }},
+  "section": {{ $record.section | jsonify }},
+  "category": {{ $record.category | jsonify }},
+  "type": {{ $record.type | jsonify }},
+  "breadcrumb": {{ $record.breadcrumb | jsonify }},
+  "description": {{ $record.description | jsonify }},
+  "headings": {{ $record.headings | jsonify }},
+  "content": {{ $record.content | jsonify }}
+}
+{{- end }}
+]
