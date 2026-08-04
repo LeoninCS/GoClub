@@ -1928,10 +1928,12 @@ body.sidebar-collapsed .book-brand-mark {
 
 .section-card-summary {
   margin-top: 0.75rem;
+  min-width: 0;
   color: var(--body-font-color);
   opacity: 0.74;
   line-height: 1.72;
   flex-grow: 1;
+  overflow-wrap: anywhere;
 }
 
 .section-card-meta {
