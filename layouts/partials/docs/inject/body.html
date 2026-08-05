@@ -989,7 +989,8 @@
     var tocControl = document.getElementById("toc-control");
     var minWidth = 272;
     var maxWidth = 520;
-    var defaultWidth = parseFloat(getComputedStyle(root).getPropertyValue("--goclub-sidebar-width")) || 288;
+    var measuredDefaultWidth = menu ? menu.getBoundingClientRect().width : 0;
+    var defaultWidth = measuredDefaultWidth > 0 ? measuredDefaultWidth : 288;
     var resizing = false;
 
     function setCollapsed(collapsed) {
