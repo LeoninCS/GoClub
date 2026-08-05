@@ -977,12 +977,21 @@
 </script>
 <script>
   (function () {
-    var storageKey = "goclub.sidebar.collapsed";
-    var desktopQuery = window.matchMedia("(min-width: 56rem)");
+    var collapseStorageKey = "goclub.sidebar.collapsed";
+    var widthStorageKey = "goclub.sidebar.width";
+    var desktopQuery = window.matchMedia("(min-width: 56.01rem)");
     var body = document.body;
+    var root = document.documentElement;
+    var menu = document.querySelector(".book-menu");
     var menuToggle = document.querySelector("[data-sidebar-toggle]");
+    var menuResizer = document.querySelector("[data-sidebar-resizer]");
     var menuControl = document.getElementById("menu-control");
     var tocControl = document.getElementById("toc-control");
+    var minWidth = 272;
+    var maxWidth = 520;
+    var measuredDefaultWidth = menu ? menu.getBoundingClientRect().width : 0;
+    var defaultWidth = measuredDefaultWidth > 0 ? measuredDefaultWidth : 288;
+    var resizing = false;
 
     function setCollapsed(collapsed) {
       body.classList.toggle("sidebar-collapsed", collapsed);
@@ -1000,6 +1009,8 @@
 
     function syncViewportState() {
       if (!desktopQuery.matches) {
+        root.style.removeProperty("--goclub-sidebar-width");
+        body.classList.remove("sidebar-resizing");
         body.classList.remove("sidebar-collapsed");
         if (menuControl) {
           menuControl.checked = false;
@@ -1010,7 +1021,31 @@
         return;
       }
 
-      setCollapsed(localStorage.getItem(storageKey) === "true");
+      setSidebarWidth(readStoredWidth(), false);
+      setCollapsed(localStorage.getItem(collapseStorageKey) === "true");
+    }
+
+    function currentMaxWidth() {
+      return Math.max(minWidth, Math.min(maxWidth, window.innerWidth - 600));
+    }
+
+    function readStoredWidth() {
+      var storedWidth = parseFloat(localStorage.getItem(widthStorageKey));
+      return Number.isFinite(storedWidth) ? storedWidth : defaultWidth;
+    }
+
+    function setSidebarWidth(width, persist) {
+      var availableMaxWidth = currentMaxWidth();
+      var nextWidth = Math.round(Math.max(minWidth, Math.min(availableMaxWidth, width)));
+      root.style.setProperty("--goclub-sidebar-width", nextWidth + "px");
+      if (menuResizer) {
+        menuResizer.setAttribute("aria-valuemax", String(availableMaxWidth));
+        menuResizer.setAttribute("aria-valuenow", String(nextWidth));
+      }
+      if (persist) {
+        localStorage.setItem(widthStorageKey, String(nextWidth));
+      }
+      return nextWidth;
     }
 
     if (menuToggle) {
@@ -1024,7 +1059,56 @@
 
         var nextCollapsed = !body.classList.contains("sidebar-collapsed");
         setCollapsed(nextCollapsed);
-        localStorage.setItem(storageKey, String(nextCollapsed));
+        localStorage.setItem(collapseStorageKey, String(nextCollapsed));
+      });
+    }
+
+    if (menu && menuResizer) {
+      menuResizer.addEventListener("pointerdown", function (event) {
+        if (!desktopQuery.matches || body.classList.contains("sidebar-collapsed")) {
+          return;
+        }
+        resizing = true;
+        body.classList.add("sidebar-resizing");
+        menuResizer.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      });
+
+      menuResizer.addEventListener("pointermove", function (event) {
+        if (!resizing) return;
+        var menuLeft = menu.getBoundingClientRect().left;
+        setSidebarWidth(event.clientX - menuLeft, false);
+      });
+
+      function finishResize(event) {
+        if (!resizing) return;
+        resizing = false;
+        body.classList.remove("sidebar-resizing");
+        if (menuResizer.hasPointerCapture(event.pointerId)) {
+          menuResizer.releasePointerCapture(event.pointerId);
+        }
+        var currentWidth = parseFloat(getComputedStyle(root).getPropertyValue("--goclub-sidebar-width"));
+        setSidebarWidth(currentWidth, true);
+      }
+
+      menuResizer.addEventListener("pointerup", finishResize);
+      menuResizer.addEventListener("pointercancel", finishResize);
+
+      menuResizer.addEventListener("dblclick", function () {
+        setSidebarWidth(defaultWidth, true);
+      });
+
+      menuResizer.addEventListener("keydown", function (event) {
+        var currentWidth = parseFloat(getComputedStyle(root).getPropertyValue("--goclub-sidebar-width"))
+          || menu.getBoundingClientRect().width;
+        var nextWidth = currentWidth;
+        if (event.key === "ArrowLeft") nextWidth -= 16;
+        if (event.key === "ArrowRight") nextWidth += 16;
+        if (event.key === "Home") nextWidth = minWidth;
+        if (event.key === "End") nextWidth = currentMaxWidth();
+        if (nextWidth === currentWidth) return;
+        setSidebarWidth(nextWidth, true);
+        event.preventDefault();
       });
     }
 
@@ -1033,6 +1117,12 @@
     } else if (desktopQuery.addListener) {
       desktopQuery.addListener(syncViewportState);
     }
+
+    window.addEventListener("resize", function () {
+      if (desktopQuery.matches) {
+        setSidebarWidth(readStoredWidth(), false);
+      }
+    });
 
     syncViewportState();
   })();

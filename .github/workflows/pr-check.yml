@@ -42,3 +42,6 @@ jobs:
 
       - name: Build
         run: hugo --minify
+
+      - name: Check search index coverage
+        run: python3 scripts/check_search_index.py --site public
