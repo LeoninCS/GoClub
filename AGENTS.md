@@ -84,7 +84,10 @@ shortlink: "ltsl"
 
 短码由**内容文件路径**哈希得到，所以改标题、改正文、改 slug 都不会让短码变化，只有重命名或移动文件才会变。
 
-新增页面后运行下面这条即可自动补齐，脚本是幂等的：
+装了 git hook（`bash scripts/install-hooks.sh`）之后，短链会在 `git commit` 时**自动生成并加入本次提交**，不用手工跑。
+hook 只会重新暂存本次提交已包含的文件，不会把工作区里其他未完成的改动带进 commit。
+
+需要手工执行时用下面这些，脚本是幂等的：
 
 ```bash
 python3 scripts/gen_shortlinks.py          # 补齐缺失的短链
@@ -102,7 +105,7 @@ python3 scripts/gen_shortlinks.py --list   # 打印短码对照表
 2. 补齐 front matter：`title`、`weight`，中文文件名再加 `slug`
 3. 面经的 title 和文件名用「名字+公司+岗位（可选）+几面」格式
 4. 同步更新所在目录的 `_index.md`，让目录页能点进去
-5. 运行 `python3 scripts/gen_shortlinks.py` 自动补上 `/s/` 短链
+5. `/s/` 短链由 commit 时的 git hook 自动生成，无需手工处理（未装 hook 则运行 `python3 scripts/gen_shortlinks.py`）
 6. 保持既有文章的标题层级、代码块、引用块和列表风格
 7. 站内链接优先用 `{{< relref "path/to/file.md" >}}`，它按文件路径解析，slug 变化时会自动跟随；不要硬编码含中文的页面 URL
 
