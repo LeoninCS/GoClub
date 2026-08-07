@@ -2,6 +2,9 @@
 title: "Go语言相关笔记"
 weight: 3
 type: docs
+aliases:
+  - "/s/zkab/"
+shortlink: "zkab"
 ---
 
 # Go语言相关笔记

@@ -1,5 +1,10 @@
 ---
 title: "m佬阿里国际AI研发二面"
+slug: "m-alibaba-intl-ai-2"
+aliases:
+  - "/docs/interview/dachang/m佬阿里国际AI研发二面/"
+  - "/s/613f/"
+shortlink: "613f"
 ---
 
 # m佬阿里国际 AI 研发二面

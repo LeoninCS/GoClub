@@ -1,5 +1,10 @@
 ---
 title: "Shio字节一面"
+slug: "shio-bytedance-1"
+aliases:
+  - "/docs/interview/dachang/Shio字节一面/"
+  - "/s/a0ds/"
+shortlink: "a0ds"
 ---
 
 # Shio 字节一面

@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 推云科技面试（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-tuiyun"
+aliases:
+  - "/docs/interview/xiaochang/Tadori1zanai-推云科技面试/"
+  - "/s/hxif/"
+shortlink: "hxif"
 ---
 
 # Tadori1zanai 推云科技面试（项目：分布式缓存系统 / IM 聊天系统）

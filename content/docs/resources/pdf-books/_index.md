@@ -3,6 +3,9 @@ title: "PDF 书籍全文资料"
 weight: 9
 type: docs
 bookCollapseSection: true
+aliases:
+  - "/s/3yje/"
+shortlink: "3yje"
 ---
 
 # PDF 书籍全文资料

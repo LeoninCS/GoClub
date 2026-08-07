@@ -5,6 +5,8 @@ type: docs
 bookCollapseSection: true
 aliases:
   - "/docs/resources/cloud-native-web3-fulltext/web3-entry-guide/"
+  - "/s/y2zl/"
+shortlink: "y2zl"
 ---
 
 # Web3 书籍

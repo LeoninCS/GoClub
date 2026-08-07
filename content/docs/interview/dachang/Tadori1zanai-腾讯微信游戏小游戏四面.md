@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 腾讯微信游戏小游戏四面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-tencent-wxgame-4"
+aliases:
+  - "/docs/interview/dachang/Tadori1zanai-腾讯微信游戏小游戏四面/"
+  - "/s/rp79/"
+shortlink: "rp79"
 ---
 
 # Tadori1zanai 腾讯微信游戏小游戏四面（项目：分布式缓存系统 / IM 聊天系统）

@@ -1,5 +1,10 @@
 ---
 title: "m佬淘天AI应用开发一面"
+slug: "m-taotian-ai-app-1"
+aliases:
+  - "/docs/interview/dachang/m佬淘天AI应用开发一面/"
+  - "/s/phg7/"
+shortlink: "phg7"
 ---
 
 # m佬淘天 AI 应用开发一面

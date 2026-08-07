@@ -1,5 +1,8 @@
 ---
 title: "常用工具"
+aliases:
+  - "/s/zm03/"
+shortlink: "zm03"
 ---
 
 # 常用工具

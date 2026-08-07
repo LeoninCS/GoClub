@@ -3,6 +3,11 @@ title: "MySQL 一行记录是怎么存储的？"
 weight: 7
 type: docs
 bookToC: true
+slug: "sql-row-storage"
+aliases:
+  - "/docs/blog/SQL一行怎么存储/"
+  - "/s/5fz0/"
+shortlink: "5fz0"
 ---
 
 参考：[小林 Coding](https://xiaolincoding.com/mysql/base/how_select.html)

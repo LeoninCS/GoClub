@@ -1,5 +1,10 @@
 ---
 title: "艾斯卡诺momenta一面"
+slug: "escanor-momenta-1"
+aliases:
+  - "/docs/interview/zhongchang/艾斯卡诺momenta一面/"
+  - "/s/c6xb/"
+shortlink: "c6xb"
 ---
 
 # 艾斯卡诺momenta一面

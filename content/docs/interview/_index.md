@@ -2,6 +2,9 @@
 title: "面试真题"
 weight: 1
 bookCollapseSection: true
+aliases:
+  - "/s/hnqt/"
+shortlink: "hnqt"
 ---
 
 # 面试真题

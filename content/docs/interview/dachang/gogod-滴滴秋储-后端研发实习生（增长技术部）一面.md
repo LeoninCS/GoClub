@@ -1,5 +1,10 @@
 ---
 title: "gogod-滴滴秋储-后端研发实习生（增长技术部）一面"
+slug: "gogod-didi-growth-backend-1"
+aliases:
+  - "/docs/interview/dachang/gogod-滴滴秋储-后端研发实习生（增长技术部）一面/"
+  - "/s/ozob/"
+shortlink: "ozob"
 ---
 
 # 滴滴秋储-后端研发实习生（增长技术部）一面

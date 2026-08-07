@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 得物一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-dewu-1"
+aliases:
+  - "/docs/interview/zhongchang/Tadori1zanai-得物一面/"
+  - "/s/y0wj/"
+shortlink: "y0wj"
 ---
 
 # Tadori1zanai 得物一面（项目：分布式缓存系统 / IM 聊天系统）

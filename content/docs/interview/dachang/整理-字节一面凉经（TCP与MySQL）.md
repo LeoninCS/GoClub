@@ -1,5 +1,10 @@
 ---
 title: "整理-字节一面（TCP与MySQL）"
+slug: "summary-bytedance-1-tcp-mysql"
+aliases:
+  - "/docs/interview/dachang/整理-字节一面凉经（TCP与MySQL）/"
+  - "/s/rery/"
+shortlink: "rery"
 ---
 
 # 字节一面

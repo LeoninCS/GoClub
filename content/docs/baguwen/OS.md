@@ -1,5 +1,8 @@
 ---
 title: "操作系统"
+aliases:
+  - "/s/imsm/"
+shortlink: "imsm"
 ---
 
 # 操作系统

@@ -1,5 +1,10 @@
 ---
 title: "m佬腾讯TEG研发管理全栈开发一面"
+slug: "m-tencent-teg-fullstack-1"
+aliases:
+  - "/docs/interview/dachang/m佬腾讯TEG研发管理全栈开发一面/"
+  - "/s/rn9b/"
+shortlink: "rn9b"
 ---
 
 # m佬腾讯 TEG 研发管理全栈开发一面

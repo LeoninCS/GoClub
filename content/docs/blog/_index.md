@@ -2,6 +2,9 @@
 title: "技术博客"
 weight: 6
 bookCollapseSection: true
+aliases:
+  - "/s/ro79/"
+shortlink: "ro79"
 ---
 
 # 技术博客

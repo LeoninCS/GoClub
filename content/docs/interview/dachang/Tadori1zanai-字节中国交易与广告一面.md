@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 字节中国交易与广告一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-bytedance-ecom-ads-1"
+aliases:
+  - "/docs/interview/dachang/Tadori1zanai-字节中国交易与广告一面/"
+  - "/s/axz3/"
+shortlink: "axz3"
 ---
 
 # Tadori1zanai 字节中国交易与广告一面（项目：分布式缓存系统 / IM 聊天系统）

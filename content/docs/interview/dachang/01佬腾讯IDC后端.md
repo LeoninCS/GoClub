@@ -1,5 +1,10 @@
 ---
 title: "01佬腾讯IDC后端"
+slug: "01-tencent-idc-backend"
+aliases:
+  - "/docs/interview/dachang/01佬腾讯IDC后端/"
+  - "/s/cp5s/"
+shortlink: "cp5s"
 ---
 
 # 01佬腾讯 IDC 后端

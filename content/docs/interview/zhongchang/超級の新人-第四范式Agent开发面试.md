@@ -1,6 +1,11 @@
 ---
 title: "超級の新人第四范式Agent开发面试"
 weight: 3
+slug: "xinren-4paradigm-agent"
+aliases:
+  - "/docs/interview/zhongchang/超級の新人-第四范式Agent开发面试/"
+  - "/s/6bm0/"
+shortlink: "6bm0"
 ---
 
 # 超級の新人 第四范式 Agent 开发面试

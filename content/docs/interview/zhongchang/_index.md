@@ -2,6 +2,9 @@
 title: "中厂面试"
 weight: 2
 bookCollapseSection: true
+aliases:
+  - "/s/26gk/"
+shortlink: "26gk"
 ---
 
 # 中厂面试

@@ -3,6 +3,9 @@ title: "DevOps 实战笔记"
 weight: 50
 type: docs
 bookCollapseSection: true
+aliases:
+  - "/s/4sf2/"
+shortlink: "4sf2"
 ---
 
 # DevOps 实战笔记

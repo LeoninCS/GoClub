@@ -33,6 +33,12 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Check URL slugs
+        run: python3 scripts/check_slugs.py
+
+      - name: Check share shortlinks
+        run: python3 scripts/gen_shortlinks.py --check
+
       - name: Generate contributors data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

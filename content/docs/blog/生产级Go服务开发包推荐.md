@@ -3,6 +3,11 @@ title: "生产级 Go 服务开发包推荐"
 weight: 5
 type: docs
 bookToC: true
+slug: "go-production-packages"
+aliases:
+  - "/docs/blog/生产级Go服务开发包推荐/"
+  - "/s/bile/"
+shortlink: "bile"
 ---
 
 # 生产级 Go 服务开发包推荐

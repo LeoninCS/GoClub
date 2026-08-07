@@ -1,5 +1,10 @@
 ---
 title: "哈饥米腾讯PCG应用效能技术"
+slug: "hajimi-tencent-pcg-efficiency"
+aliases:
+  - "/docs/interview/dachang/哈饥米腾讯PCG应用效能技术/"
+  - "/s/teup/"
+shortlink: "teup"
 ---
 
 # 腾讯 PCG 应用效能技术

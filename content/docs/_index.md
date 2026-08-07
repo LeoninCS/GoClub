@@ -1,6 +1,9 @@
 ---
 title: "内容导航"
 bookCollapseSection: false
+aliases:
+  - "/s/5qio/"
+shortlink: "5qio"
 ---
 
 # 内容导航

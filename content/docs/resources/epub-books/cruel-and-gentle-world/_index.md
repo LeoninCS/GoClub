@@ -3,6 +3,9 @@ title: "这世界既残酷也温柔"
 weight: 20
 type: docs
 bookCollapseSection: true
+aliases:
+  - "/s/b4p3/"
+shortlink: "b4p3"
 ---
 
 # 这世界既残酷也温柔

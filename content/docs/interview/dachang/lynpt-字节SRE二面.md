@@ -1,6 +1,11 @@
 ---
 title: "lynpt字节SRE二面"
 weight: 24
+slug: "lynpt-bytedance-sre-2"
+aliases:
+  - "/docs/interview/dachang/lynpt-字节SRE二面/"
+  - "/s/87l5/"
+shortlink: "87l5"
 ---
 # lynpt 字节 SRE 二面
 

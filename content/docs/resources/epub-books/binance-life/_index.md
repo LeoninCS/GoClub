@@ -3,6 +3,9 @@ title: "币安人生：幸运、韧性与保护用户的回忆录（简体版）
 weight: 10
 type: docs
 bookCollapseSection: true
+aliases:
+  - "/s/nntb/"
+shortlink: "nntb"
 ---
 
 # 币安人生：幸运、韧性与保护用户的回忆录（简体版）

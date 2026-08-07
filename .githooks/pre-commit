@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# GoClub pre-commit hook：提交前校验 URL 短链规范。
+#
+# 只在本次提交涉及 content/ 或 scripts/ 时运行，速度很快（约 100ms）。
+# 安装：bash scripts/install-hooks.sh
+# 临时跳过：git commit --no-verify
+#
+set -uo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root" || exit 1
+
+# 本次提交暂存了哪些文件
+staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if ! grep -qE '^(content/|scripts/|archetypes/)' <<<"$staged"; then
+  exit 0
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "pre-commit: 未找到 python3，跳过 URL 短链校验。" >&2
+  exit 0
+fi
+
+status=0
+
+if ! python3 scripts/check_slugs.py; then
+  status=1
+fi
+
+if ! python3 scripts/gen_shortlinks.py --check; then
+  status=1
+fi
+
+if [[ $status -ne 0 ]]; then
+  cat >&2 <<'TIP'
+
+提交被拦下了，因为上面的 URL 规范校验没通过。
+
+常见修法：
+  缺 slug     在 front matter 里加一行，如 slug: "blocke-bytedance-1"
+  缺短链      运行 python3 scripts/gen_shortlinks.py 自动补齐
+  修完记得    git add 改动过的文件，再重新 commit
+
+确认要跳过检查时用：git commit --no-verify
+TIP
+fi
+
+exit $status

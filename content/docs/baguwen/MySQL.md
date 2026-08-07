@@ -1,3 +1,10 @@
+---
+title: "MySQL"
+aliases:
+  - "/s/4qwj/"
+shortlink: "4qwj"
+---
+
 # MySQL
 
 这里按基础、索引、事务、锁和日志几个方向整理 MySQL 常见面试题，适合系统梳理数据库知识。
