@@ -1,0 +1,88 @@
+name: 自动补齐分享短链
+
+# 为什么需要这个 workflow：
+#
+# /s/xxxx 短链写在页面 front matter 里，本地开发者靠 git hook 自动生成，
+# 但外部贡献者不会装 hook，也不该为站点运维细节操心。
+# 所以在 main 收到新提交后自动补齐，谁都不用管。
+#
+# 幂等：没有页面缺短链时不会产生任何提交，因此不会自我循环。
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: ${{ github.repository }}-shortlink-sync
+  cancel-in-progress: false
+
+env:
+  DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  sync:
+    name: 补齐短链并发布
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 检出最新默认分支
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.repository.default_branch }}
+          submodules: false
+
+      - name: 生成缺失的短链
+        id: gen
+        shell: bash
+        run: |
+          python3 scripts/gen_shortlinks.py
+
+          if git diff --quiet -- content; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "所有页面短链齐全，无需改动。"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "以下页面补上了短链："
+            git -c core.quotepath=false diff --name-only -- content
+          fi
+
+      - name: 校验改动范围
+        if: steps.gen.outputs.changed == 'true'
+        shell: bash
+        run: |
+          # 这个 workflow 只应该动 content/ 下的 Markdown。
+          # 出现其他文件说明脚本行为异常，宁可失败也不要自动提交。
+          unexpected="$(git -c core.quotepath=false diff --name-only | grep -vE '^content/.*\.md$' || true)"
+          if [[ -n "$unexpected" ]]; then
+            echo "短链生成器改动了预期之外的文件，已中止：" >&2
+            echo "$unexpected" >&2
+            exit 1
+          fi
+
+      - name: 提交并推送
+        if: steps.gen.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- content
+          git commit -m "chore: 自动补齐分享短链"
+          # main 可能在本次运行期间又有新提交，rebase 后再推
+          git pull --rebase --autostash origin "$DEFAULT_BRANCH"
+          git push origin "HEAD:$DEFAULT_BRANCH"
+
+      - name: 触发 Pages 发布
+        if: steps.gen.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        # 用 GITHUB_TOKEN 推送的提交不会自动触发其他 workflow，
+        # 所以这里显式拉起部署，让带短链的版本上线。
+        run: gh workflow run static.yml --ref "$DEFAULT_BRANCH"

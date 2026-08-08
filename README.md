@@ -26,7 +26,7 @@ GoClub 是一个围绕技术面试准备与系统复习搭建的内容站点，�
 3. 新增面经页面时，title 和文件名使用「名字+公司+岗位（可选）+几面」格式，例如「lynpt字节SRE三面」或「Shio字节一面」。
 4. 文件名含中文时，必须在 front matter 里加一个纯英文小写的 slug，否则分享出去的链接会变成一长串编码字符。面经的 slug 用「投稿人-公司-岗位-轮次」格式，例如 blocke-bytedance-1；其他页面用简短英文描述，例如 go-backend-roadmap。
 5. 新增页面后，同步更新对应目录下的 _index.md，让目录页能看到入口。
-6. /s/ 分享短链会在 git commit 时由仓库自带的 hook 自动生成，无需手工处理。
+6. /s/ 分享短链无需手工处理：本地装了 hook 会在 commit 时自动生成，PR 合并后主仓库也会自动补齐。
 7. 保持现有文章的标题层级、代码块、引用块和列表风格。
 8. 完成后运行 python3 scripts/check_slugs.py 和 hugo --minify 检查结果。
 

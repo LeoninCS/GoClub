@@ -84,8 +84,13 @@ shortlink: "ltsl"
 
 短码由**内容文件路径**哈希得到，所以改标题、改正文、改 slug 都不会让短码变化，只有重命名或移动文件才会变。
 
-装了 git hook（`bash scripts/install-hooks.sh`）之后，短链会在 `git commit` 时**自动生成并加入本次提交**，不用手工跑。
-hook 只会重新暂存本次提交已包含的文件，不会把工作区里其他未完成的改动带进 commit。
+短链有两层自动化，正常情况下谁都不用手工处理：
+
+1. **本地**：装了 git hook（`bash scripts/install-hooks.sh`）后，短链在 `git commit` 时自动生成并加入本次提交。
+   hook 只会重新暂存本次提交已包含的文件，不会把工作区里其他未完成的改动带进 commit。
+2. **远端**：main 收到新提交后，`.github/workflows/shortlink-sync.yml` 会自动补齐缺失的短链并提交，
+   然后触发一次部署。外部贡献者不装 hook 也没关系，PR 合并后短链会自动出现。
+   该 workflow 是幂等的——没有页面缺短链时不产生任何提交，因此不会自我循环。
 
 需要手工执行时用下面这些，脚本是幂等的：
 

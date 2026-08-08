@@ -37,7 +37,14 @@ jobs:
         run: python3 scripts/check_slugs.py
 
       - name: Check share shortlinks
-        run: python3 scripts/gen_shortlinks.py --check
+        shell: bash
+        # 短链属于站点运维细节，不该卡住投稿者。
+        # 缺失只做提示，合并到 main 后由 shortlink-sync workflow 自动补齐。
+        run: |
+          if python3 scripts/gen_shortlinks.py --check; then
+            exit 0
+          fi
+          echo "::notice::上面这些页面还没有 /s/ 分享短链。这不影响本 PR 合并，合并到 main 后会自动补齐，无需处理。"
 
       - name: Generate contributors data
         env:
