@@ -35,6 +35,8 @@
     {{- $category = "项目学习" -}}
   {{- else if hasPrefix $href "/docs/resources/" -}}
     {{- $category = "资源荟萃" -}}
+  {{- else if hasPrefix $href "/docs/jobs/" -}}
+    {{- $category = "求职就业" -}}
   {{- end -}}
   {{- if eq $page.Kind "section" -}}
     {{- $type = "section" -}}
