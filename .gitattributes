@@ -1,0 +1,34 @@
+# 统一换行符为 LF。
+#
+# 背景：Windows 上的编辑器容易把文件存成 CRLF。即使内容一个字没改，
+# git 也会认为整段被重写，和别人的改动撞在一起就变成"假冲突"——
+# PR #47 就是这么炸的（front matter 内容没变，只因行尾多了 \r 而冲突）。
+#
+# text=auto eol=lf 让 git 入库和检出时都用 LF，从源头消除这类冲突。
+* text=auto eol=lf
+
+# shell 脚本和 git hook 必须是 LF，否则在 Linux/macOS 上会报
+# "bad interpreter: /usr/bin/env bash^M" 而无法执行
+*.sh text eol=lf
+.githooks/* text eol=lf
+
+# 二进制文件不做任何换行符转换，否则会损坏
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.svg   text eol=lf
+*.pdf   binary
+*.epub  binary
+*.zip   binary
+*.gz    binary
+*.tar   binary
+*.mp4   binary
+*.mp3   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.eot   binary
