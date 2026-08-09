@@ -1969,6 +1969,84 @@ body.sidebar-collapsed .book-brand-mark {
   background: rgba(255, 255, 255, 0.78);
 }
 
+.markdown .job-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.25rem;
+  scrollbar-gutter: stable;
+  overscroll-behavior-inline: contain;
+}
+
+.markdown table.job-table {
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+  margin: 0;
+  table-layout: auto;
+}
+
+.markdown table.job-table th,
+.markdown table.job-table td {
+  min-width: 9rem;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.markdown table.job-table th:first-child,
+.markdown table.job-table td:first-child {
+  min-width: 18rem;
+}
+
+.markdown table.job-table td a {
+  display: inline-block;
+  max-width: 28rem;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.markdown .job-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.markdown .job-pagination button {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--goclub-border);
+  border-radius: 0.35rem;
+  background: rgba(var(--goclub-surface-rgb), 0.9);
+  color: var(--body-font-color);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.markdown .job-pagination button:hover,
+.markdown .job-pagination button:focus-visible {
+  border-color: var(--goclub-primary);
+  color: var(--goclub-primary);
+}
+
+.markdown .job-pagination button:disabled {
+  cursor: default;
+  opacity: 0.42;
+}
+
+.markdown .job-pagination-status {
+  min-width: 6.5rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
 .markdown table tr th {
   background: rgba(0, 75, 73, 0.07);
   color: var(--body-font-color);
