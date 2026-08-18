@@ -14,8 +14,6 @@ Return only the standardized Markdown below. Do not add explanations, greetings,
 ```markdown
 ---
 title: "contributor-company-role-round"
-category: "zhongchang"
-difficulty: "medium"
 ---
 
 # Company and role title
@@ -39,11 +37,6 @@ difficulty: "medium"
 ## Metadata rules
 
 - `title`: 5–80 characters. Use the pattern `contributor-company-role-round`, for example `krypton-深信服Golang一面`.
-- `category`: the company-size section. It must be one of:
-  - `dachang`
-  - `zhongchang`
-  - `xiaochang`
-- `difficulty`: the overall difficulty of the interview. Use only `easy`, `medium`, or `hard`.
 
 ## Content rules
 
@@ -63,7 +56,6 @@ difficulty: "medium"
 ## Editing procedure
 
 1. Determine whether all material belongs to one interview session. If it contains multiple sessions, tell the user to process each session separately.
-2. Choose the company-size section and overall difficulty.
-3. Clean and organize the question list without changing the meaning.
-4. Write cautious, verifiable reference answers; remind users to revise project answers based on their real experience.
-5. Return the complete standardized Markdown only.
+2. Clean and organize the question list without changing the meaning.
+3. Write cautious, verifiable reference answers; remind users to revise project answers based on their real experience.
+4. Return the complete standardized Markdown only.
