@@ -15,14 +15,13 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HUGO_VERSION: 0.159.0
   CONTENT_ROOT: content/docs/interview
 
 jobs:
   create-pr:
-    name: 校验面经并生成 PR
+    name: 生成投稿 PR
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     if: >
       contains(github.event.issue.labels.*.name, 'question-submission') ||
       contains(github.event.issue.body, '### 标准化 Markdown')
@@ -34,11 +33,13 @@ jobs:
           submodules: false
           fetch-depth: 1
 
-      - name: 补齐投稿标签
+      - name: 感谢投稿并补齐标签
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
+          gh issue comment "$ISSUE_NUMBER" \
+            --body "感谢投稿！系统会自动生成 PR，管理员审核后合并。"
           gh label create question-submission \
             --color 0E8A16 \
             --description "面经自动投稿" || true
@@ -46,9 +47,8 @@ jobs:
             gh issue edit "$ISSUE_NUMBER" --add-label question-submission
           fi
 
-      - name: 提取并校验投稿
+      - name: 提取投稿并生成页面
         id: import
-        continue-on-error: true
         env:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
@@ -57,38 +57,7 @@ jobs:
             --content-root "$CONTENT_ROOT" \
             --write
 
-      - name: 标记格式错误并通知投稿者
-        if: steps.import.outcome == 'failure'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          gh label create invalid-format --color D73A4A --description "面经投稿格式不正确" || true
-          gh issue edit "$ISSUE_NUMBER" --add-label invalid-format
-          gh issue comment "$ISSUE_NUMBER" --body "格式校验失败，请检查是否完整使用了 [interview-question Skill](https://github.com/LeoninCS/GoClub/blob/main/skills/interview-question/SKILL.md) 输出的整份面经标准格式。构建日志：$RUN_URL"
-          exit 1
-
-      - name: 初始化主题子模块
-        if: steps.import.outcome == 'success'
-        run: git submodule update --init --recursive
-
-      - name: 安装 Hugo
-        if: steps.import.outcome == 'success'
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: ${{ env.HUGO_VERSION }}
-          extended: true
-
-      - name: 校验 URL 与站点构建
-        if: steps.import.outcome == 'success'
-        run: |
-          python3 scripts/check_slugs.py
-          hugo --minify
-          python3 scripts/check_search_index.py --site public
-
       - name: 检查待提交范围
-        if: steps.import.outcome == 'success'
         env:
           CONTENT_PATH: ${{ steps.import.outputs.content_path }}
         run: |
@@ -102,7 +71,6 @@ jobs:
           git diff --cached --check
 
       - name: 创建分支、提交并生成 PR
-        if: steps.import.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ steps.import.outputs.target_branch }}
@@ -136,16 +104,8 @@ jobs:
           Closes #$ISSUE_NUMBER
 
           - 自动化来源：Issue Form
-          - 自动校验：Frontmatter、内容安全、URL slug、Hugo 构建
-          - 管理员审核合并后会自动发布上线")"
+          - 合并后会由现有部署流程自动构建发布
+
+          管理员审核合并后会自动发布上线")"
 
           gh issue comment "$ISSUE_NUMBER" --body "✅ 已为你自动生成 $pr_url，管理员审核通过后将合并上线。"
-
-      - name: 通知自动化失败
-        if: failure() && steps.import.outcome == 'success'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          gh issue comment "$ISSUE_NUMBER" --body "面经内容通过了基础格式校验，但自动生成 PR 前的站点验证或 Git 操作失败。管理员会检查构建日志：$RUN_URL"

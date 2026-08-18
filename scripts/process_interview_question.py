@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate an Issue Form interview submission and create a Hugo page."""
+"""Convert an Issue Form interview submission into a Hugo page."""
 
 from __future__ import annotations
 
@@ -15,15 +15,13 @@ from typing import Any
 
 ALLOWED_CATEGORIES = {"dachang", "zhongchang", "xiaochang"}
 ALLOWED_DIFFICULTIES = {"easy", "medium", "hard"}
-ALLOWED_METADATA_KEYS = {"title", "category", "difficulty", "tags", "slug"}
-MAX_MARKDOWN_LENGTH = 60_000
 MAX_TITLE_LENGTH = 80
 MAX_SLUG_LENGTH = 72
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 class SubmissionError(ValueError):
-    """A user-facing validation error for an interview submission."""
+    """A user-facing conversion error for an unusable GitHub Issue event."""
 
 
 @dataclass(frozen=True)
@@ -32,7 +30,6 @@ class ParsedSubmission:
     category: str
     difficulty: str
     tags: tuple[str, ...]
-    submitted_slug: str | None
     body_markdown: str
     slug: str
 
@@ -44,14 +41,8 @@ def read_payload(path: Path) -> dict[str, Any]:
         raise SubmissionError(f"无法读取 GitHub Issue 事件文件：{error}") from error
 
     issue = payload.get("issue")
-    if not isinstance(issue, dict):
-        raise SubmissionError("事件Payload中缺少 Issue 信息。")
-    if not isinstance(issue.get("body"), str):
+    if not isinstance(issue, dict) or not isinstance(issue.get("body"), str):
         raise SubmissionError("Issue 正文为空或格式不正确。")
-    labels = issue.get("labels", [])
-    label_names = {label.get("name") for label in labels if isinstance(label, dict)}
-    if "question-submission" not in label_names:
-        raise SubmissionError("这个 Issue 没有 question-submission 标签。")
     if not isinstance(issue.get("number"), int):
         raise SubmissionError("Issue 编号缺失或格式不正确。")
     if not isinstance(issue.get("user"), dict) or not issue["user"].get("login"):
@@ -59,31 +50,12 @@ def read_payload(path: Path) -> dict[str, Any]:
     return payload
 
 
-def confirm_submission_rules(issue_body: str) -> None:
-    if not re.search(
-        r"^[-*]\s+\[[xX]\]\s+我已通过 interview-question Skill 格式化",
-        issue_body,
-        re.MULTILINE,
-    ):
-        raise SubmissionError("请先勾选“我已通过 interview-question Skill 格式化”。")
-    if not re.search(
-        r"^[-*]\s+\[[xX]\]\s+我确认内容不包含保密信息",
-        issue_body,
-        re.MULTILINE,
-    ):
-        raise SubmissionError("请先勾选内容安全和版权确认项。")
-
-
-def extract_fenced_markdown(issue_body: str) -> str:
-    """Extract the outer fenced block containing standardized interview Markdown."""
-    if len(issue_body) > MAX_MARKDOWN_LENGTH + 8_000:
-        raise SubmissionError("Issue 内容过长，请只提交一场面试。")
-
-    candidates: list[str] = []
+def extract_fenced_blocks(issue_body: str) -> list[str]:
+    blocks: list[str] = []
     lines = issue_body.splitlines()
     index = 0
     while index < len(lines):
-        opening = re.fullmatch(r"(`{3,})[ \t]*(?:markdown|md|yaml)?[ \t]*", lines[index])
+        opening = re.fullmatch(r"(`{3,})[ \t]*(?:markdown|md)?[ \t]*", lines[index])
         if opening is None:
             index += 1
             continue
@@ -93,202 +65,171 @@ def extract_fenced_markdown(issue_body: str) -> str:
         index += 1
         while index < len(lines):
             if re.fullmatch(r"`{%d,}[ \t]*" % fence_length, lines[index]):
-                candidates.append("\n".join(content))
+                blocks.append("\n".join(content).strip("\n"))
                 break
             content.append(lines[index])
             index += 1
         index += 1
+    return blocks
 
-    for candidate in candidates:
-        if candidate.startswith("---\n"):
-            if len(candidate) > MAX_MARKDOWN_LENGTH:
-                raise SubmissionError("标准化 Markdown 超过 60,000 字符，请精简内容。")
-            return candidate + "\n"
 
-    raise SubmissionError(
-        "没有找到包含 YAML Frontmatter 的 Markdown 代码块。"
-        "请把 Skill 输出的完整面经放在四个反引号代码块内。"
+def extract_submission_content(issue_body: str) -> str:
+    """Get the submitted Markdown without rejecting imperfect formatting."""
+    blocks = extract_fenced_blocks(issue_body)
+    if blocks:
+        return max(blocks, key=len)
+
+    match = re.search(
+        r"^###\s+标准化 Markdown\s*$\n(.*?)(?=^###\s+|\Z)",
+        issue_body,
+        flags=re.MULTILINE | re.DOTALL,
     )
+    if match and match.group(1).strip():
+        return match.group(1).strip()
+
+    lines = []
+    for line in issue_body.splitlines():
+        if line.startswith("### ") or re.match(r"^[-*]\s+\[[ xX]\]", line):
+            continue
+        lines.append(line)
+    return "\n".join(lines).strip()
 
 
-def split_front_matter(markdown: str) -> tuple[str, str]:
+def split_front_matter(markdown: str) -> tuple[dict[str, Any], str]:
     lines = markdown.splitlines()
     if not lines or lines[0].strip() != "---":
-        raise SubmissionError("Markdown 开头必须是 YAML Frontmatter 分隔线 ---。")
+        return {}, markdown
 
     for index, line in enumerate(lines[1:], start=1):
         if line.strip() == "---":
             front_matter = "\n".join(lines[1:index])
             body = "\n".join(lines[index + 1 :]).strip("\r\n")
-            return front_matter, body
-
-    raise SubmissionError("YAML Frontmatter 没有结束分隔线 ---。")
+            metadata = parse_metadata(front_matter)
+            return metadata, body
+    return {}, markdown
 
 
 def decode_scalar(value: str, field: str) -> str:
     value = value.strip()
     if not value:
-        raise SubmissionError(f"{field} 不能为空。")
-    try:
-        if value.startswith('"') and value.endswith('"'):
-            decoded = json.loads(value)
-        elif value.startswith("'") and value.endswith("'"):
-            decoded = value[1:-1].replace("''", "'")
-        else:
-            decoded = value
-    except json.JSONDecodeError as error:
-        raise SubmissionError(f"{field} 的引号格式不正确。") from error
-    if not isinstance(decoded, str) or not decoded.strip():
-        raise SubmissionError(f"{field} 不能为空。")
-    return decoded.strip()
+        raise ValueError(f"{field} is empty")
+    if value.startswith('"') and value.endswith('"'):
+        value = json.loads(value)
+    elif value.startswith("'") and value.endswith("'"):
+        value = value[1:-1].replace("''", "'")
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{field} is empty")
+    return value.strip()
 
 
-def parse_inline_tags(value: str) -> list[str]:
-    tags = decode_scalar(value, "tags")
-    if tags.startswith("[") and tags.endswith("]"):
-        try:
-            decoded = json.loads(tags)
-        except json.JSONDecodeError as error:
-            raise SubmissionError("tags 必须是 YAML 列表。") from error
-        if not isinstance(decoded, list) or any(not isinstance(tag, str) for tag in decoded):
-            raise SubmissionError("tags 中每一项都必须是字符串。")
-        return decoded
-    raise SubmissionError("tags 必须使用列表格式，例如 [\"Go\", \"MySQL\"] 或多行列表。")
-
-
-def parse_front_matter(front_matter: str) -> dict[str, Any]:
+def parse_metadata(front_matter: str) -> dict[str, Any]:
     result: dict[str, Any] = {}
     current_key: str | None = None
     for raw_line in front_matter.splitlines():
         if not raw_line.strip():
-            current_key = None
             continue
-        if raw_line.lstrip().startswith("#"):
-            raise SubmissionError("Frontmatter 中不支持注释，请删除 # 注释行。")
-
         match = re.fullmatch(r"([A-Za-z][A-Za-z0-9_-]*):(.*)", raw_line)
         if match:
-            key = match.group(1)
-            if key in result:
-                raise SubmissionError(f"Frontmatter 字段 {key} 重复。")
-            if key not in ALLOWED_METADATA_KEYS:
-                raise SubmissionError(
-                    f"Frontmatter 不支持字段 {key}。"
-                    "只能包含 title、category、difficulty、tags 和可选 slug。"
-                )
-            value = match.group(2).strip()
+            key, value = match.group(1), match.group(2).strip()
             if value:
-                result[key] = parse_inline_tags(value) if key == "tags" else decode_scalar(value, key)
-                current_key = None
+                result[key] = decode_scalar(value, key) if key != "tags" else [decode_scalar(value, "tags")]
             else:
                 result[key] = []
                 current_key = key
             continue
-
         item = re.fullmatch(r"[ \t]+-[ \t]+(.+)", raw_line)
         if item and current_key == "tags":
-            result["tags"].append(decode_scalar(item.group(1), "tags 项"))
+            result[current_key].append(decode_scalar(item.group(1), "tags item"))
             continue
-
-        raise SubmissionError(f"Frontmatter 第 {raw_line!r} 无法解析。")
-
-    if "tags" in result and not isinstance(result["tags"], list):
-        raise SubmissionError("tags 必须是列表。")
+        raise ValueError(f"unsupported front matter line: {raw_line!r}")
     return result
 
 
-def validate_metadata(metadata: dict[str, Any], issue_number: int, category_dir: Path) -> ParsedSubmission:
-    required = {"title", "category", "difficulty", "tags"}
-    missing = sorted(required - set(metadata))
-    if missing:
-        raise SubmissionError(f"Frontmatter 缺少必要字段：{', '.join(missing)}。")
+def normalize_title(metadata: dict[str, Any], issue_title: str, issue_number: int) -> str:
+    title = metadata.get("title") if isinstance(metadata.get("title"), str) else ""
+    if not title.strip():
+        title = re.sub(r"^\s*\[面经\]\s*", "", issue_title).strip()
+    title = " ".join(title.split())
+    if len(title) > MAX_TITLE_LENGTH:
+        title = title[:MAX_TITLE_LENGTH].rstrip()
+    if len(title) < 5:
+        title = f"面经投稿 Issue #{issue_number}"
+    return title
 
-    title = metadata["title"]
-    category = metadata["category"]
-    difficulty = metadata["difficulty"]
-    tags = metadata["tags"]
-    submitted_slug = metadata.get("slug")
 
-    if not isinstance(title, str) or not (5 <= len(title) <= MAX_TITLE_LENGTH):
-        raise SubmissionError("title 长度必须在 5 到 80 个字符之间。")
-    if title != title.strip() or re.search(r"[\r\n\t]", title):
-        raise SubmissionError("title 首尾不能有空格，也不能包含换行或制表符。")
+def normalize_tags(metadata: dict[str, Any], body: str) -> tuple[str, ...]:
+    raw_tags = metadata.get("tags", [])
+    if isinstance(raw_tags, str):
+        raw_tags = [raw_tags]
+    if not isinstance(raw_tags, list):
+        raw_tags = []
 
-    if category not in ALLOWED_CATEGORIES:
-        allowed = "、".join(sorted(ALLOWED_CATEGORIES))
-        raise SubmissionError(f"category 必须是以下之一：{allowed}。")
+    tags = []
+    for tag in raw_tags:
+        if not isinstance(tag, str):
+            continue
+        tag = tag.strip()
+        if 2 <= len(tag) <= 24 and tag not in tags:
+            tags.append(tag)
 
-    if difficulty not in ALLOWED_DIFFICULTIES:
-        raise SubmissionError("difficulty 只能是 easy、medium 或 hard。")
-
-    if not isinstance(tags, list) or not tags:
-        raise SubmissionError("tags 至少需要一个标签。")
-    if len(tags) > 6:
-        raise SubmissionError("tags 最多只能有 6 个。")
-    if any(not isinstance(tag, str) for tag in tags):
-        raise SubmissionError("tags 中每一项都必须是字符串。")
-    normalized_tags = [tag.strip() for tag in tags]
-    if any(not (2 <= len(tag) <= 24) for tag in normalized_tags):
-        raise SubmissionError("每个 tag 长度必须在 2 到 24 个字符之间。")
-    if len(set(normalized_tags)) != len(normalized_tags):
-        raise SubmissionError("tags 不能重复。")
-
-    if submitted_slug is not None:
-        if not isinstance(submitted_slug, str) or not SLUG_RE.match(submitted_slug):
-            raise SubmissionError("slug 只能包含小写字母、数字和连字符，且不能以连字符开头或结尾。")
-        if len(submitted_slug) > MAX_SLUG_LENGTH:
-            raise SubmissionError("slug 不能超过 72 个字符。")
-        if (category_dir / f"{submitted_slug}.md").exists():
-            raise SubmissionError(f"目标文件 {submitted_slug}.md 已存在，请更换 slug。")
-        slug = submitted_slug
-    else:
-        normalized_title = unicodedata.normalize("NFKD", title).encode("ascii", "ignore").decode("ascii")
-        base = re.sub(r"[^A-Za-z0-9]+", "-", normalized_title).strip("-").lower()
-        base = re.sub(r"-{2,}", "-", base)[:MAX_SLUG_LENGTH].rstrip("-")
-        base = base if len(base) >= 2 else f"interview-issue-{issue_number}"
-        slug = base
-        if (category_dir / f"{slug}.md").exists():
-            slug = f"{base}-issue-{issue_number}"
-        if not SLUG_RE.match(slug) or len(slug) > MAX_SLUG_LENGTH:
-            raise SubmissionError("无法生成合法的 ASCII slug，请在 Frontmatter 提供 slug 字段。")
-
-    return ParsedSubmission(
-        title=title,
-        category=category,
-        difficulty=difficulty,
-        tags=tuple(normalized_tags),
-        submitted_slug=submitted_slug,
-        body_markdown="",
-        slug=slug,
+    candidates = (
+        ("Go", ("go ", "golang", "goroutine")),
+        ("MySQL", ("mysql",)),
+        ("Redis", ("redis",)),
+        ("Kubernetes", ("kubernetes", "k8s")),
+        ("分布式", ("分布式",)),
     )
+    lowered = body.lower()
+    for tag, keywords in candidates:
+        if len(tags) >= 6:
+            break
+        if tag not in tags and any(keyword in lowered for keyword in keywords):
+            tags.append(tag)
+    if not tags:
+        tags = ["Go"]
+    return tuple(tags[:6])
 
 
-def validate_content(markdown: str, parsed: ParsedSubmission) -> ParsedSubmission:
-    """Validate only page safety and non-emptiness; do not enforce article structure."""
-    if not markdown.strip():
-        raise SubmissionError("正文不能为空。")
+def normalize_slug(metadata: dict[str, Any], title: str, issue_number: int, category_dir: Path) -> str:
+    submitted = metadata.get("slug") if isinstance(metadata.get("slug"), str) else ""
 
-    forbidden_patterns = {
-        "Hugo shortcode": r"\{\{[<%]",
-        "script 标签": r"<\s*script\b",
-        "iframe 标签": r"<\s*iframe\b",
-        "style 标签": r"<\s*style\b",
-        "内联事件属性": r"\bon[a-z]+\s*=",
-        "javascript 链接": r"(?i)javascript[ \t]*:",
-    }
-    for label, pattern in forbidden_patterns.items():
-        if re.search(pattern, markdown):
-            raise SubmissionError(f"内容不允许包含{label}。")
+    def ascii_slug(value: str) -> str:
+        normalized = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
+        slug = re.sub(r"[^A-Za-z0-9]+", "-", normalized).strip("-").lower()
+        return re.sub(r"-{2,}", "-", slug)[:MAX_SLUG_LENGTH].rstrip("-")
 
-    return ParsedSubmission(
-        title=parsed.title,
-        category=parsed.category,
-        difficulty=parsed.difficulty,
-        tags=parsed.tags,
-        submitted_slug=parsed.submitted_slug,
-        body_markdown=markdown.strip() + "\n",
-        slug=parsed.slug,
-    )
+    slug = ascii_slug(submitted) or ascii_slug(title) or f"interview-issue-{issue_number}"
+    if not SLUG_RE.match(slug):
+        slug = f"interview-issue-{issue_number}"
+    if (category_dir / f"{slug}.md").exists():
+        slug = f"{slug[: MAX_SLUG_LENGTH - len(str(issue_number)) - 7]}-issue-{issue_number}"
+    return slug
+
+
+def normalize_body(body: str, title: str) -> str:
+    lines = body.strip().splitlines()
+    if not lines:
+        lines = [title, "", "待确认。"]
+
+    if lines and not lines[0].lstrip().startswith("#"):
+        lines[0] = f"# {lines[0].strip() or title}"
+
+    output: list[str] = []
+    in_answers = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped == "参考答案（AI 生成）":
+            output.append("## 参考答案（AI 生成）")
+            in_answers = True
+            continue
+        if in_answers and re.match(r"^\d+[.、]\s*", stripped):
+            output.append(re.sub(r"^(\d+)[.、]\s*", r"### \1. ", stripped))
+            continue
+        if in_answers and stripped == "以下答案由 AI 生成，仅供面试复盘参考。":
+            output.append("> 以下答案由 AI 生成，仅供面试复盘参考。")
+            continue
+        output.append(line)
+    return "\n".join(output).strip() + "\n"
 
 
 def yaml_quote(value: str) -> str:
@@ -323,43 +264,48 @@ def process(payload_path: Path, content_root: Path, write: bool) -> int:
     try:
         payload = read_payload(payload_path)
         issue = payload["issue"]
-        confirm_submission_rules(issue["body"])
-        source_markdown = extract_fenced_markdown(issue["body"])
-        front_matter, body = split_front_matter(source_markdown)
-        metadata = parse_front_matter(front_matter)
+        source_markdown = extract_submission_content(issue["body"])
+        try:
+            metadata, body = split_front_matter(source_markdown)
+        except (ValueError, json.JSONDecodeError):
+            metadata, body = {}, source_markdown
 
         issue_number = issue["number"]
-        category = metadata.get("category")
+        category = metadata.get("category") if isinstance(metadata.get("category"), str) else ""
         if category not in ALLOWED_CATEGORIES:
-            allowed = "、".join(sorted(ALLOWED_CATEGORIES))
-            raise SubmissionError(f"category 必须是以下之一：{allowed}。")
-        category_dir = content_root / str(category)
+            category = "zhongchang"
+        category_dir = content_root / category
         category_dir.mkdir(parents=True, exist_ok=True)
-        parsed = validate_metadata(metadata, issue_number, category_dir)
-        parsed = validate_content(body, parsed)
 
-        relative_path = category_dir / f"{parsed.slug}.md"
-        if relative_path.exists():
-            raise SubmissionError("目标文件已存在，请更换 slug。")
-        page = render_page(parsed, issue_number)
+        title = normalize_title(metadata, issue.get("title", ""), issue_number)
+        difficulty = metadata.get("difficulty") if isinstance(metadata.get("difficulty"), str) else ""
+        if difficulty not in ALLOWED_DIFFICULTIES:
+            difficulty = "medium"
+        tags = normalize_tags(metadata, source_markdown)
+        slug = normalize_slug(metadata, title, issue_number, category_dir)
+        body = normalize_body(body, title)
+        submission = ParsedSubmission(title, category, difficulty, tags, body, slug)
+
+        relative_path = category_dir / f"{submission.slug}.md"
+        page = render_page(submission, issue_number)
         if write:
             relative_path.write_text(page, encoding="utf-8", newline="\n")
 
         append_github_output(
             {
                 "content_path": relative_path.as_posix(),
-                "page_title": parsed.title,
-                "page_slug": parsed.slug,
+                "page_title": submission.title,
+                "page_slug": submission.slug,
                 "target_branch": f"bot/issue-{issue_number}",
-                "pr_title": f"面经收录：{parsed.title} (#{issue_number})",
+                "pr_title": f"面经收录：{submission.title} (#{issue_number})",
                 "submitter": issue["user"]["login"],
                 "issue_number": issue_number,
             }
         )
-        print(f"校验通过：{relative_path}")
+        print(f"已生成：{relative_path}")
         return 0
     except SubmissionError as error:
-        print(f"格式校验失败：{error}", file=sys.stderr)
+        print(f"无法生成投稿：{error}", file=sys.stderr)
         return 1
 
 

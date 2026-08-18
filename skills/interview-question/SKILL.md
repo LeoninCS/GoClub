@@ -16,10 +16,6 @@ Return only the standardized Markdown below. Do not add explanations, greetings,
 title: "contributor-company-role-round"
 category: "zhongchang"
 difficulty: "medium"
-tags:
-  - "Go"
-  - "MySQL"
-slug: "contributor-company-role-round"
 ---
 
 # Company and role title
@@ -48,8 +44,6 @@ slug: "contributor-company-role-round"
   - `zhongchang`
   - `xiaochang`
 - `difficulty`: the overall difficulty of the interview. Use only `easy`, `medium`, or `hard`.
-- `tags`: 1–6 tags, each 2–24 characters. Prefer major technical topics such as Go, MySQL, Redis, distributed systems, and Kubernetes.
-- `slug`: an ASCII slug derived from the contributor, company, role, and round. Use only lowercase letters, digits, and hyphens. Keep it under 48 characters when possible, for example `krypton-sangfor-golang-1`. Do not use Chinese characters, underscores, or consecutive hyphens.
 
 ## Content rules
 
@@ -69,7 +63,7 @@ slug: "contributor-company-role-round"
 ## Editing procedure
 
 1. Determine whether all material belongs to one interview session. If it contains multiple sessions, tell the user to process each session separately.
-2. Choose the company-size section, overall difficulty, main technical tags, and ASCII slug.
+2. Choose the company-size section and overall difficulty.
 3. Clean and organize the question list without changing the meaning.
 4. Write cautious, verifiable reference answers; remind users to revise project answers based on their real experience.
 5. Return the complete standardized Markdown only.
