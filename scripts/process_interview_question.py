@@ -75,16 +75,15 @@ def extract_fenced_blocks(issue_body: str) -> list[str]:
 
 
 def extract_selected_category(issue_body: str) -> str | None:
-    """Read the required company-size choice from the Issue Form."""
+    """Read the company-size choice from the Issue Form."""
     match = re.search(
-        r"^###\s+公司规模\s*$\n+(.+?)(?=\n\n###\s+|\Z)",
+        r"^###[^\n]*\n+\s*(大厂|中厂|小厂)\s*$",
         issue_body,
-        flags=re.MULTILINE | re.DOTALL,
+        flags=re.MULTILINE,
     )
     if not match:
         return None
-    selected = match.group(1).strip().splitlines()[0].strip()
-    return CATEGORY_LABELS.get(selected)
+    return CATEGORY_LABELS[match.group(1)]
 
 
 def extract_submission_content(issue_body: str) -> str:
