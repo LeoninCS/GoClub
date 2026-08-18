@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 ALLOWED_CATEGORIES = {"dachang", "zhongchang", "xiaochang"}
+CATEGORY_LABELS = {"大厂": "dachang", "中厂": "zhongchang", "小厂": "xiaochang"}
 ALLOWED_DIFFICULTIES = {"easy", "medium", "hard"}
 MAX_TITLE_LENGTH = 80
 MAX_SLUG_LENGTH = 72
@@ -71,6 +72,19 @@ def extract_fenced_blocks(issue_body: str) -> list[str]:
             index += 1
         index += 1
     return blocks
+
+
+def extract_selected_category(issue_body: str) -> str | None:
+    """Read the required company-size choice from the Issue Form."""
+    match = re.search(
+        r"^###\s+公司规模\s*$\n+(.+?)(?=\n\n###\s+|\Z)",
+        issue_body,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if not match:
+        return None
+    selected = match.group(1).strip().splitlines()[0].strip()
+    return CATEGORY_LABELS.get(selected)
 
 
 def extract_submission_content(issue_body: str) -> str:
@@ -271,7 +285,9 @@ def process(payload_path: Path, content_root: Path, write: bool) -> int:
             metadata, body = {}, source_markdown
 
         issue_number = issue["number"]
-        category = metadata.get("category") if isinstance(metadata.get("category"), str) else ""
+        category = extract_selected_category(issue["body"])
+        if category is None:
+            category = metadata.get("category") if isinstance(metadata.get("category"), str) else ""
         if category not in ALLOWED_CATEGORIES:
             category = "zhongchang"
         category_dir = content_root / category

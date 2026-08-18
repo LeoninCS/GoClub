@@ -4,6 +4,18 @@ title: "[面经] 请填写投稿人-公司-岗位-轮次"
 labels:
   - question-submission
 body:
+  - type: dropdown
+    id: company_category
+    attributes:
+      label: 公司规模
+      description: 请选择面经要收录的目录。
+      options:
+        - 大厂
+        - 中厂
+        - 小厂
+    validations:
+      required: true
+
   - type: markdown
     attributes:
       value: |
@@ -14,11 +26,7 @@ body:
         ````markdown
         ---
         title: "xxx-字节跳动Golang一面"
-        category: "dachang"
         difficulty: "hard"
-        tags:
-          - "Go"
-          - "MySQL"
         ---
 
         # 字节跳动Golang
@@ -43,11 +51,7 @@ body:
         ````markdown
         ---
         title: "xxx-字节跳动Golang一面"
-        category: "dachang"
         difficulty: "hard"
-        tags:
-          - "Go"
-          - "MySQL"
         ---
 
         # 字节跳动Golang
