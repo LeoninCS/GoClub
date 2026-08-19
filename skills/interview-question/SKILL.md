@@ -36,7 +36,7 @@ title: "contributor-company-role-round"
 
 ## Metadata rules
 
-- `title`: 5–80 characters. Use the pattern `contributor-company-role-round`, for example `krypton-深信服Golang一面`.
+- `title`: 5–80 characters. Use the pattern `contributor-company-role-round`, for example `xxx-深信服Golang一面`.
 
 ## Content rules
 
@@ -48,8 +48,6 @@ title: "contributor-company-role-round"
 - Give one numbered H3 answer heading for each question. Start each answer with `答：`, state the conclusion first, and then add principles, scenarios, trade-offs, or commands as appropriate.
 - For project questions, organize an answer around the user's actual experience. Do not fabricate personal experience.
 - Put code in triple-backtick code blocks. When submitting through GitHub, wrap the entire Markdown output in a four-backtick code block.
-- Do not output Hugo shortcodes such as `{{< ... >}}` or `{{% ... %}}`.
-- Do not output `<script>`, `<iframe>`, event-handler attributes, or `javascript:` links.
 - Do not invent source-code versions, performance numbers, interview results, or company information. Use “待确认” when reliable information is unavailable.
 - If the user provides questions without answers, generate conservative answers in the required structure. If a reliable answer is impossible, write “待确认” rather than inventing details.
 

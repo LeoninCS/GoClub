@@ -82,7 +82,7 @@ jobs:
           if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
             existing_pr="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
             if [[ -n "$existing_pr" ]]; then
-              gh issue comment "$ISSUE_NUMBER" --body "✅ 该投稿已生成 PR #$existing_pr，管理员审核通过后将合并上线。"
+              gh issue comment "$ISSUE_NUMBER" --body "✅ 该投稿已生成 PR，管理员审核通过后将合并上线 #$existing_pr。"
               exit 0
             fi
             echo "分支 $BRANCH 已存在但没有打开的 PR，请管理员删除旧分支后重新触发。" >&2
@@ -108,4 +108,4 @@ jobs:
 
           管理员审核合并后会自动发布上线")"
 
-          gh issue comment "$ISSUE_NUMBER" --body "✅ 已为你自动生成 $pr_url，管理员审核通过后将合并上线。"
+          gh issue comment "$ISSUE_NUMBER" --body "✅ 已为你自动生成，管理员审核通过后将合并上线 $pr_url。"
