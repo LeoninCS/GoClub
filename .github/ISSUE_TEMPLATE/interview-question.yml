@@ -18,7 +18,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢投稿！请先用仓库中的 [interview-question Skill](https://github.com/oxkrypton/GoClub/blob/main/skills/interview-question/SKILL.md) 整理整场面试，再把输出结果粘贴到下面。
+        感谢投稿！请先用仓库中的 [interview-question Skill](https://github.com/LeoninCS/GoClub/blob/main/skills/interview-question/SKILL.md) 整理整场面试，再把输出结果粘贴到下面。
         ai生成不一定准确可以进行微调, title可以填上自己的名字, 方便辨别 (匿名也可以!)
         一次 Issue 只提交一场面试。为了避免外层代码块和正文代码块冲突，请使用 **四个反引号** 包裹整份 Markdown：
         
