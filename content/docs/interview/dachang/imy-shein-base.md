@@ -7,6 +7,9 @@ tags:
   - "MySQL"
 weight: 59
 slug: "imy-shein-base"
+aliases:
+  - "/s/pqiq/"
+shortlink: "pqiq"
 ---
 
 # ````markdown
