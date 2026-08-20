@@ -1,7 +1,5 @@
 ---
 title: "Imy-SHEIN数据库平台实习一面（base南京）"
-category: "dachang"
-difficulty: "medium"
 tags:
   - "Go"
   - "MySQL"
@@ -10,11 +8,6 @@ slug: "imy-shein-base"
 aliases:
   - "/s/pqiq/"
 shortlink: "pqiq"
----
-
-# ````markdown
----
-title: "Imy-SHEIN数据库平台实习一面（base南京）"
 ---
 
 # SHEIN 数据库平台实习一面（南京）
