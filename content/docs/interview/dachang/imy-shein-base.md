@@ -6,6 +6,7 @@ tags:
 weight: 59
 slug: "imy-shein-base"
 aliases:
+  - "/docs/interview/dachang/imy-shein-base/"
   - "/s/pqiq/"
 shortlink: "pqiq"
 ---
