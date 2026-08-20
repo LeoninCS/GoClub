@@ -241,7 +241,7 @@ def normalize_body(body: str, title: str) -> str:
         if in_answers and stripped == "以下答案由 AI 生成，仅供面试复盘参考。":
             output.append("> 以下答案由 AI 生成，仅供面试复盘参考。")
             continue
-        output.append(line)
+        output.append(line.rstrip())
     return "\n".join(output).strip() + "\n"
 
 
