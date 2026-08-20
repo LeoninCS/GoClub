@@ -8,6 +8,9 @@ tags:
   - "Redis"
 weight: 63
 slug: "interview-issue-63"
+aliases:
+  - "/s/iv8y/"
+shortlink: "iv8y"
 ---
 
 # 五场后端面试综合面经
