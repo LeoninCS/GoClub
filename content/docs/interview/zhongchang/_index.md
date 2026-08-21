@@ -2,6 +2,9 @@
 title: "中厂面试"
 weight: 2
 bookCollapseSection: true
+aliases:
+  - "/s/26gk/"
+shortlink: "26gk"
 ---
 
 # 中厂面试
@@ -10,4 +13,7 @@ bookCollapseSection: true
 
 适合对比不同中厂岗位的题型分布、项目追问方式和手撕题方向。
 
+## 本目录新增
+
+- [CC-深信服一面](CC-Sangfor-First-Interview/)
 - [CC-货拉拉大数据一面](CC-货拉拉大数据一面/)
