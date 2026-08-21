@@ -1,6 +1,11 @@
 ---
 title: "超級の新人字节Agent开发实习一面"
 weight: 27
+slug: "xinren-bytedance-agent-1"
+aliases:
+  - "/docs/interview/dachang/超級の新人-字节Agent开发实习一面/"
+  - "/s/8v9a/"
+shortlink: "8v9a"
 ---
 
 # 超級の新人 字节 Agent 开发实习一面

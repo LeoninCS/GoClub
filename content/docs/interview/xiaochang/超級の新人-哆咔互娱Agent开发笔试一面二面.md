@@ -1,6 +1,11 @@
 ---
 title: "超級の新人哆咔互娱(DECA)Agent开发笔试一面二面"
 weight: 4
+slug: "xinren-duoka-agent-1-2"
+aliases:
+  - "/docs/interview/xiaochang/超級の新人-哆咔互娱Agent开发笔试一面二面/"
+  - "/s/ym0l/"
+shortlink: "ym0l"
 ---
 
 # 超級の新人 哆咔互娱(DECA 中国工作室)Agent 开发 笔试 + 一面 + 二面

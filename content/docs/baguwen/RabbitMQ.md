@@ -1,3 +1,10 @@
+---
+title: "RabbitMQ"
+aliases:
+  - "/s/5nhj/"
+shortlink: "5nhj"
+---
+
 # RabbitMQ
 
 这里主要整理消息队列相关的高频面试题，包括 RabbitMQ、自身机制以及和 Kafka、RocketMQ 的对比。

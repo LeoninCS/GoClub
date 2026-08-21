@@ -5,7 +5,7 @@ GoClub 是一个围绕技术面试准备与系统复习搭建的内容站点，�
 当前站点基于 Hugo 构建，部署在 GitHub Pages，自定义域名为 `goclub.space`。
 
 - 站点地址：https://goclub.space
-- 在线提交流程页：https://goclub.space/docs/blog/%E6%8F%90%E4%BA%A4%E6%B5%81%E7%A8%8B/
+- 在线提交流程页：https://goclub.space/docs/blog/contributing/
 - 仓库地址：https://github.com/LeoninCS/GoClub
 
 ## 如何提交内容
@@ -24,9 +24,11 @@ GoClub 是一个围绕技术面试准备与系统复习搭建的内容站点，�
 1. 判断内容属于哪个栏目，并放到 content/docs 对应目录。
 2. 新增 Markdown 页面时，补齐 title、weight 等必要 front matter。
 3. 新增面经页面时，title 和文件名使用「名字+公司+岗位（可选）+几面」格式，例如「lynpt字节SRE三面」或「Shio字节一面」。
-4. 新增页面后，同步更新对应目录下的 _index.md，让目录页能看到入口。
-5. 保持现有文章的标题层级、代码块、引用块和列表风格。
-6. 完成后运行 hugo --minify 检查构建结果。
+4. 文件名含中文时，必须在 front matter 里加一个纯英文小写的 slug，否则分享出去的链接会变成一长串编码字符。面经的 slug 用「投稿人-公司-岗位-轮次」格式，例如 blocke-bytedance-1；其他页面用简短英文描述，例如 go-backend-roadmap。
+5. 新增页面后，同步更新对应目录下的 _index.md，让目录页能看到入口。
+6. /s/ 分享短链无需手工处理：本地装了 hook 会在 commit 时自动生成，PR 合并后主仓库也会自动补齐。
+7. 保持现有文章的标题层级、代码块、引用块和列表风格。
+8. 完成后运行 python3 scripts/check_slugs.py 和 hugo --minify 检查结果。
 
 内容如下：
 
@@ -119,6 +121,22 @@ http://localhost:1313/
 - 目录页能否点到新文章
 - 标题、图片、代码块、链接是否正常显示
 - 是否有明显错别字、断链或排版问题
+
+另外跑一下这两个校验，它们也接在 PR 检查里，不通过会让 PR 失败：
+
+```bash
+python3 scripts/check_slugs.py             # 中文文件名是否都配了英文 slug
+python3 scripts/gen_shortlinks.py --check  # 新页面是否都有 /s/ 分享短链
+```
+
+强烈建议首次 clone 后启用仓库自带的 git hook：
+
+```bash
+bash scripts/install-hooks.sh
+```
+
+启用后每次 `git commit` 会自动做两件事：校验 slug（缺了会拦下，因为 slug 要你自己起名），
+以及**自动生成 /s/ 分享短链并加入本次提交**，你不用记着跑脚本。
 
 #### 6. 提交代码并推送
 

@@ -1,5 +1,10 @@
 ---
 title: "m佬PDD服务端开发实习"
+slug: "m-pdd-backend-intern"
+aliases:
+  - "/docs/interview/dachang/m佬PDD服务端开发实习/"
+  - "/s/4e2v/"
+shortlink: "4e2v"
 ---
 
 # m佬 PDD 服务端开发实习

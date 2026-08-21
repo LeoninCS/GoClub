@@ -1,6 +1,11 @@
 ---
 title: "lynpt字节SRE三面"
 weight: 25
+slug: "lynpt-bytedance-sre-3"
+aliases:
+  - "/docs/interview/dachang/lynpt-字节SRE三面/"
+  - "/s/sdgr/"
+shortlink: "sdgr"
 ---
 
 # lynpt 字节 SRE 三面

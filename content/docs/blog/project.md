@@ -5,6 +5,8 @@ bookToC: true
 weight: 2
 aliases:
   - /docs/project/
+  - "/s/6vv9/"
+shortlink: "6vv9"
 ---
 
 # GoClub项目介绍

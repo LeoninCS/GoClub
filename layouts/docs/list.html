@@ -10,6 +10,11 @@
       {{ with $summary }}
         <div class="page-lead-summary">{{ . }}</div>
       {{ end }}
+      {{ with .Params.pageLeadAction }}
+        <div class="page-lead-actions">
+          <a class="page-hero-button" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a>
+        </div>
+      {{ end }}
       <div class="page-lead-meta">
         {{ if $isContributors }}
           <span class="page-lead-chip">共 {{ len $contributors }} 位贡献者</span>

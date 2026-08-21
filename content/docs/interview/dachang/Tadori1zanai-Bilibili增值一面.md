@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai Bilibili增值一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-bilibili-vas-1"
+aliases:
+  - "/docs/interview/dachang/Tadori1zanai-Bilibili增值一面/"
+  - "/s/2zht/"
+shortlink: "2zht"
 ---
 
 # Tadori1zanai Bilibili 增值一面（项目：分布式缓存系统 / IM 聊天系统）

@@ -1,5 +1,10 @@
 ---
 title: "哈饥米百度psig国际化 ai一面"
+slug: "hajimi-baidu-psig-ai-1"
+aliases:
+  - "/docs/interview/dachang/哈饥米百度psig国际化 ai一面/"
+  - "/s/lcak/"
+shortlink: "lcak"
 ---
 
 # 百度 psig 国际化 ai 一面

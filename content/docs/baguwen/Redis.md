@@ -1,3 +1,10 @@
+---
+title: "Redis"
+aliases:
+  - "/s/oehh/"
+shortlink: "oehh"
+---
+
 # Redis
 
 这里主要覆盖 Redis 的数据结构、持久化、高可用、热点问题和面试中的常见追问。

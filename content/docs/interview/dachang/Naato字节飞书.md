@@ -1,6 +1,11 @@
 ---
 title: "Naato 字节飞书"
 weight: 26
+slug: "naato-bytedance-feishu"
+aliases:
+  - "/docs/interview/dachang/Naato字节飞书/"
+  - "/s/y0f5/"
+shortlink: "y0f5"
 ---
 
 # Naato 字节飞书

@@ -1,5 +1,10 @@
 ---
 title: "gogod-美团软件开发工程师（全栈方向）一面"
+slug: "gogod-meituan-fullstack-1"
+aliases:
+  - "/docs/interview/dachang/gogod-美团软件开发工程师（全栈方向）一面/"
+  - "/s/tckg/"
+shortlink: "tckg"
 ---
 
 # 美团软件开发工程师（全栈方向）一面

@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 欢乐互娱一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-huanle-1"
+aliases:
+  - "/docs/interview/xiaochang/Tadori1zanai-欢乐互娱一面/"
+  - "/s/3fv6/"
+shortlink: "3fv6"
 ---
 
 # Tadori1zanai 欢乐互娱一面（项目：分布式缓存系统 / IM 聊天系统）

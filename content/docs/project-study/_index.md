@@ -2,6 +2,9 @@
 title: "项目学习"
 weight: 5
 bookCollapseSection: true
+aliases:
+  - "/s/r2eq/"
+shortlink: "r2eq"
 ---
 
 # 项目学习

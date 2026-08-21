@@ -1,5 +1,10 @@
 ---
 title: "01佬腾讯WXG基础架构面试"
+slug: "01-tencent-wxg-infra"
+aliases:
+  - "/docs/interview/dachang/01佬腾讯WXG基础架构面试/"
+  - "/s/ttwx/"
+shortlink: "ttwx"
 ---
 
 # 01佬腾讯 WXG 基础架构面试

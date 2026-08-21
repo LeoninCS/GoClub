@@ -1,5 +1,10 @@
 ---
 title: "整理-字节DataAML一面（3.31）"
+slug: "summary-bytedance-data-aml-1"
+aliases:
+  - "/docs/interview/dachang/整理-字节DataAML一面凉经（3.31）/"
+  - "/s/kf63/"
+shortlink: "kf63"
 ---
 
 # 字节 Data AML 一面

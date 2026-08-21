@@ -1,5 +1,8 @@
 ---
 title: "计算机网络"
+aliases:
+  - "/s/xidg/"
+shortlink: "xidg"
 ---
 
 # 计算机网络

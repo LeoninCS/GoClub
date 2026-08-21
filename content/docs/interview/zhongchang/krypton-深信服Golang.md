@@ -1,5 +1,10 @@
 ---
 title: "krypton-深信服Golang"
+slug: "krypton-sangfor-golang"
+aliases:
+  - "/docs/interview/zhongchang/krypton-深信服Golang/"
+  - "/s/9vh4/"
+shortlink: "9vh4"
 ---
 
 # 深信服Golang

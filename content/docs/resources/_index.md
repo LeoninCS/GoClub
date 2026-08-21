@@ -2,6 +2,9 @@
 title: "资源荟萃"
 weight: 3
 bookCollapseSection: true
+aliases:
+  - "/s/u1s4/"
+shortlink: "u1s4"
 ---
 
 # 资源荟萃

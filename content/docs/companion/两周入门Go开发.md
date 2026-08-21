@@ -1,6 +1,11 @@
 ---
 title: "两周入门Go开发"
 weight: 3
+slug: "go-in-two-weeks"
+aliases:
+  - "/docs/companion/两周入门Go开发/"
+  - "/s/ny6v/"
+shortlink: "ny6v"
 ---
 
 # 两周入门Go开发

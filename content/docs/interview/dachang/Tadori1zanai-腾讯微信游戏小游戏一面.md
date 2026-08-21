@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 腾讯微信游戏小游戏一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-tencent-wxgame-1"
+aliases:
+  - "/docs/interview/dachang/Tadori1zanai-腾讯微信游戏小游戏一面/"
+  - "/s/53l2/"
+shortlink: "53l2"
 ---
 
 # Tadori1zanai 腾讯微信游戏小游戏一面（项目：分布式缓存系统 / IM 聊天系统）

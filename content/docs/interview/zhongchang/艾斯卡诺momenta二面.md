@@ -1,5 +1,10 @@
 ---
 title: "艾斯卡诺momenta二面"
+slug: "escanor-momenta-2"
+aliases:
+  - "/docs/interview/zhongchang/艾斯卡诺momenta二面/"
+  - "/s/l2qo/"
+shortlink: "l2qo"
 ---
 
 # 艾斯卡诺momenta二面

@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 阿里云一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-aliyun-1"
+aliases:
+  - "/docs/interview/dachang/Tadori1zanai-阿里云一面/"
+  - "/s/rig3/"
+shortlink: "rig3"
 ---
 
 # Tadori1zanai 阿里云一面（项目：分布式缓存系统 / IM 聊天系统）

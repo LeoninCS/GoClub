@@ -1,6 +1,9 @@
 ---
 title: "GCFeed 面试问题与答案清单"
 weight: 30
+aliases:
+  - "/s/lwnx/"
+shortlink: "lwnx"
 ---
 
 # GCFeed 面试问题与答案清单

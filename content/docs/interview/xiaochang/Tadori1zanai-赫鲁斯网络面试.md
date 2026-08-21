@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 赫鲁斯网络面试（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-helusi"
+aliases:
+  - "/docs/interview/xiaochang/Tadori1zanai-赫鲁斯网络面试/"
+  - "/s/xib6/"
+shortlink: "xib6"
 ---
 
 # Tadori1zanai 赫鲁斯网络面试（项目：分布式缓存系统 / IM 聊天系统）

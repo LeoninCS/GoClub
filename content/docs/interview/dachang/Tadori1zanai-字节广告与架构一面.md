@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 字节广告与架构一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-bytedance-ads-arch-1"
+aliases:
+  - "/docs/interview/dachang/Tadori1zanai-字节广告与架构一面/"
+  - "/s/o3wv/"
+shortlink: "o3wv"
 ---
 
 # Tadori1zanai 字节广告与架构一面（项目：分布式缓存系统 / IM 聊天系统）

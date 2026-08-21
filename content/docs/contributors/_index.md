@@ -1,8 +1,11 @@
 ---
 title: "贡献者"
-weight: 7
+weight: 8
 bookCollapseSection: true
 type: docs
+aliases:
+  - "/s/cjac/"
+shortlink: "cjac"
 ---
 
 # 贡献者

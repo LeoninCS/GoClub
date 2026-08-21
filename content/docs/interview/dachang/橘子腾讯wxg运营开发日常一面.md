@@ -1,6 +1,11 @@
 ---
 title: "橘子腾讯wxg运营开发日常一面"
 description: "腾讯 WXG 运营开发日常一面，包含算法海量日志 Top IP、亿级红包记录设计、索引原理，以及 AI 问答链路与优化思路。"
+slug: "juzi-tencent-wxg-ops-1"
+aliases:
+  - "/docs/interview/dachang/橘子腾讯wxg运营开发日常一面/"
+  - "/s/pgup/"
+shortlink: "pgup"
 ---
 
 # 橘子腾讯 WXG 运营开发日常一面

@@ -3,6 +3,9 @@ title: "深入理解计算机系统（原书第3版）"
 weight: 30
 type: docs
 bookCollapseSection: true
+aliases:
+  - "/s/jvd1/"
+shortlink: "jvd1"
 ---
 
 # 深入理解计算机系统（原书第3版）

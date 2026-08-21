@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 数脉文芯面试（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-shumaiwenxin"
+aliases:
+  - "/docs/interview/xiaochang/Tadori1zanai-数脉文芯面试/"
+  - "/s/411o/"
+shortlink: "411o"
 ---
 
 # Tadori1zanai 数脉文芯面试（项目：分布式缓存系统 / IM 聊天系统）

@@ -2,6 +2,11 @@
 title: "Agent 相关网站推荐"
 weight: 2
 type: docs
+slug: "agent-websites"
+aliases:
+  - "/docs/resources/Agent相关网站推荐/"
+  - "/s/yrxb/"
+shortlink: "yrxb"
 ---
 
 # Agent 相关网站推荐

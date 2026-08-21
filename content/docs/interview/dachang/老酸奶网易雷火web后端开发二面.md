@@ -1,5 +1,10 @@
 ---
 title: "老酸奶网易雷火web后端开发二面"
+slug: "suannai-netease-leihuo-web-2"
+aliases:
+  - "/docs/interview/dachang/老酸奶网易雷火web后端开发二面/"
+  - "/s/12qy/"
+shortlink: "12qy"
 ---
 
 # 老酸奶 网易雷火 web后端开发 二面

@@ -1,0 +1,57 @@
+name: 📝 提交面经
+description: 提交一份已经用 Skill 格式化的完整面试记录
+title: "[面经] 请填写投稿人-公司-岗位-轮次"
+labels:
+  - question-submission
+body:
+  - type: dropdown
+    id: company_category
+    attributes:
+      label: 请选择面经要收录的目录
+      options:
+        - 大厂
+        - 中厂
+        - 小厂
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        感谢投稿！请先用仓库中的 [interview-question Skill](https://github.com/LeoninCS/GoClub/blob/main/skills/interview-question/SKILL.md) 整理整场面试，再把输出结果粘贴到下面。
+        ai生成不一定准确可以进行微调, title可以填上自己的名字, 方便辨别 (匿名也可以!)
+        ⚠️ **整份 Markdown 必须用四个反引号（````）包裹**, 否则正文中的代码块会导致解析失败、投稿无法收录。
+        
+
+  - type: textarea
+    id: standardized_markdown
+    attributes:
+      label: 标准化 Markdown
+      description: 只粘贴 Skill 输出的完整面经 Markdown，并用四个反引号代码块包裹。
+      value: |
+        ````
+        ---
+        title: "xxx-字节跳动Golang一面"
+        difficulty: "hard"
+        ---
+
+        # 字节跳动Golang
+        1. PR 修复了什么问题？
+        ## 参考答案（AI 生成）
+
+        > 以下答案由 AI 生成，仅供面试复盘参考。
+        ### 1. PR 修复了什么问题？
+        答：结合真实项目经历说明。
+        ````
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: format_confirmation
+    attributes:
+      label: 投稿确认
+      options:
+        - label: 我已通过 interview-question Skill 格式化。
+          required: true
+        - label: 我确认内容不包含保密信息，不侵犯他人版权，且没有恶意链接或脚本。
+          required: true

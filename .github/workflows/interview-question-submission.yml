@@ -1,0 +1,111 @@
+name: 处理面经投稿
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: interview-question-${{ github.event.issue.number || github.run_id }}
+  cancel-in-progress: false
+
+env:
+  CONTENT_ROOT: content/docs/interview
+
+jobs:
+  create-pr:
+    name: 生成投稿 PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: >
+      contains(github.event.issue.labels.*.name, 'question-submission') ||
+      contains(github.event.issue.body, '### 标准化 Markdown')
+    steps:
+      - name: 检出默认分支
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch || 'main' }}
+          submodules: false
+          fetch-depth: 1
+
+      - name: 感谢投稿并补齐标签
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" \
+            --body "感谢投稿！系统会自动生成 PR，管理员审核后合并。"
+          gh label create question-submission \
+            --color 0E8A16 \
+            --description "面经自动投稿" || true
+          if [[ -n "$ISSUE_NUMBER" ]]; then
+            gh issue edit "$ISSUE_NUMBER" --add-label question-submission
+          fi
+
+      - name: 提取投稿并生成页面
+        id: import
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          python3 scripts/process_interview_question.py \
+            --payload "$GITHUB_EVENT_PATH" \
+            --content-root "$CONTENT_ROOT" \
+            --write
+
+      - name: 检查待提交范围
+        env:
+          CONTENT_PATH: ${{ steps.import.outputs.content_path }}
+        run: |
+          git add -- "$CONTENT_PATH"
+          changed="$(git diff --cached --name-only)"
+          if [[ "$changed" != "$CONTENT_PATH" ]]; then
+            echo "本次自动化只能提交一个面经文件，实际待提交文件："
+            echo "$changed"
+            exit 1
+          fi
+          git diff --cached --check
+
+      - name: 创建分支、提交并生成 PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.import.outputs.target_branch }}
+          CONTENT_PATH: ${{ steps.import.outputs.content_path }}
+          PR_TITLE: ${{ steps.import.outputs.pr_title }}
+          ISSUE_NUMBER: ${{ steps.import.outputs.issue_number }}
+          SUBMITTER: ${{ steps.import.outputs.submitter }}
+        run: |
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            existing_pr="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
+            if [[ -n "$existing_pr" ]]; then
+              gh issue comment "$ISSUE_NUMBER" --body "✅ 该投稿已生成 PR，管理员审核通过后将合并上线 #$existing_pr。"
+              exit 0
+            fi
+            echo "分支 $BRANCH 已存在但没有打开的 PR，请管理员删除旧分支后重新触发。" >&2
+            exit 1
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git commit -m "面经收录：Issue #$ISSUE_NUMBER"
+          git push -u origin "$BRANCH"
+
+          pr_url="$(gh pr create \
+            --base "${{ github.event.repository.default_branch || 'main' }}" \
+            --head "$BRANCH" \
+            --title "$PR_TITLE" \
+            --body "由 Issue #$ISSUE_NUMBER 自动生成，感谢贡献者 @$SUBMITTER。
+
+          Closes #$ISSUE_NUMBER
+
+          - 自动化来源：Issue Form
+          - 合并后会由现有部署流程自动构建发布
+
+          管理员审核合并后会自动发布上线")"
+
+          gh issue comment "$ISSUE_NUMBER" --body "✅ 已为你自动生成，管理员审核通过后将合并上线 $pr_url。"

@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+#
+# GoClub pre-commit hook
+#
+#   1. 校验 slug 规范（slug 要人工起名，不能自动生成，只能拦截）
+#   2. 自动补齐 /s/ 分享短链，并把补齐结果加入本次提交
+#
+# 只在本次提交涉及 content/、scripts/、archetypes/ 时运行，约 100ms。
+# 安装：bash scripts/install-hooks.sh
+# 临时跳过：git commit --no-verify
+#
+set -uo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root" || exit 1
+
+staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if ! grep -qE '^(content/|scripts/|archetypes/)' <<<"$staged"; then
+  exit 0
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "pre-commit: 未找到 python3，跳过 URL 规范校验。" >&2
+  exit 0
+fi
+
+# ---------- 1. slug 校验（只拦截，不自动改） ----------
+if ! python3 scripts/check_slugs.py; then
+  cat >&2 <<'TIP'
+
+提交被拦下了：有页面缺少合法的 slug。
+
+slug 需要你自己起一个有意义的英文名，脚本不会替你猜：
+  面经   投稿人-公司-岗位-轮次，如 slug: "blocke-bytedance-1"
+  其他   简短英文描述，如 slug: "go-backend-roadmap"
+
+在对应文件的 front matter 里加上，再重新 commit。
+确认要跳过检查时用：git commit --no-verify
+TIP
+  exit 1
+fi
+
+# ---------- 2. 短链自动生成 ----------
+# 记录生成前工作区相对暂存区的差异，用于区分「脚本改的」和「你自己没暂存的改动」
+before_dirty="$(git diff --name-only)"
+
+gen_output="$(python3 scripts/gen_shortlinks.py 2>&1)"
+gen_status=$?
+
+if [[ $gen_status -ne 0 ]]; then
+  echo "$gen_output" >&2
+  cat >&2 <<'TIP'
+
+提交被拦下了：短链生成失败，需要人工处理。
+
+最常见的原因是文件被重命名或移动过，短码跟着路径变了。
+直接覆盖会让别人手里的旧短链失效，所以脚本不会自动改，请人工确认后处理。
+
+确认要跳过检查时用：git commit --no-verify
+TIP
+  exit 1
+fi
+
+after_dirty="$(git diff --name-only)"
+
+# 脚本新弄脏的文件 = 生成后有差异，但生成前没有差异
+touched=""
+while IFS= read -r f; do
+  [[ -z "$f" ]] && continue
+  if ! grep -qxF "$f" <<<"$before_dirty"; then
+    touched+="$f"$'\n'
+  fi
+done <<<"$after_dirty"
+
+if [[ -n "${touched//[$'\n' ]/}" ]]; then
+  added=""
+  skipped=""
+  while IFS= read -r f; do
+    [[ -z "$f" ]] && continue
+    # 只把本次提交已包含的文件重新暂存，
+    # 避免把你工作区里其他没打算提交的文件一起带进这个 commit
+    if grep -qxF "$f" <<<"$staged"; then
+      git add -- "$f" && added+="  $f"$'\n'
+    else
+      skipped+="  $f"$'\n'
+    fi
+  done <<<"$touched"
+
+  if [[ -n "$added" ]]; then
+    echo "pre-commit: 已自动补上分享短链并加入本次提交："
+    printf '%s' "$added"
+  fi
+
+  if [[ -n "$skipped" ]]; then
+    echo "pre-commit: 下面的文件也补了短链，但不在本次提交范围内，已留在工作区：" >&2
+    printf '%s' "$skipped" >&2
+    echo "  确认无误后可单独提交。" >&2
+  fi
+else
+  echo "$gen_output"
+fi
+
+exit 0

@@ -1,5 +1,10 @@
 ---
 title: "m佬阿里国际AI研发一面"
+slug: "m-alibaba-intl-ai-1"
+aliases:
+  - "/docs/interview/dachang/m佬阿里国际AI研发一面/"
+  - "/s/5axn/"
+shortlink: "5axn"
 ---
 
 # m佬阿里国际 AI 研发一面

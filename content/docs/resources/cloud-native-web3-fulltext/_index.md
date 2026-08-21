@@ -3,6 +3,9 @@ title: "云原生书籍"
 weight: 6
 type: docs
 bookCollapseSection: true
+aliases:
+  - "/s/sdzl/"
+shortlink: "sdzl"
 ---
 
 # 云原生书籍

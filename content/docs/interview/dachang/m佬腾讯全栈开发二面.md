@@ -1,5 +1,10 @@
 ---
 title: "m佬腾讯全栈开发二面"
+slug: "m-tencent-fullstack-2"
+aliases:
+  - "/docs/interview/dachang/m佬腾讯全栈开发二面/"
+  - "/s/1hnh/"
+shortlink: "1hnh"
 ---
 
 # m佬腾讯全栈开发二面

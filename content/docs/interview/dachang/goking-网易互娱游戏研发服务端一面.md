@@ -1,5 +1,10 @@
 ---
 title: "goking-网易互娱游戏研发服务端一面"
+slug: "goking-netease-game-server-1"
+aliases:
+  - "/docs/interview/dachang/goking-网易互娱游戏研发服务端一面/"
+  - "/s/yf3z/"
+shortlink: "yf3z"
 ---
 
 # 网易互娱游戏研发服务端一面

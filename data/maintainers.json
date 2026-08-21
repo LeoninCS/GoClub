@@ -4,9 +4,19 @@
     "html_url": "https://github.com/LeoninCS",
     "avatar_url": "https://github.com/LeoninCS.png",
     "name": "LeoninCS",
-    "role": "站长 / 维护者",
+    "role": "核心维护者",
     "pinned": true,
     "sort_order": 1,
+    "merged_prs": 0
+  },
+  {
+    "login": "oxkrypton",
+    "html_url": "https://github.com/oxkrypton",
+    "avatar_url": "https://github.com/oxkrypton.png",
+    "name": "0xkrypton",
+    "role": "核心维护者",
+    "pinned": false,
+    "sort_order": 2,
     "merged_prs": 0
   },
   {

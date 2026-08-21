@@ -1,5 +1,10 @@
 ---
 title: "goking-网易互娱游戏研发服务端二面"
+slug: "goking-netease-game-server-2"
+aliases:
+  - "/docs/interview/dachang/goking-网易互娱游戏研发服务端二面/"
+  - "/s/y6th/"
+shortlink: "y6th"
 ---
 
 # 网易互娱游戏研发服务端二面

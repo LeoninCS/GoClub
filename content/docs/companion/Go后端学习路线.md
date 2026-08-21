@@ -1,6 +1,11 @@
 ---
 title: "Go后端学习路线"
 weight: 1
+slug: "go-backend-roadmap"
+aliases:
+  - "/docs/companion/Go后端学习路线/"
+  - "/s/kiun/"
+shortlink: "kiun"
 ---
 
 # Go后端学习路线

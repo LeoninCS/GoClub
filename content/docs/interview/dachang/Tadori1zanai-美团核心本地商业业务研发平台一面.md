@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 美团核心本地商业业务研发平台一面（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-meituan-local-biz-1"
+aliases:
+  - "/docs/interview/dachang/Tadori1zanai-美团核心本地商业业务研发平台一面/"
+  - "/s/0467/"
+shortlink: "0467"
 ---
 
 # Tadori1zanai 美团核心本地商业业务研发平台一面（项目：分布式缓存系统 / IM 聊天系统）

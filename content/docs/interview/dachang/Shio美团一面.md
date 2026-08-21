@@ -1,5 +1,10 @@
 ---
 title: "Shio美团一面"
+slug: "shio-meituan-1"
+aliases:
+  - "/docs/interview/dachang/Shio美团一面/"
+  - "/s/8q61/"
+shortlink: "8q61"
 ---
 
 # Shio 美团一面

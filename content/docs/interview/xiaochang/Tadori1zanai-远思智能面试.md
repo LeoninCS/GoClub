@@ -1,5 +1,10 @@
 ---
 title: "Tadori1zanai 远思智能面试（项目：分布式缓存系统 / IM 聊天系统）"
+slug: "tadori-yuansi"
+aliases:
+  - "/docs/interview/xiaochang/Tadori1zanai-远思智能面试/"
+  - "/s/0km2/"
+shortlink: "0km2"
 ---
 
 # Tadori1zanai 远思智能面试（项目：分布式缓存系统 / IM 聊天系统）

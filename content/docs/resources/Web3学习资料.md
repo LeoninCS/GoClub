@@ -3,6 +3,11 @@ title: "Web3 学习资料"
 weight: 7
 type: docs
 bookToC: true
+slug: "web3-resources"
+aliases:
+  - "/docs/resources/Web3学习资料/"
+  - "/s/mp0c/"
+shortlink: "mp0c"
 ---
 
 # Web3 学习资料

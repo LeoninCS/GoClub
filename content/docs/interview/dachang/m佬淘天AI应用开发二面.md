@@ -1,5 +1,10 @@
 ---
 title: "m佬淘天AI应用开发二面"
+slug: "m-taotian-ai-app-2"
+aliases:
+  - "/docs/interview/dachang/m佬淘天AI应用开发二面/"
+  - "/s/waxo/"
+shortlink: "waxo"
 ---
 
 # m佬淘天 AI 应用开发二面
