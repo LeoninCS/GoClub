@@ -16,3 +16,4 @@ shortlink: "26gk"
 ## 本目录新增
 
 - [CC-深信服一面](CC-Sangfor-First-Interview/)
+- [CC-货拉拉大数据一面](CC-货拉拉大数据一面/)
