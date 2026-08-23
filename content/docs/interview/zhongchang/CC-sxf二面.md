@@ -2,6 +2,9 @@
 title: "CC-sxf二面"
 slug: "cc-sxf-2"
 weight: 89
+aliases:
+  - "/s/1ywj/"
+shortlink: "1ywj"
 ---
 
 # 深信服二面
