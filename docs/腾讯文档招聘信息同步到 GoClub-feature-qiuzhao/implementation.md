@@ -126,7 +126,7 @@ data/jobs 目录当前不存在。
 
 **位置**：merge_history、render_markdown、atomic_replace
 
-将完整新快照与上次成功快照按 record_id 合并。新增记录追加，现有记录覆盖字段更新，缺失记录保留历史；计划任务检测到源记录缺失时先失败并告警，只有手动触发显式确认删除后才标记为源表已移除。所有 JSON 和 Markdown 在临时目录完成并通过回读校验后统一替换。
+将完整新快照与上次成功快照按 record_id 合并。新增记录追加，现有记录覆盖字段更新，缺失记录首次出现时保留历史并写入待确认 ID，下一次独立同步仍缺失才标记为源表已移除；记录恢复时清除待确认状态。所有 JSON 和 Markdown 在临时目录完成并通过回读校验后统一替换。
 
 **当前代码**：
 ```python
@@ -225,7 +225,7 @@ scripts/sync_qq_jobs.py 当前不存在。
 
 - 文件：`GitHub Repository Secret`；位置：Settings > Secrets and variables > Actions；调整：创建 QQ_DOCS_STORAGE_STATE_B64，保存专用账号 Playwright storage state 的 Base64；会话过期后重复一次可见登录并覆盖该 Secret。；检查：手动运行 probe-only workflow，确认两个数据集名称、记录数和哈希摘要通过。
 - 文件：`.github/workflows/qq-jobs-sync.yml`；位置：on.schedule；调整：使用 0 */3 * * *，按 UTC 每 3 小时运行一次。
-- 文件：`.github/workflows/qq-jobs-sync.yml`；位置：workflow_dispatch.inputs.accept_source_deletions；调整：默认 false；人工核对源表后才允许将缺失记录标记为源表已移除。
+- 文件：`scripts/sync_qq_jobs.py`；调整：源记录首次缺失时保留旧记录并写入 `pending_source_deletions`，下一次独立同步仍缺失才标记为 `source_removed`；记录恢复时自动清除待确认状态。保留 `workflow_dispatch.inputs.accept_source_deletions` 作为需要立即确认时的人工兜底入口。
 
 ---
 

@@ -29,10 +29,6 @@ class IntegrityError(ValueError):
     """Raised when a source snapshot cannot be proven complete."""
 
 
-class SourceDeletionError(IntegrityError):
-    """Raised when records disappear without explicit operator approval."""
-
-
 @dataclass(frozen=True)
 class DatasetSpec:
     view_name: str
@@ -584,23 +580,40 @@ def merge_history(previous, current, now, accept_source_deletions=False):
         for record in previous.get("records", [])
         if record.get("status", "active") == "active" and record["record_id"] not in current_ids
     )
+    previous_pending = set(previous.get("snapshot", {}).get("pending_source_deletions", []))
+    confirmed_missing_ids = set(missing_ids) & previous_pending
+    pending_missing_ids = set(missing_ids) - confirmed_missing_ids
+    if accept_source_deletions:
+        confirmed_missing_ids = set(missing_ids)
+        pending_missing_ids = set()
     removed_history = [
         deepcopy(record)
         for record in previous.get("records", [])
         if record.get("status") == "source_removed" and record["record_id"] not in current_ids
     ]
-    if missing_ids and not accept_source_deletions:
-        raise SourceDeletionError(f"源记录消失，需人工确认：{', '.join(missing_ids)}")
     merged = deepcopy(current)
+    merged.setdefault("snapshot", {})["pending_source_deletions"] = sorted(pending_missing_ids)
     for record in merged["records"]:
         previous_record = previous_by_id.get(record["record_id"], {})
         record["status"] = "active"
         record["first_seen_at"] = previous_record.get("first_seen_at", now)
         record["last_seen_at"] = now
         record["removed_at"] = None
+    for record_id in sorted(pending_missing_ids):
+        retained = deepcopy(previous_by_id[record_id])
+        retained["status"] = "active"
+        retained["removed_at"] = None
+        merged["records"].append(retained)
     merged["records"].extend(removed_history)
     if accept_source_deletions:
         for record_id in missing_ids:
+            removed = deepcopy(previous_by_id[record_id])
+            removed["status"] = "source_removed"
+            removed["removed_at"] = now
+            merged["records"].append(removed)
+        merged["snapshot"]["pending_source_deletions"] = []
+    else:
+        for record_id in sorted(confirmed_missing_ids):
             removed = deepcopy(previous_by_id[record_id])
             removed["status"] = "source_removed"
             removed["removed_at"] = now
