@@ -16,7 +16,6 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from sync_qq_jobs import (
     DatasetSpec,
     IntegrityError,
-    SourceDeletionError,
     assert_matching_scans,
     check_link_accessibility,
     merge_history,
@@ -173,7 +172,7 @@ class ValidateSnapshotTests(unittest.TestCase):
 
 
 class MergeHistoryTests(unittest.TestCase):
-    def test_scheduled_sync_rejects_missing_source_records(self):
+    def test_first_missing_observation_keeps_record_and_marks_pending(self):
         previous = {
             "source": {"view_id": "sc_daily", "view_name": "每日更新"},
             "schema": [],
@@ -196,8 +195,78 @@ class MergeHistoryTests(unittest.TestCase):
             "records": [],
         }
 
-        with self.assertRaisesRegex(SourceDeletionError, "rec_1"):
-            merge_history(previous, current, now="2026-08-07T00:00:00Z")
+        merged = merge_history(previous, current, now="2026-08-07T00:00:00Z")
+
+        self.assertEqual(["rec_1"], [record["record_id"] for record in merged["records"]])
+        self.assertEqual("active", merged["records"][0]["status"])
+        self.assertEqual(["rec_1"], merged["snapshot"]["pending_source_deletions"])
+
+    def test_second_consecutive_missing_observation_marks_record_removed(self):
+        previous = {
+            "source": {"view_id": "sc_daily", "view_name": "每日更新"},
+            "schema": [],
+            "snapshot": {
+                "source_total": 1,
+                "fetched_count": 1,
+                "pagination_complete": True,
+                "pending_source_deletions": ["rec_1"],
+            },
+            "records": [
+                {
+                    "record_id": "rec_1",
+                    "status": "active",
+                    "first_seen_at": "2026-08-01T00:00:00Z",
+                    "last_seen_at": "2026-08-06T00:00:00Z",
+                    "removed_at": None,
+                    "fields": [],
+                }
+            ],
+        }
+        current = {
+            "source": previous["source"],
+            "schema": [],
+            "snapshot": {"source_total": 0, "fetched_count": 0, "pagination_complete": True},
+            "records": [],
+        }
+
+        merged = merge_history(previous, current, now="2026-08-08T00:00:00Z")
+
+        self.assertEqual("source_removed", merged["records"][0]["status"])
+        self.assertEqual("2026-08-08T00:00:00Z", merged["records"][0]["removed_at"])
+        self.assertEqual([], merged["snapshot"]["pending_source_deletions"])
+
+    def test_returned_record_clears_pending_deletion(self):
+        previous = {
+            "source": {"view_id": "sc_daily", "view_name": "每日更新"},
+            "schema": [],
+            "snapshot": {
+                "source_total": 1,
+                "fetched_count": 1,
+                "pagination_complete": True,
+                "pending_source_deletions": ["rec_1"],
+            },
+            "records": [
+                {
+                    "record_id": "rec_1",
+                    "status": "active",
+                    "first_seen_at": "2026-08-01T00:00:00Z",
+                    "last_seen_at": "2026-08-06T00:00:00Z",
+                    "removed_at": None,
+                    "fields": [],
+                }
+            ],
+        }
+        current = {
+            "source": previous["source"],
+            "schema": [],
+            "snapshot": {"source_total": 1, "fetched_count": 1, "pagination_complete": True},
+            "records": [{"record_id": "rec_1", "fields": []}],
+        }
+
+        merged = merge_history(previous, current, now="2026-08-08T00:00:00Z")
+
+        self.assertEqual("active", merged["records"][0]["status"])
+        self.assertEqual([], merged["snapshot"]["pending_source_deletions"])
 
     def test_manual_confirmation_preserves_and_marks_removed_record(self):
         previous = {
