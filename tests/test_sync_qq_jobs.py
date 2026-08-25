@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from sync_qq_jobs import (
     DatasetSpec,
     IntegrityError,
+    _resolve_sheet_id,
     assert_matching_scans,
     check_link_accessibility,
     merge_history,
@@ -169,6 +170,37 @@ class ValidateSnapshotTests(unittest.TestCase):
 
         with self.assertRaisesRegex(IntegrityError, "field_id"):
             validate_snapshot(snapshot)
+
+
+class ResolveSheetTests(unittest.TestCase):
+    def test_prefers_stable_sheet_id_when_source_view_is_renamed(self):
+        workbook = [
+            {"id": "sheet_daily", "name": "每日更新", "type": "smartsheet"},
+            {"id": "sheet_early", "name": "27届秋招提前批（内推）", "type": "smartsheet"},
+        ]
+
+        self.assertEqual(
+            "sheet_early",
+            _resolve_sheet_id(workbook, "秋招提前批（内推）", "sheet_early"),
+        )
+
+    def test_falls_back_to_unique_view_name_without_saved_sheet_id(self):
+        workbook = [
+            {"id": "sheet_daily", "name": "每日更新", "type": "smartsheet"},
+        ]
+
+        self.assertEqual("sheet_daily", _resolve_sheet_id(workbook, "每日更新", None))
+
+    def test_stable_sheet_id_disambiguates_duplicate_view_names(self):
+        workbook = [
+            {"id": "sheet_old", "name": "秋招提前批（内推）", "type": "smartsheet"},
+            {"id": "sheet_current", "name": "秋招提前批（内推）", "type": "smartsheet"},
+        ]
+
+        self.assertEqual(
+            "sheet_current",
+            _resolve_sheet_id(workbook, "秋招提前批（内推）", "sheet_current"),
+        )
 
 
 class MergeHistoryTests(unittest.TestCase):
@@ -823,7 +855,7 @@ class ParseTencentSheetTests(unittest.TestCase):
             0,
             2,
             [metadata_op, {"t": 3028, "v": 5, "c": {"k1": "sheet_1", "k2": {"k1": {"rec_1": first_record}}}}],
-            workbook=[{"id": "sheet_1", "name": "每日更新", "type": "smartsheet"}],
+            workbook=[{"id": "sheet_1", "name": "已改名的每日更新", "type": "smartsheet"}],
         )
         second_page = self._payload(
             "sheet_1",
