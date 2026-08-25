@@ -36,6 +36,9 @@ jobs:
       - name: Check URL slugs
         run: python3 scripts/check_slugs.py
 
+      - name: Run synchronization tests
+        run: python3 -m unittest discover -s tests
+
       - name: Check share shortlinks
         shell: bash
         # 短链属于站点运维细节，不该卡住投稿者。
