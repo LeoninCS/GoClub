@@ -18,7 +18,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        感谢投稿！title可以填上自己的名字, 方便辨别 (匿名也可以!) 
+        感谢投稿！
+        请填写 issue 标题，网站会根据这个标题进行展示（可以匿名！）
         直接粘贴完整面试题目即可
         
 

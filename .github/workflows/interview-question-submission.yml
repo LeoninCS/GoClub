@@ -32,6 +32,10 @@ jobs:
           ref: ${{ github.event.repository.default_branch || 'main' }}
           submodules: false
           fetch-depth: 1
+          sparse-checkout: |
+            scripts
+            content/docs/interview
+          show-progress: false
 
       - name: 感谢投稿并补齐标签
         env:
