@@ -171,6 +171,20 @@ def _workbook_from_payload(payload):
     return workbook
 
 
+def _resolve_sheet_id(workbook, view_name, preferred_sheet_id=None):
+    if preferred_sheet_id:
+        id_matches = [item for item in workbook if item.get("id") == preferred_sheet_id]
+        if len(id_matches) == 1:
+            return preferred_sheet_id
+        if len(id_matches) > 1:
+            raise IntegrityError(f"workbook 中 sheet_id 重复：{preferred_sheet_id}")
+
+    name_matches = [item for item in workbook if item.get("name") == view_name]
+    if len(name_matches) != 1 or not name_matches[0].get("id"):
+        raise IntegrityError(f"workbook 中无法唯一定位视图：{view_name}")
+    return name_matches[0]["id"]
+
+
 def _extract_structured_links(value):
     links = []
 
@@ -317,8 +331,7 @@ def parse_sheet_pages(view_name, payloads, source_url, document_id):
         raise IntegrityError("分页范围未覆盖源端总量")
     if not isinstance(workbook, list):
         raise IntegrityError("缺少 workbook 视图清单")
-    matches = [item for item in workbook if item.get("name") == view_name]
-    if len(matches) != 1 or matches[0].get("id") != sheet_id:
+    if _resolve_sheet_id(workbook, view_name, sheet_id) != sheet_id:
         raise IntegrityError(f"workbook 中无法唯一定位视图：{view_name}")
     if field_definitions is None or field_order is None or row_order is None:
         raise IntegrityError("完整分页中缺少 schema 元数据")
@@ -497,10 +510,13 @@ class QQDocsSource:
                 workbook = await self._wait_for_workbook(page, captures)
                 target_sheets = {}
                 for spec in specs:
-                    matches = [item for item in workbook if item.get("name") == spec.view_name]
-                    if len(matches) != 1 or not matches[0].get("id"):
-                        raise IntegrityError(f"workbook 中无法唯一定位视图：{spec.view_name}")
-                    target_sheets[spec.view_name] = matches[0]["id"]
+                    previous = _load_previous(spec.data_path)
+                    preferred_sheet_id = previous.get("source", {}).get("sheet_id")
+                    target_sheets[spec.view_name] = _resolve_sheet_id(
+                        workbook,
+                        spec.view_name,
+                        preferred_sheet_id,
+                    )
 
                 grace_deadline = time.monotonic() + min(30, self.timeout_seconds / 2)
                 while time.monotonic() < grace_deadline:
