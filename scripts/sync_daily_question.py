@@ -64,6 +64,9 @@ def prepare_submission(question, answer, submitted_at):
         raise ValueError("答案必须是字符串")
     normalized_question = re.sub(r"\s*[\r\n]+\s*", " ", question.strip())
     normalized_answer = answer.strip().replace("\r\n", "\n").replace("\r", "\n")
+    normalized_answer = "\n".join(
+        line.rstrip(" \t") for line in normalized_answer.split("\n")
+    )
     if not normalized_question:
         raise ValueError("题目不能为空")
     if not normalized_answer:
