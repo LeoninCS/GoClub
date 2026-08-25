@@ -83,7 +83,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T15:57:13Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rgRkRR",
       "removed_at": null,
       "status": "active"
@@ -171,7 +171,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r5Qgvr",
       "removed_at": null,
       "status": "active"
@@ -259,7 +259,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r0a7ts",
       "removed_at": null,
       "status": "active"
@@ -347,7 +347,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rQZxCH",
       "removed_at": null,
       "status": "active"
@@ -435,7 +435,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T18:47:05Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rJycoi",
       "removed_at": null,
       "status": "active"
@@ -523,7 +523,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rk31SD",
       "removed_at": null,
       "status": "active"
@@ -611,7 +611,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r18KFv",
       "removed_at": null,
       "status": "active"
@@ -699,7 +699,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rEMGR0",
       "removed_at": null,
       "status": "active"
@@ -709,7 +709,7 @@
         {
           "field_id": "fv08FQ",
           "links": [],
-          "value": "Sea"
+          "value": "Sea-秋招"
         },
         {
           "field_id": "f3OeZe",
@@ -746,14 +746,14 @@
           "links": [
             {
               "availability": {
-                "checked_at": "2026-08-19T13:41:35Z",
+                "checked_at": "2026-08-25T15:40:11Z",
                 "error_category": null,
                 "result": "reachable",
                 "status_code": 200
               },
-              "key": "3ab8f614886415a430b9eee72d871560ad640f8c05537f1df7724003cc09a60a",
+              "key": "f9d8fa2a45840f251f5ee9d1d6e1da708a06dec10de9a64db62aeee1b45efa52",
               "text": "点击内推",
-              "url": "https://app.mokahr.com/m/campus_apply/garena/148076?recommendCode=DSbqCArb#/jobs"
+              "url": "https://app.mokahr.com/m/campus-recruitment/shopee/170435?recommendCode=DSa6Bfjv#/jobs"
             }
           ],
           "value": "点击内推"
@@ -761,7 +761,7 @@
         {
           "field_id": "fZLmJt",
           "links": [],
-          "value": "DSbqCArb"
+          "value": "DSa6Bfjv"
         },
         {
           "field_id": "fjDFTa",
@@ -787,7 +787,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rW4PRy",
       "removed_at": null,
       "status": "active"
@@ -854,7 +854,7 @@
         {
           "field_id": "fjDFTa",
           "links": [],
-          "value": ""
+          "value": "笔试提醒：可选择沿用暑期实习的成绩，提交志愿之前会弹窗提醒，注意勾选"
         },
         {
           "field_id": "fQL3U5",
@@ -875,7 +875,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rInYUO",
       "removed_at": null,
       "status": "active"
@@ -963,7 +963,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rup1H5",
       "removed_at": null,
       "status": "active"
@@ -1051,7 +1051,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rr5UDp",
       "removed_at": null,
       "status": "active"
@@ -1139,7 +1139,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rctZuE",
       "removed_at": null,
       "status": "active"
@@ -1227,7 +1227,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rDOUdk",
       "removed_at": null,
       "status": "active"
@@ -1315,7 +1315,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rnI5Qo",
       "removed_at": null,
       "status": "active"
@@ -1403,7 +1403,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rVTwgJ",
       "removed_at": null,
       "status": "active"
@@ -1473,7 +1473,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rZs7Ov",
       "removed_at": null,
       "status": "active"
@@ -1561,7 +1561,7 @@
         }
       ],
       "first_seen_at": "2026-08-09T14:43:43Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rVnLmB",
       "removed_at": null,
       "status": "active"
@@ -1649,8 +1649,1858 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rzvf7Z",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "华宝新能"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oouQ0d"
+          ],
+          "value": [
+            "储能"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发管培生、营销管培生、供应链管培生"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "2b89f9b0a7bf7d2cef7aed023b3308adc8c88d07a555da00c5f730aeeb9d211a",
+              "text": "点击内推",
+              "url": "https://career.hello-tech.com/campus/jobs?shareId=eace4fbb-8834-4c92-9282-f6e207966bca&shareSource=2&qr=1&memory=%7B%7D&silence=1"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "EVBMVR"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": "便携储能第一股"
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rq3Nob",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "友塔游戏"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oHo84Y"
+          ],
+          "value": [
+            "游戏"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "技术开发类：游戏研发工程师（UE5/客户端/服务端方向）…\n产品策划类：策划管培生、游戏策划、任务策划…\n发行运营类：市场管培生、运营管培生、配音演员（英语）…\n实习生类：校园大使、演员实习生（文戏/武戏）…"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "上海、北京"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "922d4fe627bc5bcc004a9850d8cdf265e11617f769b85dc1e6d51a6bfee1b7aa",
+              "text": "点击内推",
+              "url": "https://www.yottagames.com.cn/zh/internal-recommendation?token=dcfc7cdaaf6fea693c7585a095478b78-999602-4194133638&sub=016"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "无需内推码，内推链接即可"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "r9LH72",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "宁德时代"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "ovY0xi"
+          ],
+          "value": [
+            "新能源"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "电子计算机/AI类 | 质量管理类 | 计算机与AI类 | 研发类 | 供应链与运营类 | 职能类 | 市场类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "全国多地"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "de2ca89b66ee4cd570145fd3cacf5239eade9ea86eddd3d66b27cb5ae2526f56",
+              "text": "点击内推",
+              "url": "https://app.mokahr.com/m/campus-recruitment/catlhr/148948?recommendCode=DSzsYK6K#/jobs"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "DSzsYK6K"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": "3次志愿机会，6000+offer海量加码"
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "r5RuPh",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "九号公司"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "o1T8xw"
+          ],
+          "value": [
+            "智能制造"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发、产品、设计、营销、供应链、职能、质量等"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "常州、北京、上海、深圳、杭州、珠海"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "0057b0ab2126482347c3691106e3a5cc5e4319d6b369ff489a93b35461a52f44",
+              "text": "点击内推",
+              "url": "https://app.mokahr.com/m/campus_apply/ninebot/45627?recommendCode=DSjFNvsf#/jobs"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "DSjFNvsf"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rCfS75",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "海能达"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oopu7y"
+          ],
+          "value": [
+            "通信"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "算法、软件、硬件、产品、市场、供应链、职能等30+岗位，技术/非技术岗均有机会"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳、东莞、南京、哈尔滨"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "4b27024aac90dc593eb4ff6d0ad7f6a1ed036bc1cc5a8d0f428c471d184b84ef",
+              "text": "点击内推",
+              "url": "https://app.mokahr.com/m/campus_apply/hytera/182194?recommendCode=DST9Hysr#/jobs"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "DST9Hysr"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rJi9Fz",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "TCL华星"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "o1T8xw"
+          ],
+          "value": [
+            "智能制造"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发技术类、产品设计类、市场营销类、智能制造类、供应链类、财务金融类、综合管理类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳、武汉、广州、苏州、惠州、福州"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "70b702b8d55a6ff5ac5d10e0aa8ed5e35390911ef5246ede6ba37218c08903fc",
+              "text": "点击内推",
+              "url": "https://wecruit.hotjob.cn/SU6491506a2f9d24316e91b81b/mc/position/campus?acotycoCode=pmlyfp&orgId=100801%2C104101&projectId=308501&recruitType=1&isLimitShowPostScope=1"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "pmlyfp"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": "TCL实业和TCL华星共用招聘系统，两家子公司一共只能投递两个岗位"
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rxi1GT",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "TCL实业"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "o1T8xw"
+          ],
+          "value": [
+            "智能制造"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发技术类、产品设计类、市场营销类、智能制造类、供应链类、财务金融类、综合管理类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳、惠州、上海、合肥等"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "d2e99ca2f319ade83916bf7bcf1886da46d0c3568f134aaa0e34a8352d1e4cc5",
+              "text": "点击内推",
+              "url": "https://wecruit.hotjob.cn/SU6491506a2f9d24316e91b81b/mc/position/campus?acotycoCode=flirzd&orgId=100758%2C100759%2C101202%2C101205%2C101206%2C101214%2C103101%2C103105%2C103141%2C103142%2C103143%2C105301%2C105305%2C307429%2C307434%2C308301%2C309408%2C316341%2C318201%2C324087%2C324156%2C334301%2C334401%2C334501%2C337001%2C362124%2C364906&projectId=308501&recruitType=1&isLimitShowPostScope=1"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "flirzd"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": "TCL实业和TCL华星共用招聘系统，两家子公司一共只能投递两个岗位"
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "r5vQy9",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "诗悦网络"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oHo84Y"
+          ],
+          "value": [
+            "游戏"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "游戏策划类、技术开发类、美术设计类、产品运营类、市场营销类、公共职能类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "广州"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "9d5a6c1caca2a2fd3cbccd176037bc588e6886b4b9dd73b6af6650f1ffd07358",
+              "text": "点击内推",
+              "url": "https://app.mokahr.com/m/campus_apply/shiyuehr/72055?recommendCode=DSr6ujeV#/jobs"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "DSr6ujeV"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "r2DlQY",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "富特科技"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oFXWio"
+          ],
+          "value": [
+            "汽车行业"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "技术研发、管培、项目管理、供应链"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "湖州，杭州、西安"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "53f0e0e69f120df7df388eb34cf6e68aa6f93fdc440a8b973d385304abd0ed72",
+              "text": "点击内推",
+              "url": "https://app.mokahr.com/m/campus_apply/evtech/47503?recommendCode=DSVvSbfV#/jobs"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "DSVvSbfV"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": "研发中心位于杭州、西安，制造中心位于湖州"
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rUySwS",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "纳芯微"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oK5jZo"
+          ],
+          "value": [
+            "芯片IC"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "芯片研发（模拟设计 / 数字设计 / 验证 / 测试 / 版图 / 器件）、产品应用 (AE)、现场应用 (FAE)、销售市场、运营质量及职能岗"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "苏州（总部）、上海、深圳、北京、成都、南京、杭州、合肥、青岛、武汉、重庆、天津"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "ba5496868d1121c9d6c9d66431cccc4da0a798c81619e5198ef8eb50bae392ff",
+              "text": "点击内推",
+              "url": "https://wx4e2402587a21d993.wx.moseeker.com/m/position?recom=GPLyfxxxxe&wechat_signature=OTI3ODE3MjQ4Njc5MjY4MzUyNTU1MzQ3Mee6siKrWruaLmiBmA%3D%3D"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "无需内推码，内推链接即可"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": "国产汽车模拟芯片TOP1，隔离芯片中国市场份额第一"
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rsyhhv",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "海信集团"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "o1T8xw"
+          ],
+          "value": [
+            "智能制造"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "软件算法类、硬件研发类、技术类、暖通制冷类、光学及显示类、芯片类、营销类、运营类、供应链管理类、生产制造类、质量类、职能类等"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "青岛、顺德、江门、武汉、上海、天津、深圳、长沙、厦门、杭州、北京、扬州、香港等。\n欧洲、东盟、中东、北美、中南美等地区"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "44f7cb0d39d517291e073e4da41ce99b40b206284a3a1a06b87c1a029363403c",
+              "text": "点击内推",
+              "url": "https://jobs.hisense.com/campus/jobs?shareId=21161289-8976-43a5-9a17-14fbda16fa43&shareSource=2"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "ES1PV0"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rQAjye",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "传音控股"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oopu7y"
+          ],
+          "value": [
+            "通信"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "算法、软件开发、硬件、测试、产品、设计、市场营销、数据、运营、供应链、综合职能全岗位"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳、上海、重庆、海外"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "a9a310c9f57a60e05ac94123284b5489d76c5e3f8872105453425bcd70aaf2b6",
+              "text": "点击内推",
+              "url": "https://transsion.zhiye.com/campus/jobs?shareId=b3b97943-55e6-43e7-8330-154040b813c9&shareSource=2"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "EZ3MSV"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "ry5Yc3",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "博众精工"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oXM6DO",
+            "okPt2q"
+          ],
+          "value": [
+            "科技",
+            "机械"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "机械工程师 电气工程师 软件工程师 项目经理等"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "上海、苏州、长沙"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "2cca05ac5089e3d432f9124c1544f00c612b101399c066d8b2e8833bf8ea876a",
+              "text": "点击内推",
+              "url": "https://bozhon3.zhiye.com/campus/jobs"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "ESKPRH"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rFVz7r",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "易点云"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "ogqd2f"
+          ],
+          "value": [
+            "IT综合服务"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发技术类、储备管理类、商业创新类、产品经理类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "北京、上海、广州、深圳、成都、杭州、苏州"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "4830f08f36de14b1a9e54e1635178bd0273be3b2495ee68158bc9b1d1d332f09",
+              "text": "点击内推",
+              "url": "https://recruit-pro.edianyun.com/#/wap/recruitment-collect"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "YD1792"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rW8OCo",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "海康威视"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "ouXDDl"
+          ],
+          "value": [
+            "安防"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发，软硬件，结构，营销，测试，供应链，体验设计，综合类等"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "杭州、西安等"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "7bb55c4bb885825744a3fc3e4060bfcb03ae006bb5fb3259a0ce05ca03c7bb7c",
+              "text": "点击内推",
+              "url": "https://campushr.hikvision.com"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "4DAY22"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rdwqPE",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "TP-Link联洲"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oopu7y"
+          ],
+          "value": [
+            "通信"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发类、营销类、制造类、供应链类、人力资源类、财务类等"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳、上海、成都、东莞、海外 "
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "d7c50bddb06594028b846468cb6392dc4c2cfbbee83cad8e6ca76f7e78250dc5",
+              "text": "点击内推",
+              "url": "https://join.tplinkglobal.com/share/jobs?share_id=2090620974233366530&share_type=qr"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "VK8AB"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rwfhTx",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "康冠科技"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "ocK0eG"
+          ],
+          "value": [
+            "LCD"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "算法类、软件类、硬件类、结构/光学类、产品类、运营类、设计类、技术类、职能类、商务类、供应链类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "03b26ca1f07fb1d0153755ad3c191a1b47696db0a6ef98652766f9028e1ecd9e",
+              "text": "点击内推",
+              "url": "https://careerktc.zhiye.com/campus/jobs?shareId=1a97bad0-7c87-4d0e-9156-7c008d768e52&shareSource=2"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "ESVP1S"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rXPBlx",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "诺瓦星云"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "ocK0eG"
+          ],
+          "value": [
+            "LCD"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发：软件/嵌入式/算法/FPGA/硬件/模拟电路/测试（实习生）\n营销：营销管培生/区域代表/技术支持/产品与解决方案（含海外）"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "北京、深圳、西安等"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "3bcb811ef1408fe56d1f766d9d54320bd6bec471dc0d19e4ee6be960247da640",
+              "text": "点击内推",
+              "url": "https://novastar.zhiye.com/campus/jobs?shareId=0a4e9527-6dd0-4e9b-96bf-9cd42cc14e9e&shareSource=2"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "EV9MT9"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "r5FMNg",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "英威腾"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "onkFAe"
+          ],
+          "value": [
+            "先进制造业"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "研发类、市场类、供应链类、职能类、产品类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳、苏州、长沙、中山、上海"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "7094577221aa493b15903b83cf4f3439fe2277039318d407b3aa8c9b732e38e2",
+              "text": "点击内推",
+              "url": "https://invt.zhiye.com/campus/jobs?shareId=1414af89-1ecc-4dd0-a1cd-d59865a09f63&amp;shareSource=2"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "EVKY2A"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rVmIXB",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "星纵物联"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oXM6DO"
+          ],
+          "value": [
+            "科技"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "应用开发工程师、单片机开发工程师、硬件工程师、测试工程师、售前工程师、技术支持专员、行业产品专员、市场专员"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "厦门"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "990e7cdc512c1e3de2986ffc042df9c9a9167fe17a093a7df9104bfc5f9fc30c",
+              "text": "点击内推",
+              "url": "https://milesight.zhiye.com/campus/jobs?shareId=18f3518c-3f8d-4c79-9e51-baf68bd12787&amp;shareSource=2"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "EVVM9S"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rc37gI",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "鹏芯微"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "oK5jZo"
+          ],
+          "value": [
+            "芯片IC"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "oPqH8J"
+          ],
+          "value": [
+            "27届秋招"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "工艺研发工程师、工艺整合研发工程师、分析技术工程师、硬件系统整合工程师、半导体工艺工程师、工艺整合工程师、良率工程师、生产管理工程师、生产系统开发工程师、AMHS 系统工程师、AMHS 设备工程师"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "深圳"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "f904535dac21e3a597872af130c2eea73d56a43a8f569762c309a36d146c4df3",
+              "text": "点击内推",
+              "url": "https://career.pxwsemi.com/campus/jobs"
+            }
+          ],
+          "value": "点击内推"
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": "EV3228"
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-25T15:40:11Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
+      "record_id": "rnTETm",
       "removed_at": null,
       "status": "active"
     },
@@ -1737,7 +3587,7 @@
         }
       ],
       "first_seen_at": "2026-08-20T12:38:07Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rBPcDk",
       "removed_at": null,
       "status": "active"
@@ -1825,7 +3675,7 @@
         }
       ],
       "first_seen_at": "2026-08-20T12:38:07Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rgs5gL",
       "removed_at": null,
       "status": "active"
@@ -1913,7 +3763,7 @@
         }
       ],
       "first_seen_at": "2026-08-20T12:38:07Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rfOtV0",
       "removed_at": null,
       "status": "active"
@@ -2001,7 +3851,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rpxf3X",
       "removed_at": null,
       "status": "active"
@@ -2089,7 +3939,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rPnJwQ",
       "removed_at": null,
       "status": "active"
@@ -2177,7 +4027,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rVUHgR",
       "removed_at": null,
       "status": "active"
@@ -2267,7 +4117,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rxqfYH",
       "removed_at": null,
       "status": "active"
@@ -2355,7 +4205,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rosjDD",
       "removed_at": null,
       "status": "active"
@@ -2443,7 +4293,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r5buQa",
       "removed_at": null,
       "status": "active"
@@ -2531,7 +4381,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rGASYO",
       "removed_at": null,
       "status": "active"
@@ -2619,7 +4469,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rWvbfL",
       "removed_at": null,
       "status": "active"
@@ -2707,7 +4557,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rmv2JS",
       "removed_at": null,
       "status": "active"
@@ -2795,7 +4645,7 @@
         }
       ],
       "first_seen_at": "2026-08-19T13:41:35Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rXOHW4",
       "removed_at": null,
       "status": "active"
@@ -2883,7 +4733,7 @@
         }
       ],
       "first_seen_at": "2026-08-17T12:34:46Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r8rSNz",
       "removed_at": null,
       "status": "active"
@@ -2971,7 +4821,7 @@
         }
       ],
       "first_seen_at": "2026-08-17T12:34:46Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "ryJ4EH",
       "removed_at": null,
       "status": "active"
@@ -3059,7 +4909,7 @@
         }
       ],
       "first_seen_at": "2026-08-17T12:34:46Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "reZoYn",
       "removed_at": null,
       "status": "active"
@@ -3147,7 +4997,7 @@
         }
       ],
       "first_seen_at": "2026-08-17T12:34:46Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rHsULd",
       "removed_at": null,
       "status": "active"
@@ -3235,7 +5085,7 @@
         }
       ],
       "first_seen_at": "2026-08-17T12:34:46Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rnJ4FG",
       "removed_at": null,
       "status": "active"
@@ -3323,7 +5173,7 @@
         }
       ],
       "first_seen_at": "2026-08-17T12:34:46Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "ra5kVW",
       "removed_at": null,
       "status": "active"
@@ -3411,7 +5261,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T18:47:05Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rriGys",
       "removed_at": null,
       "status": "active"
@@ -3499,7 +5349,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T18:47:05Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r3XrXE",
       "removed_at": null,
       "status": "active"
@@ -3587,7 +5437,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T18:47:05Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rZTjOD",
       "removed_at": null,
       "status": "active"
@@ -3675,7 +5525,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T18:47:05Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "raWy9f",
       "removed_at": null,
       "status": "active"
@@ -3763,7 +5613,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T04:45:56Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rYPjD5",
       "removed_at": null,
       "status": "active"
@@ -3851,7 +5701,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T04:45:56Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rADsFZ",
       "removed_at": null,
       "status": "active"
@@ -3939,7 +5789,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T04:45:56Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rvL6co",
       "removed_at": null,
       "status": "active"
@@ -4027,7 +5877,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T04:45:56Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rYhmWq",
       "removed_at": null,
       "status": "active"
@@ -4115,7 +5965,7 @@
         }
       ],
       "first_seen_at": "2026-08-14T04:45:56Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r9oSaJ",
       "removed_at": null,
       "status": "active"
@@ -4203,7 +6053,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rbYOIY",
       "removed_at": null,
       "status": "active"
@@ -4291,7 +6141,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rQpaue",
       "removed_at": null,
       "status": "active"
@@ -4379,7 +6229,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rpVkQ7",
       "removed_at": null,
       "status": "active"
@@ -4467,7 +6317,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r9lah5",
       "removed_at": null,
       "status": "active"
@@ -4555,7 +6405,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rxLfgh",
       "removed_at": null,
       "status": "active"
@@ -4643,7 +6493,7 @@
         }
       ],
       "first_seen_at": "2026-08-12T18:56:04Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rSAe9f",
       "removed_at": null,
       "status": "active"
@@ -4731,7 +6581,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T15:57:13Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r0L1PI",
       "removed_at": null,
       "status": "active"
@@ -4819,7 +6669,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T15:57:13Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rXnMVx",
       "removed_at": null,
       "status": "active"
@@ -4907,7 +6757,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T15:57:13Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rLed6D",
       "removed_at": null,
       "status": "active"
@@ -4995,7 +6845,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T14:08:44Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rPuOO6",
       "removed_at": null,
       "status": "active"
@@ -5083,7 +6933,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T14:08:44Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r3ghVs",
       "removed_at": null,
       "status": "active"
@@ -5171,7 +7021,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T14:08:44Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r6hx4Y",
       "removed_at": null,
       "status": "active"
@@ -5261,7 +7111,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T14:08:44Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rO2fYk",
       "removed_at": null,
       "status": "active"
@@ -5349,7 +7199,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T14:08:44Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rPWVco",
       "removed_at": null,
       "status": "active"
@@ -5437,7 +7287,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T14:08:44Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rxKQBp",
       "removed_at": null,
       "status": "active"
@@ -5525,7 +7375,7 @@
         }
       ],
       "first_seen_at": "2026-08-09T14:43:43Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rZ99ek",
       "removed_at": null,
       "status": "active"
@@ -5613,7 +7463,7 @@
         }
       ],
       "first_seen_at": "2026-08-09T14:43:43Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rFPUKy",
       "removed_at": null,
       "status": "active"
@@ -5701,7 +7551,7 @@
         }
       ],
       "first_seen_at": "2026-08-09T14:43:43Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "reXRDf",
       "removed_at": null,
       "status": "active"
@@ -5789,7 +7639,7 @@
         }
       ],
       "first_seen_at": "2026-08-09T14:43:43Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rp968Q",
       "removed_at": null,
       "status": "active"
@@ -5877,7 +7727,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r2uwZT",
       "removed_at": null,
       "status": "active"
@@ -5965,7 +7815,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rAyay2",
       "removed_at": null,
       "status": "active"
@@ -6053,7 +7903,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r2jKMI",
       "removed_at": null,
       "status": "active"
@@ -6141,7 +7991,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rMYyMi",
       "removed_at": null,
       "status": "active"
@@ -6229,7 +8079,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rPLw8g",
       "removed_at": null,
       "status": "active"
@@ -6317,7 +8167,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "ra9hGc",
       "removed_at": null,
       "status": "active"
@@ -6407,7 +8257,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rBwzr0",
       "removed_at": null,
       "status": "active"
@@ -6495,7 +8345,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rK75vs",
       "removed_at": null,
       "status": "active"
@@ -6583,7 +8433,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "raeAG2",
       "removed_at": null,
       "status": "active"
@@ -6671,7 +8521,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rFuYgX",
       "removed_at": null,
       "status": "active"
@@ -6759,7 +8609,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rHt43i",
       "removed_at": null,
       "status": "active"
@@ -6847,7 +8697,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r0zIim",
       "removed_at": null,
       "status": "active"
@@ -6935,7 +8785,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rvQKvH",
       "removed_at": null,
       "status": "active"
@@ -7023,7 +8873,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rZ4N50",
       "removed_at": null,
       "status": "active"
@@ -7111,7 +8961,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "re638T",
       "removed_at": null,
       "status": "active"
@@ -7201,7 +9051,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rXk26P",
       "removed_at": null,
       "status": "active"
@@ -7289,7 +9139,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rP9Zbd",
       "removed_at": null,
       "status": "active"
@@ -7377,7 +9227,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rv9UP7",
       "removed_at": null,
       "status": "active"
@@ -7465,7 +9315,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rU6MqI",
       "removed_at": null,
       "status": "active"
@@ -7553,7 +9403,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rUt0oV",
       "removed_at": null,
       "status": "active"
@@ -7643,7 +9493,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rSs5CN",
       "removed_at": null,
       "status": "active"
@@ -7731,7 +9581,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rVsFb7",
       "removed_at": null,
       "status": "active"
@@ -7819,7 +9669,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r2KZnm",
       "removed_at": null,
       "status": "active"
@@ -7907,7 +9757,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rsHEwv",
       "removed_at": null,
       "status": "active"
@@ -7995,7 +9845,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rHOcvJ",
       "removed_at": null,
       "status": "active"
@@ -8083,7 +9933,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rGzVpS",
       "removed_at": null,
       "status": "active"
@@ -8171,7 +10021,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rwujOa",
       "removed_at": null,
       "status": "active"
@@ -8259,7 +10109,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rfPHov",
       "removed_at": null,
       "status": "active"
@@ -8347,7 +10197,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rJS796",
       "removed_at": null,
       "status": "active"
@@ -8435,7 +10285,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r7ittd",
       "removed_at": null,
       "status": "active"
@@ -8523,7 +10373,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "raW6qk",
       "removed_at": null,
       "status": "active"
@@ -8611,7 +10461,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rCGEny",
       "removed_at": null,
       "status": "active"
@@ -8699,7 +10549,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rVYQoR",
       "removed_at": null,
       "status": "active"
@@ -8787,7 +10637,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rBLf7B",
       "removed_at": null,
       "status": "active"
@@ -8875,7 +10725,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rR18bk",
       "removed_at": null,
       "status": "active"
@@ -8963,7 +10813,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rkfgYy",
       "removed_at": null,
       "status": "active"
@@ -9051,7 +10901,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rLaYTd",
       "removed_at": null,
       "status": "active"
@@ -9139,7 +10989,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r8Itqw",
       "removed_at": null,
       "status": "active"
@@ -9227,7 +11077,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rxpFRs",
       "removed_at": null,
       "status": "active"
@@ -9315,7 +11165,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "ru6nbN",
       "removed_at": null,
       "status": "active"
@@ -9403,7 +11253,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rcQzO1",
       "removed_at": null,
       "status": "active"
@@ -9491,7 +11341,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r9a0mW",
       "removed_at": null,
       "status": "active"
@@ -9579,7 +11429,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rhgCzC",
       "removed_at": null,
       "status": "active"
@@ -9667,7 +11517,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r5pp0q",
       "removed_at": null,
       "status": "active"
@@ -9755,7 +11605,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r7jGz5",
       "removed_at": null,
       "status": "active"
@@ -9843,7 +11693,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rRVJjK",
       "removed_at": null,
       "status": "active"
@@ -9931,7 +11781,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "ryj6gz",
       "removed_at": null,
       "status": "active"
@@ -10019,7 +11869,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "raZhmT",
       "removed_at": null,
       "status": "active"
@@ -10107,7 +11957,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rMg0p6",
       "removed_at": null,
       "status": "active"
@@ -10195,7 +12045,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rtTba6",
       "removed_at": null,
       "status": "active"
@@ -10283,7 +12133,7 @@
         }
       ],
       "first_seen_at": "2026-08-11T18:56:20Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rlkyfv",
       "removed_at": null,
       "status": "active"
@@ -10371,7 +12221,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rHycWD",
       "removed_at": null,
       "status": "active"
@@ -10459,7 +12309,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rvbwFB",
       "removed_at": null,
       "status": "active"
@@ -10547,7 +12397,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r7C9cd",
       "removed_at": null,
       "status": "active"
@@ -10635,7 +12485,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rtDNVs",
       "removed_at": null,
       "status": "active"
@@ -10723,7 +12573,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rppCZq",
       "removed_at": null,
       "status": "active"
@@ -10811,7 +12661,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r1bDyC",
       "removed_at": null,
       "status": "active"
@@ -10899,7 +12749,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rhVjaQ",
       "removed_at": null,
       "status": "active"
@@ -10987,7 +12837,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r2tQw8",
       "removed_at": null,
       "status": "active"
@@ -11075,7 +12925,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r04aF9",
       "removed_at": null,
       "status": "active"
@@ -11163,7 +13013,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rFm0SY",
       "removed_at": null,
       "status": "active"
@@ -11251,7 +13101,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rEZBqR",
       "removed_at": null,
       "status": "active"
@@ -11339,7 +13189,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r0Ybc3",
       "removed_at": null,
       "status": "active"
@@ -11427,7 +13277,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rpEHVw",
       "removed_at": null,
       "status": "active"
@@ -11515,7 +13365,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r4pA7o",
       "removed_at": null,
       "status": "active"
@@ -11603,7 +13453,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rmrXMK",
       "removed_at": null,
       "status": "active"
@@ -11691,7 +13541,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rD8Uy6",
       "removed_at": null,
       "status": "active"
@@ -11779,7 +13629,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rNfg29",
       "removed_at": null,
       "status": "active"
@@ -11867,7 +13717,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "robY4B",
       "removed_at": null,
       "status": "active"
@@ -11955,7 +13805,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rUPp2A",
       "removed_at": null,
       "status": "active"
@@ -12043,7 +13893,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rUlBRT",
       "removed_at": null,
       "status": "active"
@@ -12131,7 +13981,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rrEAjD",
       "removed_at": null,
       "status": "active"
@@ -12219,7 +14069,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rJVBBk",
       "removed_at": null,
       "status": "active"
@@ -12307,7 +14157,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rDGFrL",
       "removed_at": null,
       "status": "active"
@@ -12395,7 +14245,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rpwEW9",
       "removed_at": null,
       "status": "active"
@@ -12483,7 +14333,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rogJua",
       "removed_at": null,
       "status": "active"
@@ -12571,7 +14421,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rlcWSd",
       "removed_at": null,
       "status": "active"
@@ -12659,7 +14509,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rzgt39",
       "removed_at": null,
       "status": "active"
@@ -12749,7 +14599,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rWivJB",
       "removed_at": null,
       "status": "active"
@@ -12837,7 +14687,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rQizpo",
       "removed_at": null,
       "status": "active"
@@ -12925,7 +14775,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rttY5A",
       "removed_at": null,
       "status": "active"
@@ -13013,7 +14863,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rDfVIp",
       "removed_at": null,
       "status": "active"
@@ -13101,7 +14951,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rzItsD",
       "removed_at": null,
       "status": "active"
@@ -13189,7 +15039,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rO7D2q",
       "removed_at": null,
       "status": "active"
@@ -13277,7 +15127,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r9hNfp",
       "removed_at": null,
       "status": "active"
@@ -13365,7 +15215,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rh7bTi",
       "removed_at": null,
       "status": "active"
@@ -13453,7 +15303,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "razH19",
       "removed_at": null,
       "status": "active"
@@ -13541,7 +15391,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rmtBth",
       "removed_at": null,
       "status": "active"
@@ -13629,7 +15479,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rKXQWv",
       "removed_at": null,
       "status": "active"
@@ -13717,7 +15567,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rnvDlD",
       "removed_at": null,
       "status": "active"
@@ -13805,7 +15655,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rvfvVt",
       "removed_at": null,
       "status": "active"
@@ -13893,7 +15743,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r2RJDw",
       "removed_at": null,
       "status": "active"
@@ -13981,7 +15831,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rw5P8z",
       "removed_at": null,
       "status": "active"
@@ -14069,7 +15919,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rx8FWs",
       "removed_at": null,
       "status": "active"
@@ -14157,7 +16007,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rteYzG",
       "removed_at": null,
       "status": "active"
@@ -14245,7 +16095,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r9WJUn",
       "removed_at": null,
       "status": "active"
@@ -14289,13 +16139,25 @@
         },
         {
           "field_id": "ffq904",
-          "links": [],
-          "value": ""
+          "links": [
+            {
+              "availability": {
+                "checked_at": "2026-08-25T15:40:11Z",
+                "error_category": null,
+                "result": "reachable",
+                "status_code": 200
+              },
+              "key": "236ecdaf98b74c358b58cb894711b11b721bd03984ef330e5306139c20cf571c",
+              "text": "点击内推",
+              "url": "https://campus-talent.alibaba.com/campus/position?campusShareCode=JCp_oadXb2CerivI9G71Y_NdEmk6hzRkbogjKQmvcBA%3D&batchId=100000540002"
+            }
+          ],
+          "value": "点击内推"
         },
         {
           "field_id": "fZLmJt",
           "links": [],
-          "value": ""
+          "value": "6GJN61D"
         },
         {
           "field_id": "fjDFTa",
@@ -14321,84 +16183,8 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rHjuG6",
-      "removed_at": null,
-      "status": "active"
-    },
-    {
-      "fields": [
-        {
-          "field_id": "fv08FQ",
-          "links": [],
-          "value": "阿里云-瓴羊"
-        },
-        {
-          "field_id": "f3OeZe",
-          "links": [],
-          "raw_value": [
-            "odsQeD"
-          ],
-          "value": [
-            "互联网"
-          ]
-        },
-        {
-          "field_id": "fcthkP",
-          "links": [],
-          "raw_value": [
-            "opjpfX"
-          ],
-          "value": [
-            "互联网类秋招/提前批"
-          ]
-        },
-        {
-          "field_id": "fVJnBl",
-          "links": [],
-          "value": "AI研发类、算法类、AI技术服务类、数据类"
-        },
-        {
-          "field_id": "fEIMlb",
-          "links": [],
-          "value": "杭州、北京"
-        },
-        {
-          "field_id": "ffq904",
-          "links": [],
-          "value": ""
-        },
-        {
-          "field_id": "fZLmJt",
-          "links": [],
-          "value": ""
-        },
-        {
-          "field_id": "fjDFTa",
-          "links": [],
-          "value": "第一志愿意向是瓴羊的，可以投递这个，优先筛选"
-        },
-        {
-          "field_id": "fQL3U5",
-          "links": [],
-          "value": {}
-        },
-        {
-          "field_id": "fRodAA",
-          "links": [],
-          "value": "招完即止"
-        },
-        {
-          "field_id": "f49GK8",
-          "links": [],
-          "value": [
-            "kyle"
-          ]
-        }
-      ],
-      "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
-      "record_id": "rVADom",
       "removed_at": null,
       "status": "active"
     },
@@ -14485,7 +16271,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "rCkQ41",
       "removed_at": null,
       "status": "active"
@@ -14573,7 +16359,7 @@
         }
       ],
       "first_seen_at": "2026-08-06T16:41:03Z",
-      "last_seen_at": "2026-08-20T12:38:07Z",
+      "last_seen_at": "2026-08-25T15:40:11Z",
       "record_id": "r7zr8b",
       "removed_at": null,
       "status": "active"
@@ -14651,6 +16437,82 @@
       "first_seen_at": "2026-08-06T16:41:03Z",
       "last_seen_at": "2026-08-20T12:38:07Z",
       "record_id": "r96Tiu",
+      "removed_at": null,
+      "status": "active"
+    },
+    {
+      "fields": [
+        {
+          "field_id": "fv08FQ",
+          "links": [],
+          "value": "阿里云-瓴羊"
+        },
+        {
+          "field_id": "f3OeZe",
+          "links": [],
+          "raw_value": [
+            "odsQeD"
+          ],
+          "value": [
+            "互联网"
+          ]
+        },
+        {
+          "field_id": "fcthkP",
+          "links": [],
+          "raw_value": [
+            "opjpfX"
+          ],
+          "value": [
+            "互联网类秋招/提前批"
+          ]
+        },
+        {
+          "field_id": "fVJnBl",
+          "links": [],
+          "value": "AI研发类、算法类、AI技术服务类、数据类"
+        },
+        {
+          "field_id": "fEIMlb",
+          "links": [],
+          "value": "杭州、北京"
+        },
+        {
+          "field_id": "ffq904",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fZLmJt",
+          "links": [],
+          "value": ""
+        },
+        {
+          "field_id": "fjDFTa",
+          "links": [],
+          "value": "第一志愿意向是瓴羊的，可以投递这个，优先筛选"
+        },
+        {
+          "field_id": "fQL3U5",
+          "links": [],
+          "value": {}
+        },
+        {
+          "field_id": "fRodAA",
+          "links": [],
+          "value": "招完即止"
+        },
+        {
+          "field_id": "f49GK8",
+          "links": [],
+          "value": [
+            "kyle"
+          ]
+        }
+      ],
+      "first_seen_at": "2026-08-06T16:41:03Z",
+      "last_seen_at": "2026-08-20T12:38:07Z",
+      "record_id": "rVADom",
       "removed_at": null,
       "status": "active"
     },
@@ -14744,6 +16606,26 @@
       "field_id": "f3OeZe",
       "name": "所在行业",
       "options": [
+        {
+          "id": "okPt2q",
+          "name": "机械"
+        },
+        {
+          "id": "ogqd2f",
+          "name": "IT综合服务"
+        },
+        {
+          "id": "ouXDDl",
+          "name": "安防"
+        },
+        {
+          "id": "ocK0eG",
+          "name": "LCD"
+        },
+        {
+          "id": "onkFAe",
+          "name": "先进制造业"
+        },
         {
           "id": "oyotZn",
           "name": "电池"
@@ -15304,10 +17186,10 @@
     }
   ],
   "snapshot": {
-    "active_count": 167,
-    "fetched_count": 167,
-    "historical_count": 168,
-    "link_hash": "ab8163a970c3f5902ebce58a348f16779ab67b31a306befbd881f7b8b86c2ffd",
+    "active_count": 188,
+    "fetched_count": 186,
+    "historical_count": 189,
+    "link_hash": "a8004549d26e2bcc381172f4b16b9df9c53610445a010d2dcdfde9c0d3f258e8",
     "max_columns": 11,
     "page_ranges": [
       [
@@ -15316,18 +17198,22 @@
       ],
       [
         61,
-        166
+        185
       ]
     ],
     "pagination_complete": true,
-    "record_id_hash": "fb6711637f7bceb0b86e9b559cd59ceb494e660a4c1a4cc793834fda496a38c1",
-    "scan_hash": "f9545460ea2bdce7fed066a0fd35039577c18779bebfeb120feb1d9a2248b83f",
-    "source_total": 167,
-    "synced_at": "2026-08-20T12:38:07Z"
+    "pending_source_deletions": [
+      "r96Tiu",
+      "rVADom"
+    ],
+    "record_id_hash": "95b58e8c46f6a16522c5148b44bb38f3de0c82369c30cbad7141cab4888235a2",
+    "scan_hash": "c505a1063ded16ead7768869c087bccc5943167d495315efb94b2daee25a93a7",
+    "source_total": 186,
+    "synced_at": "2026-08-25T15:40:11Z"
   },
   "source": {
     "document_id": "DUXJLSnZoTVFhVUVs",
-    "revision": 12819,
+    "revision": 13510,
     "sheet_id": "tkaHEa",
     "source_url": "https://docs.qq.com/smartsheet/DUXJLSnZoTVFhVUVs?tab=tkaHEa",
     "view_id": "vKWCWH",
