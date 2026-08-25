@@ -20,8 +20,8 @@ body:
       value: |
         感谢投稿！
         请填写 issue 标题，网站会根据这个标题进行展示（可以匿名！）
-        直接粘贴完整面试题目即可
-        
+        直接粘贴完整面试题目即可, 有其他内容补充请保证符合 markdown 格式
+        示例: [提交流程video](https://github.com/LeoninCS/GoClub/issues/74#issuecomment-5414351288)
 
   - type: textarea
     id: interview_content
