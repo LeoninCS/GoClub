@@ -2,6 +2,7 @@
   {{ $docs := .Site.GetPage "section" "docs" }}
   {{ $submitPage := .Site.GetPage "/docs/blog/提交流程.md" }}
   {{ $githubURL := "https://github.com/LeoninCS/GoClub" }}
+  {{ $interviewSubmissionURL := "https://github.com/LeoninCS/GoClub/issues/new?template=interview-question.yml" }}
   {{ $cards := slice }}
   {{ with $docs }}
     {{ range where .Pages "Params.bookHidden" "ne" true }}
@@ -15,13 +16,14 @@
     <section class="page-hero">
       <h1>Go 面试知识库</h1>
       <div class="page-hero-copy">
-        <p>八股总结、面试真题、学习资源和配套文章，按栏目整理，社区一起维护。发现错漏或想补充内容，提个 PR 就行。</p>
+        <p>八股总结、面试真题、学习资源和配套文章，按栏目整理，社区一起维护。面经可以先用 AI 整理，再通过 Issue 表单投稿；其他内容和纠错也欢迎提 PR。</p>
       </div>
       <div class="page-hero-actions">
-        <a class="page-hero-button" href="{{ $githubURL }}" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
         {{ with $submitPage }}
-          <a class="page-hero-button-secondary" href="{{ .RelPermalink }}">投稿流程</a>
+          <a class="page-hero-button" href="{{ .RelPermalink }}">面经投稿流程</a>
         {{ end }}
+        <a class="page-hero-button-secondary" href="{{ $interviewSubmissionURL }}" target="_blank" rel="noopener noreferrer">提交 Issue</a>
+        <a class="page-hero-button-secondary" href="{{ $githubURL }}" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
       </div>
     </section>
 
