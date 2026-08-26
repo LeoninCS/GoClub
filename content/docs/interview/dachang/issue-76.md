@@ -1,5 +1,8 @@
 ---
 title: "离大谱-米哈游-运维-一面"
+aliases:
+  - "/s/13rr/"
+shortlink: "13rr"
 ---
 
 #### 自我介绍
