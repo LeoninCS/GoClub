@@ -3,10 +3,15 @@
 import json
 import os
 import sys
+import re
 import urllib.request
 
 
 API_ROOT = "https://api.github.com"
+CO_AUTHORED_BY_RE = re.compile(
+    r"^Co-authored-by:\s*.+?\s*<(?P<id>[0-9]+)\+(?P<login>[a-zA-Z0-9-]+)@users\.noreply\.github\.com>\s*$",
+    re.MULTILINE,
+)
 
 
 def request_json(url, token=None):
@@ -57,17 +62,27 @@ def build_contributors(prs):
     for pr in prs:
         user = pr["user"]
         login = user["login"]
-        current = grouped.setdefault(
-            login,
-            {
+        user_id = user.get("id")
+
+        if login == "github-actions[bot]":
+            co_authors = CO_AUTHORED_BY_RE.search(pr.get("body") or "")
+            if co_authors:
+                user_id = co_authors.group("id")
+                login = co_authors.group("login")
+
+        if login == "github-actions[bot]":
+            continue
+
+        if login not in grouped:
+            grouped[login] = {
                 "login": login,
-                "html_url": user["html_url"],
-                "avatar_url": user["avatar_url"],
+                "html_url": user["html_url"] if user_id == user.get("id") else f"https://github.com/{login}",
+                "avatar_url": user["avatar_url"] if user_id == user.get("id") else f"https://avatars.githubusercontent.com/u/{user_id}?v=4",
                 "name": None,
                 "merged_prs": 0,
-            },
-        )
-        current["merged_prs"] += 1
+            }
+
+        grouped[login]["merged_prs"] += 1
 
     return sorted(grouped.values(), key=lambda item: (-item["merged_prs"], item["login"].lower()))
 
