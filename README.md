@@ -51,7 +51,33 @@ AI 整理结果可能出错。请在提交前逐题对照原始记录，只有�
 
 ### 方式二：通过能读写仓库的 AI 提交 PR
 
-把原始内容交给支持读写仓库的 AI 编程工具，让 AI 按 GoClub 的项目规范完成整理、归档和目录更新。
+这种方式适合投稿面经以外的内容，或修改已有文档。你需要先把自己 Fork 的仓库 Clone 到本地，再让支持读写工作区的 AI 编程工具完成修改。
+
+#### 1. Fork 并 Clone 仓库
+
+先打开 [GoClub 仓库](https://github.com/LeoninCS/GoClub)，点击「Fork」。然后把命令中的 `<your-github-name>` 换成你的 GitHub 用户名：
+
+```bash
+git clone --recursive https://github.com/<your-github-name>/GoClub.git
+cd GoClub
+```
+
+如果 Clone 时没有使用 `--recursive`，进入仓库后执行：
+
+```bash
+git submodule update --init --recursive
+```
+
+#### 2. 创建分支并安装校验钩子
+
+```bash
+git checkout -b docs/your-topic
+bash scripts/install-hooks.sh
+```
+
+#### 3. 用 AI 修改仓库
+
+用 AI 编程工具打开本地 `GoClub` 目录，把原始内容交给 AI，让它按项目规范完成整理、归档和目录更新。
 
 你可以直接使用下面这段提示词：
 
@@ -72,14 +98,35 @@ AI 整理结果可能出错。请在提交前逐题对照原始记录，只有�
 <把你的面试题、八股总结、文章或修正文案贴在这里>
 ```
 
-AI 处理完成后，重点检查这些内容：
+#### 4. 检查 AI 的修改
+
+AI 处理完成后，先运行 `git diff`，并重点检查：
 
 - 文件是否放在合适栏目
 - 新增页面是否出现在目录页
 - 标题、代码块、图片、链接是否正常
 - `git diff` 是否只包含本次贡献相关改动
 
-检查通过后，按下面“方式三”的第 6 步和第 7 步提交 Pull Request。
+然后执行：
+
+```bash
+python3 scripts/check_slugs.py
+hugo --minify
+```
+
+#### 5. 提交并发起 PR
+
+确认工作区只有本次贡献的改动后，提交并推送分支：
+
+```bash
+git status --short
+git add -A
+git diff --cached
+git commit -m "docs: add your topic"
+git push -u origin docs/your-topic
+```
+
+回到 GitHub 上你 Fork 后的仓库，把该分支提交为 Pull Request，目标选择上游仓库 `LeoninCS/GoClub` 的 `main` 分支。
 
 ### 方式三：手动添加并提交 PR
 
