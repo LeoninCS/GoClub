@@ -82,6 +82,7 @@ jobs:
           PR_TITLE: ${{ steps.import.outputs.pr_title }}
           ISSUE_NUMBER: ${{ steps.import.outputs.issue_number }}
           SUBMITTER: ${{ steps.import.outputs.submitter }}
+          SUBMITTER_ID: ${{ github.event.issue.user.id }}
         run: |
           if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
             existing_pr="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"
@@ -96,7 +97,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "$BRANCH"
-          git commit -m "面经收录：Issue #$ISSUE_NUMBER"
+          git commit \
+            -m "面经收录：Issue #$ISSUE_NUMBER" \
+            -m "Co-authored-by: $SUBMITTER <${SUBMITTER_ID}+${SUBMITTER}@users.noreply.github.com>"
           git push -u origin "$BRANCH"
 
           pr_url="$(gh pr create \
