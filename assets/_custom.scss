@@ -4398,10 +4398,26 @@ body {
   border: 0;
   border-radius: 0;
   background:
-    radial-gradient(circle at 92% 0, var(--goclub-editorial-warm), transparent 25rem),
-    linear-gradient(135deg, var(--goclub-editorial-wash), transparent 64%);
+    radial-gradient(
+      ellipse 34rem 22rem at 92% 0,
+      var(--goclub-editorial-warm),
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 44rem 25rem at 8% 0,
+      var(--goclub-editorial-wash),
+      transparent 76%
+    );
   box-shadow: none;
   backdrop-filter: none;
+}
+
+@media screen and (min-width: 80rem) {
+  :root body[class*="book-kind-"] .book-page .page-hero,
+  :root body[class*="book-kind-"] .book-page .page-lead {
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+  }
 }
 
 .page-hero-overline,
@@ -5389,12 +5405,6 @@ body {
   :root body.book-kind-page .book-page > article.book-article,
   :root body.book-kind-page .book-page > .book-footer {
     max-width: 50rem;
-  }
-
-  :root body.book-kind-home .book-page > article.book-article,
-  :root body.book-kind-home .book-page > .book-footer {
-    width: 100%;
-    max-width: none;
   }
 
   :root body[class*="book-kind-"] .book-menu .book-menu-content {

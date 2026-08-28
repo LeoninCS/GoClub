@@ -1,4 +1,3 @@
 ---
 title: "GoClub"
-bookToC: false
 ---
