@@ -4485,3 +4485,51 @@ body {
     transition: none;
   }
 }
+
+/* Keep one primary surface per page instead of nesting cards. */
+@media screen and (min-width: 56.01rem) {
+  :root body.book-kind-home .book-page > article.book-article,
+  :root body.book-kind-section .book-page > article.book-article {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  :root body.book-kind-home .book-page > .book-footer,
+  :root body.book-kind-section .book-page > .book-footer,
+  :root body.book-kind-page .book-page > .book-footer {
+    padding: 1.25rem 0 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  :root body.book-kind-section .book-page .page-lead,
+  :root body.book-kind-page .book-page .page-lead {
+    margin-bottom: 1.75rem;
+    padding: 0 0 1.35rem;
+    border: 0;
+    border-bottom: 1px solid var(--goclub-border);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  :root body.book-kind-section .book-page .page-lead-title {
+    margin-top: 0;
+  }
+
+  :root body.book-kind-section .book-page .page-lead-chip {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--goclub-muted-text);
+  }
+}
