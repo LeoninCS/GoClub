@@ -3,6 +3,7 @@ title: "Kubernetes 入门实战课"
 weight: 30
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/w0g9/"
 shortlink: "w0g9"

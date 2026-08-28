@@ -1,29 +1,56 @@
 {{ $children := where .Pages "Params.bookHidden" "ne" true }}
-{{ $items := slice }}
+{{ $sections := slice }}
+{{ $pages := slice }}
 {{ range $children }}
   {{ if and (or .IsSection .IsPage) .Content }}
-    {{ $items = $items | append . }}
+    {{ if .IsSection }}
+      {{ $sections = $sections | append . }}
+    {{ else }}
+      {{ $pages = $pages | append . }}
+    {{ end }}
   {{ end }}
 {{ end }}
 
-{{ if gt (len $items) 0 }}
-  <section class="section-index-shell">
-    <div class="section-card-grid">
-      {{ range $item := $items }}
-        {{ $summary := partial "goclub/lead-summary.html" $item }}
-        <a class="section-card" href="{{ $item.RelPermalink }}">
-          <div class="section-card-title">{{ partial "docs/title" $item }}</div>
-          {{ with $summary }}
-            <div class="section-card-summary">{{ . }}</div>
-          {{ end }}
-          <div class="section-card-meta">
-            {{ if $item.IsSection }}
-              <span>{{ len (where $item.Pages "Params.bookHidden" "ne" true) }} 个子页面</span>
-            {{ end }}
-            <span class="section-card-arrow">→</span>
-          </div>
-        </a>
+{{ $itemCount := add (len $sections) (len $pages) }}
+{{ if gt $itemCount 0 }}
+  <section class="section-index-shell section-index-shell--list" aria-label="内容目录">
+    {{ if gt (len $sections) 0 }}
+      {{ if gt (len $pages) 0 }}
+        <div class="section-directory-label">专题与分类</div>
       {{ end }}
-    </div>
+      <ol class="section-link-list section-link-list--topics" aria-label="专题与分类">
+        {{ range $index, $item := $sections }}
+          <li class="section-link-list-item">
+            <a class="section-link-list-link" href="{{ $item.RelPermalink }}">
+              <span class="section-link-list-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>
+              <span class="section-link-list-copy">
+                <span class="section-link-list-title">{{ partial "docs/title" $item }}</span>
+                <span class="section-link-list-meta">{{ len (where $item.Pages "Params.bookHidden" "ne" true) }} 个子页面</span>
+              </span>
+              <span class="section-link-list-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        {{ end }}
+      </ol>
+    {{ end }}
+
+    {{ if gt (len $pages) 0 }}
+      {{ if gt (len $sections) 0 }}
+        <div class="section-directory-label">文章与资料</div>
+      {{ end }}
+      <ol class="section-link-list section-link-list--entries" aria-label="文章与资料">
+        {{ range $index, $item := $pages }}
+          <li class="section-link-list-item">
+            <a class="section-link-list-link" href="{{ $item.RelPermalink }}">
+              <span class="section-link-list-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>
+              <span class="section-link-list-copy">
+                <span class="section-link-list-title">{{ partial "docs/title" $item }}</span>
+              </span>
+              <span class="section-link-list-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        {{ end }}
+      </ol>
+    {{ end }}
   </section>
 {{ end }}

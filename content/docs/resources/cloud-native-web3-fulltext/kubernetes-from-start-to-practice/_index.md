@@ -3,6 +3,7 @@ title: "Kubernetes 从上手到实践"
 weight: 10
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/mius/"
 shortlink: "mius"

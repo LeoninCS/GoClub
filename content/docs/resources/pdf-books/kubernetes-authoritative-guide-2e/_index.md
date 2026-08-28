@@ -3,6 +3,7 @@ title: "Kubernetes 权威指南：从 Docker 到 Kubernetes 实践全接触（�
 weight: 10
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/wcff/"
 shortlink: "wcff"

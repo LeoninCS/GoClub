@@ -3,6 +3,7 @@ title: "Web3 书籍"
 weight: 8
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/docs/resources/cloud-native-web3-fulltext/web3-entry-guide/"
   - "/s/y2zl/"

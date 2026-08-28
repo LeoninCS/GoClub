@@ -3,6 +3,7 @@ title: "在线电子书"
 weight: 10
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/8aux/"
 shortlink: "8aux"

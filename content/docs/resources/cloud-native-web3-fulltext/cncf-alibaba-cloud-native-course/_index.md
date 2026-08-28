@@ -3,6 +3,7 @@ title: "CNCF X 阿里巴巴云原生技术公开课"
 weight: 40
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/he81/"
 shortlink: "he81"

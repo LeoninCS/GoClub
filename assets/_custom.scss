@@ -4301,3 +4301,187 @@ body {
     transform: translateY(-1px);
   }
 }
+
+/* Card-free editorial indices for the homepage and documentation sections. */
+.section-index-shell--list {
+  gap: 0;
+  margin-top: 1.75rem;
+}
+
+.section-directory-label {
+  margin: 0 0 0.75rem;
+  color: var(--goclub-muted-text);
+  font-size: 0.76rem;
+  font-weight: 780;
+  letter-spacing: 0.1em;
+}
+
+.section-link-list + .section-directory-label {
+  margin-top: 2rem;
+}
+
+.markdown .section-link-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--goclub-border);
+  list-style: none;
+}
+
+.markdown .section-link-list-item {
+  min-width: 0;
+  margin: 0;
+  border-bottom: 1px solid var(--goclub-border);
+}
+
+.markdown .section-link-list-link[href],
+.markdown .section-link-list-link[href]:visited {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 1.25rem;
+  align-items: center;
+  gap: 0.65rem;
+  height: 100%;
+  min-height: 4.4rem;
+  padding: 0.75rem 0.35rem;
+  border-radius: 0.45rem;
+  color: var(--body-font-color);
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.markdown .section-link-list-link[href]:hover,
+.markdown .section-link-list-link[href]:focus-visible {
+  background: var(--goclub-surface-muted);
+  color: var(--goclub-primary);
+  text-decoration: none;
+}
+
+.section-link-list-index {
+  color: var(--goclub-subtle-text);
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.section-link-list-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.section-link-list-title {
+  min-width: 0;
+  font-size: 0.98rem;
+  font-weight: 680;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.section-link-list-summary {
+  display: -webkit-box;
+  margin-top: 0.4rem;
+  overflow: hidden;
+  color: var(--goclub-muted-text);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.section-link-list-meta {
+  margin-top: 0.42rem;
+  color: var(--goclub-subtle-text);
+  font-size: 0.76rem;
+  font-weight: 650;
+}
+
+.section-link-list-arrow {
+  color: var(--goclub-primary);
+  font-size: 0.95rem;
+  opacity: 0.42;
+  transform: translateX(-0.15rem);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.section-link-list-link:hover .section-link-list-arrow,
+.section-link-list-link:focus-visible .section-link-list-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.section-link-list--topics .section-link-list-link {
+  min-height: 5.2rem;
+}
+
+.section-link-list--topics .section-link-list-title {
+  color: var(--goclub-primary);
+  font-family: var(--goclub-font-headline);
+  font-size: 1.12rem;
+  font-weight: 700;
+}
+
+.entry-cluster .section-link-list--home {
+  margin-top: 1.1rem;
+}
+
+.section-link-list--home .section-link-list-link {
+  min-height: 7.25rem;
+  padding-block: 1rem;
+}
+
+.section-link-list--home .section-link-list-title {
+  color: var(--goclub-primary);
+  font-family: var(--goclub-font-headline);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+@media screen and (max-width: 56rem) {
+  .section-index-shell--list {
+    margin-top: 1.4rem;
+  }
+
+  .section-link-list + .section-directory-label {
+    margin-top: 1.5rem;
+  }
+
+  .markdown .section-link-list {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .markdown .section-link-list-link[href],
+  .markdown .section-link-list-link[href]:visited {
+    grid-template-columns: 1.8rem minmax(0, 1fr) 1rem;
+    min-height: 3.9rem;
+    padding: 0.7rem 0.15rem;
+  }
+
+  .section-link-list-title {
+    font-size: 0.94rem;
+  }
+
+  .section-link-list--topics .section-link-list-link {
+    min-height: 4.55rem;
+  }
+
+  .section-link-list--home .section-link-list-link {
+    min-height: 6.4rem;
+    padding-block: 0.9rem;
+  }
+
+  .section-link-list--home .section-link-list-title {
+    font-size: 1.18rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-link-list-link,
+  .section-link-list-arrow {
+    transition: none;
+  }
+}

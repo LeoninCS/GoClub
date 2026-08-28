@@ -3,6 +3,7 @@ title: "PDF 书籍全文资料"
 weight: 9
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/3yje/"
 shortlink: "3yje"

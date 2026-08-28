@@ -32,22 +32,25 @@
 
     <section class="entry-cluster">
       <div class="entry-cluster-title">栏目</div>
-      <div class="section-card-grid">
-        {{ range $cards }}
+      <ol class="section-link-list section-link-list--home">
+        {{ range $index, $item := $cards }}
           {{ $summary := partial "goclub/lead-summary.html" . }}
           {{ $children := where .Pages "Params.bookHidden" "ne" true }}
-          <a class="section-card" href="{{ .RelPermalink }}">
-            <div class="section-card-title">{{ partial "docs/title" . }}</div>
-            {{ with $summary }}
-              <div class="section-card-summary">{{ . }}</div>
-            {{ end }}
-            <div class="section-card-meta">
-              <span>{{ len $children }} 个页面</span>
-              <span class="section-card-arrow">→</span>
-            </div>
-          </a>
+          <li class="section-link-list-item">
+            <a class="section-link-list-link" href="{{ $item.RelPermalink }}">
+              <span class="section-link-list-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>
+              <span class="section-link-list-copy">
+                <span class="section-link-list-title">{{ partial "docs/title" $item }}</span>
+                {{ with $summary }}
+                  <span class="section-link-list-summary">{{ . }}</span>
+                {{ end }}
+                <span class="section-link-list-meta">{{ len $children }} 个页面</span>
+              </span>
+              <span class="section-link-list-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
         {{ end }}
-      </div>
+      </ol>
     </section>
   </article>
 {{ end }}

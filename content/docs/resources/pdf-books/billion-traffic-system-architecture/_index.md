@@ -3,6 +3,7 @@ title: "亿级流量系统架构设计与实战"
 weight: 40
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/vxj9/"
 shortlink: "vxj9"

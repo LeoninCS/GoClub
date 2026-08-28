@@ -2,6 +2,7 @@
 title: "内推"
 weight: 1
 bookCollapseSection: false
+autoIndex: false
 aliases:
   - "/s/wcv8/"
 shortlink: "wcv8"

@@ -3,6 +3,7 @@ title: "计算机网络：自顶向下方法（第七版）中文版"
 weight: 20
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/dc89/"
 shortlink: "dc89"

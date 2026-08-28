@@ -3,6 +3,7 @@ title: "Kubernetes 实践入门指南"
 weight: 20
 type: docs
 bookCollapseSection: true
+autoIndex: false
 aliases:
   - "/s/2es6/"
 shortlink: "2es6"
