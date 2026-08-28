@@ -683,7 +683,7 @@
 }
 
 .book-menu .book-search input::placeholder {
-  color: var(--goclub-subtle-text);
+  color: var(--goclub-muted-text);
 }
 
 .book-menu .book-search input:focus,
@@ -1228,7 +1228,8 @@ body.sidebar-resizing .book-menu .book-menu-content {
 }
 
 .book-menu .book-search input::placeholder {
-  color: rgba(27, 28, 26, 0.48);
+  color: var(--goclub-subtle-text);
+  opacity: 1;
 }
 
 .book-menu .book-search input:focus {
@@ -1271,8 +1272,8 @@ body.sidebar-resizing .book-menu .book-menu-content {
 }
 
 .book-menu .book-search-status.is-error {
-  background: rgba(176, 57, 57, 0.08);
-  color: #8f3131;
+  background: var(--color-accent-danger-tint);
+  color: var(--color-accent-danger);
 }
 
 .book-menu #book-search-results:empty {
@@ -1363,8 +1364,8 @@ body.sidebar-resizing .book-menu .book-menu-content {
   inset: 0;
   z-index: 79;
   border: 0;
-  background: rgba(var(--goclub-ink-rgb), 0.34);
-  backdrop-filter: blur(3px);
+  background: rgba(8, 8, 12, 0.58);
+  backdrop-filter: blur(2px);
   cursor: default;
 }
 
@@ -1382,10 +1383,11 @@ body.sidebar-resizing .book-menu .book-menu-content {
   overflow: hidden;
   border: 1px solid rgba(var(--goclub-primary-rgb), 0.2);
   border-radius: 1.35rem;
+  color: var(--body-font-color);
   background:
-    radial-gradient(circle at top right, rgba(255, 223, 150, 0.32), transparent 16rem),
-    rgba(246, 245, 241, 0.98);
-  box-shadow: 0 30px 80px rgba(var(--goclub-ink-rgb), 0.24);
+    radial-gradient(circle at top right, rgba(var(--goclub-tertiary-rgb), 0.16), transparent 16rem),
+    rgba(var(--goclub-surface-rgb), 0.98);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.36);
 }
 
 .book-search.is-expanded .book-search-topbar {
@@ -1422,7 +1424,7 @@ body.sidebar-resizing .book-menu .book-menu-content {
   padding: 0;
   border: 1px solid rgba(var(--goclub-primary-rgb), 0.14);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
+  background: rgba(var(--goclub-surface-rgb), 0.9);
   color: var(--goclub-primary);
   font-size: 1.25rem;
   cursor: pointer;
@@ -1433,11 +1435,17 @@ body.sidebar-resizing .book-menu .book-menu-content {
   padding: 0.9rem 4.5rem 1.1rem 1.05rem;
   border: 1px solid rgba(var(--goclub-primary-rgb), 0.22);
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(var(--goclub-bg-rgb), 0.96);
   color: var(--body-font-color);
+  caret-color: var(--goclub-primary);
   font-size: 1rem;
   line-height: 1.5;
-  box-shadow: 0 8px 24px rgba(var(--goclub-ink-rgb), 0.07);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+.book-search.is-expanded input::placeholder {
+  color: var(--goclub-muted-text);
+  opacity: 1;
 }
 
 .book-search.is-expanded input:focus {
@@ -1468,7 +1476,7 @@ body.sidebar-resizing .book-menu .book-menu-content {
   padding: 0.38rem 0.68rem;
   border: 1px solid rgba(var(--goclub-primary-rgb), 0.14);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(var(--goclub-surface-rgb), 0.9);
   color: var(--goclub-muted-text);
   font-size: 0.72rem;
   font-weight: 750;
@@ -1490,8 +1498,8 @@ body.sidebar-resizing .book-menu .book-menu-content {
 }
 
 .book-search-filter[aria-pressed="true"] {
-  border-color: var(--goclub-primary);
-  background: var(--goclub-primary);
+  border-color: var(--goclub-primary-action);
+  background: var(--goclub-primary-action);
   color: var(--goclub-on-primary-action);
 }
 
@@ -1526,7 +1534,7 @@ body.sidebar-resizing .book-menu .book-menu-content {
   margin: 0;
   border: 1px solid rgba(var(--goclub-primary-rgb), 0.12);
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(var(--goclub-surface-rgb), 0.88);
 }
 
 .book-search.is-expanded .book-search-result a {
