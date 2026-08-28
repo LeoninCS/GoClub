@@ -49,10 +49,13 @@ def extract_selected_category(issue_body: str) -> str | None:
     return CATEGORY_LABELS[match.group(1)]
 
 
-def extract_textarea_content(issue_body: str, field_label: str) -> str | None:
-    """Read an Issue Form textarea section while preserving Markdown exactly."""
+def extract_textarea_content(
+    issue_body: str, field_label: str, next_field_label: str
+) -> str | None:
+    """Read a textarea up to the next known Issue Form field."""
     match = re.search(
-        rf"^###\s*{re.escape(field_label)}\s*$\n(.*?)(?=^###\s|\Z)",
+        rf"^###\s*{re.escape(field_label)}\s*$\n"
+        rf"(.*?)(?=^###\s*{re.escape(next_field_label)}\s*$|\Z)",
         issue_body,
         flags=re.MULTILINE | re.DOTALL,
     )
@@ -64,17 +67,15 @@ def extract_textarea_content(issue_body: str, field_label: str) -> str | None:
 
 def extract_submission_content(issue_body: str) -> str:
     """Get the submitted Markdown without rejecting imperfect formatting."""
-    textarea_content = extract_textarea_content(issue_body, "面试内容")
+    textarea_content = extract_textarea_content(issue_body, "面试内容", "投稿确认")
     if textarea_content is not None:
         return textarea_content
 
-    match = re.search(
-        r"^###\s+标准化 Markdown\s*$\n(.*?)(?=^###\s+|\Z)",
-        issue_body,
-        flags=re.MULTILINE | re.DOTALL,
+    legacy_content = extract_textarea_content(
+        issue_body, "标准化 Markdown", "投稿确认"
     )
-    if match and match.group(1).strip():
-        return match.group(1).strip()
+    if legacy_content is not None:
+        return legacy_content
 
     return issue_body.strip()
 
