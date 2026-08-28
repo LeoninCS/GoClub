@@ -19,15 +19,53 @@ body:
     attributes:
       value: |
         感谢投稿！
-        请填写 issue 标题，网站会根据这个标题进行展示（可以匿名！）
-        直接粘贴完整面试题目即可, 有其他内容补充请保证符合 markdown 格式
-        示例: [提交流程video](https://github.com/LeoninCS/GoClub/issues/74#issuecomment-5414351288)
+        请填写 Issue 标题，网站会根据这个标题进行展示（可以匿名！）
+        直接粘贴完整面试题目即可，有其他内容补充请保证符合 Markdown 格式。
+        示例：[提交流程视频](https://github.com/LeoninCS/GoClub/issues/74#issuecomment-5414351288)
+
+        ### 用 AI 整理 Markdown 格式（可选）
+
+        如果原始记录的题号、缩进或段落比较混乱，可以把原文和下面的提示词一起发给常用的 AI 工具。整理后请对照原文检查内容是否完整。
+
+        <details>
+        <summary>点击展开并复制格式整理提示词</summary>
+
+        ```text
+        你是一名 Markdown 排版编辑。请只调整下方原始面经的格式，使其成为可直接粘贴到 GoClub GitHub Issue Form「面试内容」字段的 Markdown 正文。
+
+        排版要求：
+        1. 不新增、删除、合并或调换题目，不补写答案，不改变原文含义；只处理排版以及明显的空格、标点错误。
+        2. 不重复页面标题。原文明确区分面试轮次或主题时，主章节使用二级标题 `##`，子章节使用三级标题 `###`；不要从四级标题开始。
+        3. 独立问题使用连续的有序列表；追问缩进为对应问题的子列表，不要把每道题都写成标题。
+        4. 候选人回答、面试官反馈和补充备注放在对应问题下方，使用引用块 `>`，不要让回答游离在列表外。
+        5. 规范列表标记后的空格、列表缩进和段落空行，避免多道题或大段文字粘成同一个段落。
+        6. 代码、SQL、日志和命令使用代码块；只有能从原文确定语言时才添加语言标识。
+        7. 只输出整理后的 Markdown 正文，不输出 front matter、slug、shortlink、说明、总结或检查清单，也不要用代码块包住整篇正文。
+
+        参考格式：
+
+        ## 一面
+
+        1. 第一个问题
+
+           - 追问一
+           - 追问二
+
+           > 候选人回答或备注。
+
+        2. 第二个问题
+
+        原始面经：
+        <在这里粘贴原始记录>
+        ```
+
+        </details>
 
   - type: textarea
     id: interview_content
     attributes:
       label: 面试内容
-      description: 直接粘贴完整 Markdown。
+      description: 直接粘贴整理并人工核对后的完整 Markdown。
       placeholder: |
         1. why
         2. where
