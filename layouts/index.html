@@ -35,16 +35,14 @@
       </div>
     </section>
 
-    {{ $content := partial "goclub/stripped-content.html" . }}
-    <div class="home-editorial-grid">
-      <section class="entry-cluster" aria-labelledby="home-directory-title">
-        <header class="entry-cluster-heading">
-          <div>
-            <span class="editorial-kicker">知识地图</span>
-            <h2 class="entry-cluster-title" id="home-directory-title">按目标进入</h2>
-          </div>
-          <span class="entry-cluster-count">{{ len $sections }} 个核心栏目</span>
-        </header>
+    <section class="entry-cluster" aria-labelledby="home-directory-title">
+      <header class="entry-cluster-heading">
+        <div>
+          <span class="editorial-kicker">知识地图</span>
+          <h2 class="entry-cluster-title" id="home-directory-title">按目标进入</h2>
+        </div>
+        <span class="entry-cluster-count">{{ len $sections }} 个核心栏目</span>
+      </header>
       <ol class="section-link-list section-link-list--home">
         {{ range $index, $item := $sections }}
           {{ $summary := partial "goclub/lead-summary.html" . }}
@@ -64,11 +62,6 @@
           </li>
         {{ end }}
       </ol>
-      </section>
-
-      <section class="home-guide" aria-label="使用指南">
-        {{- $content | safeHTML -}}
-      </section>
-    </div>
+    </section>
   </article>
 {{ end }}

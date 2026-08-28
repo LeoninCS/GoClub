@@ -4554,16 +4554,7 @@ body {
   transform: none;
 }
 
-.home-editorial-grid {
-  display: grid;
-  grid-template-areas: "directory guide";
-  grid-template-columns: minmax(0, 1.55fr) minmax(15rem, 0.75fr);
-  align-items: start;
-  gap: clamp(2.25rem, 4.5vw, 4rem);
-}
-
 .entry-cluster {
-  grid-area: directory;
   min-width: 0;
   margin: 0;
 }
@@ -4604,74 +4595,6 @@ body {
   font-size: clamp(1.65rem, 2.5vw, 2.15rem);
   font-weight: 700;
   line-height: 1.15;
-}
-
-.home-guide {
-  grid-area: guide;
-  min-width: 0;
-  padding: 1.15rem 1.25rem;
-  border: 0;
-  border-radius: 0.9rem;
-  background: linear-gradient(
-    145deg,
-    var(--goclub-editorial-wash),
-    var(--goclub-editorial-warm) 55%,
-    transparent
-  );
-}
-
-.book-article .home-guide h2 {
-  margin: 0;
-  padding: 0 0 0.85rem;
-  border: 0;
-  color: var(--body-font-color);
-  font-family: var(--goclub-font-headline);
-  font-size: 1.45rem;
-  line-height: 1.25;
-}
-
-.book-article .home-guide h2::before {
-  display: block;
-  margin-bottom: 0.35rem;
-  color: var(--goclub-muted-text);
-  content: "快速路径";
-  font-family: var(--goclub-font-body);
-  font-size: 0.7rem;
-  font-weight: 750;
-  letter-spacing: 0.1em;
-}
-
-.markdown .home-guide ul {
-  margin: 0;
-  padding: 0;
-  counter-reset: home-guide;
-  list-style: none;
-}
-
-.markdown .home-guide li {
-  position: relative;
-  margin: 0;
-  padding: 0.9rem 0 0.9rem 2.15rem;
-  border-top: 0;
-  color: var(--goclub-muted-text);
-  font-size: 0.9rem;
-  line-height: 1.65;
-  counter-increment: home-guide;
-}
-
-.markdown .home-guide li + li {
-  margin-top: 0.2rem;
-}
-
-.markdown .home-guide li::before {
-  position: absolute;
-  top: 1rem;
-  left: 0;
-  color: var(--goclub-subtle-text);
-  content: counter(home-guide, decimal-leading-zero);
-  font-size: 0.7rem;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.05em;
 }
 
 .page-lead-layout {
@@ -5468,6 +5391,12 @@ body {
     max-width: 50rem;
   }
 
+  :root body.book-kind-home .book-page > article.book-article,
+  :root body.book-kind-home .book-page > .book-footer {
+    width: 100%;
+    max-width: none;
+  }
+
   :root body[class*="book-kind-"] .book-menu .book-menu-content {
     display: flex;
     flex-direction: column;
@@ -5572,24 +5501,6 @@ body {
     padding: 0.3rem;
   }
 
-  .home-guide {
-    position: static;
-  }
-}
-
-@media screen and (max-width: 68rem) and (min-width: 56.01rem) {
-  .home-editorial-grid {
-    grid-template-areas:
-      "directory"
-      "guide";
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .home-guide {
-    position: static;
-    padding: 1.15rem 1.25rem;
-    border: 0;
-  }
 }
 
 @media screen and (max-width: 64rem) and (min-width: 56.01rem) {
@@ -5713,20 +5624,6 @@ body {
 
   .page-hero-actions {
     margin-top: 1rem;
-  }
-
-  .home-editorial-grid {
-    grid-template-areas:
-      "directory"
-      "guide";
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2.4rem;
-  }
-
-  .home-guide {
-    padding: 1rem;
-    border: 0;
-    border-radius: 0.75rem;
   }
 
   .section-preface {
