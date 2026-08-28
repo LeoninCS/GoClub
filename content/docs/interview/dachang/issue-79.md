@@ -1,5 +1,8 @@
 ---
 title: "iiuuu-百度-go后台开发-一2面"
+aliases:
+  - "/s/jekb/"
+shortlink: "jekb"
 ---
 
 Coding Agent 项目

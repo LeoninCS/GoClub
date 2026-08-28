@@ -1,5 +1,8 @@
 ---
 title: "iiuuu-百度-go后台开发-二面"
+aliases:
+  - "/s/7f5p/"
+shortlink: "7f5p"
 ---
 
 项目一：Coding Agent
