@@ -1,0 +1,13 @@
+{{ $page := . }}
+{{ $id := "TableOfContents" }}
+{{ if reflect.IsMap . }}
+  {{ $page = index . "Page" }}
+  {{ with index . "ID" }}
+    {{ $id = . }}
+  {{ end }}
+{{ end }}
+
+{{ $toc := partial "docs/toc-data.html" $page }}
+{{ partial "docs/inject/toc-before" $page }}
+{{ $toc.HTML | replaceRE `id="TableOfContents"` (printf `id="%s"` $id) | safeHTML }}
+{{ partial "docs/inject/toc-after" $page }}

@@ -150,14 +150,14 @@
 
   .book-menu .book-menu-content {
     background:
-      radial-gradient(circle at top right, rgba(184, 191, 255, 0.08), transparent 13rem),
-      linear-gradient(180deg, rgba(28, 27, 35, 0.96), rgba(18, 17, 23, 0.92));
+      radial-gradient(circle at top right, rgba(var(--goclub-primary-rgb), 0.08), transparent 13rem),
+      linear-gradient(180deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.92));
     border-color: var(--goclub-border);
   }
 
   .book-brand a {
     background:
-      radial-gradient(circle at top right, rgba(232, 200, 131, 0.12), transparent 9rem),
+      radial-gradient(circle at top right, rgba(var(--goclub-tertiary-rgb), 0.12), transparent 9rem),
       linear-gradient(135deg, rgba(var(--goclub-surface-rgb), 0.94), rgba(var(--goclub-bg-rgb), 0.9));
     border: 1px solid var(--goclub-border);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -225,8 +225,8 @@
   .book-menu .book-search input:focus,
   .goclub-chatbot-settings-panel input:focus,
   .goclub-chatbot-input:focus {
-    border-color: rgba(184, 191, 255, 0.42);
-    box-shadow: 0 0 0 0.22rem rgba(184, 191, 255, 0.14);
+    border-color: rgba(var(--goclub-primary-rgb), 0.42);
+    box-shadow: 0 0 0 0.22rem rgba(var(--goclub-primary-rgb), 0.14);
   }
 
   .book-menu #book-search-results a {
@@ -257,9 +257,9 @@
   }
 
   .markdown code {
-    background: rgba(184, 191, 255, 0.12);
+    background: rgba(var(--goclub-primary-rgb), 0.12);
     border-color: var(--goclub-border);
-    color: #dce9e4;
+    color: var(--body-font-color);
   }
 
   .markdown pre {
@@ -270,7 +270,7 @@
   }
 
   .markdown blockquote {
-    background: rgba(224, 160, 132, 0.11);
+    background: rgba(var(--goclub-secondary-rgb), 0.11);
     border-inline-start-color: var(--goclub-secondary);
     color: var(--body-font-color);
   }
@@ -281,7 +281,7 @@
   }
 
   .markdown table tr th {
-    background: rgba(184, 191, 255, 0.1);
+    background: rgba(var(--goclub-primary-rgb), 0.1);
     color: var(--body-font-color);
   }
 
@@ -322,7 +322,7 @@
   .markdown .homepage-github-secondary[href]:hover,
   .markdown .homepage-github-secondary[href]:focus-visible {
     background: rgba(var(--goclub-surface-rgb), 0.96);
-    border-color: rgba(232, 200, 131, 0.32);
+    border-color: rgba(var(--goclub-tertiary-rgb), 0.32);
     box-shadow: 0 18px 34px rgba(0, 0, 0, 0.26);
     color: var(--goclub-link-hover);
   }
@@ -353,12 +353,12 @@
   }
 
   .section-card::after {
-    background: radial-gradient(circle, rgba(184, 191, 255, 0.09), transparent 62%);
+    background: radial-gradient(circle, rgba(var(--goclub-primary-rgb), 0.09), transparent 62%);
   }
 
   .section-card-kind {
-    background: rgba(224, 160, 132, 0.16);
-    color: #f0b39a;
+    background: rgba(var(--goclub-secondary-rgb), 0.16);
+    color: var(--goclub-secondary);
   }
 
   .section-card-title,
@@ -371,15 +371,15 @@
   }
 
   .entry-cluster-title::before {
-    background: linear-gradient(135deg, var(--goclub-secondary), #c9856c);
-    box-shadow: 0 0 0 0.38rem rgba(224, 160, 132, 0.16);
+    background: linear-gradient(135deg, var(--goclub-secondary), var(--goclub-primary-soft));
+    box-shadow: 0 0 0 0.38rem rgba(var(--goclub-secondary-rgb), 0.16);
   }
 
   .section-card-featured {
     background:
       radial-gradient(circle at top right, rgba(var(--goclub-primary-rgb), 0.18), transparent 12rem),
       linear-gradient(110deg, var(--goclub-primary-action), var(--goclub-primary-action-strong));
-    border-color: rgba(184, 191, 255, 0.22);
+    border-color: rgba(var(--goclub-primary-rgb), 0.22);
     color: var(--goclub-on-primary-action);
   }
 
@@ -390,7 +390,7 @@
 
   .section-card-featured .section-card-arrow {
     background: var(--goclub-secondary);
-    color: #20120e;
+    color: var(--goclub-tertiary-ink);
   }
 
   .page-hero,
@@ -398,8 +398,8 @@
   .homepage-github-callout,
   .section-overview {
     background:
-      radial-gradient(circle at top right, rgba(184, 191, 255, 0.1), transparent 12rem),
-      radial-gradient(circle at bottom left, rgba(232, 200, 131, 0.07), transparent 15rem),
+      radial-gradient(circle at top right, rgba(var(--goclub-primary-rgb), 0.1), transparent 12rem),
+      radial-gradient(circle at bottom left, rgba(var(--goclub-tertiary-rgb), 0.07), transparent 15rem),
       linear-gradient(135deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.94));
     border-color: var(--goclub-border);
   }
@@ -432,16 +432,16 @@
 
   .contributor-card {
     background:
-      radial-gradient(circle at top right, rgba(184, 191, 255, 0.09), transparent 9rem),
+      radial-gradient(circle at top right, rgba(var(--goclub-primary-rgb), 0.09), transparent 9rem),
       linear-gradient(160deg, rgba(var(--goclub-surface-rgb), 0.96), rgba(var(--goclub-bg-rgb), 0.94));
-    border-color: rgba(184, 191, 255, 0.18);
+    border-color: rgba(var(--goclub-primary-rgb), 0.18);
     box-shadow:
       0 16px 34px rgba(0, 0, 0, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .contributor-card:hover {
-    border-color: rgba(184, 191, 255, 0.34);
+    border-color: rgba(var(--goclub-primary-rgb), 0.34);
     box-shadow:
       0 20px 42px rgba(0, 0, 0, 0.38),
       inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -468,7 +468,7 @@
   .markdown .contributor-meta a[href],
   .markdown .contributor-meta a[href]:visited,
   .contributor-meta a {
-    color: #b9d3ff;
+    color: var(--goclub-primary-soft);
   }
 
   .markdown .contributor-meta a[href]:hover,
@@ -481,7 +481,7 @@
   }
 
   .contributor-prs strong {
-    background: rgba(184, 191, 255, 0.14);
+    background: rgba(var(--goclub-primary-rgb), 0.14);
     color: var(--goclub-primary);
   }
 
@@ -515,14 +515,14 @@
 
   .goclub-chatbot-settings-panel input,
   .goclub-chatbot-preset {
-    background: rgba(18, 17, 23, 0.92);
+    background: rgba(var(--goclub-bg-rgb), 0.92);
     color: var(--body-font-color);
     border-color: var(--goclub-border);
   }
 
   .goclub-chatbot-preset:hover {
-    background: rgba(232, 200, 131, 0.14);
-    border-color: rgba(232, 200, 131, 0.34);
+    background: rgba(var(--goclub-tertiary-rgb), 0.14);
+    border-color: rgba(var(--goclub-tertiary-rgb), 0.34);
   }
 
   .goclub-chatbot-messages {
@@ -536,12 +536,12 @@
   }
 
   .goclub-chatbot-msg.error {
-    background: rgba(229, 139, 130, 0.14);
-    color: #f3aaa2;
+    background: rgba(var(--goclub-secondary-rgb), 0.14);
+    color: var(--goclub-secondary);
   }
 
   .goclub-chatbot-msg code {
-    background: rgba(184, 191, 255, 0.12);
+    background: rgba(var(--goclub-primary-rgb), 0.12);
   }
 
   .goclub-chatbot-msg pre {
@@ -552,12 +552,12 @@
   }
 
   .goclub-chatbot-msg blockquote {
-    background: rgba(224, 160, 132, 0.11);
+    background: rgba(var(--goclub-secondary-rgb), 0.11);
     color: var(--goclub-muted-text);
   }
 
   .goclub-chatbot-msg th {
-    background: rgba(184, 191, 255, 0.1);
+    background: rgba(var(--goclub-primary-rgb), 0.1);
     color: var(--body-font-color);
   }
 
@@ -584,7 +584,7 @@
   }
 
   .goclub-chatbot-input {
-    background: rgba(18, 17, 23, 0.92);
+    background: rgba(var(--goclub-bg-rgb), 0.92);
     color: var(--body-font-color);
     border-color: var(--goclub-border);
   }
@@ -1071,7 +1071,7 @@ select {
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
-  border: 1px solid rgba(0, 51, 49, 0.14);
+  border: 1px solid rgba(var(--goclub-primary-rgb), 0.14);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 14px 30px rgba(36, 48, 46, 0.12);
@@ -1168,7 +1168,7 @@ body.sidebar-resizing .book-menu .book-menu-content {
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(0, 51, 49, 0.62);
+  color: rgba(var(--goclub-primary-rgb), 0.72);
   font-weight: 800;
 }
 
@@ -1234,8 +1234,8 @@ body.sidebar-resizing .book-menu .book-menu-content {
 
 .book-menu .book-search input:focus {
   outline: none;
-  border-color: rgba(0, 75, 73, 0.36);
-  box-shadow: 0 0 0 0.25rem rgba(149, 209, 206, 0.28);
+  border-color: rgba(var(--goclub-primary-rgb), 0.36);
+  box-shadow: 0 0 0 0.25rem rgba(var(--goclub-primary-rgb), 0.14);
 }
 
 .book-menu #book-search-results {
@@ -1828,7 +1828,7 @@ body.sidebar-collapsed .book-brand-mark {
   font-size: 0.68rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(0, 51, 49, 0.54);
+  color: rgba(var(--goclub-primary-rgb), 0.62);
   font-weight: 800;
 }
 
@@ -1951,7 +1951,7 @@ body.sidebar-collapsed .book-brand-mark {
 .markdown code {
   padding: 0.15em 0.42em;
   border-radius: 0.6rem;
-  background: rgba(0, 75, 73, 0.08);
+  background: rgba(var(--goclub-primary-rgb), 0.08);
   border-color: rgba(112, 121, 120, 0.16);
 }
 
@@ -2056,7 +2056,7 @@ body.sidebar-collapsed .book-brand-mark {
 }
 
 .markdown table tr th {
-  background: rgba(0, 75, 73, 0.07);
+  background: rgba(var(--goclub-primary-rgb), 0.07);
   color: var(--body-font-color);
 }
 
@@ -2083,7 +2083,7 @@ body.sidebar-collapsed .book-brand-mark {
   border: 1px solid rgba(112, 121, 120, 0.13);
   background:
     radial-gradient(circle at top right, rgba(255, 223, 150, 0.46), transparent 12rem),
-    radial-gradient(circle at bottom left, rgba(149, 209, 206, 0.18), transparent 16rem),
+    radial-gradient(circle at bottom left, rgba(var(--goclub-primary-rgb), 0.12), transparent 16rem),
     linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(244, 244, 240, 0.94));
   box-shadow: var(--goclub-shadow);
 }
@@ -2156,7 +2156,7 @@ body.sidebar-collapsed .book-brand-mark {
 .markdown .homepage-github-button[href]:visited {
   background: linear-gradient(135deg, var(--goclub-primary), var(--goclub-primary-soft));
   color: var(--goclub-on-primary-action);
-  box-shadow: 0 16px 32px rgba(0, 51, 49, 0.18);
+  box-shadow: 0 16px 32px rgba(var(--goclub-primary-rgb), 0.18);
   text-decoration: none;
 }
 
@@ -2175,7 +2175,7 @@ body.sidebar-collapsed .book-brand-mark {
 .markdown .homepage-github-button[href]:hover,
 .markdown .homepage-github-button[href]:focus-visible {
   background: linear-gradient(135deg, var(--goclub-primary-soft), var(--goclub-primary-action));
-  box-shadow: 0 20px 36px rgba(0, 51, 49, 0.26);
+  box-shadow: 0 20px 36px rgba(var(--goclub-primary-rgb), 0.24);
   transform: translateY(-2px);
   color: var(--goclub-on-primary-action);
   text-decoration: none;
@@ -2271,12 +2271,12 @@ body.sidebar-collapsed .book-brand-mark {
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(112, 121, 120, 0.13);
   font-size: 0.92rem;
-  color: rgba(0, 51, 49, 0.86);
+  color: var(--goclub-primary);
 }
 
 .markdown .page-lead-chip[href],
 .markdown .page-lead-chip[href]:visited {
-  color: rgba(0, 51, 49, 0.86);
+  color: var(--goclub-primary);
   text-decoration: none;
 }
 
@@ -2320,7 +2320,7 @@ body.sidebar-collapsed .book-brand-mark {
   font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: rgba(0, 51, 49, 0.58);
+  color: rgba(var(--goclub-primary-rgb), 0.68);
   font-weight: 800;
 }
 
@@ -2386,7 +2386,7 @@ body.sidebar-collapsed .book-brand-mark {
   width: 7rem;
   height: 7rem;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 51, 49, 0.08), transparent 62%);
+  background: radial-gradient(circle, rgba(var(--goclub-primary-rgb), 0.08), transparent 62%);
   pointer-events: none;
 }
 
@@ -2577,7 +2577,7 @@ body.sidebar-collapsed .book-brand-mark {
 
 .contributor-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(13, 77, 75, 0.32);
+  border-color: rgba(var(--goclub-primary-rgb), 0.32);
   box-shadow:
     0 14px 28px rgba(36, 48, 46, 0.11),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -2662,7 +2662,7 @@ body.sidebar-collapsed .book-brand-mark {
   height: 1.65rem;
   padding: 0 0.45rem;
   border-radius: 999px;
-  background: rgba(13, 77, 75, 0.12);
+  background: rgba(var(--goclub-primary-rgb), 0.12);
   color: var(--goclub-primary);
   font-weight: 800;
 }
@@ -2711,7 +2711,7 @@ body.sidebar-collapsed .book-brand-mark {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(0, 51, 49, 0.56);
+  color: rgba(var(--goclub-primary-rgb), 0.64);
 }
 
 .goclub-nav-card-title {
@@ -2886,7 +2886,7 @@ body.sidebar-collapsed .book-brand-mark {
   justify-content: center;
   margin: 0.55rem 0 0.2rem 0.7rem;
   padding: 0.2rem 0.65rem;
-  border: 1px solid rgba(0, 51, 49, 0.26);
+  border: 1px solid rgba(var(--goclub-primary-rgb), 0.26);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.95);
   color: var(--goclub-primary);
@@ -2903,7 +2903,7 @@ body.sidebar-collapsed .book-brand-mark {
 }
 
 .book-page details.qa-answer[open] > summary.qa-answer-toggle {
-  background: rgba(0, 75, 73, 0.1);
+  background: rgba(var(--goclub-primary-rgb), 0.1);
 }
 
 .book-page details.qa-answer .qa-answer-body {
@@ -2912,65 +2912,66 @@ body.sidebar-collapsed .book-brand-mark {
 
 /* GoClub visual refresh: quiet editorial system */
 :root {
-  --body-background: #f4f1eb;
+  --body-background: #f7f5f0;
   --body-background-tint:
-    linear-gradient(135deg, rgba(83, 119, 108, 0.07), transparent 36%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(236, 231, 222, 0.36));
-  --body-font-color: #202621;
-  --color-link: #315f56;
-  --color-visited-link: #315f56;
+    radial-gradient(circle at 86% -12%, rgba(211, 122, 89, 0.07), transparent 30rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(235, 231, 224, 0.28));
+  --body-font-color: #272522;
+  --color-link: #a85335;
+  --color-visited-link: #a85335;
 
-  --gray-100: #ece8df;
-  --gray-200: #d8d2c6;
-  --gray-500: #768077;
+  --gray-100: #efebe4;
+  --gray-200: #dcd6cd;
+  --gray-500: #77716a;
 
-  --color-accent-default: #315f56;
-  --color-accent-default-tint: rgba(49, 95, 86, 0.11);
-  --color-accent-note: #506f8c;
-  --color-accent-note-tint: rgba(80, 111, 140, 0.11);
-  --color-accent-tip: #60764e;
-  --color-accent-tip-tint: rgba(96, 118, 78, 0.11);
-  --color-accent-important: #756986;
-  --color-accent-important-tint: rgba(117, 105, 134, 0.11);
-  --color-accent-warning: #9b7541;
-  --color-accent-warning-tint: rgba(155, 117, 65, 0.12);
-  --color-accent-caution: #985a4e;
-  --color-accent-caution-tint: rgba(152, 90, 78, 0.12);
-  --color-accent-info: #506f8c;
-  --color-accent-info-tint: rgba(80, 111, 140, 0.11);
-  --color-accent-success: #60764e;
-  --color-accent-success-tint: rgba(96, 118, 78, 0.11);
-  --color-accent-danger: #985a4e;
-  --color-accent-danger-tint: rgba(152, 90, 78, 0.12);
+  --color-accent-default: #a85335;
+  --color-accent-default-tint: rgba(168, 83, 53, 0.11);
+  --color-accent-note: #5f7180;
+  --color-accent-note-tint: rgba(95, 113, 128, 0.11);
+  --color-accent-tip: #8a6b55;
+  --color-accent-tip-tint: rgba(138, 107, 85, 0.11);
+  --color-accent-important: #765f72;
+  --color-accent-important-tint: rgba(118, 95, 114, 0.11);
+  --color-accent-warning: #9b6d3c;
+  --color-accent-warning-tint: rgba(155, 109, 60, 0.12);
+  --color-accent-caution: #a34f43;
+  --color-accent-caution-tint: rgba(163, 79, 67, 0.12);
+  --color-accent-info: #5f7180;
+  --color-accent-info-tint: rgba(95, 113, 128, 0.11);
+  --color-accent-success: #566d7e;
+  --color-accent-success-tint: rgba(86, 109, 126, 0.11);
+  --color-accent-danger: #a34f43;
+  --color-accent-danger-tint: rgba(163, 79, 67, 0.12);
 
-  --goclub-bg-rgb: 244, 241, 235;
-  --goclub-surface-rgb: 253, 252, 248;
-  --goclub-ink-rgb: 32, 38, 33;
-  --goclub-primary-rgb: 49, 95, 86;
-  --goclub-secondary-rgb: 164, 97, 78;
-  --goclub-tertiary-rgb: 188, 157, 82;
+  --goclub-bg-rgb: 247, 245, 240;
+  --goclub-surface-rgb: 252, 250, 246;
+  --goclub-ink-rgb: 39, 37, 34;
+  --goclub-primary-rgb: 168, 83, 53;
+  --goclub-secondary-rgb: 211, 122, 89;
+  --goclub-tertiary-rgb: 181, 139, 83;
+  --goclub-success-rgb: 86, 109, 126;
 
-  --goclub-primary: #315f56;
-  --goclub-primary-soft: #557e74;
-  --goclub-link-hover: #8c604c;
-  --goclub-secondary: #a4614e;
-  --goclub-secondary-soft: rgba(164, 97, 78, 0.12);
-  --goclub-tertiary: #bc9d52;
-  --goclub-tertiary-ink: #322817;
-  --goclub-primary-action: #315f56;
-  --goclub-primary-action-strong: #254940;
-  --goclub-on-primary-action: #fbfaf5;
-  --goclub-muted-text: rgba(32, 38, 33, 0.7);
-  --goclub-subtle-text: rgba(32, 38, 33, 0.5);
+  --goclub-primary: #a85335;
+  --goclub-primary-soft: #c36b4d;
+  --goclub-link-hover: #7f3826;
+  --goclub-secondary: #d37a59;
+  --goclub-secondary-soft: rgba(211, 122, 89, 0.12);
+  --goclub-tertiary: #b58b53;
+  --goclub-tertiary-ink: #352718;
+  --goclub-primary-action: #a85335;
+  --goclub-primary-action-strong: #873b27;
+  --goclub-on-primary-action: #fffaf6;
+  --goclub-muted-text: rgba(39, 37, 34, 0.7);
+  --goclub-subtle-text: rgba(39, 37, 34, 0.5);
 
-  --goclub-surface: rgba(253, 252, 248, 0.92);
+  --goclub-surface: rgba(252, 250, 246, 0.92);
   --goclub-surface-strong: rgba(249, 247, 242, 0.96);
-  --goclub-surface-muted: rgba(235, 231, 222, 0.78);
-  --goclub-border: rgba(56, 64, 58, 0.14);
-  --goclub-border-strong: rgba(56, 64, 58, 0.24);
-  --goclub-shadow: 0 18px 42px rgba(42, 52, 46, 0.08);
-  --goclub-shadow-soft: 0 12px 28px rgba(42, 52, 46, 0.06);
-  --goclub-shadow-card: 0 14px 32px rgba(42, 52, 46, 0.07);
+  --goclub-surface-muted: rgba(234, 229, 220, 0.76);
+  --goclub-border: rgba(73, 67, 61, 0.13);
+  --goclub-border-strong: rgba(73, 67, 61, 0.22);
+  --goclub-shadow: 0 18px 42px rgba(63, 54, 47, 0.07);
+  --goclub-shadow-soft: 0 12px 28px rgba(63, 54, 47, 0.05);
+  --goclub-shadow-card: 0 14px 32px rgba(63, 54, 47, 0.06);
   --goclub-radius-xl: 0.9rem;
   --goclub-radius-lg: 0.55rem;
   --goclub-radius-md: 0.5rem;
@@ -2978,105 +2979,125 @@ body.sidebar-collapsed .book-brand-mark {
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --body-background: #121117;
+    --body-background: #2c2b28;
     --body-background-tint:
-      linear-gradient(135deg, rgba(132, 142, 226, 0.08), transparent 34%),
-      linear-gradient(180deg, rgba(28, 27, 35, 0.82), rgba(18, 17, 23, 0));
-    --body-font-color: #dedbe4;
-    --color-link: #b8bfff;
-    --color-visited-link: #b8bfff;
+      radial-gradient(circle at 86% -12%, rgba(227, 139, 104, 0.1), transparent 30rem),
+      linear-gradient(180deg, rgba(61, 58, 54, 0.7), rgba(44, 43, 40, 0));
+    --body-font-color: #eeeae4;
+    --color-link: #f0a07e;
+    --color-visited-link: #f0a07e;
 
-    --gray-100: #1d1c23;
-    --gray-200: #2b2933;
-    --gray-500: #a29eaa;
+    --gray-100: #373532;
+    --gray-200: #4b4843;
+    --gray-500: #ada79f;
 
-    --color-accent-default: #b8bfff;
-    --color-accent-default-tint: rgba(184, 191, 255, 0.12);
-    --color-accent-note: #9cb8d4;
-    --color-accent-note-tint: rgba(156, 184, 212, 0.12);
-    --color-accent-tip: #c7b7ef;
-    --color-accent-tip-tint: rgba(199, 183, 239, 0.12);
-    --color-accent-important: #ccb6d4;
-    --color-accent-important-tint: rgba(204, 182, 212, 0.12);
-    --color-accent-warning: #d8bb79;
-    --color-accent-warning-tint: rgba(216, 187, 121, 0.13);
-    --color-accent-caution: #dc998d;
-    --color-accent-caution-tint: rgba(220, 153, 141, 0.13);
-    --color-accent-info: #9cb8d4;
-    --color-accent-info-tint: rgba(156, 184, 212, 0.12);
-    --color-accent-success: #b6b7ea;
-    --color-accent-success-tint: rgba(182, 183, 234, 0.12);
-    --color-accent-danger: #dc998d;
-    --color-accent-danger-tint: rgba(220, 153, 141, 0.13);
+    --color-accent-default: #f0a07e;
+    --color-accent-default-tint: rgba(240, 160, 126, 0.14);
+    --color-accent-note: #a9bbc9;
+    --color-accent-note-tint: rgba(169, 187, 201, 0.13);
+    --color-accent-tip: #d0b098;
+    --color-accent-tip-tint: rgba(208, 176, 152, 0.13);
+    --color-accent-important: #c5a9bf;
+    --color-accent-important-tint: rgba(197, 169, 191, 0.13);
+    --color-accent-warning: #dfb778;
+    --color-accent-warning-tint: rgba(223, 183, 120, 0.14);
+    --color-accent-caution: #ed9582;
+    --color-accent-caution-tint: rgba(237, 149, 130, 0.14);
+    --color-accent-info: #a9bbc9;
+    --color-accent-info-tint: rgba(169, 187, 201, 0.13);
+    --color-accent-success: #a6b6c3;
+    --color-accent-success-tint: rgba(166, 182, 195, 0.13);
+    --color-accent-danger: #ed9582;
+    --color-accent-danger-tint: rgba(237, 149, 130, 0.14);
 
-    --goclub-bg-rgb: 18, 17, 23;
-    --goclub-surface-rgb: 28, 27, 35;
-    --goclub-ink-rgb: 222, 219, 228;
-    --goclub-primary-rgb: 184, 191, 255;
-    --goclub-secondary-rgb: 214, 151, 130;
-    --goclub-tertiary-rgb: 216, 187, 121;
+    --goclub-bg-rgb: 44, 43, 40;
+    --goclub-surface-rgb: 56, 54, 50;
+    --goclub-ink-rgb: 238, 234, 228;
+    --goclub-primary-rgb: 240, 160, 126;
+    --goclub-secondary-rgb: 224, 139, 104;
+    --goclub-tertiary-rgb: 211, 176, 111;
+    --goclub-success-rgb: 166, 182, 195;
 
-    --goclub-primary: #b8bfff;
-    --goclub-primary-soft: #949ef0;
-    --goclub-link-hover: #d8bb79;
-    --goclub-secondary: #d69782;
-    --goclub-secondary-soft: rgba(214, 151, 130, 0.13);
-    --goclub-tertiary: #d8bb79;
-    --goclub-tertiary-ink: #201805;
-    --goclub-primary-action: #5863b7;
-    --goclub-primary-action-strong: #444d91;
-    --goclub-on-primary-action: #f7f7ff;
-    --goclub-muted-text: rgba(222, 219, 228, 0.7);
-    --goclub-subtle-text: rgba(222, 219, 228, 0.5);
+    --goclub-primary: #f0a07e;
+    --goclub-primary-soft: #f4b092;
+    --goclub-link-hover: #f7b99a;
+    --goclub-secondary: #e08b68;
+    --goclub-secondary-soft: rgba(224, 139, 104, 0.15);
+    --goclub-tertiary: #d3b06f;
+    --goclub-tertiary-ink: #2a2115;
+    --goclub-primary-action: #b45b3d;
+    --goclub-primary-action-strong: #98452f;
+    --goclub-on-primary-action: #fffaf6;
+    --goclub-muted-text: rgba(238, 234, 228, 0.72);
+    --goclub-subtle-text: rgba(238, 234, 228, 0.54);
 
-    --goclub-surface: rgba(28, 27, 35, 0.92);
-    --goclub-surface-strong: rgba(33, 32, 42, 0.96);
-    --goclub-surface-muted: rgba(23, 22, 29, 0.84);
-    --goclub-border: rgba(219, 216, 229, 0.12);
-    --goclub-border-strong: rgba(219, 216, 229, 0.22);
-    --goclub-shadow: 0 18px 46px rgba(0, 0, 0, 0.36);
-    --goclub-shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.28);
-    --goclub-shadow-card: 0 14px 34px rgba(0, 0, 0, 0.3);
+    --goclub-surface: rgba(56, 54, 50, 0.94);
+    --goclub-surface-strong: rgba(63, 60, 56, 0.96);
+    --goclub-surface-muted: rgba(49, 47, 44, 0.9);
+    --goclub-border: rgba(244, 239, 231, 0.13);
+    --goclub-border-strong: rgba(244, 239, 231, 0.22);
+    --goclub-shadow: 0 18px 46px rgba(14, 12, 10, 0.2);
+    --goclub-shadow-soft: 0 12px 28px rgba(14, 12, 10, 0.14);
+    --goclub-shadow-card: 0 14px 34px rgba(14, 12, 10, 0.17);
   }
 }
 
 [data-theme="dark"] {
-  --body-background: #121117;
+  --body-background: #2c2b28;
   --body-background-tint:
-    linear-gradient(135deg, rgba(132, 142, 226, 0.08), transparent 34%),
-    linear-gradient(180deg, rgba(28, 27, 35, 0.82), rgba(18, 17, 23, 0));
-  --body-font-color: #dedbe4;
-  --color-link: #b8bfff;
-  --color-visited-link: #b8bfff;
-  --gray-100: #1d1c23;
-  --gray-200: #2b2933;
-  --gray-500: #a29eaa;
-  --goclub-bg-rgb: 18, 17, 23;
-  --goclub-surface-rgb: 28, 27, 35;
-  --goclub-ink-rgb: 222, 219, 228;
-  --goclub-primary-rgb: 184, 191, 255;
-  --goclub-secondary-rgb: 214, 151, 130;
-  --goclub-tertiary-rgb: 216, 187, 121;
-  --goclub-primary: #b8bfff;
-  --goclub-primary-soft: #949ef0;
-  --goclub-link-hover: #d8bb79;
-  --goclub-secondary: #d69782;
-  --goclub-secondary-soft: rgba(214, 151, 130, 0.13);
-  --goclub-tertiary: #d8bb79;
-  --goclub-tertiary-ink: #201805;
-  --goclub-primary-action: #5863b7;
-  --goclub-primary-action-strong: #444d91;
-  --goclub-on-primary-action: #f7f7ff;
-  --goclub-muted-text: rgba(222, 219, 228, 0.7);
-  --goclub-subtle-text: rgba(222, 219, 228, 0.5);
-  --goclub-surface: rgba(28, 27, 35, 0.92);
-  --goclub-surface-strong: rgba(33, 32, 42, 0.96);
-  --goclub-surface-muted: rgba(23, 22, 29, 0.84);
-  --goclub-border: rgba(219, 216, 229, 0.12);
-  --goclub-border-strong: rgba(219, 216, 229, 0.22);
-  --goclub-shadow: 0 18px 46px rgba(0, 0, 0, 0.36);
-  --goclub-shadow-soft: 0 12px 28px rgba(0, 0, 0, 0.28);
-  --goclub-shadow-card: 0 14px 34px rgba(0, 0, 0, 0.3);
+    radial-gradient(circle at 86% -12%, rgba(227, 139, 104, 0.1), transparent 30rem),
+    linear-gradient(180deg, rgba(61, 58, 54, 0.7), rgba(44, 43, 40, 0));
+  --body-font-color: #eeeae4;
+  --color-link: #f0a07e;
+  --color-visited-link: #f0a07e;
+  --gray-100: #373532;
+  --gray-200: #4b4843;
+  --gray-500: #ada79f;
+  --color-accent-default: #f0a07e;
+  --color-accent-default-tint: rgba(240, 160, 126, 0.14);
+  --color-accent-note: #a9bbc9;
+  --color-accent-note-tint: rgba(169, 187, 201, 0.13);
+  --color-accent-tip: #d0b098;
+  --color-accent-tip-tint: rgba(208, 176, 152, 0.13);
+  --color-accent-important: #c5a9bf;
+  --color-accent-important-tint: rgba(197, 169, 191, 0.13);
+  --color-accent-warning: #dfb778;
+  --color-accent-warning-tint: rgba(223, 183, 120, 0.14);
+  --color-accent-caution: #ed9582;
+  --color-accent-caution-tint: rgba(237, 149, 130, 0.14);
+  --color-accent-info: #a9bbc9;
+  --color-accent-info-tint: rgba(169, 187, 201, 0.13);
+  --color-accent-success: #a6b6c3;
+  --color-accent-success-tint: rgba(166, 182, 195, 0.13);
+  --color-accent-danger: #ed9582;
+  --color-accent-danger-tint: rgba(237, 149, 130, 0.14);
+  --goclub-bg-rgb: 44, 43, 40;
+  --goclub-surface-rgb: 56, 54, 50;
+  --goclub-ink-rgb: 238, 234, 228;
+  --goclub-primary-rgb: 240, 160, 126;
+  --goclub-secondary-rgb: 224, 139, 104;
+  --goclub-tertiary-rgb: 211, 176, 111;
+  --goclub-success-rgb: 166, 182, 195;
+  --goclub-primary: #f0a07e;
+  --goclub-primary-soft: #f4b092;
+  --goclub-link-hover: #f7b99a;
+  --goclub-secondary: #e08b68;
+  --goclub-secondary-soft: rgba(224, 139, 104, 0.15);
+  --goclub-tertiary: #d3b06f;
+  --goclub-tertiary-ink: #2a2115;
+  --goclub-primary-action: #b45b3d;
+  --goclub-primary-action-strong: #98452f;
+  --goclub-on-primary-action: #fffaf6;
+  --goclub-muted-text: rgba(238, 234, 228, 0.72);
+  --goclub-subtle-text: rgba(238, 234, 228, 0.54);
+  --goclub-surface: rgba(56, 54, 50, 0.94);
+  --goclub-surface-strong: rgba(63, 60, 56, 0.96);
+  --goclub-surface-muted: rgba(49, 47, 44, 0.9);
+  --goclub-border: rgba(244, 239, 231, 0.13);
+  --goclub-border-strong: rgba(244, 239, 231, 0.22);
+  --goclub-shadow: 0 18px 46px rgba(14, 12, 10, 0.2);
+  --goclub-shadow-soft: 0 12px 28px rgba(14, 12, 10, 0.14);
+  --goclub-shadow-card: 0 14px 34px rgba(14, 12, 10, 0.17);
 }
 
 body {
@@ -4014,7 +4035,7 @@ body {
 .pdf-page-label {
   max-width: 58rem;
   margin: 0 auto 0.75rem;
-  color: var(--goclub-subtle-text);
+  color: var(--goclub-muted-text);
   font-size: 0.86rem;
   line-height: 1.4;
 }
@@ -4764,15 +4785,15 @@ body {
 }
 
 :root body[class*="book-kind-"] .page-lead-meta .goclub-share.is-done {
-  border-color: rgba(var(--goclub-tertiary-rgb), 0.36);
-  background: rgba(var(--goclub-tertiary-rgb), 0.1);
-  color: var(--goclub-tertiary);
+  border-color: rgba(var(--goclub-success-rgb), 0.36);
+  background: rgba(var(--goclub-success-rgb), 0.1);
+  color: var(--color-accent-success);
 }
 
 :root body[class*="book-kind-"] .page-lead-meta .goclub-share.is-error {
   border-color: rgba(var(--goclub-secondary-rgb), 0.4);
   background: rgba(var(--goclub-secondary-rgb), 0.1);
-  color: var(--goclub-secondary);
+  color: var(--color-accent-danger);
 }
 
 .goclub-share-icon {
@@ -5459,13 +5480,61 @@ body {
   }
 
   :root body[class*="book-kind-"] .book-toc .book-toc-content {
-    padding: 0.35rem 0 1rem 1.1rem;
+    position: fixed;
+    top: clamp(6rem, 10vh, 11rem);
+    bottom: 1rem;
+    padding: 0.35rem 0.25rem 1rem;
     border: 0;
-    border-inline-start: 1px solid var(--goclub-editorial-rule);
     border-radius: 0;
     background: transparent;
     box-shadow: none;
     backdrop-filter: none;
+  }
+
+  :root body[class*="book-kind-"] .book-toc-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  :root body[class*="book-kind-"] .book-toc nav a {
+    padding: 0.58rem 0.72rem;
+    border: 0;
+    border-radius: 0.6rem;
+    background: transparent;
+    box-shadow: none;
+    color: var(--goclub-muted-text);
+    opacity: 1;
+    text-decoration: none;
+    transform: none;
+    transition:
+      background-color 0.16s ease,
+      color 0.16s ease;
+  }
+
+  :root body[class*="book-kind-"] .book-toc nav a:focus-visible {
+    background: transparent;
+    color: var(--body-font-color);
+    outline: 2px solid var(--goclub-primary);
+    outline-offset: 2px;
+  }
+
+  :root body[class*="book-kind-"] .book-toc nav a:active {
+    background: transparent;
+    color: var(--body-font-color);
+  }
+
+  @media (hover: hover) {
+    :root body[class*="book-kind-"] .book-toc nav a:hover {
+      background: transparent;
+      color: var(--body-font-color);
+    }
   }
 
   :root body[class*="book-kind-"] .sidebar-toggle {

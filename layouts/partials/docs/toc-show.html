@@ -1,0 +1,6 @@
+{{ $show := false }}
+{{ if and (not (eq .Params.bookToC false)) (not (eq .Site.Params.BookToC false)) }}
+  {{ $toc := partial "docs/toc-data.html" . }}
+  {{ $show = $toc.HasTOC }}
+{{ end }}
+{{ return $show }}

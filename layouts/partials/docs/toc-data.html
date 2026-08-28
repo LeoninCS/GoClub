@@ -1,0 +1,56 @@
+{{/*
+  Prefer Hugo's native Markdown TOC. Imported articles sometimes contain raw
+  HTML headings, which Goldmark deliberately excludes from .TableOfContents;
+  only when the native TOC is empty, build a small compatible TOC from the
+  headings that are actually rendered by the article template.
+*/}}
+{{ $native := printf "%s" .TableOfContents }}
+{{ $result := dict "HasTOC" true "HTML" $native }}
+{{ if eq (len (findRE `(?i)<a(?:\s|>)` $native)) 0 }}
+  {{ $content := partial "goclub/stripped-content.html" . | printf "%s" }}
+  {{ $headings := findRE `(?is)<h[23]\b[^>]*\bid\s*=\s*(?:"[^"]+"|'[^']+')[^>]*>.*?</h[23]\s*>` $content }}
+  {{ $toc := `<nav id="TableOfContents"><ul>` }}
+  {{ $hasItems := false }}
+  {{ $h2Open := false }}
+  {{ $h3ListOpen := false }}
+
+  {{ range $headings }}
+    {{ $level := . | replaceRE `(?is)^<h([23])\b.*$` "$1" }}
+    {{ $id := . | replaceRE `(?is)^<h[23]\b[^>]*\bid\s*=\s*(?:"([^"]+)"|'([^']+)')[^>]*>.*$` "$1$2" | htmlUnescape }}
+    {{ $label := . | replaceRE `(?is)^<h[23]\b[^>]*>` "" | replaceRE `(?is)</h[23]\s*>$` "" | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace }}
+    {{ if and $id $label }}
+      {{ $hasItems = true }}
+      {{ if eq $level "2" }}
+        {{ if $h3ListOpen }}
+          {{ $toc = printf "%s</ul>" $toc }}
+          {{ $h3ListOpen = false }}
+        {{ end }}
+        {{ if $h2Open }}
+          {{ $toc = printf "%s</li>" $toc }}
+        {{ end }}
+        {{ $toc = printf `%s<li><a href="#%s">%s</a>` $toc ($id | htmlEscape) ($label | htmlEscape) }}
+        {{ $h2Open = true }}
+      {{ else if $h2Open }}
+        {{ if not $h3ListOpen }}
+          {{ $toc = printf "%s<ul>" $toc }}
+          {{ $h3ListOpen = true }}
+        {{ end }}
+        {{ $toc = printf `%s<li><a href="#%s">%s</a></li>` $toc ($id | htmlEscape) ($label | htmlEscape) }}
+      {{ else }}
+        {{/* Keep an orphan h3 usable instead of dropping a valid section. */}}
+        {{ $toc = printf `%s<li><a href="#%s">%s</a></li>` $toc ($id | htmlEscape) ($label | htmlEscape) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ if $h3ListOpen }}
+    {{ $toc = printf "%s</ul>" $toc }}
+  {{ end }}
+  {{ if $h2Open }}
+    {{ $toc = printf "%s</li>" $toc }}
+  {{ end }}
+  {{ $toc = printf "%s</ul></nav>" $toc }}
+  {{ $result = dict "HasTOC" $hasItems "HTML" $toc }}
+{{ end }}
+
+{{ return $result }}
