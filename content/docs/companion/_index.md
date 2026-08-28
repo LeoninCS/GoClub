@@ -2,6 +2,7 @@
 title: "配套文章"
 weight: 4
 bookCollapseSection: true
+bookShowChildren: true
 autoIndex: false
 aliases:
   - "/s/uagl/"

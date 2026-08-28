@@ -2,6 +2,7 @@
 title: "八股总结"
 weight: 2
 bookCollapseSection: true
+bookShowChildren: true
 aliases:
   - "/s/lol1/"
 shortlink: "lol1"
