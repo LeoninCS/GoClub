@@ -1,0 +1,88 @@
+{{ $children := where .Pages "Params.bookHidden" "ne" true }}
+{{ $sections := slice }}
+{{ $pages := slice }}
+{{ range $children }}
+  {{ if and (or .IsSection .IsPage) .Content }}
+    {{ if .IsSection }}
+      {{ $sections = $sections | append . }}
+    {{ else }}
+      {{ $pages = $pages | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $sectionCount := len $sections }}
+{{ $pageCount := len $pages }}
+{{ $itemCount := add $sectionCount $pageCount }}
+{{ $isMixed := and (gt $sectionCount 0) (gt $pageCount 0) }}
+{{ $indexTitle := "内容目录" }}
+{{ if and (gt $sectionCount 0) (eq $pageCount 0) }}
+  {{ $indexTitle = "专题与分类" }}
+{{ else if and (gt $pageCount 0) (eq $sectionCount 0) }}
+  {{ $indexTitle = "文章与资料" }}
+{{ end }}
+
+{{ if gt $itemCount 0 }}
+  <nav class="section-index-shell section-directory" aria-labelledby="section-directory-title">
+    <header class="section-index-heading">
+      <div>
+        <span class="editorial-kicker">内容索引</span>
+        <h2 id="section-directory-title">{{ $indexTitle }}</h2>
+      </div>
+      <span class="section-index-count">{{ $itemCount }} 项</span>
+    </header>
+
+    {{ if gt $sectionCount 0 }}
+      <div class="section-directory-group">
+        {{ if $isMixed }}
+          <header class="section-directory-heading">
+            <h3 id="section-topics-title">专题与分类</h3>
+            <span>{{ $sectionCount }} 项</span>
+          </header>
+        {{ end }}
+        <ol class="section-link-list section-link-list--topics section-link-list--count-{{ $sectionCount }}" aria-label="专题与分类">
+          {{ range $index, $item := $sections }}
+            {{ $itemSummary := partial "goclub/lead-summary.html" $item }}
+            <li class="section-link-list-item">
+              <a class="section-link-list-link" href="{{ $item.RelPermalink }}">
+                <span class="section-link-list-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>
+                <span class="section-link-list-copy">
+                  <span class="section-link-list-title">{{ partial "docs/title" $item }}</span>
+                  {{ with $itemSummary }}
+                    <span class="section-link-list-summary">{{ . }}</span>
+                  {{ end }}
+                </span>
+                <span class="section-link-list-meta">{{ len (where $item.Pages "Params.bookHidden" "ne" true) }} 页</span>
+                <span class="section-link-list-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          {{ end }}
+        </ol>
+      </div>
+    {{ end }}
+
+    {{ if gt $pageCount 0 }}
+      <div class="section-directory-group">
+        {{ if $isMixed }}
+          <header class="section-directory-heading">
+            <h3 id="section-entries-title">文章与资料</h3>
+            <span>{{ $pageCount }} 项</span>
+          </header>
+        {{ end }}
+        <ol class="section-link-list section-link-list--entries{{ if gt $pageCount 20 }} section-link-list--dense{{ end }}" aria-label="文章与资料">
+          {{ range $index, $item := $pages }}
+            <li class="section-link-list-item">
+              <a class="section-link-list-link" href="{{ $item.RelPermalink }}">
+                <span class="section-link-list-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>
+                <span class="section-link-list-copy">
+                  <span class="section-link-list-title">{{ partial "docs/title" $item }}</span>
+                </span>
+                <span class="section-link-list-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          {{ end }}
+        </ol>
+      </div>
+    {{ end }}
+  </nav>
+{{ end }}

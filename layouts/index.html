@@ -3,37 +3,50 @@
   {{ $submitPage := .Site.GetPage "/docs/blog/提交流程.md" }}
   {{ $githubURL := "https://github.com/LeoninCS/GoClub" }}
   {{ $interviewSubmissionURL := "https://github.com/LeoninCS/GoClub/issues/new?template=interview-question.yml" }}
-  {{ $cards := slice }}
+  {{ $sections := slice }}
   {{ with $docs }}
     {{ range where .Pages "Params.bookHidden" "ne" true }}
       {{ if and .IsSection .Content }}
-        {{ $cards = $cards | append . }}
+        {{ $sections = $sections | append . }}
       {{ end }}
     {{ end }}
   {{ end }}
 
   <article class="markdown book-article">
     <section class="page-hero">
-      <h1>Go 面试知识库</h1>
-      <div class="page-hero-copy">
-        <p>八股总结、面试真题、学习资源和配套文章，按栏目整理，社区一起维护。面经可以先用 AI 整理，再通过 Issue 表单投稿；其他内容和纠错也欢迎提 PR。</p>
+      <div class="page-hero-overline">
+        <span>Go 后端 · 面试准备</span>
+        <span>社区共建 / 持续更新</span>
       </div>
-      <div class="page-hero-actions">
-        {{ with $submitPage }}
-          <a class="page-hero-button" href="{{ .RelPermalink }}">面经投稿流程</a>
-        {{ end }}
-        <a class="page-hero-button-secondary" href="{{ $interviewSubmissionURL }}" target="_blank" rel="noopener noreferrer">提交面经</a>
-        <a class="page-hero-button-secondary" href="{{ $githubURL }}" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
+      <div class="page-hero-layout">
+        <h1><span>Go 面试</span> <span class="page-hero-title-tail">知识库</span></h1>
+        <div class="page-hero-intro">
+          <div class="page-hero-copy">
+            <p>八股总结、面试真题、学习资源和配套文章，按栏目整理，社区一起维护。面经可以先用 AI 整理，再通过 Issue 表单投稿；其他内容和纠错也欢迎提 PR。</p>
+          </div>
+          <nav class="page-hero-actions" aria-label="快速操作">
+            {{ with $submitPage }}
+              <a class="page-hero-button" href="{{ .RelPermalink }}">面经投稿流程</a>
+            {{ end }}
+            <a class="page-hero-button-secondary" href="{{ $interviewSubmissionURL }}" target="_blank" rel="noopener noreferrer">提交面经</a>
+            <a class="page-hero-button-secondary" href="{{ $githubURL }}" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
+          </nav>
+        </div>
       </div>
     </section>
 
     {{ $content := partial "goclub/stripped-content.html" . }}
-    {{- $content | safeHTML -}}
-
-    <section class="entry-cluster">
-      <div class="entry-cluster-title">栏目</div>
+    <div class="home-editorial-grid">
+      <section class="entry-cluster" aria-labelledby="home-directory-title">
+        <header class="entry-cluster-heading">
+          <div>
+            <span class="editorial-kicker">知识地图</span>
+            <h2 class="entry-cluster-title" id="home-directory-title">按目标进入</h2>
+          </div>
+          <span class="entry-cluster-count">{{ len $sections }} 个核心栏目</span>
+        </header>
       <ol class="section-link-list section-link-list--home">
-        {{ range $index, $item := $cards }}
+        {{ range $index, $item := $sections }}
           {{ $summary := partial "goclub/lead-summary.html" . }}
           {{ $children := where .Pages "Params.bookHidden" "ne" true }}
           <li class="section-link-list-item">
@@ -44,13 +57,18 @@
                 {{ with $summary }}
                   <span class="section-link-list-summary">{{ . }}</span>
                 {{ end }}
-                <span class="section-link-list-meta">{{ len $children }} 个页面</span>
               </span>
+              <span class="section-link-list-meta">{{ len $children }} 页</span>
               <span class="section-link-list-arrow" aria-hidden="true">→</span>
             </a>
           </li>
         {{ end }}
       </ol>
-    </section>
+      </section>
+
+      <section class="home-guide" aria-label="使用指南">
+        {{- $content | safeHTML -}}
+      </section>
+    </div>
   </article>
 {{ end }}

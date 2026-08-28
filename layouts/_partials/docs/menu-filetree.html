@@ -15,7 +15,7 @@
           {{ template "book-page-link" (dict "Page" . "CurrentPage" $.CurrentPage) }}
           {{ template "book-section-children" (dict "Section" . "CurrentPage" $.CurrentPage) }}
         </li>
-      {{ else if and .IsPage .Content }}
+      {{ else if and .IsPage .Content (eq . $.CurrentPage) }}
         <li>
           {{ template "book-page-link" (dict "Page" . "CurrentPage" $.CurrentPage) }}
         </li>
@@ -27,21 +27,22 @@
 {{ define "book-page-link" }}{{/* (dict "Page" .Page "CurrentPage" .CurrentPage) */}}
   {{ $current := eq .CurrentPage .Page }}
   {{ $ancestor := .Page.IsAncestor .CurrentPage }}
+  {{ $hasChildSections := gt (len (where .Page.Pages "IsSection" true)) 0 }}
 
-  {{ if .Page.Params.BookCollapseSection }}
+  {{ if and .Page.Params.BookCollapseSection $hasChildSections }}
     <input type="checkbox" id="section-{{ md5 .Page }}" class="toggle" {{ if or $current $ancestor }}checked{{ end }} />
     <label for="section-{{ md5 .Page }}" class="flex">
-      <a {{ if .Page.Content }}href="{{ .Page.RelPermalink }}"{{ else }}role="button"{{ end }} class="{{ if $current }}active{{ end }}">
+      <a {{ if .Page.Content }}href="{{ .Page.RelPermalink }}"{{ else }}role="button"{{ end }} class="{{ if $current }}active{{ else if $ancestor }}is-ancestor{{ end }}"{{ if $current }} aria-current="page"{{ end }}>
         {{ template "book-icon-title" .Page -}}
       </a>
       <img loading="lazy" src="{{ partial "docs/icon" "chevron-right" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Expand" }}" />
     </label>
   {{ else if .Page.Params.BookHref }}
-    <a href="{{ .Page.Params.BookHref }}" class="{{ if $current }}active{{ end }}" target="_blank" rel="noopener">
+    <a href="{{ .Page.Params.BookHref }}" class="{{ if $current }}active{{ else if $ancestor }}is-ancestor{{ end }}"{{ if $current }} aria-current="page"{{ end }} target="_blank" rel="noopener">
       {{ template "book-icon-title" .Page -}}
     </a>
   {{ else if .Page.Content }}
-    <a href="{{ .Page.RelPermalink }}" class="{{ if $current }}active{{ end }}">
+    <a href="{{ .Page.RelPermalink }}" class="{{ if $current }}active{{ else if $ancestor }}is-ancestor{{ end }}"{{ if $current }} aria-current="page"{{ end }}>
       {{ template "book-icon-title" .Page -}}
     </a>
   {{ else }}

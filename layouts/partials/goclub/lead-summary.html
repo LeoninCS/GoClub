@@ -1,48 +1,16 @@
-{{ $raw := "" }}
-{{ with .File }}
-  {{ $raw = readFile .Filename }}
-{{ end }}
-{{ if not $raw }}
-  {{ $raw = .RawContent }}
-{{ end }}
-
-{{ $raw = replaceRE "(?s)^---\\s*\\n.*?\\n---\\s*" "" $raw }}
-{{ $raw = replaceRE "(?s)^\\+\\+\\+\\s*\\n.*?\\n\\+\\+\\+\\s*" "" $raw }}
-{{ $raw = replaceRE "(?m)^# .*$" "" $raw }}
-{{ $raw = replaceRE "^\\s+|\\s+$" "" $raw }}
-{{ $scratch := newScratch }}
-{{ $scratch.Set "capture" false }}
-{{ $scratch.Set "done" false }}
-
-{{ range split $raw "\n" }}
-  {{ if not ($scratch.Get "done") }}
-    {{ $line := replaceRE "^\\s+|\\s+$" "" . }}
-    {{ if eq $line "" }}
-      {{ if $scratch.Get "capture" }}
-        {{ $scratch.Set "done" true }}
-      {{ end }}
-    {{ else }}
-      {{ $isHeading := gt (len (findRE "^#{1,6}\\s" $line 1)) 0 }}
-      {{ $isHTML := gt (len (findRE "^<" $line 1)) 0 }}
-      {{ $isList := gt (len (findRE "^[-*]\\s|^\\d+\\.\\s" $line 1)) 0 }}
-      {{ if and (not $isHeading) (not $isHTML) (not $isList) }}
-        {{ $existing := $scratch.Get "summary" }}
-        {{ if $existing }}
-          {{ $scratch.Set "summary" (printf "%s %s" $existing $line) }}
-        {{ else }}
-          {{ $scratch.Set "summary" $line }}
-        {{ end }}
-        {{ $scratch.Set "capture" true }}
-      {{ else if $scratch.Get "capture" }}
-        {{ $scratch.Set "done" true }}
-      {{ end }}
+{{ $explicit := .Params.description | default .Description }}
+{{ $summary := "" }}
+{{ if $explicit }}
+  {{ $summary = $explicit | plainify | htmlUnescape | replaceRE "\\s+" " " | replaceRE "^\\s+|\\s+$" "" }}
+{{ else }}
+  {{ $rendered := printf "%s" .Content }}
+  {{ $content := replaceRE "(?s)^\\s*<h1[^>]*>.*?</h1>\\s*" "" $rendered }}
+  {{ if ne $content $rendered }}
+    {{ $paragraphs := findRE "(?s)^\\s*<p>.*?</p>" $content 1 }}
+    {{ if $paragraphs }}
+      {{ $summary = index $paragraphs 0 | plainify | htmlUnescape | replaceRE "\\s+" " " | replaceRE "^\\s+|\\s+$" "" }}
     {{ end }}
   {{ end }}
-{{ end }}
-
-{{ $summary := .Params.description | default .Description | default ($scratch.Get "summary") }}
-{{ if not $summary }}
-  {{ $summary = .Summary | plainify | htmlUnescape | replaceRE "\\s+" " " | trim " " }}
 {{ end }}
 
 {{ return $summary }}

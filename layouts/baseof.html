@@ -99,8 +99,9 @@
 
 {{ define "toc-container" }}
   {{ if partial "docs/toc-show" . }}
-  <aside class="book-toc">
+  <aside class="book-toc" aria-labelledby="book-toc-title">
     <div class="book-toc-content">
+      <h2 class="book-toc-title" id="book-toc-title">本页导航</h2>
       {{ template "toc" . }}
     </div>
   </aside>

@@ -4,44 +4,79 @@
   {{ $filePath := replace .File.Path "\\" "/" }}
   {{ $isContributors := eq $filePath "docs/contributors/_index.md" }}
   {{ $contributors := hugo.Data.contributors }}
+  {{ $visiblePages := where .Pages "Params.bookHidden" "ne" true }}
   <article class="markdown book-article">
-    <section class="page-lead">
-      <div class="page-lead-title">{{ partial "docs/title" . }}</div>
-      {{ with $summary }}
-        <div class="page-lead-summary">{{ . }}</div>
-      {{ end }}
-      {{ with .Params.pageLeadAction }}
-        <div class="page-lead-actions">
-          <a class="page-hero-button" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a>
-        </div>
-      {{ end }}
-      <div class="page-lead-meta">
-        {{ if $isContributors }}
-          <span class="page-lead-chip">共 {{ len $contributors }} 位贡献者</span>
-        {{ else }}
-          <span class="page-lead-chip">共 {{ len (where .Pages "Params.bookHidden" "ne" true) }} 篇</span>
+    <header class="page-lead page-lead--section">
+      <div class="page-lead-overline">
+        <span>{{ if $isContributors }}社区名录{{ else }}内容栏目{{ end }}</span>
+        {{ with .Parent }}
+          {{ if ne .Kind "home" }}
+            <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
+          {{ end }}
         {{ end }}
       </div>
-    </section>
+      <div class="page-lead-layout">
+        <h1 class="page-lead-title">{{ partial "docs/title" . }}</h1>
+        <div class="page-lead-aside">
+          {{ with $summary }}
+            <div class="page-lead-summary">{{ . }}</div>
+          {{ end }}
+          {{ with .Params.pageLeadAction }}
+            <div class="page-lead-actions">
+              <a class="page-hero-button" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a>
+            </div>
+          {{ end }}
+          <div class="page-lead-meta" role="list" aria-label="页面信息">
+            {{ if .Params.shortlink }}
+              <span class="page-lead-meta-item" role="listitem">{{ partial "goclub/share-shortlink-button.html" . }}</span>
+            {{ end }}
+            {{ if $isContributors }}
+              <span class="page-lead-meta-item" role="listitem">{{ len $contributors }} 位贡献者</span>
+            {{ else }}
+              <span class="page-lead-meta-item" role="listitem">{{ len $visiblePages }} 项内容</span>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </header>
 
-    {{- $content | safeHTML -}}
+    {{ if $content }}
+      {{ if ne .Params.autoIndex false }}
+        <div class="section-preface">
+          {{- $content | safeHTML -}}
+        </div>
+      {{ else }}
+        <div class="section-body-content">
+          {{- $content | safeHTML -}}
+        </div>
+      {{ end }}
+    {{ end }}
 
     {{ if ne .Params.autoIndex false }}
-      {{ partial "goclub-section-cards.html" . }}
+      {{ partial "goclub-section-index.html" . }}
     {{ end }}
 
     {{ if $isContributors }}
-      <section class="contributors-section">
+      <section class="contributors-section" aria-labelledby="contributors-list-title">
+        <header class="contributors-heading">
+          <div>
+            <span class="editorial-kicker">社区共建</span>
+            <h2 id="contributors-list-title">维护与共建</h2>
+          </div>
+          <span>{{ len $contributors }} 位成员</span>
+        </header>
         {{ if $contributors }}
-          <div class="contributors-grid">
+          <ul class="contributors-list" role="list">
             {{ range $contributors }}
-              <article class="contributor-card">
+              <li class="contributor-row">
                 <a class="contributor-avatar-link" href="{{ .html_url }}" target="_blank" rel="noopener">
+                  <span class="contributor-avatar-fallback" aria-hidden="true">{{ substr .login 0 1 | upper }}</span>
                   <img
                     class="contributor-avatar"
                     src="{{ .avatar_url }}"
-                    alt="{{ .login }} avatar"
+                    alt="{{ .login }} 的头像"
                     loading="lazy"
+                    onerror="this.hidden=true"
                   />
                 </a>
                 <div class="contributor-body">
@@ -59,12 +94,12 @@
                     <a href="{{ .html_url }}" target="_blank" rel="noopener">@{{ .login }}</a>
                   </p>
                   <p class="contributor-meta contributor-prs">
-                    Merged PRs：<strong>{{ .merged_prs }}</strong>
+                    合并 PR：<strong>{{ .merged_prs }}</strong>
                   </p>
                 </div>
-              </article>
+              </li>
             {{ end }}
-          </div>
+          </ul>
         {{ else }}
           <p>当前还没有检测到贡献者数据。</p>
         {{ end }}

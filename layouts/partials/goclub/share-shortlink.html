@@ -1,116 +1,62 @@
-{{/*
-  分享短链按钮。
-  只在 front matter 配了 shortlink 的页面渲染（由 scripts/gen_shortlinks.py 生成）。
-  点击后把 https://goclub.space/s/xxxx 复制到剪贴板，约 28 字符，
-  比可读 URL 短一半以上，适合发微信群。
-*/}}
+{{/* Bind copy behavior to the server-rendered short-link button in the page lead. */}}
 {{ with .Params.shortlink }}
-{{ $url := printf "/s/%s/" . | absURL | strings.TrimSuffix "/" }}
-<style>
-  .goclub-share {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0 0 1.2rem 0;
-    padding: 5px 12px;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.4;
-    color: var(--goclub-primary, #4a6fa5);
-    background: rgba(var(--goclub-surface-rgb, 255, 255, 255), 0.92);
-    border: 1px solid var(--goclub-border, #e2e2e2);
-    border-radius: 999px;
-    cursor: pointer;
-    transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
-    font-family: var(--goclub-font-body, -apple-system, BlinkMacSystemFont, sans-serif);
-  }
-  .goclub-share:hover {
-    transform: translateY(-1px);
-    border-color: rgba(var(--goclub-primary-rgb, 74, 111, 165), 0.42);
-    background: rgba(var(--goclub-primary-rgb, 74, 111, 165), 0.08);
-  }
-  .goclub-share.is-done {
-    color: var(--goclub-tertiary, #3f8f5f);
-    border-color: rgba(var(--goclub-tertiary-rgb, 63, 143, 95), 0.42);
-  }
-  .goclub-share-icon { font-size: 12px; }
-  .goclub-share-url {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-weight: 500;
-    opacity: 0.75;
-  }
-  @media (max-width: 40rem) {
-    .goclub-share-url { display: none; }
-  }
-</style>
 <script>
   (function () {
-    var shortURL = {{ $url }};
-    var article = document.querySelector('article.markdown');
-    if (!article) return;
+    function bind(btn) {
+      if (btn.getAttribute('data-share-bound') === 'true') return;
 
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'goclub-share';
-    btn.setAttribute('aria-label', '复制本页短链接');
+      var shortURL = btn.getAttribute('data-short-url');
+      var label = btn.querySelector('.goclub-share-label');
+      if (!shortURL || !label) return;
 
-    var label = document.createElement('span');
-    label.textContent = '复制短链';
-    var urlText = document.createElement('span');
-    urlText.className = 'goclub-share-url';
-    urlText.textContent = shortURL.replace(/^https?:\/\//, '');
+      btn.setAttribute('data-share-bound', 'true');
+      var timer = null;
 
-    var icon = document.createElement('span');
-    icon.className = 'goclub-share-icon';
-    icon.textContent = '🔗';
-
-    btn.appendChild(icon);
-    btn.appendChild(label);
-    btn.appendChild(urlText);
-
-    var timer = null;
-    function flash(text) {
-      label.textContent = text;
-      btn.classList.add('is-done');
-      window.clearTimeout(timer);
-      timer = window.setTimeout(function () {
-        label.textContent = '复制短链';
-        btn.classList.remove('is-done');
-      }, 1800);
-    }
-
-    function fallbackCopy() {
-      var ta = document.createElement('textarea');
-      ta.value = shortURL;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'fixed';
-      ta.style.top = '-1000px';
-      document.body.appendChild(ta);
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
-      document.body.removeChild(ta);
-      return ok;
-    }
-
-    btn.addEventListener('click', function () {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(shortURL).then(function () {
-          flash('已复制');
-        }, function () {
-          flash(fallbackCopy() ? '已复制' : '复制失败');
-        });
-      } else {
-        flash(fallbackCopy() ? '已复制' : '复制失败');
+      function flash(text) {
+        var copied = text === '已复制';
+        label.textContent = text;
+        btn.classList.toggle('is-done', copied);
+        btn.classList.toggle('is-error', !copied);
+        btn.setAttribute('aria-label', copied ? '短链已复制' : text);
+        window.clearTimeout(timer);
+        timer = window.setTimeout(function () {
+          label.textContent = '复制短链';
+          btn.classList.remove('is-done');
+          btn.classList.remove('is-error');
+          btn.setAttribute('aria-label', '复制本页短链接');
+        }, 1800);
       }
-    });
 
-    // 插到正文第一个标题之后，没有标题就放到正文最前面
-    var heading = article.querySelector('h1, h2');
-    if (heading && heading.parentNode) {
-      heading.parentNode.insertBefore(btn, heading.nextSibling);
-    } else {
-      article.insertBefore(btn, article.firstChild);
+      function fallbackCopy() {
+        var ta = document.createElement('textarea');
+        ta.value = shortURL;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        return ok;
+      }
+
+      btn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(shortURL).then(function () {
+            flash('已复制');
+          }, function () {
+            flash(fallbackCopy() ? '已复制' : '复制失败');
+          });
+        } else {
+          flash(fallbackCopy() ? '已复制' : '复制失败');
+        }
+      });
+    }
+
+    var buttons = document.querySelectorAll('.goclub-share[data-short-url]');
+    for (var i = 0; i < buttons.length; i += 1) {
+      bind(buttons[i]);
     }
   })();
 </script>

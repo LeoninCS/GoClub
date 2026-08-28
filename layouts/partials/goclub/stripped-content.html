@@ -1,5 +1,18 @@
-{{ $content := .Content | replaceRE "(?s)^\\s*<h1[^>]*>.*?</h1>" "" }}
-{{ if partial "goclub/lead-summary.html" . }}
+{{/* The source title is not always the first node: some imported pages start
+     with a provenance note. Keep that note, remove the first content H1, then
+     demote any remaining H1 sections because the page shell owns the sole H1. */}}
+{{ $content := printf "%s" .Content | replaceRE "(?s)^(.*?)<h1[^>]*>.*?</h1>\\s*" "$1" }}
+{{ $pageTitle := partial "docs/title" . | plainify | htmlUnescape | replaceRE "\\s+" " " | replaceRE "^\\s+|\\s+$" "" }}
+{{ range findRE "(?s)<h1[^>]*>.*?</h1>" $content }}
+  {{ $headingTitle := . | plainify | htmlUnescape | replaceRE "\\s+" " " | replaceRE "^\\s+|\\s+$" "" }}
+  {{ if eq $headingTitle $pageTitle }}
+    {{ $content = replace $content . "" }}
+  {{ end }}
+{{ end }}
+{{ $content = $content | replaceRE "<h1([^>]*)>" "<h2$1>" | replaceRE "</h1>" "</h2>" }}
+{{ $explicit := .Params.description | default .Description }}
+{{ $summary := partial "goclub/lead-summary.html" . }}
+{{ if and (not $explicit) $summary }}
   {{ $content = replaceRE "(?s)^\\s*<p>.*?</p>\\s*" "" $content }}
 {{ end }}
 

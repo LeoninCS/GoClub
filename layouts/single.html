@@ -1,34 +1,34 @@
 {{ define "main" }}
-  {{ $sectionTitle := "" }}
-  {{ with .CurrentSection }}
-    {{ $sectionTitle = partial "docs/title" . }}
-  {{ end }}
   {{ $summary := partial "goclub/lead-summary.html" . }}
   {{ $hasToc := partial "docs/toc-show" . }}
   {{ $content := partial "goclub/stripped-content.html" . }}
 
-  <article class="markdown book-article{{ if .Params.preserveWhitespace }} preserve-whitespace{{ end }}">
-    <section class="page-lead">
-      <span class="page-lead-badge">{{ if $sectionTitle }}{{ $sectionTitle }}{{ else }}内容文档{{ end }}</span>
-      <div class="page-lead-title">{{ partial "docs/title" . }}</div>
+  <article class="markdown book-article book-article--single{{ if $hasToc }} has-page-toc{{ end }}{{ if .Params.preserveWhitespace }} preserve-whitespace{{ end }}">
+    <header class="page-lead page-lead--article">
+      <div class="page-lead-overline">
+        <span>文章</span>
+        {{ with .CurrentSection }}
+          {{ if ne .RelPermalink $.RelPermalink }}
+            <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
+          {{ end }}
+        {{ end }}
+      </div>
+      <h1 class="page-lead-title">{{ partial "docs/title" . }}</h1>
       {{ with $summary }}
         <div class="page-lead-summary">{{ . }}</div>
       {{ end }}
-      <div class="page-lead-meta">
-        {{ with .CurrentSection }}
-          {{ if ne .RelPermalink $.RelPermalink }}
-            <a class="page-lead-chip" href="{{ .RelPermalink }}">所属栏目：{{ partial "docs/title" . }}</a>
-          {{ end }}
+      <div class="page-lead-meta" role="list" aria-label="页面信息">
+        {{ if .Params.shortlink }}
+          <span class="page-lead-meta-item" role="listitem">{{ partial "goclub/share-shortlink-button.html" . }}</span>
         {{ end }}
         {{ if .GitInfo }}
-          <span class="page-lead-chip">最近更新：{{ partial "docs/date" (dict "Date" .Lastmod "Format" .Site.Params.BookDateFormat) }}</span>
-        {{ end }}
-        {{ if $hasToc }}
-          <span class="page-lead-chip">支持右侧目录导航</span>
+          <span class="page-lead-meta-item" role="listitem">最近更新：{{ partial "docs/date" (dict "Date" .Lastmod "Format" "2006-01-02") }}</span>
         {{ end }}
       </div>
-    </section>
+    </header>
 
-    {{- $content | safeHTML -}}
+    <div class="article-prose">
+      {{- $content | safeHTML -}}
+    </div>
   </article>
 {{ end }}

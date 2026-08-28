@@ -46,15 +46,26 @@
 .goclub-umami-metric {
   opacity: 0.85;
 }
-/* 侧边栏：顶部 brand 卡片上方，网格对齐 */
+/* 侧边栏：目录下方的紧凑站点状态。 */
 .goclub-umami-stats--sidebar {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  align-items: stretch;
+  gap: 6px;
   font-size: 0.72rem;
   line-height: 1.4;
-  margin: 0.15rem 0.15rem 0.7rem;
+  margin: 1rem 0.15rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--goclub-border, rgba(127, 127, 127, 0.2));
+}
+.goclub-umami-label {
+  color: var(--goclub-subtle-text, #777);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.goclub-umami-online {
+  align-self: flex-start;
 }
 </style>
 <script>

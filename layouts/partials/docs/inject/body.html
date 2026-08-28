@@ -362,10 +362,25 @@
   font-size: 14px;
 }
 @media (max-width: 440px) {
+  .goclub-chatbot {
+    right: 14px;
+    bottom: 14px;
+  }
+  .goclub-chatbot-toggle {
+    width: 48px;
+    height: 48px;
+    font-size: 17px;
+  }
   .goclub-chatbot-window {
     width: calc(100vw - 32px);
     right: -10px;
+    bottom: 60px;
     height: 70vh;
+  }
+  #menu-control:checked ~ .goclub-chatbot,
+  #toc-control:checked ~ .goclub-chatbot {
+    visibility: hidden;
+    pointer-events: none;
   }
 }
 </style>
@@ -987,11 +1002,38 @@
     var menuResizer = document.querySelector("[data-sidebar-resizer]");
     var menuControl = document.getElementById("menu-control");
     var tocControl = document.getElementById("toc-control");
+    var menuControlLabel = document.querySelector('label[for="menu-control"].goclub-mobile-header-button');
+    var tocControlLabel = document.querySelector('label[for="toc-control"].goclub-mobile-header-button');
     var minWidth = 272;
     var maxWidth = 520;
     var measuredDefaultWidth = menu ? menu.getBoundingClientRect().width : 0;
     var defaultWidth = measuredDefaultWidth > 0 ? measuredDefaultWidth : 288;
     var resizing = false;
+
+    function syncMobileControlLabels() {
+      if (menuControlLabel && menuControl) {
+        menuControlLabel.setAttribute("aria-label", menuControl.checked ? "关闭导航" : "打开导航");
+      }
+      if (tocControlLabel && tocControl) {
+        tocControlLabel.setAttribute("aria-label", tocControl.checked ? "关闭目录" : "打开目录");
+      }
+    }
+
+    if (menuControl) {
+      menuControl.addEventListener("change", syncMobileControlLabels);
+    }
+    if (tocControl) {
+      tocControl.addEventListener("change", syncMobileControlLabels);
+      document.querySelectorAll('.book-header aside a[href^="#"]').forEach(function (link) {
+        link.addEventListener("click", function () {
+          if (!desktopQuery.matches) {
+            tocControl.checked = false;
+            syncMobileControlLabels();
+          }
+        });
+      });
+    }
+    syncMobileControlLabels();
 
     function setCollapsed(collapsed) {
       body.classList.toggle("sidebar-collapsed", collapsed);

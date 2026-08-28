@@ -1,17 +1,17 @@
-<div class="flex flex-wrap justify-between">
-  <div>
+<div class="goclub-footer-meta">
+  <div class="goclub-footer-status">
     {{ if and .GitInfo .Site.Params.BookLastChangeLink }}
-      {{- $date := partial "docs/date" (dict "Date" .Lastmod "Format" .Site.Params.BookDateFormat) -}}
+      {{- $date := partial "docs/date" (dict "Date" .Lastmod "Format" "2006-01-02") -}}
       <a class="flex align-center" href="{{ partial "docs/links/commit" . }}" title='{{ partial "docs/text/i18n" "Last modified by" }} {{ .GitInfo.AuthorName }} | {{ $date }}' target="_blank" rel="noopener">
         <img src="{{ partial "docs/icon" "calendar" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Calendar" }}" />
         <span>{{ $date }}</span>
       </a>
     {{ else }}
-      <span class="page-lead-chip">GoClub 内容持续整理中</span>
+      <span>GoClub 内容持续整理中</span>
     {{ end }}
   </div>
 
-  <div>
+  <div class="goclub-footer-action">
     {{ if and .File .Site.Params.BookEditLink }}
       <a class="flex align-center" href="{{ partial "docs/links/edit" . }}" target="_blank" rel="noopener edit">
         <img src="{{ partial "docs/icon" "edit" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Edit" }}" />
@@ -35,25 +35,25 @@
   {{ $prev := $pages.Next $ }}
   {{ $next := $pages.Prev $ }}
   {{ if or $prev $next }}
-    <div class="goclub-prev-next">
+    <nav class="goclub-prev-next" aria-label="相邻文章">
       {{ with $prev }}
-        <a href="{{ .RelPermalink }}" class="goclub-nav-card goclub-nav-card--prev">
-          <span class="goclub-nav-card-meta">
-            <span class="goclub-nav-card-label">上一篇</span>
-            <span class="goclub-nav-card-title">{{ partial "docs/title" . }}</span>
+        <a href="{{ .RelPermalink }}" rel="prev" class="goclub-prev-next-link goclub-prev-next-link--prev">
+          <span class="goclub-prev-next-arrow" aria-hidden="true">←</span>
+          <span class="goclub-prev-next-copy">
+            <span class="goclub-prev-next-eyebrow">上一篇</span>
+            <span class="goclub-prev-next-title">{{ partial "docs/title" . }}</span>
           </span>
-          <span class="goclub-nav-card-icon">←</span>
         </a>
       {{ end }}
       {{ with $next }}
-        <a href="{{ .RelPermalink }}" class="goclub-nav-card goclub-nav-card--next">
-          <span class="goclub-nav-card-meta">
-            <span class="goclub-nav-card-label">下一篇</span>
-            <span class="goclub-nav-card-title">{{ partial "docs/title" . }}</span>
+        <a href="{{ .RelPermalink }}" rel="next" class="goclub-prev-next-link goclub-prev-next-link--next">
+          <span class="goclub-prev-next-copy">
+            <span class="goclub-prev-next-eyebrow">下一篇</span>
+            <span class="goclub-prev-next-title">{{ partial "docs/title" . }}</span>
           </span>
-          <span class="goclub-nav-card-icon">→</span>
+          <span class="goclub-prev-next-arrow" aria-hidden="true">→</span>
         </a>
       {{ end }}
-    </div>
+    </nav>
   {{ end }}
 {{ end }}

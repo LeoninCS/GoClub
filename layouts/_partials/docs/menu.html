@@ -1,5 +1,25 @@
-<nav>
+<nav aria-label="主导航">
+  {{ partial "docs/brand" . }}
+  {{ partial "docs/search" . }}
+  {{ if hugo.IsMultilingual }}
+    {{ partial "docs/languages" . }}
+  {{ end }}
+
+  <div class="goclub-menu-directory">
+    <div class="goclub-menu-caption">浏览目录</div>
+    {{ partial "docs/inject/menu-before" . }}
+    {{ partial "docs/menu-hugo" (dict "Page" .Page "Menu" .Site.Menus.before) }}
+
+    {{ partial "docs/menu-filetree" . }}
+
+    {{ partial "docs/menu-hugo" (dict "Page" .Page "Menu" .Site.Menus.after) }}
+    {{ partial "docs/inject/menu-after" . }}
+  </div>
+
+</nav>
+
 <div class="goclub-umami-stats goclub-umami-stats--sidebar" hidden>
+  <span class="goclub-umami-label">站点动态</span>
   <span class="goclub-umami-online"><span class="goclub-umami-online-dot"></span>在线 <b data-umami-stat="active">–</b> 人</span>
   <div class="goclub-umami-grid">
     <span class="goclub-umami-row-label">今日</span>
@@ -12,20 +32,6 @@
     <span class="goclub-umami-metric">访问</span><b data-umami-stat="visits">–</b>
   </div>
 </div>
-{{ partial "docs/brand" . }}
-{{ partial "docs/search" . }}
-{{ if hugo.IsMultilingual }}
-  {{ partial "docs/languages" . }}
-{{ end }}
-
-{{ partial "docs/inject/menu-before" . }}
-{{ partial "docs/menu-hugo" (dict "Page" .Page "Menu" .Site.Menus.before) }}
-
-{{ partial "docs/menu-filetree" . }}
-
-{{ partial "docs/menu-hugo" (dict "Page" .Page "Menu" .Site.Menus.after) }}
-{{ partial "docs/inject/menu-after" . }}
-</nav>
 
 <!-- Restore menu position as soon as possible to avoid flickering -->
 {{ $script := resources.Get "menu-reset.js" | resources.Minify }}

@@ -1,0 +1,19 @@
+{{ with .Params.shortlink }}
+  {{ $url := printf "/s/%s/" . | absURL | strings.TrimSuffix "/" }}
+  {{ $displayURL := replaceRE "^https?://" "" $url }}
+  <button
+    type="button"
+    class="page-lead-meta-action goclub-share"
+    data-short-url="{{ $url }}"
+    aria-label="复制本页短链接"
+  >
+    <span class="goclub-share-icon" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="none" focusable="false">
+        <rect x="6.5" y="6.5" width="9.5" height="9.5" rx="1.75"></rect>
+        <path d="M13.5 6.5v-2A1.5 1.5 0 0 0 12 3H4.5A1.5 1.5 0 0 0 3 4.5V12A1.5 1.5 0 0 0 4.5 13.5h2"></path>
+      </svg>
+    </span>
+    <span class="goclub-share-label" aria-live="polite" aria-atomic="true">复制短链</span>
+    <span class="goclub-share-url" aria-hidden="true">{{ $displayURL }}</span>
+  </button>
+{{ end }}
