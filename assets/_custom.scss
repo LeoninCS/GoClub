@@ -5301,14 +5301,16 @@ body {
   padding-inline: 0.7rem;
 }
 
-.goclub-menu-directory a {
+.goclub-menu-directory a,
+.goclub-menu-directory label.flex {
   border: 0;
-  border-radius: 0.55rem;
+  border-radius: 0;
   transform: none;
 }
 
 :root body[class*="book-kind-"] .goclub-menu-directory a[href]:hover,
 :root body[class*="book-kind-"] .goclub-menu-directory a[href]:focus-visible {
+  border: 0;
   background: var(--goclub-editorial-hover);
   transform: none;
 }
