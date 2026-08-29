@@ -5316,7 +5316,7 @@ body {
 :root body[class*="book-kind-"] .goclub-menu-directory a.active,
 :root body[class*="book-kind-"] .goclub-menu-directory a[aria-current="page"] {
   border: 0;
-  border-radius: 0.55rem;
+  border-radius: 0;
   background: linear-gradient(90deg, var(--goclub-editorial-hover), transparent 88%);
   box-shadow: inset 2px 0 rgba(var(--goclub-secondary-rgb), 0.58);
   color: var(--goclub-primary);
