@@ -1,13 +1,16 @@
+import asyncio
 import base64
 import http.server
 import json
 import sys
 import tempfile
 import threading
+import types
 import unittest
 import zlib
 from html.parser import HTMLParser
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,6 +19,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from sync_qq_jobs import (
     DatasetSpec,
     IntegrityError,
+    QQDocsSource,
     _resolve_sheet_id,
     assert_matching_scans,
     check_link_accessibility,
@@ -201,6 +205,112 @@ class ResolveSheetTests(unittest.TestCase):
             "sheet_current",
             _resolve_sheet_id(workbook, "秋招提前批（内推）", "sheet_current"),
         )
+
+
+class QQDocsSourceSessionTests(unittest.TestCase):
+    def test_complete_collection_persists_refreshed_browser_session(self):
+        class FakePage:
+            def on(self, _event, _callback):
+                pass
+
+            def set_default_timeout(self, _timeout):
+                pass
+
+            async def goto(self, _url, **_kwargs):
+                pass
+
+        class FakeContext:
+            def __init__(self):
+                self.saved_path = None
+
+            async def new_page(self):
+                return FakePage()
+
+            async def storage_state(self, *, path):
+                self.saved_path = Path(path)
+                self.saved_path.write_text(
+                    json.dumps({"cookies": [{"name": "refreshed"}], "origins": []}),
+                    encoding="utf-8",
+                )
+
+        class FakeBrowser:
+            def __init__(self, context):
+                self.context = context
+
+            async def new_context(self, **_kwargs):
+                return self.context
+
+            async def close(self):
+                pass
+
+        class FakeChromium:
+            def __init__(self, browser):
+                self.browser = browser
+
+            async def launch(self, **_kwargs):
+                return self.browser
+
+        class FakePlaywrightManager:
+            def __init__(self, chromium):
+                self.playwright = types.SimpleNamespace(chromium=chromium)
+
+            async def __aenter__(self):
+                return self.playwright
+
+            async def __aexit__(self, *_args):
+                pass
+
+        class ImmediateSource(QQDocsSource):
+            async def _wait_for_workbook(self, _page, _captures):
+                return [{"id": "sheet_daily", "name": "每日更新"}]
+
+            async def _wait_for_pages(
+                self, _page, _captures, _sheet_id, encourage_loading=False
+            ):
+                pass
+
+        snapshot = {
+            "source": {"sheet_id": "sheet_daily", "view_name": "每日更新"},
+            "schema": [],
+            "snapshot": {
+                "source_total": 0,
+                "fetched_count": 0,
+                "pagination_complete": True,
+            },
+            "records": [],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            storage_state = Path(directory) / "storage-state.json"
+            storage_state.write_text('{"cookies": [], "origins": []}', encoding="utf-8")
+            spec = DatasetSpec(
+                "每日更新",
+                Path(directory) / "daily.json",
+                Path(directory) / "每日更新.md",
+                1,
+            )
+            context = FakeContext()
+            manager = FakePlaywrightManager(FakeChromium(FakeBrowser(context)))
+            async_api = types.ModuleType("playwright.async_api")
+            async_api.async_playwright = lambda: manager
+            playwright_module = types.ModuleType("playwright")
+            playwright_module.__path__ = []
+
+            with patch.dict(
+                sys.modules,
+                {"playwright": playwright_module, "playwright.async_api": async_api},
+            ), patch("sync_qq_jobs.parse_sheet_pages", return_value=snapshot):
+                source = ImmediateSource(
+                    "https://docs.qq.com/smartsheet/example",
+                    storage_state,
+                    timeout_seconds=0,
+                )
+                asyncio.run(source.collect((spec,)))
+
+            self.assertEqual(storage_state, context.saved_path)
+            self.assertEqual(
+                "refreshed",
+                json.loads(storage_state.read_text(encoding="utf-8"))["cookies"][0]["name"],
+            )
 
 
 class MergeHistoryTests(unittest.TestCase):
