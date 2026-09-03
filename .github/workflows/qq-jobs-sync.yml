@@ -2,7 +2,7 @@ name: 同步招聘信息
 
 on:
   schedule:
-    - cron: "0 */3 * * *"
+    - cron: "17 * * * *"
   workflow_dispatch:
     inputs:
       probe_only:
@@ -49,9 +49,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: 还原专用账号会话
+      - name: 还原滚动专用账号会话
         shell: bash
         env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           QQ_STORAGE_STATE_B64: ${{ secrets.QQ_DOCS_STORAGE_STATE_B64 }}
         run: |
           if [[ -z "$QQ_STORAGE_STATE_B64" ]]; then
@@ -59,10 +61,47 @@ jobs:
             exit 1
           fi
           STORAGE_STATE="$RUNNER_TEMP/qq-docs-storage-state.json"
-          printf '%s' "$QQ_STORAGE_STATE_B64" | base64 --decode > "$STORAGE_STATE"
+          SESSION_ARTIFACT_DIR="$RUNNER_TEMP/qq-docs-session-artifacts"
+          mkdir -p "$SESSION_ARTIFACT_DIR"
+
+          session_key="$(printf '%s' "$QQ_STORAGE_STATE_B64" | sha256sum | cut -d ' ' -f 1)"
+          restored=false
+          while IFS= read -r run_id; do
+            candidate_dir="$SESSION_ARTIFACT_DIR/$run_id"
+            if gh run download "$run_id" \
+              --name qq-docs-storage-state \
+              --dir "$candidate_dir" >/dev/null 2>&1; then
+              encrypted_state="$candidate_dir/qq-docs-storage-state.json.enc"
+              if [[ ! -f "$encrypted_state" ]]; then
+                continue
+              fi
+              if SESSION_KEY="$session_key" openssl enc -d -aes-256-cbc -pbkdf2 \
+                -in "$encrypted_state" \
+                -out "$STORAGE_STATE" \
+                -pass env:SESSION_KEY; then
+                restored=true
+                echo "已恢复最近一次成功运行刷新后的专用账号会话。"
+                break
+              fi
+              echo "::warning::滚动会话无法用当前 Secret 解密，继续查找或回退到初始会话。"
+            fi
+          done < <(
+            gh run list \
+              --workflow qq-jobs-sync.yml \
+              --branch "$DEFAULT_BRANCH" \
+              --status success \
+              --limit 20 \
+              --json databaseId \
+              --jq '.[].databaseId'
+          )
+
+          if [[ "$restored" != "true" ]]; then
+            printf '%s' "$QQ_STORAGE_STATE_B64" | base64 --decode > "$STORAGE_STATE"
+            echo "未找到滚动会话，已使用初始专用账号会话。"
+          fi
           chmod 600 "$STORAGE_STATE"
           STORAGE_STATE="$STORAGE_STATE" \
-            python3 -c 'import json, os; json.load(open(os.environ["STORAGE_STATE"], encoding="utf-8"))'
+            python3 -c 'import json, os; state = json.load(open(os.environ["STORAGE_STATE"], encoding="utf-8")); assert isinstance(state.get("cookies"), list) and isinstance(state.get("origins"), list)'
           echo "STORAGE_STATE=$STORAGE_STATE" >> "$GITHUB_ENV"
 
       - name: 安装 Playwright Chromium
@@ -89,6 +128,26 @@ jobs:
             args+=(--accept-source-deletions)
           fi
           python3 scripts/sync_qq_jobs.py "${args[@]}"
+
+      - name: 加密刷新后的专用账号会话
+        shell: bash
+        env:
+          QQ_STORAGE_STATE_B64: ${{ secrets.QQ_DOCS_STORAGE_STATE_B64 }}
+        run: |
+          session_key="$(printf '%s' "$QQ_STORAGE_STATE_B64" | sha256sum | cut -d ' ' -f 1)"
+          SESSION_KEY="$session_key" openssl enc -aes-256-cbc -pbkdf2 -salt \
+            -in "$STORAGE_STATE" \
+            -out "$RUNNER_TEMP/qq-docs-storage-state.json.enc" \
+            -pass env:SESSION_KEY
+          chmod 600 "$RUNNER_TEMP/qq-docs-storage-state.json.enc"
+
+      - name: 保存滚动专用账号会话
+        uses: actions/upload-artifact@v4
+        with:
+          name: qq-docs-storage-state
+          path: ${{ runner.temp }}/qq-docs-storage-state.json.enc
+          if-no-files-found: error
+          retention-days: 30
 
       - name: 检查生成文件范围
         id: changes

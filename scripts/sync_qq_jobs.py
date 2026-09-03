@@ -545,6 +545,7 @@ class QQDocsSource:
                         source_url=_url_with_tab(self.source_url, sheet_id),
                         document_id=DOCUMENT_ID,
                     )
+                await context.storage_state(path=str(self.storage_state))
                 return snapshots
             finally:
                 await browser.close()
