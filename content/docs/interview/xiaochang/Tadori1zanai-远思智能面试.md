@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 远思智能面试（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 远思智能面试"
 slug: "tadori-yuansi"
 aliases:
   - "/docs/interview/xiaochang/Tadori1zanai-远思智能面试/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "0km2"
 ---
 
-# Tadori1zanai 远思智能面试（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 远思智能面试
 
 作者：Tadori1zanai  
 时间：2026.4.28
@@ -16,7 +16,6 @@ shortlink: "0km2"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
 
 ## HTTP 请求中，服务端 panic 怎么处理？返回给客户端什么？
 
@@ -33,9 +32,3 @@ shortlink: "0km2"
 - 每个服务只负责一类职责。
 - 服务之间通过网络通信。
 - 每个服务可以独立开发、部署和扩缩容。
-
-Goim 项目相关：
-
-- Goim 本身是偏微服务化的架构。
-- 它把 IM 系统拆成 Comet、Logic、Job 等多个服务。
-- 各自职责清晰，通过 RPC、MQ、Redis 协作。

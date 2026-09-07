@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 推云科技面试（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 推云科技面试"
 slug: "tadori-tuiyun"
 aliases:
   - "/docs/interview/xiaochang/Tadori1zanai-推云科技面试/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "hxif"
 ---
 
-# Tadori1zanai 推云科技面试（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 推云科技面试
 
 作者：Tadori1zanai  
 时间：2026.4.27
@@ -16,7 +16,6 @@ shortlink: "hxif"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
 
 ## 假设有万人级别的学生选课，在开课前需要发送上课提醒，粒度是分钟级别的，如何实现？
 

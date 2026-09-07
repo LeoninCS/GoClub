@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 赫鲁斯网络面试（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 赫鲁斯网络面试"
 slug: "tadori-helusi"
 aliases:
   - "/docs/interview/xiaochang/Tadori1zanai-赫鲁斯网络面试/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "xib6"
 ---
 
-# Tadori1zanai 赫鲁斯网络面试（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 赫鲁斯网络面试
 
 作者：Tadori1zanai  
 时间：2026.5.11
@@ -16,7 +16,6 @@ shortlink: "xib6"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
 
 ## NoSQL（例如 MongoDB）和关系型数据库（例如 MySQL）的区别
 

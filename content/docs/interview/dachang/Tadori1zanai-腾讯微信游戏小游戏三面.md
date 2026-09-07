@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 腾讯微信游戏小游戏三面（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 腾讯微信游戏小游戏三面"
 slug: "tadori-tencent-wxgame-3"
 aliases:
   - "/docs/interview/dachang/Tadori1zanai-腾讯微信游戏小游戏三面/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "gwrk"
 ---
 
-# Tadori1zanai 腾讯微信游戏小游戏三面（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 腾讯微信游戏小游戏三面
 
 作者：Tadori1zanai  
 时间：2026.5.13
@@ -16,34 +16,6 @@ shortlink: "gwrk"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
-
-## 分布式缓存如何强一致（缓存和数据库，缓存的主从节点）*
-
-强一致的核心是统一 leader、版本号和提交点。
-
-写流程：
-
-- 写请求统一路由到 leader。
-- leader 对同一个 key 的写做串行化控制。
-- leader 形成一条待提交的更新记录或版本 v2。
-- leader 开启数据库事务写入 v2。
-- leader 把这次更新同步复制到 follower。
-- follower 写入成功后返回 ACK。
-- leader 收到足够多 ACK，并且自身成功更新这个 key 为 v2 后，标记 v2 为 commit。
-- leader 再向客户端返回写成功。
-
-读流程：
-
-- 读请求也统一路由到 leader。
-- leader 返回最新 committed version 对应的值。
-- 读写并发可以存在，但读不能看到未提交版本。
-
-串行化控制：
-
-- 可以用 per-key lock，写一个 key 时先拿这个 key 的锁，写完释放。
-- 可以按分片做串行化。
-- 也可以通过 leader 内部日志顺序保证同 key 写入顺序。
 
 ## goroutine 如何实现，goroutine 切换时保存哪些信息？
 

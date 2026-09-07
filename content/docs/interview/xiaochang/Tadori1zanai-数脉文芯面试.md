@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 数脉文芯面试（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 数脉文芯面试"
 slug: "tadori-shumaiwenxin"
 aliases:
   - "/docs/interview/xiaochang/Tadori1zanai-数脉文芯面试/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "411o"
 ---
 
-# Tadori1zanai 数脉文芯面试（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 数脉文芯面试
 
 作者：Tadori1zanai  
 时间：2026.5.5
@@ -16,15 +16,6 @@ shortlink: "411o"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
-
-## 如何保证没有 goroutine 的泄露*
-
-- 项目中 goroutine 的维护和管理主要集中在 ACK 机制。
-- goroutine 泄露的本质是协程该退出时继续阻塞，例如一直等待 channel 或 timer。
-- 在这个项目里，goroutine 和消息绑定。每发送一条消息，先落入 pending map，然后开启一个 track 协程监听 ACK 信号或 timer 信号。
-- 退出条件包括收到 ACK、达到最大重试次数、接收方离线。
-- 排查时重点看退出条件是否完整，同时通过 pprof 观察 goroutine 数量变化，也可以用单测里的 goleak 做验证。
 
 ## 什么样的任务会交给 AI，什么样的任务自己完成？
 

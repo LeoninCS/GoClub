@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 得物一面（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 得物一面"
 slug: "tadori-dewu-1"
 aliases:
   - "/docs/interview/zhongchang/Tadori1zanai-得物一面/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "y0wj"
 ---
 
-# Tadori1zanai 得物一面（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 得物一面
 
 作者：Tadori1zanai  
 时间：2026.5.11
@@ -16,7 +16,6 @@ shortlink: "y0wj"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
 
 ## 并发读写 slice 会有什么问题？
 

@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 欢乐互娱一面（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 欢乐互娱一面"
 slug: "tadori-huanle-1"
 aliases:
   - "/docs/interview/xiaochang/Tadori1zanai-欢乐互娱一面/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "3fv6"
 ---
 
-# Tadori1zanai 欢乐互娱一面（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 欢乐互娱一面
 
 作者：Tadori1zanai  
 时间：2026.4.21
@@ -16,7 +16,6 @@ shortlink: "3fv6"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
 
 ## （Redis）如何实现消息队列？
 
@@ -81,38 +80,6 @@ Go 中如果子 goroutine 发生 panic 且没有被 recover，整个进程会崩
 - 每个 goroutine 内部用 `defer recover()` 捕获异常。
 - 某个 goroutine recover 后调用 `cancel()`。
 - 其他 goroutine 通过 `select` 监听 `ctx.Done()`，收到信号后释放资源并退出。
-
-## 为什么 NATS 更快*
-
-- 架构轻量：NATS 是单二进制文件，系统开销小；Kafka 面向海量吞吐，组件和运行时开销更大。
-- 推送模型：Kafka 主要是 pull 模型，消费者轮询带来额外延迟；NATS JetStream 支持 push 模型，消息可以主动推送给消费者，延迟更低。
-- 语言和协议：NATS 以 Go 实现，协议轻量；Kafka 基于 JVM 生态，功能完整且运行时更重。
-
-## pending map 如何改进*
-
-当前内存中的 `pending map + sync.Mutex` 有三类问题：
-
-- 状态只在 Gateway 内存中，Gateway 重启后会丢失。
-- 多实例之间共享 pending 状态困难。
-- 每条消息一个 goroutine 加 timer，消息量大时扩展性有限。
-
-改进方案：将 pending 状态外置到 Redis。
-
-Redis 中维护两类结构：
-
-- 每条消息的元数据：`ack:pending:{msg_id}`。
-- 重试调度 ZSet：`ack:retry`，`score = next_retry_at`，`value = msg_id`。
-
-收到客户端 ACK 后：
-
-- 删除 `ack:pending:{msg_id}`。
-- 从 `ack:retry` 中移除 `msg_id`。
-
-重试流程：
-
-- 后台 worker 周期性扫描 `ack:retry`。
-- 找出 `score <= now` 的 `msg_id`。
-- 读取 retry_count，判断继续重试、进入死信或清理状态。
 
 ## 介绍布隆过滤器
 

@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 腾讯微信游戏小游戏四面（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 腾讯微信游戏小游戏四面"
 slug: "tadori-tencent-wxgame-4"
 aliases:
   - "/docs/interview/dachang/Tadori1zanai-腾讯微信游戏小游戏四面/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "rp79"
 ---
 
-# Tadori1zanai 腾讯微信游戏小游戏四面（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 腾讯微信游戏小游戏四面
 
 作者：Tadori1zanai  
 时间：2026.5.19
@@ -16,7 +16,6 @@ shortlink: "rp79"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
 
 ## MySQL 事务如何实现？
 

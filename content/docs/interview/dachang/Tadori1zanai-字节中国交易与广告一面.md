@@ -1,5 +1,5 @@
 ---
-title: "Tadori1zanai 字节中国交易与广告一面（项目：分布式缓存系统 / IM 聊天系统）"
+title: "Tadori1zanai 字节中国交易与广告一面"
 slug: "tadori-bytedance-ecom-ads-1"
 aliases:
   - "/docs/interview/dachang/Tadori1zanai-字节中国交易与广告一面/"
@@ -7,7 +7,7 @@ aliases:
 shortlink: "axz3"
 ---
 
-# Tadori1zanai 字节中国交易与广告一面（项目：分布式缓存系统 / IM 聊天系统）
+# Tadori1zanai 字节中国交易与广告一面
 
 作者：Tadori1zanai  
 时间：2026.4.28
@@ -16,7 +16,6 @@ shortlink: "axz3"
 >
 > - 回答多数为 AI 生成，仅供参考。
 > - 只记录部分面试和部分问题，部分问题暂无回答。
-> - 个人项目相关的面试题用 `*` 标识。
 
 ## WaitGroup 底层是如何实现的？
 
@@ -33,11 +32,3 @@ shortlink: "axz3"
 - `Do` 方法先通过原子读检查 `done` 标志，已经执行过就直接返回。
 - 未执行时进入加锁慢路径，在临界区内二次检查。
 - 执行函数完成后，通过原子写将 `done` 置为 1。
-
-## Comet 长连接怎么实现*
-
-- Comet 本质上是 Goim 的长连接网关，支持 TCP 和 WebSocket。
-- 客户端先建立连接，再发送认证包，认证通过后把用户和连接绑定。
-- 之后通过心跳维持连接活性。
-- 后端有消息时，通过路由找到对应 Comet，再把消息下发到客户端。
-- Comet 主要负责连接和收发，复杂业务逻辑放在 Logic 等服务中。
