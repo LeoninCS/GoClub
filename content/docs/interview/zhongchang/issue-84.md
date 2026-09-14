@@ -1,5 +1,8 @@
 ---
 title: "37%-Bigo-后端开发-一面"
+aliases:
+  - "/s/vhng/"
+shortlink: "vhng"
 ---
 
 ## 一面
