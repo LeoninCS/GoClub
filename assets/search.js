@@ -58,7 +58,9 @@
   searchPanel.parentNode.insertBefore(panelPlaceholder, searchPanel);
   backdrop.parentNode.insertBefore(backdropPlaceholder, backdrop);
 
-  input.addEventListener('focus', init);
+  input.addEventListener('focus', function () {
+    init(true);
+  });
   input.addEventListener('click', restoreLastSearchState);
   input.addEventListener('click', openSearchPanel);
   input.addEventListener('input', scheduleSearch);
@@ -81,8 +83,10 @@
     if (pendingRestoreState.panelOpen) {
       openSearchPanel();
     }
-    init();
+    init(true);
   }
+
+  init(false);
 
   function focusSearchFieldOnKeyPress(event) {
     if (event.target.value !== undefined || input === document.activeElement) {
@@ -99,15 +103,22 @@
     event.preventDefault();
   }
 
-  function init() {
-    if (searchIndex || searchPromise) {
+  function init(showLoading) {
+    if (searchIndex) {
       return searchPromise;
     }
 
-    input.required = true;
-    setStatus('正在加载搜索索引…', 'loading');
+    if (showLoading) {
+      input.required = true;
+      setStatus('正在加载搜索索引…', 'loading');
+    }
 
-    searchPromise = fetch(searchDataURL)
+    if (searchPromise) {
+      return searchPromise;
+    }
+
+    // The URL contains a content fingerprint, so a cached response is immutable.
+    searchPromise = fetch(searchDataURL, { cache: 'force-cache' })
       .then(response => {
         if (!response.ok) {
           throw new Error(`Search index request failed: ${response.status}`);
@@ -129,10 +140,15 @@
         }
       })
       .catch(error => {
+        const loadingWasVisible = input.required;
         console.error(error);
         input.required = false;
         searchPromise = null;
-        setStatus('搜索索引加载失败，请重新聚焦搜索框重试。', 'error');
+        if (loadingWasVisible) {
+          setStatus('搜索索引加载失败，请重新聚焦搜索框重试。', 'error');
+        } else {
+          clearStatus();
+        }
       });
 
     return searchPromise;
@@ -233,7 +249,7 @@
 
     if (!searchIndex) {
       setStatus('正在加载搜索索引…', 'loading');
-      init();
+      init(true);
       return;
     }
 
