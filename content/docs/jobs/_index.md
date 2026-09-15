@@ -2,6 +2,7 @@
 title: "求职就业"
 weight: 7
 bookCollapseSection: true
+bookShowChildren: true
 autoIndex: false
 aliases:
   - "/s/93fk/"
