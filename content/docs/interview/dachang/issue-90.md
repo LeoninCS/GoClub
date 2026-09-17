@@ -1,5 +1,8 @@
 ---
 title: "降噪 字节中国交易与广告 二面"
+aliases:
+  - "/s/oinm/"
+shortlink: "oinm"
 ---
 
 ## Go 基础
