@@ -1,5 +1,8 @@
 ---
 title: "降噪 字节中国交易与广告 一面"
+aliases:
+  - "/s/4xev/"
+shortlink: "4xev"
 ---
 
 GoClub_Feed项目面经.md
