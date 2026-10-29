@@ -4366,7 +4366,8 @@ body {
 .entry-cluster-count,
 .section-index-count,
 .section-directory-heading,
-.contributors-heading > span {
+.contributors-heading > span,
+.friends-heading > span {
   color: var(--goclub-muted-text);
   font-size: 0.74rem;
   font-weight: 650;
@@ -4425,7 +4426,8 @@ body {
 .entry-cluster-heading,
 .section-index-heading,
 .section-directory-heading,
-.contributors-heading {
+.contributors-heading,
+.friends-heading {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -4577,7 +4579,8 @@ body {
 
 .entry-cluster-heading,
 .section-index-heading,
-.contributors-heading {
+.contributors-heading,
+.friends-heading {
   position: relative;
   padding-bottom: 1.05rem;
   border-bottom: 0;
@@ -4585,7 +4588,8 @@ body {
 
 .entry-cluster-heading::after,
 .section-index-heading::after,
-.contributors-heading::after {
+.contributors-heading::after,
+.friends-heading::after {
   position: absolute;
   inset-inline-start: 0;
   bottom: 0.15rem;
@@ -4602,7 +4606,8 @@ body {
 
 .book-article .entry-cluster-heading h2,
 .book-article .section-index-heading h2,
-.book-article .contributors-heading h2 {
+.book-article .contributors-heading h2,
+.book-article .friends-heading h2 {
   margin: 0.22rem 0 0;
   padding: 0;
   border: 0;
@@ -5160,6 +5165,134 @@ body {
   background: transparent;
 }
 
+.friends-section {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.markdown .friends-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.markdown .friends-list .friend-row {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--goclub-editorial-rule);
+}
+
+.markdown .friend-row-link[href],
+.markdown .friend-row-link[href]:visited {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.05rem 0.65rem;
+  border-radius: 0.7rem;
+  color: var(--body-font-color);
+  text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.markdown .friend-row-link[href]:hover,
+.markdown .friend-row-link[href]:focus-visible {
+  background: linear-gradient(
+    100deg,
+    var(--goclub-editorial-hover),
+    var(--goclub-editorial-warm) 70%,
+    transparent
+  );
+  color: var(--goclub-primary);
+  text-decoration: none;
+}
+
+.markdown .friend-row-link[href]:focus-visible {
+  outline: 2px solid rgba(var(--goclub-primary-rgb), 0.42);
+  outline-offset: 2px;
+}
+
+.friend-avatar {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: 0 0 3.25rem;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(var(--goclub-primary-rgb), 0.14);
+  border-radius: 50%;
+  background: rgba(var(--goclub-primary-rgb), 0.1);
+  color: var(--goclub-primary);
+}
+
+.friend-avatar-fallback,
+.friend-avatar-image {
+  grid-area: 1 / 1;
+}
+
+.friend-avatar-fallback {
+  color: var(--goclub-primary);
+  font-size: 1rem;
+  font-weight: 760;
+  opacity: 1;
+}
+
+:root body[class*="book-kind-"] .markdown img.friend-avatar-image {
+  width: 3.25rem;
+  height: 3.25rem;
+  max-width: none;
+  border: 0;
+  border-radius: 50%;
+  background: var(--goclub-surface-muted);
+  box-shadow: none;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.friend-body {
+  display: grid;
+  min-width: 0;
+  flex: 1 1 0;
+  gap: 0.28rem;
+}
+
+.friend-name {
+  color: inherit;
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.friend-description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--goclub-muted-text);
+  font-size: 0.93rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.friend-arrow {
+  align-self: center;
+  color: var(--goclub-primary);
+  font-size: 0.92rem;
+  opacity: 0.42;
+  transform: translateX(-0.15rem);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.markdown .friend-row-link[href]:hover .friend-arrow,
+.markdown .friend-row-link[href]:focus-visible .friend-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 :root body[class*="book-kind-"] .book-page > .book-footer {
   margin-top: clamp(3rem, 6vw, 5rem);
   padding-top: 1.25rem;
@@ -5667,6 +5800,7 @@ body {
   .section-index-heading,
   .section-directory-heading,
   .contributors-heading,
+  .friends-heading,
   .goclub-footer-meta {
     align-items: flex-start;
     flex-wrap: wrap;
