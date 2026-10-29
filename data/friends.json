@@ -1,0 +1,8 @@
+[
+    {
+        "name": "博客名称",
+        "url": "https://example.com/",
+        "description": "一句话简介，超过两行会自动截断",
+        "avatar": "https://example.com/avatar.png"
+    }
+]

@@ -2,11 +2,19 @@
   {{ $summary := partial "goclub/lead-summary.html" . }}
   {{ $hasToc := partial "docs/toc-show" . }}
   {{ $content := partial "goclub/stripped-content.html" . }}
+  {{ $filePath := replace .File.Path "\\" "/" }}
+  {{ $isFriends := eq $filePath "docs/blog/friends.md" }}
+  {{ $friends := slice }}
+  {{ range hugo.Data.friends }}
+    {{ if and .name .url }}
+      {{ $friends = $friends | append . }}
+    {{ end }}
+  {{ end }}
 
   <article class="markdown book-article book-article--single{{ if $hasToc }} has-page-toc{{ end }}{{ if .Params.preserveWhitespace }} preserve-whitespace{{ end }}">
     <header class="page-lead page-lead--article">
       <div class="page-lead-overline">
-        <span>文章</span>
+        <span>{{ if $isFriends }}友链{{ else }}文章{{ end }}</span>
         {{ with .CurrentSection }}
           {{ if ne .RelPermalink $.RelPermalink }}
             <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
@@ -21,6 +29,9 @@
         {{ if .Params.shortlink }}
           <span class="page-lead-meta-item" role="listitem">{{ partial "goclub/share-shortlink-button.html" . }}</span>
         {{ end }}
+        {{ if and $isFriends $friends }}
+          <span class="page-lead-meta-item" role="listitem">{{ len $friends }} 个友链</span>
+        {{ end }}
         {{ if .GitInfo }}
           <span class="page-lead-meta-item" role="listitem">最近更新：{{ partial "docs/date" (dict "Date" .Lastmod "Format" "2006-01-02") }}</span>
         {{ end }}
@@ -30,5 +41,46 @@
     <div class="article-prose">
       {{- $content | safeHTML -}}
     </div>
+
+    {{ if and $isFriends $friends }}
+      {{/* 友链数据：data/friends.json → [{ "name", "url", "description", "avatar" }] */}}
+      <section class="friends-section" aria-labelledby="friends-list-title">
+        <header class="friends-heading">
+          <div>
+            <span class="editorial-kicker">友情链接</span>
+            <h2 id="friends-list-title">博客与站点</h2>
+          </div>
+          <span>{{ len $friends }} 个友链</span>
+        </header>
+        <ul class="friends-list" role="list">
+          {{ range $friends }}
+            <li class="friend-row">
+              <a class="friend-row-link" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+                <span class="friend-avatar" aria-hidden="true">
+                  <span class="friend-avatar-fallback">{{ substr .name 0 1 | upper }}</span>
+                  {{ with .avatar }}
+                    <img
+                      class="friend-avatar-image"
+                      src="{{ . }}"
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      onerror="this.hidden=true"
+                    />
+                  {{ end }}
+                </span>
+                <span class="friend-body">
+                  <span class="friend-name">{{ .name }}</span>
+                  {{ with .description }}
+                    <span class="friend-description">{{ . }}</span>
+                  {{ end }}
+                </span>
+                <span class="friend-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
   </article>
 {{ end }}
