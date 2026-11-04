@@ -28,5 +28,15 @@
     "pinned": false,
     "sort_order": 3,
     "merged_prs": 0
+  },
+  {
+    "login": "KaiMinKang",
+    "html_url": "https://github.com/KaiMinKang",
+    "avatar_url": "https://avatars.githubusercontent.com/u/315792956?v=4",
+    "name": "KaiMinKang",
+    "role": "核心维护者",
+    "pinned": false,
+    "sort_order": 4,
+    "merged_prs": 0
   }
 ]
