@@ -1,0 +1,24 @@
+name: Setup Dart Sass
+description: >-
+  下载并安装 Dart Sass 官方 release 二进制（Hugo css.Sass 的 dartsass transpiler
+  要求 PATH 中存在 sass 可执行文件，否则构建报 "no Dart Sass binary found in $PATH"）。
+  版本与 SHA256 已锁定，升级时两者一起改。
+runs:
+  using: composite
+  steps:
+    - name: Install Dart Sass
+      shell: bash
+      run: |
+        set -euo pipefail
+        VERSION="1.107.1"
+        SHA256="6cefe78692d03ca53843394bb98de4dccf9a3d8ee5ece40be7316be852624003"
+        curl -fsSL -o dart-sass.tar.gz \
+          "https://github.com/sass/dart-sass/releases/download/${VERSION}/dart-sass-${VERSION}-linux-x64.tar.gz"
+        echo "${SHA256}  dart-sass.tar.gz" | sha256sum -c -
+        tar -xzf dart-sass.tar.gz
+        echo "$PWD/dart-sass" >> "$GITHUB_PATH"
+        rm dart-sass.tar.gz
+    - name: Verify Dart Sass
+      shell: bash
+      # 装完立刻校验，让 setup 阶段就失败，而不是等 hugo 跑到一半才报错
+      run: sass --version

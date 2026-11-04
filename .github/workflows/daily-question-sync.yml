@@ -70,6 +70,10 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: 安装 Dart Sass
+        if: steps.import.outputs.updated == 'true'
+        uses: ./.github/actions/setup-dart-sass
+
       - name: 构建整站
         if: steps.import.outputs.updated == 'true'
         run: hugo --minify
