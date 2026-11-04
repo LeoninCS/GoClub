@@ -1,113 +1,37 @@
 <!DOCTYPE html>
-<html lang="{{ default .Site.Language.Lang .Site.LanguageCode }}" dir="{{ default "ltr" .Site.Language.LanguageDirection }}">
+<html lang="zh-CN" dir="ltr">
 <head>
   {{ partial "docs/html-head" . }}
   {{ partial "docs/inject/head" . }}
 </head>
-<body dir="{{ default "ltr" .Site.Language.LanguageDirection }}" class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
-  <input type="checkbox" class="hidden toggle" id="menu-control" />
-  <input type="checkbox" class="hidden toggle" id="toc-control" />
-  <main class="container flex goclub-layout-shell">
-    {{ template "menu-container" . }}
+<body class="kind-{{ .Kind }}{{ with .Layout }} layout-{{ . }}{{ end }}">
+  <a class="skip-link" href="#main">跳到正文</a>
 
-    <div class="book-page">
-      <header class="book-header hidden">
-        {{ template "header" . }}
-      </header>
+  <div class="shell">
+    {{ partial "docs/header" . }}
 
-      {{ partial "docs/inject/content-before" . }}
+    <main id="main" class="main">
       {{ template "main" . }}
-      {{ partial "docs/inject/content-after" . }}
+    </main>
 
-      <footer class="book-footer">
-        {{ template "footer" . }}
-        {{ template "comments" . }}
-        {{ partial "docs/inject/footer" . }}
-        {{ template "copyright" . }}
-        {{ template "clipboard" . }}
-      </footer>
+    {{ partial "docs/footer" . }}
+  </div>
 
-      <label for="menu-control" class="hidden book-menu-overlay"></label>
-    </div>
+  {{ partial "docs/search" . }}
 
-    {{ template "toc-container" . }}
-  </main>
+  {{ partial "docs/inject/scripts" . }}
 
-  {{ partial "docs/inject/body" . }}
+  {{ partial "goclub/share-shortlink.html" . }}
+  {{ partial "goclub/umami-stats.html" . }}
 </body>
 </html>
 
-{{ define "menu-container" }}
-<aside class="book-menu">
-  <div class="book-menu-content">
-    {{ template "menu" . }}
-  </div>
-  <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-expanded="true" aria-label="收起侧边栏">
-    <span class="sidebar-toggle-icon" aria-hidden="true">‹</span>
-  </button>
-  <div class="sidebar-resizer" data-sidebar-resizer role="separator" aria-orientation="vertical"
-    aria-label="调整侧边栏宽度" aria-valuemin="272" aria-valuemax="520" tabindex="0"
-    title="拖动调整宽度，双击恢复默认宽度"></div>
-</aside>
-{{ end }}
-
-{{ define "menu" }}
-  {{ partial "docs/menu" . }}
-{{ end }}
-
-{{ define "header" }}
-  {{ partial "docs/header" . }}
-
-  {{ if partial "docs/toc-show" . }}
-  <aside class="hidden">
-    {{ template "toc" (dict "Page" . "ID" "TableOfContents-mobile") }}
-  </aside>
-  {{ end }}
-{{ end }}
-
-{{ define "footer" }}
-  {{ partial "docs/footer" . }}
-{{ end }}
-
-{{ define "clipboard" }}
-  {{ with resources.Get "clipboard.js" | resources.Minify }}
-    <script>{{ .Content | safeJS }}</script>
-  {{ end }}
-{{ end }}
-
-{{ define "copyright" }}
-  {{ if .Site.Copyright }}
-  <div class="book-copyright flex justify-center">
-    {{ partial "docs/copyright" . }}
-  </div>
-  {{ end }}
-{{ end }}
-
-{{ define "comments" }}
-  {{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
-  <div class="book-comments">
-    {{- partial "docs/comments" . -}}
-  </div>
-  {{ end }}
-{{ end }}
-
 {{ define "main" }}
-  <article class="markdown book-article">
-    {{- .Content -}}
-  </article>
-{{ end }}
-
-{{ define "toc-container" }}
-  {{ if partial "docs/toc-show" . }}
-  <aside class="book-toc" aria-labelledby="book-toc-title">
-    <div class="book-toc-content">
-      <h2 class="book-toc-title" id="book-toc-title">本页导航</h2>
-      {{ template "toc" (dict "Page" . "ID" "TableOfContents") }}
+  <div class="page">
+    <div class="page-inner">
+      <article class="prose">
+        {{- .Content -}}
+      </article>
     </div>
-  </aside>
-  {{ end }}
-{{ end }}
-
-{{ define "toc" }}
-  {{ partial "docs/toc" . }}
+  </div>
 {{ end }}

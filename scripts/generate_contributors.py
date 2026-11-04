@@ -115,6 +115,26 @@ def merge_maintainers(maintainers, contributors):
     )
 
 
+def normalize_avatars(contributors, token=None):
+    """把 github.com/{login}.png 这类地址换成 avatars.githubusercontent.com 的直链。
+
+    github.com 的图片接口在部分网络环境下不可达（主域名被墙/限流），
+    而头像 CDN 通常可用，因此统一走 CDN。
+    """
+    for item in contributors:
+        url = item.get("avatar_url") or ""
+        if "github.com/" in url and "avatars.githubusercontent.com" not in url:
+            try:
+                user = request_json(f"{API_ROOT}/users/{item['login']}", token=token)
+                if user.get("avatar_url"):
+                    item["avatar_url"] = user["avatar_url"]
+            except Exception:
+                login = item["login"]
+                item["avatar_url"] = f"https://github.com/{login}.png"
+
+    return contributors
+
+
 def main():
     repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
     token = os.environ.get("GITHUB_TOKEN", "").strip() or None
@@ -129,6 +149,7 @@ def main():
     contributors = build_contributors(prs)
     maintainers = load_json_file(maintainers_path, [])
     contributors = merge_maintainers(maintainers, contributors)
+    contributors = normalize_avatars(contributors, token=token)
 
     os.makedirs(os.path.dirname(output), exist_ok=True)
     with open(output, "w", encoding="utf-8") as f:

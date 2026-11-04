@@ -1,10 +1,4 @@
-{{- $faviconPath := .Site.Params.BookFavicon | default "favicon.png" -}}
-{{- $faviconURL := $faviconPath | relURL -}}
-{{- $cacheKey := "" -}}
-{{- $staticPath := path.Join "static" $faviconPath -}}
-{{- if fileExists $staticPath -}}
-  {{- $cacheKey = substr (sha256 (readFile $staticPath)) 0 12 -}}
-{{- end -}}
-{{- $href := cond (eq $cacheKey "") $faviconURL (printf "%s?v=%s" $faviconURL $cacheKey) -}}
-<link rel="icon" type="image/png" sizes="512x512" href="{{ $href }}">
-<link rel="apple-touch-icon" href="{{ $href }}">
+{{- $icon := "favicon-96.png" | relURL -}}
+{{- $touch := "apple-touch-icon.png" | relURL -}}
+<link rel="icon" type="image/png" sizes="96x96" href="{{ $icon }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ $touch }}">

@@ -1,0 +1,20 @@
+{{/* 同栏目内的上一篇 / 下一篇；顶层栏目内没有兄弟页时不显示 */}}
+{{ $pages := .Parent.Pages }}
+{{ $prev := $pages.Next . }}
+{{ $next := $pages.Prev . }}
+{{ if or $prev $next }}
+  <nav class="pager{{ if not (and $prev $next) }} is-single{{ end }}" aria-label="相邻内容">
+    {{ with $prev }}
+      <a class="pager-link" href="{{ .RelPermalink }}" rel="prev">
+        <span class="pager-label">上一篇</span>
+        <span class="pager-title">{{ partial "docs/title" . }}</span>
+      </a>
+    {{ end }}
+    {{ with $next }}
+      <a class="pager-link is-next" href="{{ .RelPermalink }}" rel="next">
+        <span class="pager-label">下一篇</span>
+        <span class="pager-title">{{ partial "docs/title" . }}</span>
+      </a>
+    {{ end }}
+  </nav>
+{{ end }}

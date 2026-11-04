@@ -1,5 +1,6 @@
 ---
 title: "技术博客"
+cardLabel: "实践与踩坑"
 weight: 6
 bookCollapseSection: true
 bookShowChildren: true
@@ -9,7 +10,3 @@ shortlink: "ro79"
 ---
 
 # 技术博客
-
-这里用于记录偏实践、偏经验和偏思考类的技术内容。
-
-这里会放一些更偏过程、方法、经验和阶段性记录的内容，不只局限于纯题目整理。

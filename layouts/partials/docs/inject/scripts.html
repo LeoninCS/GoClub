@@ -1,0 +1,59 @@
+<script>
+    (function () {
+      var doc = document;
+
+      var toggle = doc.getElementById('theme-toggle');
+      var sun = doc.getElementById('sun-icon');
+      var moon = doc.getElementById('moon-icon');
+      function isWarm() {
+        var t = doc.documentElement.getAttribute('data-theme');
+        if (t === 'warm' || t === 'dark') return true;
+        if (t === 'light') return false;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      function paintTheme() {
+        var warm = isWarm();
+        if (sun) sun.style.display = warm ? 'none' : 'block';
+        if (moon) moon.style.display = warm ? 'block' : 'none';
+      }
+      paintTheme();
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          var next = isWarm() ? 'light' : 'warm';
+          doc.documentElement.setAttribute('data-theme', next);
+          try { localStorage.setItem('theme', next); } catch (e) {}
+          paintTheme();
+        });
+      }
+
+      var sheet = doc.getElementById('nav-sheet');
+      var openers = doc.querySelectorAll('[data-nav-open]');
+      var closers = doc.querySelectorAll('[data-nav-close]');
+      function setSheet(open) {
+        if (!sheet) return;
+        sheet.classList.toggle('is-open', open);
+        doc.body.classList.toggle('sheet-open', open);
+        openers.forEach(function (b) { b.setAttribute('aria-expanded', String(open)); });
+        if (open) {
+          var first = sheet.querySelector('a, button');
+          if (first) first.focus({ preventScroll: true });
+        }
+      }
+      openers.forEach(function (b) { b.addEventListener('click', function () { setSheet(true); }); });
+      closers.forEach(function (b) { b.addEventListener('click', function () { setSheet(false); }); });
+      doc.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && sheet && sheet.classList.contains('is-open')) setSheet(false);
+      });
+      doc.addEventListener('click', function (e) {
+        if (e.target.closest('.sheet [data-search-trigger]')) setSheet(false);
+      });
+
+      doc.querySelectorAll('details.qa-answer').forEach(function (el) {
+        var summary = el.querySelector('summary.qa-answer-toggle');
+        if (!summary) return;
+        var update = function () { summary.textContent = el.open ? '收起答案' : '查看答案'; };
+        el.addEventListener('toggle', update);
+        update();
+      });
+    })();
+  </script>

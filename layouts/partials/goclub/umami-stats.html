@@ -1,80 +1,11 @@
-{{- /* Umami 访问统计核心：CSS + JS，负责填充页面上所有 [data-umami-stat] 占位。
-     展示位：侧边栏（_partials/docs/menu.html）、移动端顶栏（partials/docs/header.html）
-     指标：active 在线；t_* 今日；无前缀为累计 */ -}}
-<style>
-.goclub-umami-stats {
-  color: var(--goclub-muted-text, #838383);
-  font-variant-numeric: tabular-nums;
-}
-.goclub-umami-stats b {
-  font-weight: 600;
-  color: var(--body-font-color, inherit);
-}
-.goclub-umami-stats .goclub-umami-sep {
-  opacity: 0.4;
-}
-.goclub-umami-row-label {
-  font-weight: 600;
-  opacity: 0.75;
-  margin-right: 2px;
-}
-.goclub-umami-online-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--goclub-primary);
-  box-shadow: 0 0 0 3px rgba(var(--goclub-primary-rgb), 0.1);
-  margin-right: 4px;
-  vertical-align: 1px;
-  animation: goclub-umami-pulse 2s ease-in-out infinite;
-}
-@keyframes goclub-umami-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-.goclub-umami-grid {
-  display: grid;
-  grid-template-columns: auto repeat(3, auto minmax(2.2em, auto));
-  column-gap: 6px;
-  row-gap: 3px;
-  align-items: baseline;
-  white-space: nowrap;
-}
-.goclub-umami-grid b {
-  text-align: right;
-}
-.goclub-umami-metric {
-  opacity: 0.85;
-}
-/* 侧边栏：目录下方的紧凑站点状态。 */
-.goclub-umami-stats--sidebar {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 6px;
-  font-size: 0.72rem;
-  line-height: 1.4;
-  margin: 1rem 0.15rem 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--goclub-border, rgba(127, 127, 127, 0.2));
-}
-.goclub-umami-label {
-  color: var(--goclub-subtle-text, #777);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-.goclub-umami-online {
-  align-self: flex-start;
-}
-</style>
+{{- /* Umami 访问统计：填充页面上所有 [data-umami-stat] 占位，样式见 book.scss。
+     指标：active 在线；t_* 今日；无前缀为累计。失败时保持 hidden，不影响页面。 */ -}}
 <script>
 (function () {
   var SHARE_ID = 'A3zxc0L6w5ZOZWyH';
   var API_BASE = 'https://cloud.umami.is/analytics/us/api';
   var CACHE_KEY = 'goclub_umami_cache_v2';
-  var CACHE_TTL = 60 * 1000; // 统计数据缓存 60s，避免频繁请求
+  var CACHE_TTL = 60 * 1000;
 
   var containers = document.querySelectorAll('.goclub-umami-stats');
   if (!containers.length) return;
@@ -153,7 +84,7 @@
       render(data);
     })
     .catch(function () {
-      /* 拉取失败时保持隐藏，不影响页面 */
+      /* 拉取失败时保持隐藏 */
     });
 })();
 </script>
