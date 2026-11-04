@@ -116,12 +116,29 @@ python3 scripts/gen_shortlinks.py --list   # 打印短码对照表
 
 ## 验证
 
+构建需要 Hugo extended 和原生 Dart Sass，`sass` 必须在 `PATH` 中。
+CI 使用 `.github/actions/setup-dart-sass` 统一安装 Sass；npm 的 `sass` 包不支持 Hugo 所需的 `--embedded` 模式。
+
 ```bash
 python3 scripts/check_slugs.py             # URL 短链校验
 python3 scripts/gen_shortlinks.py --check  # 分享短链校验
 hugo --minify                              # 构建校验
+python3 scripts/check_search_index.py --site public  # 搜索索引校验
 hugo server                                # 本地预览 http://localhost:1313/
 ```
+
+完整测试包含 Chromium 分页交互测试，请在虚拟环境中安装依赖后执行：
+
+```bash
+python3 -m pip install playwright==1.55.0
+python3 -m playwright install --only-shell chromium
+python3 -m unittest discover -s tests -v
+```
+
+PR CI 按 URL、分享短链、面经投稿、每日一问、招聘同步、浏览器分页、Hugo 构建和搜索索引拆分检查。
+除搜索索引依赖构建产物外，各检查并行运行；短链缺失仍只做提示。
+原有 `Build Hugo site` 检查名称保留为汇总门槛，任一必需检查失败、取消或跳过都会使它失败。
+新增测试文件时，同步更新 `pr-check.yml` 的测试矩阵或添加独立 job，避免遗漏。
 
 提交前确认 `git diff` 只包含本次改动相关的文件。
 

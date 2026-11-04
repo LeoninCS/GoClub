@@ -110,7 +110,10 @@ jobs:
           python3 -m playwright install --with-deps chromium
 
       - name: 运行同步测试
-        run: python3 -m unittest tests.test_sync_qq_jobs
+        run: python3 -m unittest discover -s tests -p test_sync_qq_jobs.py -v
+
+      - name: 运行分页浏览器测试
+        run: python3 -m unittest discover -s tests -p test_job_pagination_browser.py -v
 
       - name: 双遍读取并校验腾讯文档
         shell: bash
