@@ -38,6 +38,9 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Setup Dart Sass
+        run: npm install --global sass
+
       - name: Generate contributors data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
