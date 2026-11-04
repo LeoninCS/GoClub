@@ -7,6 +7,11 @@ disablePathToLower = true
 enableGitInfo = true
 
 [markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+    codeFences = true
+    guessSyntax = false
   [markup.tableOfContents]
     startLevel = 2
     endLevel = 3
@@ -16,6 +21,7 @@ enableGitInfo = true
       unsafe = true
 
 [params]
+  description = 'Go 后端面试知识库：真题、八股、资料与项目拆解，社区持续补充。'
   BookTheme = 'light'
   BookToC = true
   BookSection = 'docs'

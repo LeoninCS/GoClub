@@ -86,7 +86,7 @@
     init(true);
   }
 
-  init(false);
+  // 索引接近 5 MB，改为首次聚焦搜索框时再拉取，避免首页为搜索付出带宽。
 
   function focusSearchFieldOnKeyPress(event) {
     if (event.target.value !== undefined || input === document.activeElement) {
@@ -99,9 +99,20 @@
       return;
     }
 
+    openSearchPanel();
     input.focus();
     event.preventDefault();
   }
+
+  // 弹层关闭时输入框不可见，无法直接聚焦；由页面上的搜索入口先打开弹层。
+  document.addEventListener('click', function (event) {
+    if (!event.target.closest('[data-search-trigger]')) {
+      return;
+    }
+    event.preventDefault();
+    openSearchPanel();
+    input.focus();
+  });
 
   function init(showLoading) {
     if (searchIndex) {

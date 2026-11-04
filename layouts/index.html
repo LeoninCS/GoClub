@@ -1,67 +1,79 @@
 {{ define "main" }}
   {{ $docs := .Site.GetPage "section" "docs" }}
   {{ $submitPage := .Site.GetPage "/docs/blog/提交流程.md" }}
-  {{ $githubURL := "https://github.com/LeoninCS/GoClub" }}
-  {{ $interviewSubmissionURL := "https://github.com/LeoninCS/GoClub/issues/new?template=interview-question.yml" }}
+  {{ $issueURL := "https://github.com/LeoninCS/GoClub/issues/new?template=interview-question.yml" }}
+
   {{ $sections := slice }}
   {{ with $docs }}
     {{ range where .Pages "Params.bookHidden" "ne" true }}
-      {{ if and .IsSection .Content }}
-        {{ $sections = $sections | append . }}
-      {{ end }}
+      {{ if .IsSection }}{{ $sections = $sections | append . }}{{ end }}
     {{ end }}
   {{ end }}
+  {{ $total := 0 }}
+  {{ with $docs }}{{ $total = len (where .RegularPagesRecursive "Params.bookHidden" "ne" true) }}{{ end }}
 
-  <article class="markdown book-article">
-    <section class="page-hero">
-      <div class="page-hero-overline">
-        <span>Go 后端 · 面试准备</span>
-        <span>社区共建 / 持续更新</span>
-      </div>
-      <div class="page-hero-layout">
-        <h1><span>Go 面试</span> <span class="page-hero-title-tail">知识库</span></h1>
-        <div class="page-hero-intro">
-          <div class="page-hero-copy">
-            <p>八股总结、面试真题、学习资源和配套文章，按栏目整理，社区一起维护。面经可以先用 AI 整理，再通过 Issue 表单投稿；其他内容和纠错也欢迎提 PR。</p>
-          </div>
-          <nav class="page-hero-actions" aria-label="快速操作">
-            {{ with $submitPage }}
-              <a class="page-hero-button" href="{{ .RelPermalink }}">面经投稿流程</a>
-            {{ end }}
-            <a class="page-hero-button-secondary" href="{{ $interviewSubmissionURL }}" target="_blank" rel="noopener noreferrer">提交面经</a>
-            <a class="page-hero-button-secondary" href="{{ $githubURL }}" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
-          </nav>
-        </div>
-      </div>
-    </section>
+  {{ $icons := dict
+    "面试真题" "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z M8 9h8 M8 13h5"
+    "八股总结" "M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"
+    "资源荟萃" "M12 3 3 7.5l9 4.5 9-4.5z M3 12l9 4.5 9-4.5 M3 16.5 12 21l9-4.5"
+    "配套文章" "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h4"
+    "项目学习" "M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 13h8"
+    "技术博客" "M12 20h9 M16.5 3.5a2.1 2.1 0 0 1 3 3L7.5 18.5 3 20l1.5-4.5z"
+    "求职就业" "M20 8H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2z M16 8V6a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
+    "贡献者" "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"
+  }}
 
-    <section class="entry-cluster" aria-labelledby="home-directory-title">
-      <header class="entry-cluster-heading">
-        <div>
-          <span class="editorial-kicker">知识地图</span>
-          <h2 class="entry-cluster-title" id="home-directory-title">按目标进入</h2>
-        </div>
-        <span class="entry-cluster-count">{{ len $sections }} 个核心栏目</span>
-      </header>
-      <ol class="section-link-list section-link-list--home">
+  <h1 class="sr-only">GoClub · Go 后端面试知识库</h1>
+
+  <div class="home">
+    <div class="home-bar">
+      <button type="button" class="home-search" data-search-trigger>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.6"></circle>
+          <path d="M10.6 10.6 14 14" stroke-linecap="round"></path>
+        </svg>
+        <span>搜索题目、公司或关键词</span>
+        <kbd>/</kbd>
+      </button>
+
+      <span class="home-meta">{{ len $sections }} 个栏目 · {{ $total }} 篇</span>
+
+      <div class="home-tools">
+        {{ with $submitPage }}<a href="{{ .RelPermalink }}">投稿流程</a>{{ end }}
+        <a href="{{ $issueURL }}" target="_blank" rel="noopener noreferrer">提交面经</a>
+      </div>
+    </div>
+
+    <div class="home-notice" role="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m3 11 18-5v12L3 14v-3z" />
+        <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+      </svg>
+      <p>八股总结、面试真题、学习资源与配套文章，按栏目整理，由社区共同维护。面经可先借助 AI 整理，再通过 Issue 表单投稿；内容补充与纠错，欢迎直接提 PR。</p>
+      <a href="{{ $issueURL }}" target="_blank" rel="noopener noreferrer">提交面经</a>
+    </div>
+
+    <div class="home-body">
+      <div class="cat-grid">
         {{ range $index, $item := $sections }}
-          {{ $summary := partial "goclub/lead-summary.html" . }}
-          {{ $children := where .Pages "Params.bookHidden" "ne" true }}
-          <li class="section-link-list-item">
-            <a class="section-link-list-link" href="{{ $item.RelPermalink }}">
-              <span class="section-link-list-index" aria-hidden="true">{{ printf "%02d" (add $index 1) }}</span>
-              <span class="section-link-list-copy">
-                <span class="section-link-list-title">{{ partial "docs/title" $item }}</span>
-                {{ with $summary }}
-                  <span class="section-link-list-summary">{{ . }}</span>
-                {{ end }}
-              </span>
-              <span class="section-link-list-meta">{{ len $children }} 页</span>
-              <span class="section-link-list-arrow" aria-hidden="true">→</span>
-            </a>
-          </li>
+          {{ $count := len (where $item.RegularPagesRecursive "Params.bookHidden" "ne" true) }}
+          {{ $label := $item.Params.cardLabel }}
+          <a class="cat" href="{{ $item.RelPermalink }}">
+            <span class="cat-top">
+              <span class="cat-num">{{ printf "%02d" (add $index 1) }}</span>
+              <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="{{ index $icons $item.Title | default "M4 6h16M4 12h16M4 18h10" }}" />
+              </svg>
+            </span>
+            <span class="cat-title">{{ partial "docs/title" $item }}</span>
+            {{ with $label }}<span class="cat-desc">{{ . }}</span>{{ end }}
+            <span class="cat-foot">
+              <span>{{ $count }} 篇</span>
+              <span class="cat-arrow" aria-hidden="true">→</span>
+            </span>
+          </a>
         {{ end }}
-      </ol>
-    </section>
-  </article>
+      </div>
+    </div>
+  </div>
 {{ end }}

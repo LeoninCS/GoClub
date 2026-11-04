@@ -1,59 +1,29 @@
-<div class="goclub-footer-meta">
-  <div class="goclub-footer-status">
-    {{ if and .GitInfo .Site.Params.BookLastChangeLink }}
-      {{- $date := partial "docs/date" (dict "Date" .Lastmod "Format" "2006-01-02") -}}
-      <a class="flex align-center" href="{{ partial "docs/links/commit" . }}" title='{{ partial "docs/text/i18n" "Last modified by" }} {{ .GitInfo.AuthorName }} | {{ $date }}' target="_blank" rel="noopener">
-        <img src="{{ partial "docs/icon" "calendar" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Calendar" }}" />
-        <span>{{ $date }}</span>
-      </a>
-    {{ else }}
-      <span>GoClub 内容持续整理中</span>
-    {{ end }}
+<footer class="statusbar goclub-umami-stats">
+  <div class="status-left">
+    <span>© {{ now.Year }} GoClub</span>
+    <span class="status-sep" aria-hidden="true">/</span>
+    <span>内容由社区整理</span>
   </div>
 
-  <div class="goclub-footer-action">
-    {{ if and .File .Site.Params.BookEditLink }}
-      <a class="flex align-center" href="{{ partial "docs/links/edit" . }}" target="_blank" rel="noopener edit">
-        <img src="{{ partial "docs/icon" "edit" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Edit" }}" />
-        <span>去 GitHub 编辑本页</span>
-      </a>
-    {{ else }}
-      <a class="flex align-center" href="https://github.com/LeoninCS/GoClub" target="_blank" rel="noopener noreferrer">
-        <span>去 GitHub 共建内容</span>
-      </a>
-    {{ end }}
+  <div class="status-live" aria-label="站点访问统计">
+    <span class="live-now"><i aria-hidden="true"></i>在线 <b data-umami-stat="active">–</b> 人</span>
+    <span class="live-group">
+      <em>今日</em>
+      <span>浏览 <b data-umami-stat="t_pageviews">–</b></span>
+      <span>访客 <b data-umami-stat="t_visitors">–</b></span>
+      <span>访问 <b data-umami-stat="t_visits">–</b></span>
+    </span>
+    <span class="live-group is-total">
+      <em>累计</em>
+      <span>浏览 <b data-umami-stat="pageviews">–</b></span>
+      <span>访客 <b data-umami-stat="visitors">–</b></span>
+      <span>访问 <b data-umami-stat="visits">–</b></span>
+    </span>
   </div>
-</div>
 
-{{ $bookSection := default "docs" .Site.Params.BookSection }}
-{{ if eq $bookSection "*" }}
-  {{ $bookSection = "/" }}
-{{ end }}
-
-{{ with .Site.GetPage $bookSection }}
-  {{ $pages := partialCached "docs/prev-next-cache" .Pages }}
-  {{ $prev := $pages.Next $ }}
-  {{ $next := $pages.Prev $ }}
-  {{ if or $prev $next }}
-    <nav class="goclub-prev-next" aria-label="相邻文章">
-      {{ with $prev }}
-        <a href="{{ .RelPermalink }}" rel="prev" class="goclub-prev-next-link goclub-prev-next-link--prev">
-          <span class="goclub-prev-next-arrow" aria-hidden="true">←</span>
-          <span class="goclub-prev-next-copy">
-            <span class="goclub-prev-next-eyebrow">上一篇</span>
-            <span class="goclub-prev-next-title">{{ partial "docs/title" . }}</span>
-          </span>
-        </a>
-      {{ end }}
-      {{ with $next }}
-        <a href="{{ .RelPermalink }}" rel="next" class="goclub-prev-next-link goclub-prev-next-link--next">
-          <span class="goclub-prev-next-copy">
-            <span class="goclub-prev-next-eyebrow">下一篇</span>
-            <span class="goclub-prev-next-title">{{ partial "docs/title" . }}</span>
-          </span>
-          <span class="goclub-prev-next-arrow" aria-hidden="true">→</span>
-        </a>
-      {{ end }}
-    </nav>
-  {{ end }}
-{{ end }}
+  <div class="status-right">
+    <a href="{{ with .Site.GetPage "/docs/blog/提交流程.md" }}{{ .RelPermalink }}{{ else }}/docs/blog/{{ end }}">投稿流程</a>
+    <a href="{{ with .Site.GetPage "/docs/contributors" }}{{ .RelPermalink }}{{ else }}/docs/contributors/{{ end }}">贡献者</a>
+    <a href="https://github.com/LeoninCS/GoClub" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </div>
+</footer>

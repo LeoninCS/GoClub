@@ -1,0 +1,5 @@
+{{- if .IsHome -}}
+  {{ .Site.Title }} · Go 后端面试知识库
+{{- else -}}
+  {{ with partial "docs/title" . }}{{ . }} · {{ end }}{{ .Site.Title }}
+{{- end -}}

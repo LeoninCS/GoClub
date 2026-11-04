@@ -1,65 +1,32 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
+<html lang="zh-CN">
 <head>
   {{ partial "docs/html-head" . }}
   {{ partial "docs/inject/head" . }}
-
-  <style>
-    .not-found {
-      height: 100vh;
-      width: 100vw;
-    }
-
-    .not-found h1 {
-      font-size: 10vmin;
-      font-weight: lighter;
-      cursor: default;
-    }
-
-    .not-found h1 span {
-      display: inline-block;
-      transition: transform .2s ease-out, opacity .2s ease-out;
-    }
-
-    .not-found h1:hover span {
-      transition-duration: 1s;
-      transform: translate(var(--drift-x), var(--drift-y)) rotate(var(--rotate-end));
-      opacity: 0;
-    }
-
-    .not-found h1:hover span:nth-child(1) {
-      --drift-x: -1em;
-      --drift-y: 1em;
-      --rotate-end: -90deg;
-    }
-
-    .not-found h1:hover span:nth-child(2) {
-      --drift-x: -1em;
-      --drift-y: -2em;
-      --rotate-end: 45deg;
-    }
-
-    .not-found h1:hover span:nth-child(3) {
-      --drift-x: 3em;
-      --drift-y: 1em;
-      --rotate-end: 120deg;
-    }
-  </style>
 </head>
+<body class="kind-404">
+  <a class="skip-link" href="#main">跳到正文</a>
 
-<body class="not-found flex justify-center align-center">
-  <main class="text-center">
-    <h1>
-      <span>Page</span>
-      <span>Not</span>
-      <span>Found</span>
-    </h1>
-    <h3>
-      <a href="{{ .Site.Home.Permalink }}">{{ .Site.Title }}</a>
-    </h3>
-  </main>
+  <div class="shell">
+    {{ partial "docs/header" . }}
 
-  {{ partial "docs/inject/body" . }}
+    <main id="main" class="main">
+      <div class="notfound">
+        <span class="notfound-code">ERROR 404</span>
+        <h1>页面不存在</h1>
+        <p class="notfound-lead">链接可能已失效，或内容改过名字。</p>
+        <div class="notfound-actions">
+          <a class="btn btn--primary" href="{{ .Site.Home.RelPermalink }}">返回首页</a>
+          <button type="button" class="btn" data-search-trigger>搜索内容</button>
+        </div>
+      </div>
+    </main>
+
+    {{ partial "docs/footer" . }}
+  </div>
+
+  {{ partial "docs/search" . }}
+  {{ partial "docs/inject/scripts" . }}
+  {{ partial "goclub/umami-stats" . }}
 </body>
-
 </html>

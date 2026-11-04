@@ -1,18 +1,21 @@
-<script defer src="https://cloud.umami.is/script.js" data-website-id="19d48c9b-1602-4bc0-ad04-9f819006ec0b"></script>
-
 <script>
-  (function() {
-    const theme = localStorage.getItem('theme') || 'auto';
-    const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    if (theme === 'dark' || (theme === 'auto' && darkQuery.matches)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
+  (function () {
+    // 主题：light（标准白） / warm（暖色纸感，原夜间模式）
+    var theme = localStorage.getItem('theme') || 'auto';
+    if (theme === 'dark') theme = 'warm'; // 兼容旧值
+    var prefersWarm = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (theme === 'warm' || (theme === 'auto' && prefersWarm)) {
+      document.documentElement.setAttribute('data-theme', 'warm');
+    } else if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
+    // 统计脚本放到 load 之后再加载，避免第三方域名拖慢首屏指标
+    window.addEventListener('load', function () {
+      var s = document.createElement('script');
+      s.src = 'https://cloud.umami.is/script.js';
+      s.defer = true;
+      s.setAttribute('data-website-id', '19d48c9b-1602-4bc0-ad04-9f819006ec0b');
+      document.head.appendChild(s);
+    });
   })();
 </script>
-
-<style>
-  :root {
-    --goclub-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    --goclub-font-headline: "Songti SC", "STSong", "SimSun", "Source Han Serif SC", serif;
-  }
-</style>

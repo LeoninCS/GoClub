@@ -1,5 +1,6 @@
 ---
 title: "八股总结"
+cardLabel: "语言 / 数据库 / 系统"
 weight: 2
 bookCollapseSection: true
 bookShowChildren: true
@@ -9,7 +10,3 @@ shortlink: "lol1"
 ---
 
 # 八股总结
-
-这里用于系统整理常见八股知识，方便集中复习和查漏补缺。
-
-如果你想按专题复习基础知识，可以先从语言、数据库、缓存、操作系统、计算机网络和常用工具这几个主线进入。
