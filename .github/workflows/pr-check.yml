@@ -14,34 +14,33 @@ concurrency:
   group: pr-check-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  HUGO_VERSION: 0.159.0
+  PLAYWRIGHT_VERSION: 1.55.0
+  PYTHONDONTWRITEBYTECODE: "1"
+
 jobs:
-  build:
-    name: Build Hugo site
+  slugs:
+    name: URL slug 校验
     runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: 0.159.0
+    timeout-minutes: 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          submodules: recursive
-          fetch-depth: 0
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: ${{ env.HUGO_VERSION }}
-          extended: true
-
-      - name: Setup Dart Sass
-        uses: ./.github/actions/setup-dart-sass
-
+          python-version: "3.12"
       - name: Check URL slugs
         run: python3 scripts/check_slugs.py
 
-      - name: Run synchronization tests
-        run: python3 -m unittest discover -s tests
-
+  shortlinks:
+    name: 分享短链校验（提示）
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Check share shortlinks
         shell: bash
         # 短链属于站点运维细节，不该卡住投稿者。
@@ -52,6 +51,62 @@ jobs:
           fi
           echo "::notice::上面这些页面还没有 /s/ 分享短链。这不影响本 PR 合并，合并到 main 后会自动补齐，无需处理。"
 
+  unit-tests:
+    name: ${{ matrix.suite.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        suite:
+          - name: 面经投稿测试
+            file: test_process_interview_question.py
+          - name: 每日一问测试
+            file: test_sync_daily_question.py
+          - name: 招聘同步单元测试
+            file: test_sync_qq_jobs.py
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run test suite
+        env:
+          TEST_FILE: ${{ matrix.suite.file }}
+        run: python3 -m unittest discover -s tests -p "$TEST_FILE" -v
+
+  browser-tests:
+    name: 招聘分页浏览器测试
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright Chromium
+        run: |
+          python3 -m pip install --disable-pip-version-check "playwright==$PLAYWRIGHT_VERSION"
+          python3 -m playwright install --with-deps --only-shell chromium
+      - name: Test pagination in Chromium
+        run: python3 -m unittest discover -s tests -p test_job_pagination_browser.py -v
+
+  build-site:
+    name: Hugo 构建
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+      - name: Setup Dart Sass
+        uses: ./.github/actions/setup-dart-sass
       - name: Generate contributors data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,5 +117,62 @@ jobs:
       - name: Build
         run: hugo --minify
 
+      # 索引校验只读取 HTML 和索引 JSON，不传输图片、字体和整本书附件。
+      - name: Upload search validation files
+        uses: actions/upload-artifact@v4
+        with:
+          name: search-validation-site
+          path: |
+            public/**/*.html
+            public/*.search-data.min.*.json
+          if-no-files-found: error
+          retention-days: 1
+
+  search-index:
+    name: 搜索索引校验
+    needs: build-site
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      # 校验脚本用 hugo list published 枚举页面，不需要再次编译样式。
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+      - name: Download search validation files
+        uses: actions/download-artifact@v4
+        with:
+          name: search-validation-site
+          path: public
       - name: Check search index coverage
         run: python3 scripts/check_search_index.py --site public
+
+  build:
+    # 保留原检查名称，让已有分支保护继续要求全部检查成功。
+    name: Build Hugo site
+    if: ${{ always() }}
+    needs: [slugs, shortlinks, unit-tests, browser-tests, build-site, search-index]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require all checks to pass
+        env:
+          CHECK_RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+
+          checks = json.loads(os.environ["CHECK_RESULTS"])
+          failed = [name for name, check in checks.items() if check["result"] != "success"]
+          for name, check in checks.items():
+              print(f"{name}: {check['result']}")
+          if failed:
+              print(f"::error::以下检查未通过：{', '.join(failed)}")
+              sys.exit(1)
+          PY
