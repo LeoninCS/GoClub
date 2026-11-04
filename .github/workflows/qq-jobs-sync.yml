@@ -184,6 +184,10 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: 安装 Dart Sass
+        if: steps.changes.outputs.updated == 'true'
+        run: npm install --global sass
+
       - name: 构建整站
         if: steps.changes.outputs.updated == 'true'
         run: hugo --minify

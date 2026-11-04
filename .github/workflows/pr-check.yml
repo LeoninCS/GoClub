@@ -33,6 +33,9 @@ jobs:
           hugo-version: ${{ env.HUGO_VERSION }}
           extended: true
 
+      - name: Setup Dart Sass
+        run: npm install --global sass
+
       - name: Check URL slugs
         run: python3 scripts/check_slugs.py
 
