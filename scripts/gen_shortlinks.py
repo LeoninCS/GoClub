@@ -61,7 +61,10 @@ def collect_pages() -> list[str]:
         for name in files:
             if not name.endswith(".md"):
                 continue
-            rel = os.path.join(root, name)[len(CONTENT_ROOT) + 1 :]
+            # 短码由路径哈希得到，必须统一成 POSIX 分隔符：
+            # Windows 下 os.path.join 会产出反斜杠，算出的短码和 Linux/CI 完全不同，
+            # 结果是本机预提交钩子把每个文件都误报成「短链不一致」。
+            rel = os.path.join(root, name)[len(CONTENT_ROOT) + 1 :].replace(os.sep, "/")
             if is_book_chapter(rel):
                 continue
             pages.append(rel)
