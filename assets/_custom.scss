@@ -1,0 +1,1997 @@
+/*
+  GoClub 前端：VitePress / Vue 文档风（默认主题规格移植）。
+  白底、软灰面、实色顶栏；品牌色为 Gemini 蓝（#346bf0 系 + 胶囊渐变）；侧栏细竖线引导；
+  搜索与按钮一律小圆角矩形（6-8px），不用描边胶囊、不用磨砂玻璃。
+  JS 依赖的 id/class/data 钩子保持不变。
+*/
+
+/* ============ 1. 设计变量（VitePress 默认色板） ============ */
+:root {
+  --vp-bg: #ffffff;
+  --vp-bg-soft: #f6f6f7;
+  --vp-bg-soft-hover: #ebebef;
+  --vp-card-hover: #f0f0f2;
+  --vp-text-1: #3c3c43;
+  --vp-text-2: #67676c;
+  --vp-text-3: #929295;
+  --vp-divider: #e2e2e3;
+  --vp-brand: #346bf0;
+  --vp-brand-hover: #3186ff;
+  --vp-brand-1: #346bf0;
+  --vp-brand-2: #3186ff;
+  --vp-brand-3: #4ea0ff;
+  --vp-brand-soft: rgba(52, 107, 240, 0.14);
+  --vp-brand-soft-weak: rgba(52, 107, 240, 0.08);
+  /* Gemini 胶囊渐变（与用户博客项目 global.css 原样一致）：实心品牌填充统一用它，hover 靠 brightness 提亮 */
+  --gemini-gradient: linear-gradient(89.58deg, #3186ff 0.28%, #346bf0 44.45%, #4ea0ff 99.55%);
+  --vp-code-bg: #f6f6f7;
+  --vp-pre-bg: #f6f6f7;
+  --vp-mark-bg: rgba(52, 107, 240, 0.16);
+  --vp-selection: rgba(52, 107, 240, 0.22);
+  /* VP 布局变量（vars.css 真实值） */
+  --vp-bg-sidebar: #f6f6f7; /* --vp-sidebar-bg-color = --vp-c-bg-alt */
+  --vp-divider-light: #eaeaeb;
+  --vp-btn-bg: var(--gemini-gradient); /* 实心按钮统一 Gemini 渐变 */
+  --vp-btn-hover: var(--gemini-gradient); /* hover 不换底，靠 filter: brightness(1.06) */
+  --vp-layout-max-width: 1440px;
+  --vp-sidebar-w: 272px;
+
+  /* 兼容别名：partials 内联样式与内容组件仍引用 --gc-* / --goclub-* */
+  --gc-bg: var(--vp-bg);
+  --gc-surface: var(--vp-bg-soft);
+  --gc-hover: var(--vp-bg-soft);
+  --gc-active: #ebebef;
+  --gc-text: var(--vp-text-1);
+  --gc-text-2: var(--vp-text-2);
+  --gc-text-3: var(--vp-text-3);
+  --gc-border: var(--vp-divider);
+  --gc-border-strong: #c2c2c4;
+  --gc-accent: var(--vp-brand-1);
+  --gc-accent-hover: var(--vp-brand-2);
+  --gc-accent-soft: var(--vp-brand-soft);
+  --gc-code-bg: var(--vp-code-bg);
+  --gc-mark: var(--vp-mark-bg);
+  --gc-topbar-h: 64px;
+  --gc-status-h: 40px;
+  --gc-toc-w: 256px;
+  --gc-article-w: 688px;
+  --gc-wide-w: 1024px;
+
+  /* hugo-book 主题变量 */
+  --body-background: #ffffff;
+  --body-background-tint: none;
+  --body-font-color: #3c3c43;
+  --color-link: #346bf0;
+  --color-visited-link: #346bf0;
+  --icon-filter: none;
+  --gray-100: #f6f6f7;
+  --gray-200: #e2e2e3;
+  --gray-500: #929295;
+  --border-radius: 6px;
+
+  /* hint 短代码（VitePress custom block 近似色） */
+  --color-accent-default: #3c3c43;
+  --color-accent-default-tint: rgba(60, 60, 67, 0.1);
+  --color-accent-note: #346bf0;
+  --color-accent-note-tint: rgba(52, 107, 240, 0.14);
+  --color-accent-tip: #18794e;
+  --color-accent-tip-tint: rgba(24, 121, 78, 0.12);
+  --color-accent-important: #8250df;
+  --color-accent-important-tint: rgba(130, 80, 223, 0.12);
+  --color-accent-warning: #915930;
+  --color-accent-warning-tint: rgba(145, 89, 48, 0.12);
+  --color-accent-caution: #b8272c;
+  --color-accent-caution-tint: rgba(184, 39, 44, 0.1);
+  --color-accent-info: #346bf0;
+  --color-accent-info-tint: rgba(52, 107, 240, 0.14);
+  --color-accent-success: #18794e;
+  --color-accent-success-tint: rgba(24, 121, 78, 0.12);
+  --color-accent-danger: #b8272c;
+  --color-accent-danger-tint: rgba(184, 39, 44, 0.1);
+
+  --goclub-primary: #346bf0;
+  --goclub-primary-rgb: 52, 107, 240;
+  --goclub-border: #e2e2e3;
+  --goclub-muted-text: #67676c;
+  --goclub-subtle-text: #929295;
+  --goclub-sidebar-width: 272px;
+}
+
+@mixin gc-dark {
+  --vp-bg: #1b1b1f;
+  --vp-bg-soft: #202127;
+  --vp-bg-soft-hover: #26262c;
+  --vp-card-hover: #26262b;
+  --vp-text-1: #dfdfd6;
+  --vp-text-2: #98989f;
+  --vp-text-3: #6a6a71;
+  --vp-divider: #2e2e32;
+  --vp-brand: #8db4ff;
+  --vp-brand-hover: #a9c6ff;
+  --vp-brand-1: #8db4ff;
+  --vp-brand-2: #6ea8ff;
+  --vp-brand-3: #4ea0ff;
+  --vp-brand-soft: rgba(78, 160, 255, 0.16);
+  --vp-brand-soft-weak: rgba(78, 160, 255, 0.1);
+  --vp-code-bg: #202127;
+  --vp-pre-bg: #161618;
+  --vp-mark-bg: rgba(141, 180, 255, 0.22);
+  --vp-selection: rgba(141, 180, 255, 0.28);
+  --vp-bg-sidebar: #161618;
+  --vp-divider-light: #2e2e32;
+  --vp-btn-bg: var(--gemini-gradient);
+  --vp-btn-hover: var(--gemini-gradient);
+
+  --gc-active: #2e2e32;
+  --gc-border-strong: #3e3e42;
+  --body-background: #1b1b1f;
+  --body-font-color: #dfdfd6;
+  --color-link: #8db4ff;
+  --color-visited-link: #8db4ff;
+  --icon-filter: brightness(0) invert(0.9);
+  --gray-100: #202127;
+  --gray-200: #2e2e32;
+  --gray-500: #6e6e6a;
+
+  --color-accent-default: #dfdfd6;
+  --color-accent-default-tint: rgba(223, 223, 214, 0.1);
+  --color-accent-note: #8db4ff;
+  --color-accent-note-tint: rgba(141, 180, 255, 0.14);
+  --color-accent-tip: #3ecf8e;
+  --color-accent-tip-tint: rgba(62, 207, 142, 0.12);
+  --color-accent-important: #b392f0;
+  --color-accent-important-tint: rgba(179, 146, 240, 0.14);
+  --color-accent-warning: #d2996a;
+  --color-accent-warning-tint: rgba(210, 153, 106, 0.14);
+  --color-accent-caution: #f07575;
+  --color-accent-caution-tint: rgba(240, 117, 117, 0.12);
+  --color-accent-info: #8db4ff;
+  --color-accent-info-tint: rgba(141, 180, 255, 0.14);
+  --color-accent-success: #3ecf8e;
+  --color-accent-success-tint: rgba(62, 207, 142, 0.12);
+  --color-accent-danger: #f07575;
+  --color-accent-danger-tint: rgba(240, 117, 117, 0.12);
+
+  --goclub-primary: #8db4ff;
+  --goclub-primary-rgb: 141, 180, 255;
+  --goclub-border: #2e2e32;
+  --goclub-muted-text: #a8a8a3;
+  --goclub-subtle-text: #6e6e6a;
+}
+
+/* 壳令牌暗色值：逐条照 fork gc-dark 的对应 token 转写（--bg/--fg/--line/--accent 管上游壳）。
+   映射：--bg/--bg-soft/--bg-inset/--fg/--fg-2/--fg-3/--line/--line-soft/--line-strong/--accent/--accent-hover/--accent-soft/--good/--warn/--bad/--code-bg/--code-line
+   依次取 --vp-bg/--vp-bg-soft/--vp-pre-bg/--vp-text-1/--vp-text-2/--vp-text-3/--vp-divider/--vp-divider-light/--gc-border-strong/--vp-brand/--vp-brand-hover/--vp-brand-soft/--color-accent-success/--color-accent-warning/--color-accent-caution/--vp-code-bg/--vp-divider。
+   fork 里无对应值的 --accent-line / --c-*（×8）/ --shadow-1 / --shadow-2 已删除（亮色值兜底），另行报缺失，不自编。 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include gc-dark;
+    --bg: #1b1b1f;
+    --bg-soft: #202127;
+    --bg-inset: #161618;
+    --fg: #dfdfd6;
+    --fg-2: #98989f;
+    --fg-3: #6a6a71;
+    --line: #2e2e32;
+    --line-soft: #2e2e32;
+    --line-strong: #3e3e42;
+    --accent: #8db4ff;
+    --accent-hover: #a9c6ff;
+    --accent-soft: rgba(78, 160, 255, 0.16);
+    --good: #3ecf8e;
+    --warn: #d2996a;
+    --bad: #f07575;
+    --code-bg: #202127;
+    --code-line: #2e2e32;
+  }
+}
+:root[data-theme="dark"] {
+  @include gc-dark;
+    --bg: #1b1b1f;
+    --bg-soft: #202127;
+    --bg-inset: #161618;
+    --fg: #dfdfd6;
+    --fg-2: #98989f;
+    --fg-3: #6a6a71;
+    --line: #2e2e32;
+    --line-soft: #2e2e32;
+    --line-strong: #3e3e42;
+    --accent: #8db4ff;
+    --accent-hover: #a9c6ff;
+    --accent-soft: rgba(78, 160, 255, 0.16);
+    --good: #3ecf8e;
+    --warn: #d2996a;
+    --bad: #f07575;
+    --code-bg: #202127;
+    --code-line: #2e2e32;
+}
+
+/* ============ 1b. 主题布局基元（hugo-book _utils/_main 原文；book.scss 不引主题，在此补齐） ============ */
+.flex { display: flex; }
+.justify-center { justify-content: center; }
+.book-icon { filter: var(--icon-filter); }
+.book-menu { flex: 0 0 16rem; }
+.book-menu .book-menu-content { width: 16rem; position: fixed; top: 0; bottom: 0; overflow-x: hidden; overflow-y: auto; }
+.book-toc .book-toc-content { position: fixed; bottom: 0; overflow-x: hidden; overflow-y: auto; }
+.book-page { flex-grow: 1; }
+.book-menu-content, .book-toc-content { transition: 0.2s ease-in-out; transition-property: transform, margin, opacity, visibility; will-change: transform, margin, opacity; }
+@media screen and (max-width: 56rem) {
+  .book-menu { visibility: hidden; margin-inline-start: -16rem; z-index: 1; }
+  .book-menu .book-menu-content { background: var(--body-background); }
+  .book-toc { display: none; }
+  .book-header { display: block; }
+  .book-post-container { flex-direction: column-reverse; }
+  #menu-control, #toc-control { display: inline; }
+  #menu-control:checked ~ main .book-menu { visibility: initial; }
+  #menu-control:checked ~ main .book-menu .book-menu-content { transform: translateX(16rem); box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1); }
+  #menu-control:checked ~ main .book-page { opacity: 0.25; }
+  #menu-control:checked ~ main .book-menu-overlay { display: block; position: fixed; top: 0; bottom: 0; left: 0; right: 0; }
+  #toc-control:checked ~ main .book-header aside { display: block; }
+  body[dir="rtl"] #menu-control:checked ~ main .book-menu .book-menu-content { transform: translateX(-16rem); }
+}
+@media screen and (min-width: 90rem) {
+  main { gap: 1rem; padding: 1rem; }
+  .book-menu .book-menu-content, .book-toc .book-toc-content { top: 1rem; }
+}
+
+/* ============ 2. 基础 ============ */
+body {
+  font-family: var(--goclub-font-body);
+  background: var(--vp-bg);
+  color: var(--vp-text-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body:has(.goclub-topbar) { padding-top: var(--gc-topbar-h); }
+/* 通用隐藏（对齐 fork 成品 CSS：主题 _utils 的 .hidden；搜索清空按钮靠它显隐） */
+.hidden { display: none; }
+::selection { background: var(--vp-selection); }
+/* 全站 1440px 居中容器（--vp-layout-max-width 真实值） */
+main.container {
+  max-width: var(--vp-layout-max-width);
+  margin-inline: auto;
+  width: 100%;
+  padding: 0; /* 主题 .container 的 1rem 顶 padding 会把正文起点压到 VP 公式之外 */
+}
+
+/* ============ 2b. 滚动条隐藏（全站只保留滚动功能，不显示滚动条） ============ */
+/* 主页面、左侧栏、右侧大纲、搜索结果、代码块横滚一律适用；Windows 下 Chromium 的粗灰滚动条即由此去掉 */
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* ============ 3. 顶栏（64px 实色，无 blur） ============ */
+.goclub-topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--gc-topbar-h);
+  z-index: 50;
+  background: var(--vp-bg);
+  border-bottom: 1px solid var(--vp-divider);
+  /* 导航栏字体与首页大字标同款 Fredoka（拉丁字形）；中文自动回退 PingFang 等黑体 */
+  font-family: Fredoka, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+.goclub-topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  max-width: var(--vp-layout-max-width);
+  margin-inline: auto;
+  padding: 0 24px;
+}
+@media screen and (min-width: 48rem) {
+  .goclub-topbar-inner { padding: 0 32px; }
+}
+.goclub-topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--vp-text-1);
+  text-decoration: none;
+  min-width: 0;
+}
+/* 品牌标：本站原创 logo（static/logo.svg；用户 2026-10-23 定稿候选 2 气泡+Go） */
+.book-brand-logo { display: block; width: 30px; height: 30px; flex: 0 0 auto; }
+/* VP 顶栏为单行站名（16px/600），无副标题行 */
+.book-brand-name { font-family: Fredoka, "PingFang SC", "Hiragino Sans GB", sans-serif; font-size: 19px; font-weight: 600; letter-spacing: .01em; color: var(--vp-text-1); white-space: nowrap; }
+/* 品牌标为 Gemini 渐变气泡：深色顶栏下轻提亮，避免贴近黑底看不清 */
+:root[data-theme="dark"] .book-brand-logo { filter: brightness(1.12) saturate(1.05); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .book-brand-logo { filter: brightness(1.12) saturate(1.05); }
+}
+.goclub-topbar-spacer { flex: 1 1 auto; }
+.goclub-topbar a { flex: none; }
+.goclub-topbar-icon { width: 18px; height: 18px; flex: 0 0 auto; }
+.goclub-topbar-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  color: var(--vp-text-2);
+  cursor: pointer;
+}
+.goclub-topbar-btn:hover { background: var(--vp-bg-soft); color: var(--vp-text-1); }
+/* 顶栏搜索（VPNavBarSearch 位置：品牌右侧、菜单左侧）：flex 占中部，max 320px，soft 底、无边框、8px 圆角 */
+.goclub-topbar-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  max-width: 320px;
+  height: 40px;
+  margin-inline-start: 12px;
+  padding: 0 10px 0 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--vp-bg-soft);
+  color: var(--vp-text-3);
+  font-size: 13px;
+  cursor: text;
+}
+.goclub-topbar-search:hover { background: var(--vp-bg-soft-hover); }
+.goclub-topbar-search-text { flex: 1 1 auto; text-align: left; }
+.goclub-topbar-kbd,
+.home-search-kbd {
+  padding: 1px 6px;
+  border: 1px solid var(--vp-divider);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--vp-bg);
+  color: var(--vp-text-2);
+  font-size: 11px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+/* 顶栏菜单行（VPNavMenu 规格：14px/500、链接内边距 0 12px、行高=顶栏高） */
+.goclub-topbar-nav { display: none; }
+@media screen and (min-width: 60rem) {
+  .goclub-topbar-nav { display: flex; align-items: stretch; margin-left: 24px; }
+  .goclub-topbar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--vp-text-1);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .goclub-topbar-nav a:hover { color: var(--vp-brand-1); }
+  .goclub-topbar-nav a.active { color: var(--vp-brand-1); }
+}
+/* 「更多」下拉（VP flyout：纯 CSS hover/focus 展开，白底、divider 边、圆角 12、轻阴影） */
+.goclub-topbar-more { position: relative; display: flex; align-items: stretch; }
+.goclub-topbar-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 12px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--vp-text-1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.goclub-topbar-more-btn:hover { color: var(--vp-brand-1); }
+.goclub-topbar-more-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--vp-text-2);
+  transition: transform 0.2s ease-in-out;
+}
+.goclub-topbar-more:hover .goclub-topbar-more-icon,
+.goclub-topbar-more:focus-within .goclub-topbar-more-icon { transform: rotate(180deg); }
+.goclub-topbar-flyout {
+  position: absolute;
+  top: 100%;
+  inset-inline-end: 0;
+  z-index: 55;
+  padding-top: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease-in-out, transform 0.18s ease-in-out, visibility 0.18s;
+}
+.goclub-topbar-more:hover .goclub-topbar-flyout,
+.goclub-topbar-more:focus-within .goclub-topbar-flyout {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.goclub-topbar-flyout-panel {
+  min-width: 184px;
+  padding: 8px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 12px;
+  background: var(--vp-bg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+.goclub-topbar-flyout-panel a {
+  display: block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--vp-text-1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.goclub-topbar-flyout-panel a:hover { background: var(--vp-bg-soft); color: var(--vp-brand-1); }
+.goclub-topbar-flyout-panel a.active { color: var(--vp-brand-1); }
+/* 顶栏竖分隔线（VP nav 的 controls 分隔） */
+.goclub-topbar-divider {
+  flex: 0 0 auto;
+  align-self: center;
+  width: 1px;
+  height: 24px;
+  margin: 0 2px 0 10px;
+  background: var(--vp-divider);
+}
+@media screen and (max-width: 59.99rem) {
+  .goclub-topbar-divider { display: none; }
+}
+/* GitHub 社交图标：VP socials 形态，纯图标 20px、无文字 */
+.goclub-topbar .goclub-topbar-github {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 6px;
+  color: var(--vp-text-2);
+  text-decoration: none;
+}
+.goclub-topbar .goclub-topbar-github:hover { color: var(--vp-text-1); }
+/* 官方 mark 是 fill 型：显式 fill/stroke 隔离，防止被 Lucide 图标的 stroke 样式串扰 */
+.goclub-topbar-github .goclub-github-mark {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  fill: currentColor;
+  stroke: none;
+}
+/* 外观切换（VP VPSwitchAppearance：40×22 轨道 + 18px 圆钮，钮内 sun/moon 图标随主题换；
+   圆钮位移由 CSS 按生效主题驱动，与 book.scss 的主题应用条件保持一致） */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 2px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.goclub-switch-track {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 22px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 11px;
+  background: var(--vp-bg-soft);
+  transition: border-color 0.25s, background-color 0.25s;
+}
+.theme-toggle:hover .goclub-switch-track { border-color: var(--vp-text-3); }
+.goclub-switch-knob {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--vp-bg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s;
+}
+.goclub-switch-knob svg { width: 12px; height: 12px; color: var(--vp-text-2); }
+:root[data-theme="dark"] .goclub-switch-knob { transform: translateX(18px); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .goclub-switch-knob { transform: translateX(18px); }
+}
+
+/* Lucide 图标统一规则（原件 assets/icons/lucide/，stroke=currentColor 自适应明暗） */
+.lucide-icon { display: inline-block; vertical-align: middle; flex: 0 0 auto; }
+.book-search-close svg { width: 18px; height: 18px; }
+
+/* ============ 4. 侧边栏（VP VPSidebar 规格：272px、bg-alt、无面板边框、分组平铺） ============ */
+.book-menu { font-size: 0.875rem; }
+.book-menu .book-menu-content {
+  background: var(--vp-bg-sidebar);
+  padding: 32px 32px 96px;
+}
+.book-menu nav ul { padding: 0; margin: 0; list-style: none; }
+.book-menu nav a { color: var(--vp-text-2); }
+
+/* 一级栏目 = VP 分组：标题 14px/700/text-1，分组间细分隔线 */
+.book-menu .goclub-menu-directory > ul > li { margin: 0; }
+.book-menu .goclub-menu-directory > ul > li + li {
+  margin-top: 24px;
+  border-top: 1px solid var(--vp-divider-light);
+  padding-top: 10px;
+}
+.book-menu .goclub-menu-directory > ul > li > a,
+.book-menu .goclub-menu-directory > ul > li > label {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  color: var(--vp-text-1);
+}
+.book-menu .goclub-menu-directory > ul > li > label > a {
+  flex: 1 1 auto;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* 子项平铺：14px/500、行高 32px、无文件树线；带子级的节点行尾有可折叠 chevron */
+.book-menu .goclub-menu-directory > ul > li > ul { margin-top: 2px; }
+.book-menu .goclub-menu-directory > ul > li > ul li { margin: 0; }
+.book-menu .goclub-menu-directory > ul > li > ul a,
+.book-menu .goclub-menu-directory > ul > li > ul label {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 32px;
+  color: var(--vp-text-2);
+}
+.book-menu .goclub-menu-directory > ul > li > ul label > a {
+  flex: 1 1 auto;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+.book-menu nav a[href]:hover,
+.book-menu nav label:hover { color: var(--vp-brand-1); opacity: 1; }
+.book-menu .goclub-menu-directory > ul > li > ul a[href]:hover { background: var(--vp-bg-soft); }
+:root[data-theme="dark"] .book-menu .goclub-menu-directory > ul > li > ul a[href]:hover { background: var(--vp-bg-soft); }
+.book-menu nav a.active { color: var(--vp-brand-1); font-weight: 500; }
+.book-menu .goclub-menu-directory > ul > li > ul a.active { color: var(--vp-brand-1); font-weight: 500; }
+.book-menu nav a.is-ancestor { color: var(--vp-text-1); font-weight: 500; }
+/* 三级及更深：VP 的 border-left 引导（只出现在子分组内） */
+.book-menu .goclub-menu-directory > ul > li > ul ul {
+  margin-inline-start: 12px;
+  padding-inline-start: 16px;
+  border-inline-start: 1px solid var(--vp-divider);
+}
+.book-section-flat > a, .book-section-flat > label { font-weight: 700; }
+
+/* 侧栏可折叠（恢复 hugo-book 原生 checkbox 折叠，模板已按「当前/祖先」预勾选，全端生效）：
+   默认只展开当前页所在路径，其余分支收起；点节点行尾 chevron 只展开/收起、不跳转，
+   点标题文字仍进栏目页；子列表显隐与 chevron 旋转 90° 朝下由主题原生规则负责。
+   chevron 是 <img>（Lucide chevron-right 原件），吃不到文字色，用透明度模拟 text-3 灰：
+   平时淡、hover 才明显。 */
+.book-menu nav label > img.book-icon {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin-inline-start: 4px;
+  opacity: 0.4;
+  transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out;
+}
+.book-menu nav label:hover > img.book-icon { opacity: 0.85; }
+.book-menu nav input.toggle:checked + label > img.book-icon { opacity: 0.7; }
+/* 展开瞬间轻淡入，缓和整列高度跳变（纯 CSS，不引 JS） */
+.book-menu nav input.toggle:checked + label + ul { animation: gc-menu-fade 0.18s ease-in-out; }
+/* 主题 _utils/_main 的侧栏折叠规则（fork 成品 CSS 自带，beta 独立 book.scss 未引主题，需补）：checkbox 本身不可见；未展开分支收起子列表；展开时 chevron 旋转 90° */
+input.toggle { height: 0; width: 0; overflow: hidden; opacity: 0; position: absolute; }
+.book-menu input.toggle + label + ul { display: none; }
+.book-menu input.toggle:checked + label > img:last-child { transform: rotate(90deg); }
+.book-menu input.toggle:checked + label + ul { display: block; }
+
+@media screen and (min-width: 56.01rem) {
+  /* 桌面：固定 272px 列，宽度变量与折叠状态一律失效（VP 侧栏不可调） */
+  .book-menu { flex: 0 0 var(--vp-sidebar-w); }
+  .book-menu .book-menu-content {
+    width: var(--vp-sidebar-w);
+    border-right: none;
+    top: var(--gc-topbar-h); /* 钉死在顶栏下方（主题 fixed top 会被其它规则压成 1rem） */
+  }
+  /* ≥1440：侧栏灰底向左延展到视口边缘（VP ≥1440 的 sidebar 宽度公式等效效果） */
+  @media screen and (min-width: 90rem) {
+    .book-menu .book-menu-content {
+      box-shadow: calc((var(--vp-layout-max-width) - 100vw) / 2) 0 0 0 var(--vp-bg-sidebar);
+    }
+  }
+  body.sidebar-collapsed .book-menu { flex-basis: var(--vp-sidebar-w); }
+  body.sidebar-collapsed .book-menu .book-menu-content {
+    transform: none;
+    visibility: visible;
+  }
+  /* 侧栏折叠在桌面端同样生效（chevron 与展开规则见第 4 节通用规则，不再强制全展开） */
+  /* 首页无侧栏（VP home 布局） */
+  body.book-kind-home .book-menu { display: none; }
+  /* 侧栏内搜索框桌面不占位：面板未展开时视觉隐藏，保留 focus/click 唤起浮层 */
+  .book-search:not(.is-expanded) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: none;
+  }
+}
+
+/* 侧栏分支展开时的淡入（配合上面的 animation） */
+@keyframes gc-menu-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 文档页布局（beta 上游壳内新增）：左侧文件树侧栏 + 正文；桌面走侧栏，手机走顶栏菜单+抽屉 */
+.docs-layout { display: flex; height: 100%; min-height: 0; }
+.docs-layout > .docs-body { flex: 1 1 auto; min-width: 0; min-height: 0; }
+.docs-layout > .book-menu { min-height: 0; overflow-y: auto; border-right: 1px solid var(--line); background: var(--vp-bg-sidebar); }
+@media screen and (max-width: 56rem) {
+  .docs-layout > .book-menu { display: none; }
+}
+
+/* ============ 5. 搜索（浮层为实色弹窗；筛选为下划线 tab） ============ */
+.book-search { position: relative; margin: 0 0 14px; }
+.book-search-topbar,
+.book-search-filters { display: none; }
+.book-search-field { position: relative; }
+.book-search input {
+  width: 100%;
+  height: 38px;
+  padding: 0 46px 0 12px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: var(--vp-bg-soft);
+  color: var(--vp-text-1);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.book-search input::placeholder { color: var(--vp-text-3); }
+.book-search input:focus {
+  outline: none;
+  border-color: var(--vp-brand-1);
+  background: var(--vp-bg);
+}
+.book-search-spinner { border-top-color: var(--vp-text-2); }
+.book-search-clear {
+  position: absolute;
+  height: auto; /* 上游 book.scss 仍有 pill 规则 height:24px；fork 的 book.scss 无此规则，按钮高由内容定；加 height:auto 才能与 fork 实际高度一致 */
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  padding: 2px 8px;
+  border: none;
+  border-radius: 6px;
+  background: var(--vp-bg-soft);
+  color: var(--vp-text-2);
+  font-size: 12px;
+  cursor: pointer;
+}
+.book-search-clear:hover { background: var(--vp-bg-soft-hover); color: var(--vp-text-1); }
+.book-search-summary { margin-top: 8px; }
+.book-search-status {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--vp-bg-soft);
+  color: var(--vp-text-2);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.book-search-status.is-error {
+  background: rgba(216, 71, 71, 0.08);
+  color: #c03636;
+}
+:root[data-theme="dark"] .book-search-status.is-error { color: #f08a8a; }
+#book-search-results { list-style: none; margin: 8px 0 0; padding: 0; }
+#book-search-results:empty { display: none; }
+.book-search.is-results-collapsed .book-search-summary,
+.book-search.is-results-collapsed #book-search-results { display: none; }
+.book-search-result { border-bottom: 1px solid var(--vp-divider); }
+.book-search-result:last-child { border-bottom: none; }
+.book-search-result a {
+  display: block;
+  padding: 10px 8px;
+  border-radius: 6px;
+  color: var(--vp-text-1);
+  text-decoration: none;
+}
+.book-search-result a:hover,
+.book-search-result a:focus-visible { background: var(--vp-bg-soft); }
+.book-search-result-heading { display: flex; align-items: flex-start; gap: 8px; }
+.book-search-result-badge {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--vp-brand-soft);
+  color: var(--vp-brand-1);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.book-search-result-badge.is-book {
+  background: var(--vp-bg-soft);
+  color: var(--vp-text-2);
+}
+.book-search-result-title { font-size: 14px; font-weight: 600; line-height: 1.45; }
+.book-search-result-breadcrumb {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--vp-text-3);
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.book-search-result-snippet {
+  display: -webkit-box;
+  margin-top: 4px;
+  overflow: hidden;
+  color: var(--vp-text-2);
+  font-size: 12.5px;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.book-search-result mark,
+.book-search mark {
+  padding: 0 1px;
+  border-radius: 2px;
+  background: var(--vp-mark-bg);
+  color: inherit;
+}
+
+/* 展开态：居中实色弹窗（无磨砂无 blur） */
+.book-search-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 79;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+.book-search.is-expanded {
+  position: fixed;
+  top: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  width: 680px;
+  max-width: calc(100vw - 32px);
+  max-height: 80vh;
+  margin: 0;
+  padding: 20px 20px 10px;
+  overflow: hidden;
+  border: 1px solid var(--vp-divider);
+  border-radius: 12px;
+  background: var(--vp-bg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+.book-search.is-expanded .book-search-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.book-search.is-expanded .book-search-topbar strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--vp-text-1);
+}
+.book-search.is-expanded .book-search-topbar small {
+  display: block;
+  margin-top: 2px;
+  color: var(--vp-text-3);
+  font-size: 12.5px;
+}
+.book-search-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--vp-text-2);
+  line-height: 1;
+  cursor: pointer;
+}
+.book-search-close:hover { background: var(--vp-bg-soft); color: var(--vp-text-1); }
+.book-search.is-expanded input { height: 46px; padding: 0 52px 0 14px; font-size: 15px; border-radius: 8px; }
+/* 筛选：下划线式 tab（不是描边胶囊） */
+.book-search.is-expanded .book-search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 8px;
+  border-bottom: 1px solid var(--vp-divider);
+}
+.book-search-filter {
+  padding: 8px 1px;
+  margin-bottom: -1px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--vp-text-2);
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.book-search-filter:hover { color: var(--vp-text-1); }
+.book-search-filter[aria-pressed="true"] {
+  border-bottom-color: var(--vp-brand-1);
+  color: var(--vp-brand-1);
+  font-weight: 600;
+}
+.book-search.is-expanded #book-search-results { overflow-y: auto; margin-top: 6px; }
+body.search-overlay-open { overflow: hidden; }
+
+/* ============ 6. 内容列与右侧大纲（VPDoc / VPDocAside 规格） ============ */
+/* VPDoc padding: 32px 24px 96px → ≥768: 48px 32px 128px → ≥960: 32px 32px（底部由页脚间距补足） */
+.book-page { min-width: 0; padding: 32px 24px 96px; }
+@media screen and (min-width: 48rem) {
+  .book-page { padding: 48px 32px 128px; }
+}
+@media screen and (min-width: 60rem) {
+  .book-page { padding: 32px 32px 64px; }
+}
+.book-page > .book-article,
+.book-page > .book-footer {
+  width: 100%;
+  max-width: var(--gc-wide-w); /* 1024px 宽列：大屏下正文撑满内容区，两侧留白收窄 */
+  margin-inline: auto;
+}
+/* 栏目页正文列与文章页一致 = 1024px 宽列 */
+body.book-kind-section .book-page > .book-article,
+body.book-kind-section .book-page > .book-footer { max-width: var(--gc-wide-w); }
+/* 正文左对齐：正文列居中（margin-inline:auto）时，栏目页无右目录、内容区宽，
+   左间距约 260px；文章页有右目录、内容区窄，左间距约 100px。改左对齐后
+   两边都从同一 x 起（只剩 book-page 的 32px 内边距），要么都窄。首页不动。 */
+body.book-kind-section .book-page > .book-article,
+body.book-kind-section .book-page > .book-footer,
+body.book-kind-page .book-page > .book-article,
+body.book-kind-page .book-page > .book-footer { margin-inline: 0; }
+/* 首页：无侧栏，全宽走 VP home 的两侧留白（24 / 48 / 64） */
+body.book-kind-home .book-page { padding: 0 24px 64px; }
+@media screen and (min-width: 40rem) {
+  body.book-kind-home .book-page { padding-inline: 48px; }
+}
+
+/* 全站底栏（statusbar，对齐上游 goclub.space）：左 © + 内容整理，中在线/今日/累计统计，右投稿流程/贡献者/GitHub。
+   上游是全站底栏：不管切到哪个页面都在底部常驻，随页面滚动仍可见。我们 fork 用 position: fixed 实现（baseof 的页面结构是横向 flex，无法像上游那样用纵向 flex 顶住）。
+   三栏 grid（1fr auto 1fr）；窄屏逐级收：≤60rem 藏“内容由社区整理”并收紧间距；≤40rem 单列居中叠放，只留今日统计。 */
+/* 固定底栏不遮内容：页面、侧边栏、右侧目录底部都留出底栏高度。 */
+body,
+.book-menu-content,
+.book-toc-content {
+  padding-bottom: var(--gc-status-h);
+}
+.statusbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  min-height: var(--gc-status-h);
+  padding: 10px 20px;
+  border-top: 1px solid var(--gc-border);
+  background: var(--gc-surface);
+  color: var(--gc-text-3);
+  font-size: 11.5px;
+}
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.status-sep {
+  color: var(--gc-border-strong);
+}
+.status-live {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-self: center;
+  white-space: nowrap;
+}
+.status-live span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+.status-live b {
+  color: var(--gc-text-2);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.status-live i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+  animation: gc-pulse 2.4s ease-in-out infinite;
+}
+@keyframes gc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.status-live .live-group {
+  gap: 10px;
+  padding-left: 14px;
+  border-left: 1px solid var(--gc-border);
+}
+.status-live .live-group em {
+  font-style: normal;
+  color: var(--gc-text);
+  font-weight: 600;
+}
+.status-live .live-now {
+  gap: 6px;
+}
+.status-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  white-space: nowrap;
+}
+.status-right a {
+  color: var(--gc-text-3);
+}
+.status-right a:hover {
+  color: var(--gc-accent);
+}
+/* 首页：主题默认 book-footer 在首页隐藏（首页的 book-footer 只剩上一篇/下一篇——首页没有上一篇/下一篇，内容为空；全站底栏已有统计与链接）。 */
+body.book-kind-home .book-footer {
+  display: none;
+}
+@media screen and (max-width: 60rem) {
+  .status-left span:last-child {
+    display: none;
+  }
+  .status-live {
+    gap: 10px;
+  }
+  .status-live .live-group {
+    gap: 8px;
+    padding-left: 10px;
+  }
+  /* 平板竖屏（768px 左右）中间统计太宽会把右侧 3 个链接挤出屏外（GitHub 先被裁掉）。
+     此处先藏“累计”一组（与手机端同款处理），只留在线 + 今日，右侧链接才放得下。 */
+  .status-live .live-group.is-total {
+    display: none;
+  }
+}
+@media screen and (max-width: 40rem) {
+  /* 手机端底栏改单行极简：只留“在线 + 今日浏览”一行，© 与投稿/贡献者/GitHub 隐藏（顶栏与首页已有），不再三行叠放占屏。 */
+  .statusbar {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    min-height: 0;
+    padding: 8px 12px;
+  }
+  .status-left,
+  .status-right {
+    display: none;
+  }
+  .status-live {
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .status-live .live-group.is-total {
+    display: none;
+  }
+  .status-live .live-group {
+    gap: 8px;
+    padding-left: 8px;
+    margin-left: 8px;
+  }
+  /* 手机端今日只留“浏览”，访客/访问隐藏（一行放不下，数字太密）。 */
+  .status-live .live-group span:not(:first-of-type) {
+    display: none;
+  }
+  /* 单行底栏约 35px，页面底部留 40px 即可（不再是三行的 110px）。 */
+  body {
+    padding-bottom: var(--gc-status-h);
+  }
+}
+@media screen and (min-width: 60rem) {
+  body.book-kind-home .book-page { padding-inline: 64px; }
+}
+body.book-kind-home .book-page > .book-article,
+body.book-kind-home .book-page > .book-footer { max-width: none; }
+.book-header { margin: 0; }
+
+/* 大纲列：VP aside 宽 256px（含 padding-left 32），≥1280 才出现 */
+.book-toc { flex: 0 0 var(--gc-toc-w); font-size: 0.8125rem; }
+@media screen and (max-width: 79.99rem) {
+  .book-toc { display: none; }
+}
+.book-toc .book-toc-content {
+  width: var(--gc-toc-w);
+  top: var(--gc-topbar-h);
+  padding: 32px 24px 32px 32px;
+}
+.book-toc-title {
+  margin: 0;
+  padding-left: 16px;
+  border-inline-start: 1px solid var(--vp-divider);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  line-height: 28px;
+  color: var(--vp-text-1);
+}
+/* 大纲整体左边线（VP outline）：标题与链接共用一条连续线 */
+.book-toc nav { margin-top: 0; border-inline-start: 1px solid var(--vp-divider); }
+.book-toc nav ul { list-style: none; margin: 0; padding: 0; }
+.book-toc nav li { margin: 0; }
+.book-toc nav a {
+  display: block;
+  position: relative;
+  padding: 0 0 0 16px;
+  color: var(--vp-text-2);
+  font-size: 13px;
+  line-height: 28px;
+  white-space: normal;
+}
+.book-toc nav ul ul a { padding-left: 29px; }
+.book-toc nav a:hover { color: var(--vp-text-1); opacity: 1; }
+/* 滚动高亮（VP outline-marker 等效）：激活链接变 text-1，左边线压一枚品牌色标记段 */
+.book-toc nav a.active { color: var(--vp-text-1); }
+.book-toc nav a.active::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 18px;
+  background: var(--vp-brand-1);
+}
+
+/* ============ 7. 正文排版（VitePress vp-doc 近似） ============ */
+.markdown { line-height: 1.7; font-size: 1rem; color: var(--vp-text-1); }
+.markdown h1, .markdown h2, .markdown h3,
+.markdown h4, .markdown h5, .markdown h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: var(--vp-text-1);
+}
+.markdown h1 { font-size: 2rem; line-height: 1.25; }
+.markdown h2 {
+  font-size: 1.5rem;
+  line-height: 1.35;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--vp-divider);
+}
+.markdown h3 { font-size: 1.25rem; margin-top: 32px; }
+.markdown h4 { font-size: 1rem; margin-top: 24px; }
+.markdown p { margin: 1em 0; }
+.markdown a[href] { color: var(--vp-brand-1); font-weight: 500; }
+.markdown a[href]:hover { color: var(--vp-brand-2); text-decoration: none; }
+.markdown code {
+  background: var(--vp-code-bg);
+  border: none;
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 0.875em;
+  color: var(--vp-text-1);
+}
+.markdown pre {
+  background: var(--vp-pre-bg);
+  border: none;
+  border-radius: 8px;
+  padding: 20px 24px;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+.markdown pre code { background: none; border: none; padding: 0; font-size: inherit; }
+.markdown blockquote {
+  margin: 1em 0;
+  padding: 0 0 0 16px;
+  border-inline-start: 1px solid var(--vp-divider);
+  color: var(--vp-text-2);
+  background: none;
+}
+.markdown table { font-size: 0.875rem; border-collapse: collapse; }
+.markdown table th, .markdown table td { border: 1px solid var(--vp-divider); padding: 8px 16px; }
+.markdown table th { background: var(--vp-bg-soft); font-weight: 600; text-align: left; }
+.markdown hr { border: none; border-top: 1px solid var(--vp-divider); margin: 2em 0; }
+.markdown img { max-width: 100%; height: auto; border-radius: 8px; }
+.markdown ul, .markdown ol { padding-inline-start: 1.4em; }
+.markdown li { margin: 0.3em 0; }
+.markdown .highlight pre, .markdown .highlight code { background: var(--vp-pre-bg); }
+mark.goclub-search-hit { background: var(--vp-mark-bg); color: inherit; border-radius: 2px; padding: 0 1px; }
+mark.goclub-search-hit.is-current { outline: 2px solid var(--vp-brand-1); }
+
+/* ============ 8. 页首（文章 / 栏目） ============ */
+.page-lead { margin-bottom: 32px; }
+/* 主题 .markdown h1{margin-top:1.5em} 特异性更高，会把页首标题顶下去 48px 并折叠穿透到文章框，VP 正文起点公式被破坏 */
+.markdown .page-lead-title { margin-top: 0; }
+.page-lead-title {
+  margin: 0 0 12px;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--vp-text-1);
+}
+.page-lead-summary { color: var(--vp-text-2); font-size: 1rem; line-height: 1.7; }
+.page-lead-summary p { margin: 0; }
+.page-lead-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--vp-text-3);
+}
+.page-lead-actions { margin-top: 16px; }
+.page-hero-button {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 8px;
+  background: var(--vp-btn-bg);
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: filter .2s ease;
+}
+.page-hero-button:hover { background: var(--vp-btn-hover); filter: brightness(1.06); }
+.section-preface, .section-body-content { color: var(--vp-text-1); }
+.section-preface > :first-child, .section-body-content > :first-child { margin-top: 0; }
+
+/* 复制短链按钮 */
+.goclub-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 6px;
+  background: var(--vp-bg);
+  color: var(--vp-text-2);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.goclub-share:hover { background: var(--vp-bg-soft); color: var(--vp-text-1); }
+.goclub-share.is-done { border-color: var(--vp-brand-1); color: var(--vp-brand-1); }
+.goclub-share.is-error { border-color: #d84747; color: #c03636; }
+.goclub-share-icon svg { width: 14px; height: 14px; display: block; }
+.goclub-share-url { color: var(--vp-text-3); font-size: 12px; }
+
+/* ============ 9. 首页（文档门户风：居中 hero + 大搜索框 + 数据带 + 栏目索引行） ============ */
+/* 第五轮口径：删渐变大字/彩色光晕/悬浮大 logo，回归与内页一致的 VP 色板与细线体系，排版即设计。 */
+/* 第一屏（用户 2026-10-24 亲定）：hero + 数据横幅撑满一屏（顶栏 64px 固定，内容区从顶栏下方起算），
+   全部栏目从第二屏开始；内容超高时 min-height 只撑开不裁切。 */
+.home-first {
+  min-height: calc(100vh - var(--gc-topbar-h));
+  min-height: calc(100svh - var(--gc-topbar-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.home-hero {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px 0 28px;
+  text-align: center;
+}
+@media screen and (min-width: 40rem) {
+  /* 大字标整体稍微上移（用户 2026-10-24 亲定）：72 → 48 */
+  .home-hero { padding-top: 26px; }
+}
+.home-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--vp-text-3);
+}
+.home-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gemini-gradient);
+}
+/* 大字标：气泡 logo + Fredoka 600（BotsRouter 同款品牌艺术字）；行高预留，字体未加载时 fallback 栈兜底 */
+/* 大字标锁合：图片 logo 在上、文字在下，全部居中（用户 2026-10-24 亲定；横排在窄屏会溢出裁切） */
+.home-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.22em;
+  font-family: "Fredoka", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: clamp(72px, 11vw, 120px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--vp-text-1);
+}
+.home-wordmark-logo { width: 0.9em; height: 0.9em; flex: 0 0 auto; }
+.home-wordmark-text { line-height: 1.05; white-space: nowrap; }
+/* 大字标上下边距单独高权重声明：它本身是 <p>，主题给 .markdown p 的 1em 边距按 120px 字号放大成上下各 120px 的巨洞，必须压掉 */
+.markdown .home-hero .home-wordmark { margin: 20px 0 0; }
+.markdown .home-hero .home-eyebrow { margin-top: 0; }
+.home-hero .home-title {
+  margin: 24px 0 0;
+  font-family: Fredoka, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 40px;
+  color: var(--vp-text-1);
+}
+@media screen and (min-width: 40rem) {
+  .home-hero .home-title { font-size: 40px; line-height: 48px; }
+}
+.home-hero .home-tagline {
+  text-wrap: balance;
+  margin: 12px auto 0;
+  max-width: 660px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--vp-text-2);
+}
+/* 首页大搜索框：复用 .goclub-search-trigger 唤起既有搜索浮层；soft 底、圆角 8、非胶囊描边 */
+.home-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 560px;
+  max-width: 100%;
+  height: 48px;
+  margin: 26px auto 0;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--vp-bg-soft);
+  color: var(--vp-text-3);
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.home-search:hover { background: var(--vp-bg-soft-hover); border-color: var(--vp-divider); }
+.home-search-icon { width: 18px; height: 18px; flex: 0 0 auto; }
+.home-search-text { flex: 1 1 auto; text-align: left; }
+.home-search-kbd {
+  flex: 0 0 auto;
+  padding: 1px 7px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 4px;
+  background: var(--vp-bg);
+  color: var(--vp-text-3);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 18px;
+}
+/* 操作行容器：hero 与共建区共用，居中成对排布 */
+.home-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+/* 首页全部操作钮统一胶囊（hero + 共建区，用户 2026-10-23 亲定）：主钮 Gemini 渐变实心，次钮 soft 底；flex:none 是为了压住主题给 .markdown a 的 flex:1（否则按钮被拉满整行） */
+.markdown .home-links a.home-link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: auto;
+  align-items: center;
+  gap: 7px;
+  height: 42px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: var(--vp-bg-soft);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--vp-text-1);
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease;
+}
+.markdown .home-links a.home-link:hover { background: var(--vp-bg-soft-hover); color: var(--vp-text-1); text-decoration: none; }
+.markdown .home-links a.home-link-primary { background: var(--gemini-gradient); color: #fff; transition: filter .2s ease; }
+.markdown .home-links a.home-link-primary:hover { background: var(--gemini-gradient); color: #fff; filter: brightness(1.06); }
+/* 点过一次后链接变 :visited，全局 .markdown a[href]:visited 会把字改成 #346bf0，
+   正好撞上按钮渐变的中间蓝（蓝底蓝字、看不见）。此处用更高权重把已访问也钉死白色。 */
+.markdown .home-links a.home-link-primary:visited { color: #fff; }
+:root[data-theme="dark"] .markdown .home-links a.home-link-primary { color: #fff; }
+.home-link-icon { width: 15px; height: 15px; }
+
+/* 数据带：细线上下分隔，数字由模板实时计数 */
+.home-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 64px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 18px 0;
+  border-top: 1px solid var(--vp-divider);
+  border-bottom: 1px solid var(--vp-divider);
+}
+.home-stat { display: inline-flex; align-items: baseline; gap: 8px; }
+.home-stat-value { font-size: 20px; font-weight: 600; color: var(--vp-text-1); font-variant-numeric: tabular-nums; }
+.home-stat-label { font-size: 13px; color: var(--vp-text-3); }
+
+/* 栏目索引：两列索引行，细线分隔，hover 行变 soft 底 */
+.home-index { max-width: 1080px; margin: 0 auto; padding-top: 56px; }
+.home-index-heading {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--vp-text-3);
+}
+.home-index-grid { display: grid; grid-template-columns: 1fr; }
+@media screen and (min-width: 64rem) {
+  .home-index-grid { grid-template-columns: 1fr 1fr; column-gap: 48px; }
+}
+.markdown a.home-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 10px;
+  border-top: 1px solid var(--vp-divider);
+  color: var(--vp-text-1);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.home-index-grid > a.home-row:last-child { border-bottom: 1px solid var(--vp-divider); }
+@media screen and (min-width: 64rem) {
+  .home-index-grid > a.home-row:nth-last-child(2) { border-bottom: 1px solid var(--vp-divider); }
+}
+.markdown a.home-row:hover { background: var(--vp-bg-soft); text-decoration: none; }
+.home-row-num {
+  flex: 0 0 auto;
+  width: 26px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--vp-text-3);
+  font-variant-numeric: tabular-nums;
+}
+.home-row-icon { flex: 0 0 auto; display: flex; color: var(--vp-text-2); }
+.home-row-icon svg { width: 20px; height: 20px; }
+.markdown a.home-row:hover .home-row-icon { color: var(--vp-brand-1); }
+.home-row-copy { flex: 1 1 auto; min-width: 0; }
+.home-row-title { display: block; font-size: 16px; font-weight: 600; line-height: 24px; color: var(--vp-text-1); }
+.markdown a.home-row:hover .home-row-title { color: var(--vp-brand-1); }
+.home-row-summary {
+  text-wrap: pretty;
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  color: var(--vp-text-2);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.home-row-count {
+  flex: 0 0 auto;
+  font-size: 13px;
+  color: var(--vp-text-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.home-row-arrow { flex: 0 0 auto; display: flex; color: var(--vp-text-3); transition: transform 0.15s, color 0.15s; }
+.home-row-arrow svg { width: 16px; height: 16px; }
+.markdown a.home-row:hover .home-row-arrow { color: var(--vp-brand-1); transform: translateX(3px); }
+
+/* 参与共建：细线分隔的一行引导 + 文字链 */
+.home-join {
+  max-width: 1080px;
+  margin: 64px auto 0;
+  padding-top: 40px;
+  border-top: 1px solid var(--vp-divider);
+  text-align: center;
+}
+.home-join .home-join-text { margin-left: auto; margin-right: auto; text-align: center; text-wrap: balance; max-width: 560px; font-size: 15px; line-height: 26px; color: var(--vp-text-2); }
+.home-join .home-links { margin-top: 16px; }
+
+/* 首页公告（上游元素，fork 无对应物）：约束为与 .home-index/.home-join 同宽的 1080px 居中列；p 的 margin 用 .markdown 限定提升优先级，盖过 .markdown p 的 1em 上下 margin */
+.home-notice { max-width: 1080px; margin-inline: auto; }
+.markdown .home-notice p { margin: 0; }
+
+/* 项目声明：首页底部常驻小字，细线分隔、居中、两行内（本 PR 未采用该区块，样式保留备用） */
+.home-declaration {
+  max-width: 720px;
+  margin: 56px auto 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--vp-divider);
+  text-align: center;
+}
+.home-declaration p {
+  margin: 0;
+  text-wrap: balance;
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--vp-text-3);
+}
+.home-declaration a { color: var(--vp-brand-1); font-weight: 600; text-decoration: none; }
+.home-declaration a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ============ 10. 栏目索引（VP 正文式：无自创索引大标题，前言后直接是带摘要的链接列表） ============ */
+.section-index-shell { margin-top: 8px; }
+/* 混合栏目（子栏目+文章并存）时的分组小标题：纯文字小节标，不带分隔线 */
+.section-directory-heading {
+  margin: 40px 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 24px;
+  color: var(--vp-text-1);
+}
+.section-directory-group:first-child .section-directory-heading { margin-top: 24px; }
+.section-link-list { list-style: none; margin: 0; padding: 0; }
+.section-link-list-item { margin: 0; }
+.section-link-list-copy { display: block; min-width: 0; }
+.section-link-list-title { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--vp-text-1); }
+.section-link-list-summary {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--vp-text-2);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.section-link-list-link { display: block; text-decoration: none; }
+.section-link-list-link:hover .section-link-list-title { color: var(--vp-brand-1); }
+/* 子栏目与条目统一为带描述的分隔行（卡片只保留在首页 features） */
+.section-link-list--entries .section-link-list-item { border-bottom: 1px solid var(--vp-divider); }
+.section-link-list--entries .section-link-list-link { padding: 16px 0; }
+.section-link-list--entries .section-link-list-item:first-child .section-link-list-link { padding-top: 8px; }
+
+/* ============ 11. 页脚 / 上下篇 / 反馈 ============ */
+.book-footer {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--vp-divider);
+  font-size: 13px;
+  color: var(--vp-text-2);
+}
+.goclub-footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+}
+.book-footer a { color: var(--vp-text-2); }
+.book-footer a:hover { color: var(--vp-brand-1); }
+/* 上一篇/下一篇：两列等高大圆角卡（20px，近胶囊口径），整卡可点；
+   第一行箭头+小标签、第二行标题，右卡右对齐；单侧时占原列不塌陷 */
+.goclub-prev-next {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+.goclub-prev-next-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  height: 100%;
+  min-width: 0;
+  padding: 16px 20px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 20px;
+  background: var(--vp-bg);
+  color: var(--vp-text-1);
+  text-decoration: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.goclub-prev-next-link:hover {
+  border-color: var(--vp-brand-1);
+  box-shadow: 0 4px 16px rgba(52, 107, 240, 0.1);
+  color: var(--vp-text-1);
+  text-decoration: none;
+}
+/* 提权重：主题 .book-footer a 有 margin/padding 默认（0,1,1），这里显式归零并定左对齐 */
+.book-footer .goclub-prev-next .goclub-prev-next-link {
+  margin: 0;
+  padding: 16px 20px;
+  align-items: flex-start;
+}
+.book-footer .goclub-prev-next .goclub-prev-next-link--next { align-items: flex-end; }
+.goclub-prev-next-link:hover .goclub-prev-next-title { color: var(--vp-brand-1); }
+.goclub-prev-next-link--next { align-items: flex-end; text-align: right; }
+.goclub-prev-next-link--next:only-child { grid-column: 2; }
+.goclub-prev-next-link--prev:only-child { grid-column: 1; }
+.goclub-prev-next-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--vp-text-3);
+}
+.goclub-prev-next-eyebrow-icon { width: 14px; height: 14px; flex: 0 0 auto; }
+.goclub-prev-next-title { font-weight: 600; font-size: 15px; line-height: 22px; color: var(--vp-text-1); }
+.goclub-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin-top: 32px;
+  padding: 24px;
+  border: none;
+  border-radius: 12px;
+  background: var(--vp-bg-soft);
+}
+.goclub-feedback-kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; color: var(--vp-text-3); }
+.goclub-feedback-copy h2 {
+  margin: 6px 0;
+  padding-top: 0;
+  border-top: none;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+.goclub-feedback-copy p { margin: 0; color: var(--vp-text-2); font-size: 14px; line-height: 1.65; max-width: 520px; }
+.goclub-feedback-button {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 8px;
+  background: var(--vp-bg);
+  color: var(--vp-text-1) !important;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none !important;
+}
+.goclub-feedback-button:hover { background: var(--vp-bg-soft); }
+.book-copyright { margin-top: 20px; color: var(--vp-text-3); font-size: 12.5px; }
+
+/* ============ 12. 贡献者 ============ */
+/* 网格与卡片本体在 assets/book.scss（上游 .people-note/.people/.person 全套已在主题里），这里只补两档上游的响应式列数，book.scss 里没有这两条。 */
+@media (max-width: 1180px) { .people { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .people { grid-template-columns: minmax(0, 1fr); } }
+.markdown .people-note h2 { margin: 0 0 6px; padding-top: 0; border-top: none; font-size: 15px; }
+/* ============ 13. 内容页内嵌组件（书籍 / 岗位表 / 问答 / 聊天） ============ */
+.qa-answer {
+  margin: 12px 0;
+  border: 1px solid var(--vp-divider);
+  border-radius: 8px;
+  background: var(--vp-bg-soft);
+}
+.qa-answer-toggle {
+  padding: 10px 14px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--vp-brand-1);
+  cursor: pointer;
+}
+.qa-answer-body { padding: 0 14px 12px; }
+.epub-book-hero, .section-card, .goclub-nav-card {
+  border: 1px solid var(--vp-divider);
+  border-radius: 12px;
+  background: var(--vp-bg);
+  padding: 20px;
+}
+.section-card-grid, .contributors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+.section-card { display: flex; flex-direction: column; gap: 6px; }
+.section-card-kind, .page-lead-chip, .page-lead-badge {
+  align-self: flex-start;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--vp-brand-soft);
+  color: var(--vp-brand-1);
+  font-size: 12px;
+  font-weight: 600;
+}
+.section-card-title, .goclub-nav-card-title { font-weight: 600; color: var(--vp-text-1); }
+.section-card-summary, .section-card-meta, .goclub-nav-card-meta,
+.epub-book-note, .pdf-ebook-note { color: var(--vp-text-2); font-size: 14px; line-height: 1.65; }
+.section-card-arrow { color: var(--vp-text-3); }
+.epub-cover-image, .pdf-page-image { border-radius: 8px; border: 1px solid var(--vp-divider); }
+.epub-download-link, .homepage-github-button {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 8px;
+  background: var(--vp-btn-bg);
+  color: #fff !important;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: filter .2s ease;
+}
+.epub-download-link:hover, .homepage-github-button:hover { background: var(--vp-btn-hover); filter: brightness(1.06); }
+.pdf-page-label { font-size: 12.5px; color: var(--vp-text-3); }
+.hero-metrics, .section-stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.hero-metric, .section-stat {
+  flex: 1 1 120px;
+  padding: 14px 16px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 12px;
+  background: var(--vp-bg);
+}
+.hero-metric-value, .section-stat-value { display: block; font-size: 1.25rem; font-weight: 700; }
+.hero-metric-label, .section-stat-label { font-size: 12.5px; color: var(--vp-text-2); }
+.goclub-nav-card { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--vp-text-1); }
+.goclub-nav-card:hover { border-color: var(--gc-border-strong); background: var(--vp-bg-soft); }
+.goclub-nav-card-label { font-size: 12px; color: var(--vp-text-3); }
+.job-table-scroll { overflow-x: auto; border: 1px solid var(--vp-divider); border-radius: 12px; }
+.job-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.job-table th, .job-table td { padding: 9px 12px; border-bottom: 1px solid var(--vp-divider); text-align: left; }
+.job-table th { background: var(--vp-bg-soft); font-weight: 600; }
+.job-pagination { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 13px; color: var(--vp-text-2); }
+.goclub-chatbot {
+  border: 1px solid var(--vp-divider);
+  border-radius: 12px;
+  background: var(--vp-bg);
+  overflow: hidden;
+}
+.goclub-chatbot-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--vp-divider);
+  font-weight: 600;
+}
+.goclub-chatbot-messages { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.goclub-chatbot-msg {
+  max-width: 85%;
+  padding: 9px 13px;
+  border-radius: 8px;
+  background: var(--vp-bg-soft);
+  line-height: 1.6;
+  font-size: 14px;
+}
+.goclub-chatbot-msg.user { align-self: flex-end; background: var(--vp-brand-soft); }
+.goclub-chatbot-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--vp-divider);
+}
+.goclub-chatbot-input {
+  flex: 1 1 auto;
+  padding: 9px 12px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 8px;
+  background: var(--vp-bg);
+  color: var(--vp-text-1);
+  font-size: 14px;
+}
+.goclub-chatbot-input:focus { outline: none; border-color: var(--vp-brand-1); }
+.goclub-chatbot-send {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--vp-btn-bg);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter .2s ease;
+}
+.goclub-chatbot-send:hover { background: var(--vp-btn-hover); filter: brightness(1.06); }
+.goclub-chatbot-presets { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 12px; }
+.goclub-chatbot-preset {
+  padding: 4px 11px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 6px;
+  background: var(--vp-bg);
+  color: var(--vp-text-2);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.goclub-chatbot-preset:hover { border-color: var(--vp-brand-1); color: var(--vp-brand-1); }
+.goclub-chatbot-settings-panel input {
+  padding: 8px 11px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 8px;
+  background: var(--vp-bg);
+  color: var(--vp-text-1);
+}
+.goclub-chatbot-settings-panel input:focus { outline: none; border-color: var(--vp-brand-1); }
+
+/* ============ 14. 移动端 ============ */
+@media screen and (max-width: 56rem) {
+  .page-lead-title { font-size: 28px; } /* vp-doc h1 移动端 */
+  .goclub-topbar-btn { display: flex; }
+  .goclub-topbar-search {
+    flex: 0 0 auto;
+    width: 36px;
+    max-width: none;
+    height: 36px;
+    margin-inline-start: 0;
+    padding: 0;
+    justify-content: center;
+    background: none;
+  }
+  .goclub-topbar-search:hover { background: var(--vp-bg-soft); }
+  .goclub-topbar-search-text, .goclub-topbar-kbd { display: none; }
+  .goclub-topbar-github-text { display: none; }
+  .goclub-topbar-github { padding: 8px; }
+  .book-menu .book-menu-content { top: var(--gc-topbar-h); }
+  .goclub-prev-next { grid-template-columns: 1fr; }
+  .goclub-prev-next-link--next:only-child { grid-column: auto; }
+  .book-search.is-expanded { top: 12px; max-height: calc(100vh - 24px); padding: 16px 16px 8px; }
+  /* 移动端本页目录：顶栏下方实色面板 */
+  #toc-control:checked ~ main .book-header aside {
+    position: fixed;
+    top: calc(var(--gc-topbar-h) + 8px);
+    left: 12px;
+    right: 12px;
+    z-index: 46;
+    max-height: 62vh;
+    overflow-y: auto;
+    padding: 16px;
+    border: 1px solid var(--vp-divider);
+    border-radius: 12px;
+    background: var(--vp-bg);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  }
+  .book-header aside nav ul { list-style: none; margin: 0; padding: 0; }
+  .book-header aside nav ul ul { padding-inline-start: 14px; }
+  .book-header aside nav a {
+    display: block;
+    padding: 5px 0;
+    color: var(--vp-text-2);
+    font-size: 14px;
+  }
+  .book-header aside nav a:hover { color: var(--vp-brand-1); }
+  /* 首页窄屏：内容列不再被 560px 定宽顶出视口（390px 下实测横向溢出至 584px；
+     .home-search 的 560px 定宽经 flex 最小尺寸撑大了 .home-hero） */
+  .home-hero { min-width: 0; }
+  .home-search { width: 100%; }
+  .home-wordmark { font-size: clamp(40px, 12vw, 72px); }
+}
+@media screen and (max-width: 30rem) {
+  .goclub-feedback { flex-direction: column; align-items: flex-start; }
+}
+
+/* === OneNote 在线版（onenote-notes）转换样式：由转换器生成的 scoped CSS === */
+.onenote-note {
+  padding: 10px 14px;
+  border: 1px solid var(--vp-c-divider, #e2e2e3);
+  border-radius: 12px;
+  font-size: 13.5px;
+  color: var(--vp-c-text-2, #67676c);
+  margin: 14px 0 20px;
+}
+.onenote-body { overflow-x: auto; }
+.onenote-body img { max-width: 100%; height: auto; }
+.onenote-file {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid var(--vp-c-divider, #e2e2e3);
+  border-radius: 999px;
+  font-size: 13px;
+}
+.onenote-body, .onenote-body * { margin: 0; padding: 0; font-weight: normal; font-family: Calibri, sans-serif; }
+.onenote-body { font-size: 15px; }
+.onenote-body table, .onenote-body tr, .onenote-body td { border-color: #A3A3A3; }
+.onenote-body ul, .onenote-body ol { padding: 0; }
+.onenote-body .title .outline-element { display: inline; }
+.onenote-body .title .outline-element:nth-child(2) { margin-left: 10px !important; }
+.onenote-body .container-outline { font-size: 15px; }
+.onenote-body ul.checklist { list-style: none; padding-left: 0; }
+.onenote-body ul.checklist li { display: flex; align-items: baseline; gap: 6px; }
+.onenote-body .ink-text, .onenote-body .ink-space { display: inline-block; position: relative; vertical-align: bottom; }
+.onenote-body .ink-text { top: 0; left: 0; }
+.onenote-body .note-tag-icon { position: relative; }
+.onenote-body .note-tag-icon > svg { position: absolute; }
+.onenote-body .icon-secondary > svg { position: absolute; fill: black; filter: drop-shadow(0 0 2px white); height: 12px; top: -1px; }
+.onenote-body .icon-secondary > .content { position: absolute; color: black; filter: drop-shadow(0 0 2px white); font-size: 10px; top: -1px; user-select: none; }
+/* === OneNote 转换样式结束 === */
+
+/* OneNote 截图版页面 */
+.onenote-snapshot { background: #fff; border: 1px solid var(--vp-c-divider, #e2e2e3); border-radius: 12px; overflow: hidden; }
+.onenote-snapshot img { display: block; width: 100%; height: auto; }
+.onenote-details { margin-top: 22px; border: 1px solid var(--vp-c-divider, #e2e2e3); border-radius: 12px; padding: 12px 16px; }
+.onenote-details summary { cursor: pointer; font-weight: 600; font-size: 14.5px; }
+.onenote-details[open ] summary { margin-bottom: 10px; }
+.onenote-doc { font-size: 15px; line-height: 1.75; }
+
+/* ============ 4c. 主题规则补全（fork 成品 CSS 原文） ============ */
+/* beta 的 book.scss 是上游自写版，不含 hugo-book 主题的下列规则；fork 的 book.scss 是主题版自带。
+   以下规则逐字取自 fork 成品 CSS（book.min.6386e497）；只覆盖 beta 成品页面真实出现的元素。
+   0 页的元素（book-badge / book-card / book-tabs / book-columns / book-steps / book-image /
+   book-codeblock-filename / book-btn / book-languages / book-post-thumbnail / book-post-date）
+   不在此列；.book-menu a / .book-toc a / .container 由 _custom 已有规则覆盖，不重复。 */
+.align-center { align-items: center; }
+.text-small { font-size: .875em; }
+.text-center { text-align: center; }
+.book-comments { margin-top: 1rem; }
+.book-post { margin-bottom: 4rem; }
+.book-post .book-post-content { margin-top: 1rem; }
+.book-post .book-post-date img { height: 1em; margin-inline-end: .5em; width: 1em; }
+.book-post .book-post-thumbnail { flex: 0 0 34%; }
+.book-post .book-post-thumbnail img { aspect-ratio: 4/3; object-fit: cover; width: 100%; }
+.book-section-flat { margin: 1rem 0; }
+.book-section-flat > span { font-weight: bolder; }
+.book-section-flat > ul { padding-inline-start: 0; }
+.book-search .book-search-spinner { position: absolute; top: 0; margin: .5rem; margin-inline-start: calc(100% - 1.5rem); width: 1rem; height: 1rem; border: 1px solid transparent; border-top-color: var(--body-font-color); border-radius: 50%; animation: spin 1s ease infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+:focus-visible { outline-color: var(--color-link); outline-style: auto; outline-width: medium; }
+.markdown pre:focus { outline-color: var(--color-link); outline-style: auto; }
+.markdown .book-hint.note { background-color: var(--color-accent-note-tint); border-color: var(--color-accent-note); }
+.markdown .book-hint.tip { background-color: var(--color-accent-tip-tint); border-color: var(--color-accent-tip); }
+.markdown .book-hint.important { background-color: var(--color-accent-important-tint); border-color: var(--color-accent-important); }
+.markdown .book-hint.warning { background-color: var(--color-accent-warning-tint); border-color: var(--color-accent-warning); }
+.markdown .book-hint.caution { background-color: var(--color-accent-caution-tint); border-color: var(--color-accent-caution); }
+.markdown .book-hint.default { background-color: var(--color-accent-default-tint); border-color: var(--color-accent-default); }
+.markdown .book-hint.info { background-color: var(--color-accent-info-tint); border-color: var(--color-accent-info); }
+.markdown .book-hint.success { background-color: var(--color-accent-success-tint); border-color: var(--color-accent-success); }
+.markdown .book-hint.danger { background-color: var(--color-accent-danger-tint); border-color: var(--color-accent-danger); }
+.markdown h1 a.anchor { font-size: .75em; margin-inline-start: .25em; opacity: 0; }
+.markdown h1 a.anchor:focus-visible { opacity: initial; text-decoration: none; }
+.markdown h1:hover a.anchor { opacity: initial; text-decoration: none; }
+.markdown h2 a.anchor { font-size: .75em; margin-inline-start: .25em; opacity: 0; }
+.markdown h2 a.anchor:focus-visible { opacity: initial; text-decoration: none; }
+.markdown h2:hover a.anchor { opacity: initial; text-decoration: none; }
+.markdown h3 a.anchor { font-size: .75em; margin-inline-start: .25em; opacity: 0; }
+.markdown h3 a.anchor:focus-visible { opacity: initial; text-decoration: none; }
+.markdown h3:hover a.anchor { opacity: initial; text-decoration: none; }
+.markdown h4 a.anchor { font-size: .75em; margin-inline-start: .25em; opacity: 0; }
+.markdown h4 a.anchor:focus-visible { opacity: initial; text-decoration: none; }
+.markdown h4:hover a.anchor { opacity: initial; text-decoration: none; }
+.markdown h5 a.anchor { font-size: .75em; margin-inline-start: .25em; opacity: 0; }
+.markdown h5 a.anchor:focus-visible { opacity: initial; text-decoration: none; }
+.markdown h5:hover a.anchor { opacity: initial; text-decoration: none; }
+.markdown h6 a.anchor { font-size: .75em; margin-inline-start: .25em; opacity: 0; }
+.markdown h6 a.anchor:focus-visible { opacity: initial; text-decoration: none; }
+.markdown h6:hover a.anchor { opacity: initial; text-decoration: none; }
+.markdown .highlight { border-radius: var(--border-radius); direction: ltr; unicode-bidi: embed; }
+.markdown .highlight table tbody { border: 1px solid var(--gray-200); }
+.markdown .highlight table tr pre { border: 0; }
+.markdown .highlight table tr td pre code > span { display: flex; }
+.markdown .highlight table tr td:nth-child(1) pre { margin: 0; padding-inline-end: 0; }
+.markdown .highlight table tr td:nth-child(2) pre { margin: 0; padding-inline-start: 0; }
+.markdown table tr td { border: 1px solid var(--gray-200); padding: .5rem 1rem; text-align: start; }
+.markdown table tr th { border: 1px solid var(--gray-200); padding: .5rem 1rem; text-align: start; }
+.markdown table tr:nth-child(2n) { background: var(--gray-100); }
+.markdown a[href]:visited { color: var(--color-visited-link); }
+.markdown details { border-radius: var(--border-radius); border: 1px solid var(--gray-200); margin: 1rem 0; padding: 1rem; }
+.markdown details summary { cursor: pointer; line-height: 1; list-style: none; margin: -1rem; padding: 1rem; }
+.markdown details summary::before { content: "\203A"; display: inline-block; margin-inline-end: .5rem; transition: transform .1s ease-in-out; }
+.markdown details[open] summary { margin-bottom: 0; }
+.markdown details[open] summary::before { transform: rotate(90deg); }
+.markdown blockquote :first-child { margin-top: 0; }
+.markdown blockquote :last-child { margin-bottom: 0; }
+
+/* ============ 4d. 全量对比追加修复（fork 原文 / fork 计算值） ============ */
+/* 主题全局 a 规则（hugo-book _main.scss:28-38 原文；color 未抄——fork 与 beta 的链接有效色
+   已一致（--color-link 亮 #346bf0 / 暗 #8db4ff，两边 _custom 同值），抄 color 反而有盖掉
+   _custom 专属色的风险；gap/flex/align-items/cursor 是本次实测差异的来源）。 */
+a { flex: auto; align-items: center; gap: .5em; text-decoration: none; cursor: default; }
+a[href], a[role=button] { cursor: pointer; }
+/* 主题菜单链接规则（_main.scss:120-124 原文）。 */
+.book-menu a, .book-menu label { color: inherit; word-wrap: break-word; display: flex; }
+.book-menu a.active { color: var(--color-link); }
+/* 目录链接 label 内 <a> 的上下 padding：fork 计算值 7px 0（实测：fork 强制 padding:0 后
+   label 由 46px 掉回 32px，与 beta 一致，证明 padding 是因果变量；fork.css 里未找到该
+   规则的源码出处，故按实测计算值移植，不编造来源）。 */
+.book-menu .goclub-menu-directory > ul > li > label > a { padding: 7px 0; }
+/* body 字号行高：fork 无此规则（继承 html 16px / normal）；上游 book.scss 设 15.5px/1.8，
+   导致顶栏/底栏/菜单/评论等处行高全错。此规则复现 fork 计算值（16px / 18.4px）。 */
+html { line-height: 1.15; }
+body { font-size: 16px; line-height: 1.15; }
+/* TOC：上游 #TableOfContents a（ID 选择器）盖掉了 _custom 的 .book-toc nav a；
+   用同 ID 选择器 + fork _custom TOC 规则原文（941-985 行）覆盖。 */
+#TableOfContents a { display: block; position: relative; padding: 0 0 0 16px; border: none; border-radius: 0; color: var(--vp-text-2); font-size: 13px; line-height: 28px; white-space: normal; }
+#TableOfContents ul { list-style: none; margin: 0; padding: 0; }
+#TableOfContents ul ul { padding-left: 0; }
+#TableOfContents ul ul a { padding-left: 29px; }
+#TableOfContents a:hover { color: var(--vp-text-1); opacity: 1; }
+#TableOfContents a.active { color: var(--vp-text-1); }
+#TableOfContents a.active::before { content: ""; position: absolute; left: -1px; top: 50%; transform: translateY(-50%); width: 1px; height: 18px; background: var(--vp-brand-1); }
+/* 面包屑链接：中和 _custom:1951 的全局 a{flex:auto}（hugo-book _main.scss 原文），
+   否则 .crumbs（display:flex）的 <a> 会被拉满整行、分隔符被顶散；上游无此规则，
+   源站渲染为左对齐紧贴（gap 7px）。 */
+.crumbs a { flex: none; }
+/* page-lead：上游 book.scss 多了 max-width:62ch + padding-top:14px + fg-3/15.5px/1.8，
+   fork 只有 _custom 的 margin-bottom:32px；逐项中和为 fork 计算值。 */
+.page-lead { max-width: none; padding: 0; color: inherit; font-size: inherit; line-height: inherit; }
+/* 标题 margin-bottom：主题 _markdown.scss h1-h6 margin-bottom:1rem（fork 有、beta 无）。 */
+.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 { margin-bottom: 1rem; }
+/* 搜索框：删 display:none 后（见 book.scss），补主题 base 规则（fork 成品 CSS 原文）。 */
+.book-search { position: relative; }
+.book-search ul a { padding-bottom: 0; }
+.book-search small { opacity: .5; }
+.book-search-field { padding: 0; }
+.book-search-summary { padding: 0; border-top: none; }
+/* 主题切换钮颜色：fork 计算值 rgb(0,0,0)（主题 button 规则不设 color，取 UA 默认 ButtonText）；
+   上游 button{color:inherit} 使其继承正文色。 */
+#theme-toggle { color: #000; }
+/* hero 搜索框：上游 .home-search kbd（9.5px/0 4px/3px）与 .home-search-text（nowrap+hidden）
+   盖掉了 _custom；用 fork _custom 原文值 + 更高特异性覆盖；kbd 在 390px 也显示（fork 同）。 */
+.home-search { text-align: center; }
+.home-search .home-search-text { white-space: normal; overflow: visible; text-overflow: clip; }
+.home-search .home-search-kbd { display: block; flex: 0 0 auto; padding: 1px 7px; border: 1px solid var(--vp-divider); border-radius: 4px; background: var(--vp-bg); color: var(--vp-text-3); font-family: inherit; font-size: 12px; line-height: 18px; text-align: center; }
+/* 底栏：上游 book.scss 在 max-width:760px 媒体查询里设 overflow:hidden；fork 为 visible。 */
+.statusbar { overflow: visible; }
+/* 第五轮滚动修复：上游 book.scss 的 body{overflow:hidden} 在屏幕上仍生效（@media print 里的
+   html,body{height:auto;overflow:visible} 只在打印时适用），导致手机首页无法滚动；.shell 同样
+   overflow:hidden（新 baseof 里已无 .shell 元素，一并中和）。fork 的 html/body 没有任何
+   height/overflow 限制，此处按 fork 原样恢复正常滚动。 */
+html, body { height: auto; overflow: visible; }
+.shell { height: auto; overflow: visible; }
+/* 第五轮代码字体：fork 的 normalize 规则原文——code/kbd/samp/pre 一律 ui-monospace 栈；
+   beta 里这条规则缺失，.markdown code 只能取 UA 默认 monospace，且 .prose code 走 JetBrains Mono。 */
+code, kbd, samp, pre { font-family: ui-monospace, SFMono-Regular, Consolas, liberation mono, Menlo, monospace; }
+/* 第五轮字体收尾：上游 var(--font-mono)/var(--font-sans) 在下列 live 元素上盖掉了 fork 的继承值；
+   fork 里这些元素都没有 font-family 规则，一律继承 body 字体栈（搜索框、短链、搜索结果角标），此处逐项中和。 */
+.book-search-field input,
+.goclub-share-url,
+.book-search-result-badge { font-family: inherit; }
+
+/* 详情页正文：上游 book.scss 的 .article-prose 自带 padding-top:26px，挡住了首个 h2 的
+   margin-top:48px 向外折叠，短链行到首个标题空出 106px；Pro 没有这条规则，
+   .article-prose 计算 padding-top 为 0，首个 h2 的 margin 折叠后只剩 48px。
+   此处覆盖为 0，与 Pro 计算值一字不差。 */
+.article-prose {
+  padding-top: 0;
+}
+
+/* 左栏底色：#fff 会把深色模式下的左栏文字（浅色）衬成白底白字、读不出，
+   故只在浅色下改纯白，深色下仍用主题深色 --vp-bg-sidebar（#161618）。
+   右侧 1px 分隔线只在浅色下去掉。 */
+.book-menu .book-menu-content { background: #fff; }
+.docs-layout > .book-menu { background: #fff; border-right: none; }
+:root[data-theme="dark"] .book-menu .book-menu-content { background: #161618; }
+:root[data-theme="dark"] .docs-layout > .book-menu { background: #161618; border-right: 1px solid var(--line); }
+
+/* 容器跟导航栏同宽：导航栏内框就是 1440px（--vp-layout-max-width），
+   容器改回 1440px，左栏左缘与导航栏左缘对齐、右栏右缘与导航栏右缘对齐；
+   1920px 屏左右各留 240px，更宽的屏也不无限拉伸。 */
+main.container { max-width: 1440px; }

@@ -1,9 +1,10 @@
 {{ with .Site.Params.BookRepo }}
-  <section class="feedback" aria-labelledby="feedback-title">
-    <div class="feedback-copy">
-      <h2 id="feedback-title">发现错误或想补充内容？</h2>
-      <p>站内不加载第三方评论，反馈可直接提到 GitHub，会进入协作流程。</p>
+  <section class="goclub-feedback" aria-labelledby="goclub-feedback-title">
+    <div class="goclub-feedback-copy">
+      <span class="goclub-feedback-kicker">内容反馈</span>
+      <h2 id="goclub-feedback-title">发现错误或想补充内容？</h2>
+      <p>GoClub 是静态知识库，评论功能不再加载第三方脚本。你可以在 GitHub 仓库提交 Issue，反馈会直接进入项目协作流程。</p>
     </div>
-    <a class="btn" href="{{ . }}/issues/new" target="_blank" rel="noopener noreferrer">提交反馈</a>
+    <a class="goclub-feedback-button" href="{{ . }}/issues/new" target="_blank" rel="noopener noreferrer">提交 GitHub 反馈</a>
   </section>
 {{ end }}

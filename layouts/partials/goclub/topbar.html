@@ -1,0 +1,71 @@
+{{/* 站点顶栏（VPNav 顺序）：品牌 / 搜索框 / 菜单行（含「更多」下拉）/ 分隔线 / 外观开关 / 分隔线 / 社交图标。
+     JS 依赖：label[for=menu-control].goclub-mobile-header-button、label[for=toc-control].goclub-mobile-header-button、#theme-toggle/#sun-icon/#moon-icon、.goclub-search-trigger */}}
+<header class="goclub-topbar">
+  <div class="goclub-topbar-inner">
+    <label for="menu-control" class="goclub-mobile-header-button goclub-topbar-btn goclub-topbar-menu-btn" aria-label="打开导航">
+      {{ partial "goclub/icon" (dict "name" "menu" "class" "goclub-topbar-icon") }}
+    </label>
+
+    {{ partial "docs/brand" . }}
+
+    <button type="button" class="goclub-search-trigger goclub-topbar-search" aria-label="搜索知识库">
+      {{ partial "goclub/icon" (dict "name" "search" "class" "goclub-topbar-icon") }}
+      <span class="goclub-topbar-search-text">搜索知识库</span>
+      <kbd class="goclub-topbar-kbd">S</kbd>
+    </button>
+
+    <div class="goclub-topbar-spacer"></div>
+
+    {{/* 顶栏菜单行（VPNavMenu 形态）：四个主栏目直链 + 「更多」下拉（其余栏目），当前栏目品牌色高亮 */}}
+    {{ $cur := . }}
+    <nav class="goclub-topbar-nav" aria-label="主栏目">
+      {{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/project-study" }}
+        {{ with $cur.Site.GetPage . }}
+          <a href="{{ .RelPermalink }}"{{ if strings.HasPrefix $cur.RelPermalink .RelPermalink }} class="active" aria-current="true"{{ end }}>{{ .Title }}</a>
+        {{ end }}
+      {{ end }}
+      <div class="goclub-topbar-more">
+        <button type="button" class="goclub-topbar-more-btn" aria-haspopup="true">
+          <span>更多</span>
+          {{ partial "goclub/icon" (dict "name" "chevron-down" "class" "goclub-topbar-more-icon") }}
+        </button>
+        <div class="goclub-topbar-flyout">
+          <div class="goclub-topbar-flyout-panel">
+            {{ range slice "docs/companion" "docs/blog" "docs/jobs" "docs/contributors" }}
+              {{ with $cur.Site.GetPage . }}
+                <a href="{{ .RelPermalink }}"{{ if strings.HasPrefix $cur.RelPermalink .RelPermalink }} class="active" aria-current="true"{{ end }}>{{ .Title }}</a>
+              {{ end }}
+            {{ end }}
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <span class="goclub-topbar-divider" aria-hidden="true"></span>
+
+    {{ if partial "docs/toc-show" . }}
+    <label for="toc-control" class="goclub-mobile-header-button goclub-topbar-btn goclub-topbar-toc-btn" aria-label="打开目录">
+      <span class="goclub-mobile-header-button-label" aria-hidden="true">本页</span>
+    </label>
+    {{ end }}
+
+    {{/* 外观切换：VP VPSwitchAppearance 形态（轨道+圆钮，钮内图标随主题换，逻辑仍走 #theme-toggle 的 JS） */}}
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换主题">
+      <span class="goclub-switch-track" aria-hidden="true">
+        <span class="goclub-switch-knob">
+          {{ partial "goclub/icon" (dict "name" "sun" "class" "goclub-switch-icon" "id" "sun-icon") }}
+          {{ partial "goclub/icon" (dict "name" "moon" "class" "goclub-switch-icon" "id" "moon-icon" "hidden" true) }}
+        </span>
+      </span>
+    </button>
+
+    <span class="goclub-topbar-divider" aria-hidden="true"></span>
+
+    <a class="goclub-topbar-github" href="https://github.com/LeoninCS/GoClub" target="_blank" rel="noopener noreferrer" aria-label="GitHub 仓库">
+      {{/* GitHub 官方 mark（octicons mark-github 16×16 原样 path，fill=currentColor）；独立 class 隔离 Lucide 的 stroke 规则 */}}
+      <svg class="goclub-github-mark" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/>
+      </svg>
+    </a>
+  </div>
+</header>

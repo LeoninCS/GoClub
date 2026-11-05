@@ -77,7 +77,7 @@ jobs:
 
   browser-tests:
     name: 招聘分页浏览器测试
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4

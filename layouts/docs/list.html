@@ -4,67 +4,69 @@
   {{ $filePath := replace .File.Path "\\" "/" }}
   {{ $isContributors := eq $filePath "docs/contributors/_index.md" }}
   {{ $contributors := hugo.Data.contributors }}
-  {{ $pageCount := len (where .RegularPagesRecursive "Params.bookHidden" "ne" true) }}
-
-  {{ $siblings := slice }}
-  {{ with .Parent }}
-    {{ if ne .RelPermalink "/docs/" }}
-      {{ range where .Pages "Params.bookHidden" "ne" true }}
-        {{ if .IsSection }}{{ $siblings = $siblings | append . }}{{ end }}
-      {{ end }}
-    {{ end }}
-  {{ end }}
-
-  <div class="page{{ if $isContributors }} page--wide{{ end }}">
-    <div class="page-inner{{ if $isContributors }} page-inner--wide{{ end }}">
-      <div class="page-head">
-        <h1 class="page-title">{{ partial "docs/title" . }}</h1>
-
-        <div class="page-tools">
-          <span class="page-count">{{ if $isContributors }}{{ len $contributors }} 位贡献者{{ else }}{{ $pageCount }} 篇{{ end }}</span>
-          {{ with .Params.shortlink }}
-            {{ partial "goclub/share-shortlink-button.html" $ }}
-          {{ end }}
-          {{ with .Params.pageLeadAction }}
-            <a class="btn btn--primary" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a>
-          {{ end }}
-        </div>
-      </div>
-
-      {{ with $summary }}
-        <p class="page-lead">{{ . }}</p>
-      {{ end }}
-
-      {{ if gt (len $siblings) 1 }}
-        <nav class="chips" aria-label="同级栏目">
-          {{ range $siblings }}
-            <a class="chip{{ if eq . $ }} is-active{{ end }}" href="{{ .RelPermalink }}"
-              {{ if eq . $ }}aria-current="page"{{ end }}>{{ partial "docs/title" . }}</a>
-          {{ end }}
-        </nav>
-      {{ end }}
-
-      {{ with $content }}
-        {{ if ne $.Params.autoIndex false }}
-          <div class="page-lead prose">{{ . | safeHTML }}</div>
-        {{ else }}
-          <div class="page-lead prose">{{ . | safeHTML }}</div>
+  {{ $visiblePages := where .Pages "Params.bookHidden" "ne" true }}
+  <article class="markdown book-article">
+    <nav class="crumbs" aria-label="面包屑">
+      <a href="{{ .Site.Home.RelPermalink }}">首页</a>
+      {{ range .Ancestors.Reverse }}
+        {{ if and (not .IsHome) (ne .RelPermalink "/docs/") }}
+          <span class="crumb-sep" aria-hidden="true">/</span>
+          <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
         {{ end }}
       {{ end }}
+      <span class="crumb-sep" aria-hidden="true">/</span>
+      <span class="crumb-current">{{ partial "docs/title" . }}</span>
+    </nav>
 
-      {{ if ne .Params.autoIndex false }}
-        {{ partial "goclub-section-index.html" . }}
-      {{ end }}
-
-      {{ if $isContributors }}
-        <div class="people-note">
-          <h2>维护与共建</h2>
-          <p>这里展示 GoClub 的站长与维护者，以及所有提交过且 PR 已被合并的贡献者。你的 PR 合并并部署后，会自动出现在这个名单里，无需额外申请。</p>
+    <header class="page-lead page-lead--section">
+      <div class="page-lead-layout">
+        <h1 class="page-lead-title">{{ partial "docs/title" . }}</h1>
+        <div class="page-lead-aside">
+          {{ with $summary }}
+            <div class="page-lead-summary">{{ . }}</div>
+          {{ end }}
+          {{ with .Params.pageLeadAction }}
+            <div class="page-lead-actions">
+              <a class="page-hero-button" href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .label }}</a>
+            </div>
+          {{ end }}
+          <div class="page-lead-meta" role="list" aria-label="页面信息">
+            {{ if .Params.shortlink }}
+              <span class="page-lead-meta-item" role="listitem">{{ partial "goclub/share-shortlink-button.html" . }}</span>
+            {{ end }}
+            {{ if $isContributors }}
+              <span class="page-lead-meta-item" role="listitem">{{ len $contributors }} 位贡献者</span>
+            {{ end }}
+          </div>
         </div>
+      </div>
+    </header>
 
+    {{ if $content }}
+      {{ if ne .Params.autoIndex false }}
+        <div class="section-preface">
+          {{- $content | safeHTML -}}
+        </div>
+      {{ else }}
+        <div class="section-body-content">
+          {{- $content | safeHTML -}}
+        </div>
+      {{ end }}
+    {{ end }}
+
+    {{ if ne .Params.autoIndex false }}
+      {{ partial "goclub-section-index.html" . }}
+    {{ end }}
+
+    {{ if $isContributors }}
+      <div class="people-note">
+        <h2>维护与共建</h2>
+        <p>这里展示 GoClub 的站长与维护者，以及所有提交过且 PR 已被合并的贡献者。你的 PR 合并并部署后，会自动出现在这个名单里，无需额外申请。</p>
+      </div>
+
+      {{ if $contributors }}
         <div class="people">
           {{ range $contributors }}
-            {{ $login := .login }}
             <article class="person">
               <span class="person-avatar">
                 <span class="person-initial" aria-hidden="true">{{ substr .login 0 1 | upper }}</span>
@@ -86,7 +88,9 @@
             </article>
           {{ end }}
         </div>
+      {{ else }}
+        <p>当前还没有检测到贡献者数据。</p>
       {{ end }}
-    </div>
-  </div>
+    {{ end }}
+  </article>
 {{ end }}

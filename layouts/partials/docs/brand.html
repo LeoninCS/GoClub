@@ -1,4 +1,5 @@
-<a class="brand" href="{{ .Site.Home.RelPermalink }}" aria-label="GoClub 首页">
-  <span class="brand-mark" aria-hidden="true">Go</span>
-  <span class="brand-name">GoClub</span>
+<a class="goclub-topbar-brand" href="{{ .Site.Home.RelPermalink }}" aria-label="{{ .Site.Title }} 首页">
+  {{/* logo URL 带内容哈希（与 html-head-favicon 同款做法）：文件一变 URL 就变，绕开浏览器 4 小时缓存 */}}
+  <img class="book-brand-logo" src="{{ printf "%s?v=%s" ("logo.svg" | relURL) (substr (sha256 (readFile "static/logo.svg")) 0 12) }}" alt="" width="30" height="30" aria-hidden="true">
+  <span class="book-brand-name">{{ .Site.Title }}</span>
 </a>

@@ -1,0 +1,23 @@
+<nav aria-label="主导航">
+  {{ partial "docs/search" . }}
+  {{ if hugo.IsMultilingual }}
+    {{ partial "docs/languages" . }}
+  {{ end }}
+
+  <div class="goclub-menu-directory">
+    {{ partial "docs/inject/menu-before" . }}
+    {{ partial "docs/menu-hugo" (dict "Page" .Page "Menu" .Site.Menus.before) }}
+
+    {{ partial "docs/menu-filetree" . }}
+
+    {{ partial "docs/menu-hugo" (dict "Page" .Page "Menu" .Site.Menus.after) }}
+    {{ partial "docs/inject/menu-after" . }}
+  </div>
+
+</nav>
+
+<!-- Restore menu position as soon as possible to avoid flickering -->
+{{ $script := resources.Get "menu-reset.js" | resources.Minify }}
+{{ with $script.Content }}
+  <script>{{ . | safeJS }}</script>
+{{ end }}

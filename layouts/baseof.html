@@ -1,47 +1,135 @@
 <!DOCTYPE html>
-<html lang="zh-CN" dir="ltr">
+<html lang="{{ default .Site.Language.Lang .Site.LanguageCode }}" dir="{{ default "ltr" .Site.Language.LanguageDirection }}">
 <head>
   {{ partial "docs/html-head" . }}
   {{ partial "docs/inject/head" . }}
 </head>
-<body class="kind-{{ .Kind }}{{ with .Layout }} layout-{{ . }}{{ end }}">
-  <a class="skip-link" href="#main">跳到正文</a>
+<body dir="{{ default "ltr" .Site.Language.LanguageDirection }}" class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  {{ partial "goclub/topbar" . }}
+  <main class="container flex goclub-layout-shell">
+    {{ template "menu-container" . }}
 
-  <div class="shell">
-    {{ partial "goclub/sidebar.html" . }}
+    <div class="book-page">
+      <header class="book-header hidden">
+        {{ template "header" . }}
+      </header>
 
-    <div class="stage">
-      <main id="main" class="main">
-        {{ template "main" . }}
-      </main>
+      {{ partial "docs/inject/content-before" . }}
+      {{ template "main" . }}
+      {{ partial "docs/inject/content-after" . }}
 
-      {{ partial "docs/footer" . }}
+      <footer class="book-footer">
+        {{ template "footer" . }}
+        {{ template "comments" . }}
+        {{ partial "docs/inject/footer" . }}
+        {{ template "copyright" . }}
+        {{ template "clipboard" . }}
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
     </div>
-  </div>
 
-  <button type="button" class="mobile-nav-btn" data-sidebar-open aria-expanded="false"
-    aria-controls="site-sidebar" aria-label="打开目录">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-      <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
-    </svg>
-  </button>
-  <div class="sidebar-overlay" data-sidebar-close aria-hidden="true"></div>
+    {{ template "toc-container" . }}
+  </main>
 
-  {{ partial "docs/search" . }}
+  {{ partial "docs/footer" . }}
 
-  {{ partial "docs/inject/scripts" . }}
-
-  {{ partial "goclub/share-shortlink.html" . }}
-  {{ partial "goclub/umami-stats.html" . }}
+  {{ partial "docs/inject/body" . }}
 </body>
 </html>
 
-{{ define "main" }}
-  <div class="page">
-    <div class="page-inner">
-      <article class="prose">
-        {{- .Content -}}
-      </article>
-    </div>
+{{ define "menu-container" }}
+<aside class="book-menu">
+  <div class="book-menu-content">
+    {{ template "menu" . }}
   </div>
+</aside>
+{{ end }}
+
+{{ define "menu" }}
+  {{ partial "docs/menu" . }}
+{{ end }}
+
+{{ define "header" }}
+  {{ if partial "docs/toc-show" . }}
+  <aside class="hidden">
+    {{ template "toc" (dict "Page" . "ID" "TableOfContents-mobile") }}
+  </aside>
+  {{ end }}
+{{ end }}
+
+{{ define "footer" }}
+
+
+{{ $bookSection := default "docs" .Site.Params.BookSection }}
+{{ if eq $bookSection "*" }}
+  {{ $bookSection = "/" }}
+{{ end }}
+
+{{ with .Site.GetPage $bookSection }}
+  {{ $pages := partialCached "docs/prev-next-cache" .Pages }}
+  {{ $prev := $pages.Next $ }}
+  {{ $next := $pages.Prev $ }}
+  {{ if or $prev $next }}
+    <nav class="goclub-prev-next" aria-label="相邻文章">
+      {{ with $prev }}
+        <a href="{{ .RelPermalink }}" rel="prev" class="goclub-prev-next-link goclub-prev-next-link--prev">
+          <span class="goclub-prev-next-eyebrow">{{ partial "goclub/icon" (dict "name" "arrow-left" "class" "goclub-prev-next-eyebrow-icon") }}上一篇</span>
+          <span class="goclub-prev-next-title">{{ partial "docs/title" . }}</span>
+        </a>
+      {{ end }}
+      {{ with $next }}
+        <a href="{{ .RelPermalink }}" rel="next" class="goclub-prev-next-link goclub-prev-next-link--next">
+          <span class="goclub-prev-next-eyebrow">下一篇{{ partial "goclub/icon" (dict "name" "arrow-right" "class" "goclub-prev-next-eyebrow-icon") }}</span>
+          <span class="goclub-prev-next-title">{{ partial "docs/title" . }}</span>
+        </a>
+      {{ end }}
+    </nav>
+  {{ end }}
+{{ end }}
+{{ end }}
+
+{{ define "clipboard" }}
+  {{ with resources.Get "clipboard.js" | resources.Minify }}
+    <script>{{ .Content | safeJS }}</script>
+  {{ end }}
+{{ end }}
+
+{{ define "copyright" }}
+  {{ if .Site.Copyright }}
+  <div class="book-copyright flex justify-center">
+    {{ partial "docs/copyright" . }}
+  </div>
+  {{ end }}
+{{ end }}
+
+{{ define "comments" }}
+  {{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
+  <div class="book-comments">
+    {{- partial "docs/comments" . -}}
+  </div>
+  {{ end }}
+{{ end }}
+
+{{ define "main" }}
+  <article class="markdown book-article">
+    {{- .Content -}}
+  </article>
+{{ end }}
+
+{{ define "toc-container" }}
+  {{ if partial "docs/toc-show" . }}
+  <aside class="book-toc" aria-labelledby="book-toc-title">
+    <div class="book-toc-content">
+      <h2 class="book-toc-title" id="book-toc-title">本页内容</h2>
+      {{ template "toc" (dict "Page" . "ID" "TableOfContents") }}
+    </div>
+  </aside>
+  {{ end }}
+{{ end }}
+
+{{ define "toc" }}
+  {{ partial "docs/toc" . }}
 {{ end }}

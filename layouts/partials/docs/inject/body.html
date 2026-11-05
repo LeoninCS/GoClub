@@ -1,0 +1,258 @@
+<script>
+  (function () {
+    var collapseStorageKey = "goclub.sidebar.collapsed";
+    var widthStorageKey = "goclub.sidebar.width";
+    var desktopQuery = window.matchMedia("(min-width: 56.01rem)");
+    var body = document.body;
+    var root = document.documentElement;
+    var menu = document.querySelector(".book-menu");
+    var menuToggle = document.querySelector("[data-sidebar-toggle]");
+    var menuResizer = document.querySelector("[data-sidebar-resizer]");
+    var menuControl = document.getElementById("menu-control");
+    var tocControl = document.getElementById("toc-control");
+    var menuControlLabel = document.querySelector('label[for="menu-control"].goclub-mobile-header-button');
+    var tocControlLabel = document.querySelector('label[for="toc-control"].goclub-mobile-header-button');
+    var minWidth = 240;
+    var maxWidth = 520;
+    var measuredDefaultWidth = menu ? menu.getBoundingClientRect().width : 0;
+    var defaultWidth = measuredDefaultWidth > 0 ? measuredDefaultWidth : 288;
+    var resizing = false;
+
+    function syncMobileControlLabels() {
+      if (menuControlLabel && menuControl) {
+        menuControlLabel.setAttribute("aria-label", menuControl.checked ? "关闭导航" : "打开导航");
+      }
+      if (tocControlLabel && tocControl) {
+        tocControlLabel.setAttribute("aria-label", tocControl.checked ? "关闭目录" : "打开目录");
+      }
+    }
+
+    if (menuControl) {
+      menuControl.addEventListener("change", syncMobileControlLabels);
+    }
+    if (tocControl) {
+      tocControl.addEventListener("change", syncMobileControlLabels);
+      document.querySelectorAll('.book-header aside a[href^="#"]').forEach(function (link) {
+        link.addEventListener("click", function () {
+          if (!desktopQuery.matches) {
+            tocControl.checked = false;
+            syncMobileControlLabels();
+          }
+        });
+      });
+    }
+    syncMobileControlLabels();
+
+    function setCollapsed(collapsed) {
+      body.classList.toggle("sidebar-collapsed", collapsed);
+
+      if (menuToggle) {
+        menuToggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        menuToggle.setAttribute("aria-label", collapsed ? "展开侧边栏" : "收起侧边栏");
+        // 折叠箭头是内联 Lucide chevron-left，方向由 CSS 按 body.sidebar-collapsed 旋转，不再改文本。
+      }
+    }
+
+    function syncViewportState() {
+      if (!desktopQuery.matches) {
+        root.style.removeProperty("--goclub-sidebar-width");
+        body.classList.remove("sidebar-resizing");
+        body.classList.remove("sidebar-collapsed");
+        if (menuControl) {
+          menuControl.checked = false;
+        }
+        if (tocControl) {
+          tocControl.checked = false;
+        }
+        return;
+      }
+
+      setSidebarWidth(readStoredWidth(), false);
+      setCollapsed(localStorage.getItem(collapseStorageKey) === "true");
+    }
+
+    function currentMaxWidth() {
+      return Math.max(minWidth, Math.min(maxWidth, window.innerWidth - 600));
+    }
+
+    function readStoredWidth() {
+      var storedWidth = parseFloat(localStorage.getItem(widthStorageKey));
+      return Number.isFinite(storedWidth) ? storedWidth : defaultWidth;
+    }
+
+    function setSidebarWidth(width, persist) {
+      var availableMaxWidth = currentMaxWidth();
+      var nextWidth = Math.round(Math.max(minWidth, Math.min(availableMaxWidth, width)));
+      root.style.setProperty("--goclub-sidebar-width", nextWidth + "px");
+      if (menuResizer) {
+        menuResizer.setAttribute("aria-valuemax", String(availableMaxWidth));
+        menuResizer.setAttribute("aria-valuenow", String(nextWidth));
+      }
+      if (persist) {
+        localStorage.setItem(widthStorageKey, String(nextWidth));
+      }
+      return nextWidth;
+    }
+
+    if (menuToggle) {
+      menuToggle.addEventListener("click", function () {
+        if (!desktopQuery.matches) {
+          if (menuControl) {
+            menuControl.checked = !menuControl.checked;
+          }
+          return;
+        }
+
+        var nextCollapsed = !body.classList.contains("sidebar-collapsed");
+        setCollapsed(nextCollapsed);
+        localStorage.setItem(collapseStorageKey, String(nextCollapsed));
+      });
+    }
+
+    if (menu && menuResizer) {
+      menuResizer.addEventListener("pointerdown", function (event) {
+        if (!desktopQuery.matches || body.classList.contains("sidebar-collapsed")) {
+          return;
+        }
+        resizing = true;
+        body.classList.add("sidebar-resizing");
+        menuResizer.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      });
+
+      menuResizer.addEventListener("pointermove", function (event) {
+        if (!resizing) return;
+        var menuLeft = menu.getBoundingClientRect().left;
+        setSidebarWidth(event.clientX - menuLeft, false);
+      });
+
+      function finishResize(event) {
+        if (!resizing) return;
+        resizing = false;
+        body.classList.remove("sidebar-resizing");
+        if (menuResizer.hasPointerCapture(event.pointerId)) {
+          menuResizer.releasePointerCapture(event.pointerId);
+        }
+        var currentWidth = parseFloat(getComputedStyle(root).getPropertyValue("--goclub-sidebar-width"));
+        setSidebarWidth(currentWidth, true);
+      }
+
+      menuResizer.addEventListener("pointerup", finishResize);
+      menuResizer.addEventListener("pointercancel", finishResize);
+
+      menuResizer.addEventListener("dblclick", function () {
+        setSidebarWidth(defaultWidth, true);
+      });
+
+      menuResizer.addEventListener("keydown", function (event) {
+        var currentWidth = parseFloat(getComputedStyle(root).getPropertyValue("--goclub-sidebar-width"))
+          || menu.getBoundingClientRect().width;
+        var nextWidth = currentWidth;
+        if (event.key === "ArrowLeft") nextWidth -= 16;
+        if (event.key === "ArrowRight") nextWidth += 16;
+        if (event.key === "Home") nextWidth = minWidth;
+        if (event.key === "End") nextWidth = currentMaxWidth();
+        if (nextWidth === currentWidth) return;
+        setSidebarWidth(nextWidth, true);
+        event.preventDefault();
+      });
+    }
+
+    if (desktopQuery.addEventListener) {
+      desktopQuery.addEventListener("change", syncViewportState);
+    } else if (desktopQuery.addListener) {
+      desktopQuery.addListener(syncViewportState);
+    }
+
+    window.addEventListener("resize", function () {
+      if (desktopQuery.matches) {
+        setSidebarWidth(readStoredWidth(), false);
+      }
+    });
+
+    syncViewportState();
+  })();
+</script>
+<script>
+  (function () {
+    var blocks = document.querySelectorAll('details.qa-answer');
+    blocks.forEach(function (el) {
+      var summary = el.querySelector('summary.qa-answer-toggle');
+      if (!summary) return;
+      var update = function () {
+        summary.textContent = el.open ? '收起答案' : '查看答案';
+      };
+      el.addEventListener('toggle', update);
+      update();
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    // 顶栏与首页的搜索入口：聚焦侧边栏内的搜索输入框，
+    // search.js 会在 focus/click 时把搜索面板展开为浮层。
+    var triggers = document.querySelectorAll('.goclub-search-trigger');
+    if (!triggers.length) return;
+    var input = document.getElementById('book-search-input');
+    if (!input) return;
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener('click', function () {
+        if (window.matchMedia('(max-width: 56rem)').matches) {
+          var menuControl = document.getElementById('menu-control');
+          if (menuControl && !menuControl.checked) {
+            menuControl.checked = true;
+          }
+        }
+        input.focus();
+        input.click();
+      });
+    });
+  })();
+</script>
+
+<script>
+  (function () {
+    // 右侧大纲滚动高亮（VP outline-marker 的等效实现）：
+    // 当前标题对应的大纲链接加 .active（品牌色标记段由 CSS ::before 绘制）。
+    var toc = document.querySelector('.book-toc-content nav');
+    if (!toc) return;
+    var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+    if (!links.length) return;
+    var byId = {};
+    links.forEach(function (a) {
+      byId[decodeURIComponent(a.getAttribute('href').slice(1))] = a;
+    });
+    var heads = Object.keys(byId)
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+    if (!heads.length) return;
+    var current = null;
+    function setActive(id) {
+      if (current === id) return;
+      current = id;
+      links.forEach(function (a) { a.classList.remove('active'); });
+      if (id && byId[id]) byId[id].classList.add('active');
+    }
+    // 激活规则与 VP 一致的观感：最后一个越过「顶栏高 + 32px」线的标题为当前节。
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var line = 64 + 32;
+      var id = heads.length ? heads[0].id : null;
+      for (var i = 0; i < heads.length; i++) {
+        if (heads[i].getBoundingClientRect().top <= line) id = heads[i].id;
+        else break;
+      }
+      setActive(id);
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
+
+{{ partial "goclub/umami-stats.html" . }}
+{{ partial "goclub/share-shortlink.html" . }}

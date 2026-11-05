@@ -1,0 +1,15 @@
+{{/* 内联 Lucide 图标（官方 SVG 原件存于 assets/icons/lucide/，ISC 许可证见 assets/icons/LUCIDE-LICENSE）。
+     用法：partial "goclub/icon" (dict "name" "search" "class" "goclub-topbar-icon")
+     可选键：id、class。尺寸由 CSS 工具类控制，模板内不写死像素。 */}}
+{{- $name := .name -}}
+{{- $icon := resources.Get (printf "icons/lucide/%s.svg" $name) -}}
+{{- if not $icon -}}{{- errorf "goclub/icon: lucide icon %q not found in assets/icons/lucide/" $name -}}{{- end -}}
+{{- $svg := $icon.Content -}}
+{{- $svg = replaceRE `(?s)<svg\s+` "<svg " $svg -}}
+{{- $svg = replaceRE `\s+width="24"` "" $svg -}}
+{{- $svg = replaceRE `\s+height="24"` "" $svg -}}
+{{- $attrs := printf ` class="lucide-icon %s" aria-hidden="true" focusable="false"` (.class | default "") -}}
+{{- with .id }}{{ $attrs = printf ` id="%s"%s` . $attrs }}{{ end -}}
+{{- if .hidden }}{{ $attrs = printf `%s style="display: none;"` $attrs }}{{ end -}}
+{{- $svg = replaceRE `<svg` (printf "<svg%s" $attrs) $svg -}}
+{{- return ($svg | safeHTML) -}}
