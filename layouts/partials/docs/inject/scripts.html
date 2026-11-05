@@ -26,27 +26,88 @@
         });
       }
 
-      var sheet = doc.getElementById('nav-sheet');
-      var openers = doc.querySelectorAll('[data-nav-open]');
-      var closers = doc.querySelectorAll('[data-nav-close]');
-      function setSheet(open) {
-        if (!sheet) return;
-        sheet.classList.toggle('is-open', open);
-        doc.body.classList.toggle('sheet-open', open);
+      var sidebar = doc.getElementById('site-sidebar');
+      var openers = doc.querySelectorAll('[data-sidebar-open]');
+      var closers = doc.querySelectorAll('[data-sidebar-close]');
+      function setSidebar(open) {
+        if (!sidebar) return;
+        doc.body.classList.toggle('sidebar-open', open);
         openers.forEach(function (b) { b.setAttribute('aria-expanded', String(open)); });
         if (open) {
-          var first = sheet.querySelector('a, button');
+          var first = sidebar.querySelector('.side-nav a, .side-nav button');
           if (first) first.focus({ preventScroll: true });
         }
       }
-      openers.forEach(function (b) { b.addEventListener('click', function () { setSheet(true); }); });
-      closers.forEach(function (b) { b.addEventListener('click', function () { setSheet(false); }); });
+      openers.forEach(function (b) { b.addEventListener('click', function () { setSidebar(true); }); });
+      closers.forEach(function (b) { b.addEventListener('click', function () { setSidebar(false); }); });
       doc.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && sheet && sheet.classList.contains('is-open')) setSheet(false);
+        if (e.key === 'Escape' && doc.body.classList.contains('sidebar-open')) setSidebar(false);
       });
       doc.addEventListener('click', function (e) {
-        if (e.target.closest('.sheet [data-search-trigger]')) setSheet(false);
+        if (e.target.closest('.sidebar [data-search-trigger]')) setSidebar(false);
       });
+
+      // 右侧目录滚动高亮：按主内容滚动容器当前位置取最近的标题
+      var tocLinks = doc.querySelectorAll('#TableOfContents a[href^="#"], #TableOfContentsMobile a[href^="#"]');
+      var tocArticle = doc.querySelector('.article-prose');
+      var mainScroll = doc.getElementById('main');
+      if (tocLinks.length && tocArticle && mainScroll) {
+        var headings = Array.prototype.filter.call(
+          tocArticle.querySelectorAll('h2, h3, h4'),
+          function (h) { return h.id; }
+        );
+        var decodeHash = function (href) {
+          try { return decodeURIComponent(href.slice(1)); } catch (e) { return href.slice(1); }
+        };
+        var updateToc = function () {
+          if (!headings.length) return;
+          var threshold = mainScroll.getBoundingClientRect().top + 104;
+          var current = headings[0];
+          for (var i = 0; i < headings.length; i++) {
+            if (headings[i].getBoundingClientRect().top <= threshold) current = headings[i];
+            else break;
+          }
+          var activeLink = null;
+          Array.prototype.forEach.call(tocLinks, function (link) {
+            var on = decodeHash(link.getAttribute('href')) === current.id;
+            link.classList.toggle('is-current', on);
+            if (on) {
+              link.setAttribute('aria-current', 'location');
+              if (!activeLink && link.closest('.toc-pane')) activeLink = link;
+            } else {
+              link.removeAttribute('aria-current');
+            }
+          });
+          var bar = doc.querySelector('.toc-progress-track > span');
+          var track = doc.querySelector('.toc-progress-track');
+          var value = doc.querySelector('.toc-progress-value');
+          if (bar && track && value) {
+            var max = mainScroll.scrollHeight - mainScroll.clientHeight;
+            var percent = max > 0 ? Math.min(100, Math.max(0, Math.round((mainScroll.scrollTop / max) * 100))) : 100;
+            bar.style.width = percent + '%';
+            value.textContent = percent + '%';
+            track.setAttribute('aria-valuenow', String(percent));
+          }
+          var pane = activeLink && activeLink.closest('.toc-pane');
+          if (pane) {
+            var linkRect = activeLink.getBoundingClientRect();
+            var paneRect = pane.getBoundingClientRect();
+            if (linkRect.top < paneRect.top + 40) {
+              pane.scrollTop += linkRect.top - paneRect.top - 40;
+            } else if (linkRect.bottom > paneRect.bottom - 20) {
+              pane.scrollTop += linkRect.bottom - paneRect.bottom + 20;
+            }
+          }
+        };
+        var tocTicking = false;
+        mainScroll.addEventListener('scroll', function () {
+          if (tocTicking) return;
+          tocTicking = true;
+          requestAnimationFrame(function () { updateToc(); tocTicking = false; });
+        }, { passive: true });
+        window.addEventListener('resize', updateToc);
+        updateToc();
+      }
 
       doc.querySelectorAll('details.qa-answer').forEach(function (el) {
         var summary = el.querySelector('summary.qa-answer-toggle');

@@ -4,7 +4,7 @@
     "html_url": "https://github.com/LeoninCS",
     "avatar_url": "https://avatars.githubusercontent.com/u/147289645?v=4",
     "name": "LeoninCS",
-    "merged_prs": 1,
+    "merged_prs": 2,
     "role": "核心维护者",
     "pinned": true,
     "sort_order": 1
@@ -52,6 +52,13 @@
     "avatar_url": "https://avatars.githubusercontent.com/u/283096632?v=4",
     "name": null,
     "merged_prs": 3
+  },
+  {
+    "login": "KaiMinKang",
+    "html_url": "https://github.com/KaiMinKang",
+    "avatar_url": "https://avatars.githubusercontent.com/u/315792956?v=4",
+    "name": null,
+    "merged_prs": 2
   },
   {
     "login": "LynPtl",

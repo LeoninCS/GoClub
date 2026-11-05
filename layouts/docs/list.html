@@ -15,22 +15,10 @@
     {{ end }}
   {{ end }}
 
-  <h1 class="sr-only">{{ partial "docs/title" . }}</h1>
-
-  <div class="page">
-    <div class="page-inner">
-      <div class="page-bar">
-        <nav class="crumbs" aria-label="面包屑">
-          <a href="{{ .Site.Home.RelPermalink }}">首页</a>
-          {{ range .Ancestors.Reverse }}
-            {{ if and (not .IsHome) (ne .RelPermalink "/docs/") }}
-              <span class="crumb-sep" aria-hidden="true">/</span>
-              <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
-            {{ end }}
-          {{ end }}
-          <span class="crumb-sep" aria-hidden="true">/</span>
-          <span class="crumb-current">{{ partial "docs/title" . }}</span>
-        </nav>
+  <div class="page{{ if $isContributors }} page--wide{{ end }}">
+    <div class="page-inner{{ if $isContributors }} page-inner--wide{{ end }}">
+      <div class="page-head">
+        <h1 class="page-title">{{ partial "docs/title" . }}</h1>
 
         <div class="page-tools">
           <span class="page-count">{{ if $isContributors }}{{ len $contributors }} 位贡献者{{ else }}{{ $pageCount }} 篇{{ end }}</span>

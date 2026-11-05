@@ -2,6 +2,7 @@
 title: "小厂面试"
 weight: 3
 bookCollapseSection: true
+bookShowChildren: true
 aliases:
   - "/s/rwf9/"
 shortlink: "rwf9"

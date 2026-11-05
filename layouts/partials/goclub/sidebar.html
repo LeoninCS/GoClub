@@ -1,0 +1,152 @@
+{{- $page := . -}}
+{{- $root := .Site.GetPage "section" "docs" -}}
+{{- $submitPage := .Site.GetPage "/docs/blog/提交流程.md" -}}
+{{- $issueURL := "https://github.com/LeoninCS/GoClub/issues/new?template=interview-question.yml" -}}
+{{- $icons := dict
+  "面试真题" "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z M8 9h8 M8 13h5"
+  "八股总结" "M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"
+  "资源荟萃" "M12 3 3 7.5l9 4.5 9-4.5z M3 12l9 4.5 9-4.5 M3 16.5 12 21l9-4.5"
+  "配套文章" "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h4"
+  "项目学习" "M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 13h8"
+  "技术博客" "M12 20h9 M16.5 3.5a2.1 2.1 0 0 1 3 3L7.5 18.5 3 20l1.5-4.5z"
+  "求职就业" "M20 8H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2z M16 8V6a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
+  "贡献者" "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"
+-}}
+<aside class="sidebar" id="site-sidebar" aria-label="知识库目录">
+  <div class="side-top">
+    {{ partial "docs/brand" . }}
+    <button type="button" class="side-close" data-sidebar-close aria-label="关闭目录">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="side-nav" aria-label="栏目导航">
+    <ul class="side-root">
+      {{- with $root -}}
+        {{- range where .Pages "Params.bookHidden" "ne" true -}}
+          {{- if .IsSection -}}
+            <li class="side-group">
+              {{- template "goclub-side-link" (dict "Page" . "Current" $page "Group" true "Top" true "Icons" $icons) -}}
+              {{- template "goclub-side-children" (dict "Section" . "Current" $page "Icons" $icons) -}}
+            </li>
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    </ul>
+  </nav>
+
+  <div class="side-bottom">
+    <a class="side-cta side-cta--ghost" href="{{ with $submitPage }}{{ .RelPermalink }}{{ else }}/docs/blog/{{ end }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h4" />
+      </svg>
+      <span>投稿流程</span>
+      <span class="side-cta-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <a class="side-cta side-cta--primary" href="{{ $issueURL }}" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z M12 8v6 M9 11h6" />
+      </svg>
+      <span>提交面经</span>
+      <span class="side-cta-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <div class="side-utils">
+      <button type="button" class="side-search" data-search-trigger aria-label="搜索知识库">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.6"></circle>
+          <path d="M10.6 10.6 14 14" stroke-linecap="round"></path>
+        </svg>
+        <span>搜索</span>
+        <kbd>/</kbd>
+      </button>
+
+      <button id="theme-toggle" class="side-icon" type="button" aria-label="切换标准与暖色主题">
+        <svg id="sun-icon" class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"></circle>
+          <path d="M12 2.6v2M12 19.4v2M4.4 4.4l1.4 1.4M18.2 18.2l1.4 1.4M2.6 12h2M19.4 12h2M4.4 19.6l1.4-1.4M18.2 5.8l1.4-1.4"></path>
+        </svg>
+        <svg id="moon-icon" class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="display:none" aria-hidden="true">
+          <path d="M20.5 13.2A8.5 8.5 0 1 1 10.8 3.5a6.8 6.8 0 0 0 9.7 9.7z"></path>
+        </svg>
+      </button>
+
+      <a class="side-icon" href="https://github.com/LeoninCS/GoClub" target="_blank" rel="noopener noreferrer" aria-label="GitHub 仓库">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</aside>
+
+{{- define "goclub-side-link" -}}
+  {{- $p := .Page -}}
+  {{- $current := eq .Current .Page -}}
+  {{- $ancestor := .Page.IsAncestor .Current -}}
+  {{- $children := where .Page.Pages "Params.bookHidden" "ne" true -}}
+  {{- $icon := "" -}}
+  {{- if .Top -}}{{- $icon = index .Icons .Page.Title | default "M4 6h16M4 12h16M4 18h10" -}}{{- end -}}
+  {{- if and .Group .Page.Params.bookCollapseSection (gt (len $children) 0) -}}
+    {{- $id := printf "side-%s" (md5 .Page.RelPermalink) -}}
+    <input type="checkbox" class="side-toggle" id="{{ $id }}" {{ if or $current $ancestor }}checked{{ end }} />
+    <label class="side-label{{ if $current }} is-active{{ end }}" for="{{ $id }}">
+      <a class="side-link{{ if $current }} is-active{{ else if $ancestor }} is-ancestor{{ end }}" href="{{ .Page.RelPermalink }}"
+        {{ if $current }}aria-current="page"{{ end }}>
+        {{- with $icon -}}
+          <svg class="side-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ . }}" /></svg>
+        {{- end -}}
+        <span class="side-item-text">{{ partial "docs/title" .Page }}</span>
+      </a>
+      <svg class="side-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M6 3.5 10.5 8 6 12.5" stroke-linecap="round" />
+      </svg>
+    </label>
+  {{- else -}}
+    <a class="side-link{{ if $current }} is-active{{ else if $ancestor }} is-ancestor{{ end }}" href="{{ .Page.RelPermalink }}"
+      {{ if $current }}aria-current="page"{{ end }}>
+      {{- with $icon -}}
+        <svg class="side-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{ . }}" /></svg>
+      {{- end -}}
+      <span class="side-item-text">{{ partial "docs/title" .Page }}</span>
+    </a>
+  {{- end -}}
+{{- end -}}
+
+{{- define "goclub-side-children" -}}
+  {{- $section := .Section -}}
+  {{- $current := .Current -}}
+  {{- $children := where $section.Pages "Params.bookHidden" "ne" true -}}
+  {{- $pages := where $section.RegularPages "Params.bookHidden" "ne" true -}}
+  {{- if gt (len $children) 0 -}}
+    <ul class="side-sub">
+      {{- range $children -}}
+        {{- if .IsSection -}}
+          <li class="side-group side-group--sub">
+            {{- template "goclub-side-link" (dict "Page" . "Current" $current "Group" true "Top" false "Icons" $.Icons) -}}
+            {{- template "goclub-side-children" (dict "Section" . "Current" $current "Icons" $.Icons) -}}
+          </li>
+        {{- end -}}
+      {{- end -}}
+
+      {{- range $pages -}}
+        <li class="side-leaf">
+          <a class="side-link side-link--leaf{{ if eq . $current }} is-active{{ end }}" href="{{ .RelPermalink }}"
+            {{ if eq . $current }}aria-current="page"{{ end }}>{{ partial "docs/title" . }}</a>
+        </li>
+      {{- end -}}
+    </ul>
+  {{- else if gt (len $pages) 0 -}}
+    <ul class="side-sub">
+      {{- range $pages -}}
+        <li class="side-leaf">
+          <a class="side-link side-link--leaf{{ if eq . $current }} is-active{{ end }}" href="{{ .RelPermalink }}"
+            {{ if eq . $current }}aria-current="page"{{ end }}>{{ partial "docs/title" . }}</a>
+        </li>
+      {{- end -}}
+    </ul>
+  {{- end -}}
+{{- end -}}

@@ -5,27 +5,8 @@
   {{ $showFeedback := and .Content (ne .Params.BookComments false) }}
 
   <div class="article-shell{{ if not $hasTOC }} is-single{{ end }}">
-    {{ if $hasTOC }}
-      <aside class="toc-pane" aria-labelledby="toc-title">
-        <div class="toc-head" id="toc-title">本页目录</div>
-        {{ partial "docs/toc" (dict "Page" . "ID" "TableOfContents") }}
-      </aside>
-    {{ end }}
-
     <div class="article-pane">
       <article class="article">
-        <nav class="crumbs" aria-label="面包屑">
-          <a href="{{ .Site.Home.RelPermalink }}">首页</a>
-          {{ range .Ancestors.Reverse }}
-            {{ if and (not .IsHome) (ne .RelPermalink "/docs/") }}
-              <span class="crumb-sep" aria-hidden="true">/</span>
-              <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
-            {{ end }}
-          {{ end }}
-          <span class="crumb-sep" aria-hidden="true">/</span>
-          <span class="crumb-current">{{ partial "docs/title" . }}</span>
-        </nav>
-
         <header class="article-head">
           <h1>{{ partial "docs/title" . }}</h1>
           {{ with $summary }}<p class="article-lead">{{ . }}</p>{{ end }}
@@ -56,5 +37,16 @@
         {{ end }}
       </article>
     </div>
+
+    {{ if $hasTOC }}
+      <aside class="toc-pane" aria-labelledby="toc-title">
+        <div class="toc-head" id="toc-title">本页内容</div>
+        <div class="toc-progress">
+          <div class="toc-progress-meta"><span>阅读进度</span><output class="toc-progress-value">0%</output></div>
+          <div class="toc-progress-track" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+        </div>
+        {{ partial "docs/toc" (dict "Page" . "ID" "TableOfContents") }}
+      </aside>
+    {{ end }}
   </div>
 {{ end }}

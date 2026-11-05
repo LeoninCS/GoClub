@@ -8,22 +8,32 @@
   <a class="skip-link" href="#main">跳到正文</a>
 
   <div class="shell">
-    {{ partial "docs/header" . }}
+    {{ partial "goclub/sidebar.html" . }}
 
-    <main id="main" class="main">
-      <div class="notfound">
-        <span class="notfound-code">ERROR 404</span>
-        <h1>页面不存在</h1>
-        <p class="notfound-lead">链接可能已失效，或内容改过名字。</p>
-        <div class="notfound-actions">
-          <a class="btn btn--primary" href="{{ .Site.Home.RelPermalink }}">返回首页</a>
-          <button type="button" class="btn" data-search-trigger>搜索内容</button>
+    <div class="stage">
+      <main id="main" class="main">
+        <div class="notfound">
+          <span class="notfound-code">ERROR 404</span>
+          <h1>页面不存在</h1>
+          <p class="notfound-lead">链接可能已失效，或内容改过名字。</p>
+          <div class="notfound-actions">
+            <a class="btn btn--primary" href="{{ .Site.Home.RelPermalink }}">返回首页</a>
+            <button type="button" class="btn" data-search-trigger>搜索内容</button>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
 
-    {{ partial "docs/footer" . }}
+      {{ partial "docs/footer" . }}
+    </div>
   </div>
+
+  <button type="button" class="mobile-nav-btn" data-sidebar-open aria-expanded="false"
+    aria-controls="site-sidebar" aria-label="打开目录">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+    </svg>
+  </button>
+  <div class="sidebar-overlay" data-sidebar-close aria-hidden="true"></div>
 
   {{ partial "docs/search" . }}
   {{ partial "docs/inject/scripts" . }}
