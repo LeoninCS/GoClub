@@ -2,6 +2,7 @@
 title: "大厂面试"
 weight: 1
 bookCollapseSection: true
+bookShowChildren: true
 aliases:
   - "/s/sw44/"
 shortlink: "sw44"
