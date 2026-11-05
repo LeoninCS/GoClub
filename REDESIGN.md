@@ -211,14 +211,14 @@ v3 把站点统计从"首页卡片"再收敛为 **36px 全局状态栏**，常�
 
 ## 5.3 贡献者页
 
-- **数据来源**：`scripts/generate_contributors.py` 调用 GitHub API 拉取全部已合并 PR，按作者聚合；`data/maintainers.json` 里的站长/维护者会合并进来并保留 `role`。CI 每次部署前重新生成，本地构建沿用仓库里的 `data/contributors.json` 快照（当前 28 人）。
+- **数据来源**：`scripts/generate_contributors.py` 分页调用 GitHub Commits API，拉取默认分支的提交历史，按关联 GitHub 账号的作者聚合 commit 数，排除合并提交和机器人；提交消息中的 `Co-authored-by` 通过 GitHub noreply 邮箱或历史提交已确认的邮箱关联识别，同一人在一次提交中只计一次。`data/maintainers.json` 里的站长/维护者会合并进来并保留 `role`，未提交过的维护者计数为 0。CI 每次部署前重新生成，本地构建沿用仓库里的 `data/contributors.json` 快照。
 - **页面结构**：
-  1. 页头：面包屑 + 「28 位贡献者」计数 + 短链；
+  1. 页头：面包屑 + 贡献者人数 + 短链；
   2. 说明块 `.people-note`：一句话讲清「这里是谁 / 为什么会有我 / 怎么才能出现」；
   3. 卡片网格 `.people`：`auto-fill minmax(300px, 1fr)`，桌面 3 列、平板 2 列、手机 1 列。
-- **单张卡片**（等高 84px，`grid-auto-rows: 1fr`）：圆形头像（加载失败回落首字母）→ 登录名 + `核心维护者` 徽标 → GitHub 图标 + `@login`（链到个人主页，新窗口）→ 右侧「合并 PR」计数。不再显示真实姓名，保证每张卡片信息结构完全一致。
+- **单张卡片**（等高 84px，`grid-auto-rows: 1fr`）：圆形头像（加载失败回落首字母）→ 登录名 + `核心维护者` 徽标 → GitHub 图标 + `@login`（链到个人主页，新窗口）→ 右侧「Commits」计数。不再显示真实姓名，保证每张卡片信息结构完全一致。
 - **头像地址**：统一走 `avatars.githubusercontent.com` 直链。`github.com/{login}.png` 在部分网络不可达，脚本 `normalize_avatars()` 会通过 `/users/{login}` 换成 CDN 地址，避免头像空白。
-- 排序：置顶维护者 → `sort_order` → 合并 PR 数降序 → 登录名，保证核心成员稳定在前。
+- 排序：置顶维护者 → `sort_order` → commit 数降序 → 登录名，保证核心成员稳定在前。
 
 ---
 

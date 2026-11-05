@@ -71,7 +71,7 @@
       {{ if $isContributors }}
         <div class="people-note">
           <h2>维护与共建</h2>
-          <p>这里展示 GoClub 的站长与维护者，以及所有提交过且 PR 已被合并的贡献者。你的 PR 合并并部署后，会自动出现在这个名单里，无需额外申请。</p>
+          <p>这里展示 GoClub 的站长、维护者和贡献者，按默认分支中关联 GitHub 账号的 commit 统计，包含共同作者，不含合并提交和机器人。你的提交进入默认分支并部署后，会自动出现在这个名单里，无需额外申请。</p>
         </div>
 
         <div class="people">
@@ -94,7 +94,7 @@
                   <span>@{{ .login }}</span>
                 </a>
               </div>
-              <span class="person-pr"><em>合并 PR</em><b>{{ .merged_prs }}</b></span>
+              <span class="person-commits"><em>Commits</em><b>{{ .commits }}</b></span>
             </article>
           {{ end }}
         </div>

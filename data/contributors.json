@@ -4,7 +4,7 @@
     "html_url": "https://github.com/LeoninCS",
     "avatar_url": "https://avatars.githubusercontent.com/u/147289645?v=4",
     "name": "LeoninCS",
-    "merged_prs": 1,
+    "commits": 126,
     "role": "核心维护者",
     "pinned": true,
     "sort_order": 1
@@ -14,7 +14,7 @@
     "html_url": "https://github.com/oxkrypton",
     "avatar_url": "https://avatars.githubusercontent.com/u/154910746?v=4",
     "name": "0xkrypton",
-    "merged_prs": 5,
+    "commits": 25,
     "role": "核心维护者",
     "pinned": false,
     "sort_order": 2
@@ -24,7 +24,7 @@
     "html_url": "https://github.com/Hddcc",
     "avatar_url": "https://avatars.githubusercontent.com/u/121591218?v=4",
     "name": "Hddcc",
-    "merged_prs": 8,
+    "commits": 17,
     "role": "核心维护者",
     "pinned": false,
     "sort_order": 3
@@ -34,7 +34,7 @@
     "html_url": "https://github.com/KaiMinKang",
     "avatar_url": "https://avatars.githubusercontent.com/u/315792956?v=4",
     "name": "KaiMinKang",
-    "merged_prs": 2,
+    "commits": 3,
     "role": "核心维护者",
     "pinned": false,
     "sort_order": 4
@@ -44,174 +44,188 @@
     "html_url": "https://github.com/4evour",
     "avatar_url": "https://avatars.githubusercontent.com/u/167200760?v=4",
     "name": null,
-    "merged_prs": 5
+    "commits": 8
   },
   {
     "login": "lwc-1",
     "html_url": "https://github.com/lwc-1",
     "avatar_url": "https://avatars.githubusercontent.com/u/283096632?v=4",
     "name": null,
-    "merged_prs": 3
-  },
-  {
-    "login": "LynPtl",
-    "html_url": "https://github.com/LynPtl",
-    "avatar_url": "https://avatars.githubusercontent.com/u/194795025?v=4",
-    "name": null,
-    "merged_prs": 2
+    "commits": 8
   },
   {
     "login": "mife-user",
     "html_url": "https://github.com/mife-user",
     "avatar_url": "https://avatars.githubusercontent.com/u/215930560?v=4",
     "name": null,
-    "merged_prs": 2
-  },
-  {
-    "login": "Ray-ymq",
-    "html_url": "https://github.com/Ray-ymq",
-    "avatar_url": "https://avatars.githubusercontent.com/u/195848614?v=4",
-    "name": null,
-    "merged_prs": 2
-  },
-  {
-    "login": "SppamLite",
-    "html_url": "https://github.com/SppamLite",
-    "avatar_url": "https://avatars.githubusercontent.com/u/116047754?v=4",
-    "name": null,
-    "merged_prs": 2
-  },
-  {
-    "login": "123456wda",
-    "html_url": "https://github.com/123456wda",
-    "avatar_url": "https://avatars.githubusercontent.com/u/218773912?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "3075269612",
-    "html_url": "https://github.com/3075269612",
-    "avatar_url": "https://avatars.githubusercontent.com/u/196806985?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "Amnesia-debug",
-    "html_url": "https://github.com/Amnesia-debug",
-    "avatar_url": "https://avatars.githubusercontent.com/u/174670120?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "ardi1s",
-    "html_url": "https://github.com/ardi1s",
-    "avatar_url": "https://avatars.githubusercontent.com/u/200318875?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "B0OOM",
-    "html_url": "https://github.com/B0OOM",
-    "avatar_url": "https://avatars.githubusercontent.com/u/153475158?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "chaojixinren",
-    "html_url": "https://github.com/chaojixinren",
-    "avatar_url": "https://avatars.githubusercontent.com/u/218372427?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "cjmarklll",
-    "html_url": "https://github.com/cjmarklll",
-    "avatar_url": "https://avatars.githubusercontent.com/u/120105002?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "Games55k",
-    "html_url": "https://github.com/Games55k",
-    "avatar_url": "https://avatars.githubusercontent.com/u/147263461?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "jackiegao6",
-    "html_url": "https://github.com/jackiegao6",
-    "avatar_url": "https://avatars.githubusercontent.com/u/103748447?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "JasperStonnne",
-    "html_url": "https://github.com/JasperStonnne",
-    "avatar_url": "https://avatars.githubusercontent.com/u/227109942?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "jefferykk77",
-    "html_url": "https://github.com/jefferykk77",
-    "avatar_url": "https://avatars.githubusercontent.com/u/261652522?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "junnhwan",
-    "html_url": "https://github.com/junnhwan",
-    "avatar_url": "https://avatars.githubusercontent.com/u/183736659?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "Kunyanli230",
-    "html_url": "https://github.com/Kunyanli230",
-    "avatar_url": "https://avatars.githubusercontent.com/u/166660863?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "orangelab-dev",
-    "html_url": "https://github.com/orangelab-dev",
-    "avatar_url": "https://avatars.githubusercontent.com/u/176232428?v=4",
-    "name": null,
-    "merged_prs": 1
-  },
-  {
-    "login": "peakxy",
-    "html_url": "https://github.com/peakxy",
-    "avatar_url": "https://avatars.githubusercontent.com/u/110726416?v=4",
-    "name": null,
-    "merged_prs": 1
+    "commits": 4
   },
   {
     "login": "powerhoffer",
     "html_url": "https://github.com/powerhoffer",
     "avatar_url": "https://avatars.githubusercontent.com/u/161275991?v=4",
     "name": null,
-    "merged_prs": 1
+    "commits": 4
+  },
+  {
+    "login": "Acd-kk",
+    "html_url": "https://github.com/Acd-kk",
+    "avatar_url": "https://avatars.githubusercontent.com/u/248843626?v=4",
+    "name": null,
+    "commits": 2
+  },
+  {
+    "login": "jefferykk77",
+    "html_url": "https://github.com/jefferykk77",
+    "avatar_url": "https://avatars.githubusercontent.com/u/261652522?v=4",
+    "name": null,
+    "commits": 2
+  },
+  {
+    "login": "LynPtl",
+    "html_url": "https://github.com/LynPtl",
+    "avatar_url": "https://avatars.githubusercontent.com/u/194795025?v=4",
+    "name": null,
+    "commits": 2
+  },
+  {
+    "login": "orangelab-dev",
+    "html_url": "https://github.com/orangelab-dev",
+    "avatar_url": "https://avatars.githubusercontent.com/u/176232428?v=4",
+    "name": null,
+    "commits": 2
+  },
+  {
+    "login": "pyz2190",
+    "html_url": "https://github.com/pyz2190",
+    "avatar_url": "https://avatars.githubusercontent.com/u/220479871?v=4",
+    "name": null,
+    "commits": 2
+  },
+  {
+    "login": "Ray-ymq",
+    "html_url": "https://github.com/Ray-ymq",
+    "avatar_url": "https://avatars.githubusercontent.com/u/195848614?v=4",
+    "name": null,
+    "commits": 2
+  },
+  {
+    "login": "SppamLite",
+    "html_url": "https://github.com/SppamLite",
+    "avatar_url": "https://avatars.githubusercontent.com/u/116047754?v=4",
+    "name": null,
+    "commits": 2
+  },
+  {
+    "login": "123456wda",
+    "html_url": "https://github.com/123456wda",
+    "avatar_url": "https://avatars.githubusercontent.com/u/218773912?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "3075269612",
+    "html_url": "https://github.com/3075269612",
+    "avatar_url": "https://avatars.githubusercontent.com/u/196806985?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "Amnesia-debug",
+    "html_url": "https://github.com/Amnesia-debug",
+    "avatar_url": "https://avatars.githubusercontent.com/u/174670120?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "ardi1s",
+    "html_url": "https://github.com/ardi1s",
+    "avatar_url": "https://avatars.githubusercontent.com/u/200318875?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "B0OOM",
+    "html_url": "https://github.com/B0OOM",
+    "avatar_url": "https://avatars.githubusercontent.com/u/153475158?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "chaojixinren",
+    "html_url": "https://github.com/chaojixinren",
+    "avatar_url": "https://avatars.githubusercontent.com/u/218372427?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "cjmarklll",
+    "html_url": "https://github.com/cjmarklll",
+    "avatar_url": "https://avatars.githubusercontent.com/u/120105002?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "Games55k",
+    "html_url": "https://github.com/Games55k",
+    "avatar_url": "https://avatars.githubusercontent.com/u/147263461?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "jackiegao6",
+    "html_url": "https://github.com/jackiegao6",
+    "avatar_url": "https://avatars.githubusercontent.com/u/103748447?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "JasperStonnne",
+    "html_url": "https://github.com/JasperStonnne",
+    "avatar_url": "https://avatars.githubusercontent.com/u/227109942?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "junnhwan",
+    "html_url": "https://github.com/junnhwan",
+    "avatar_url": "https://avatars.githubusercontent.com/u/183736659?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "Kunyanli230",
+    "html_url": "https://github.com/Kunyanli230",
+    "avatar_url": "https://avatars.githubusercontent.com/u/166660863?v=4",
+    "name": null,
+    "commits": 1
+  },
+  {
+    "login": "Mikewmz",
+    "html_url": "https://github.com/Mikewmz",
+    "avatar_url": "https://avatars.githubusercontent.com/u/127710378?v=4",
+    "name": null,
+    "commits": 1
   },
   {
     "login": "QCsnakeSUFE",
     "html_url": "https://github.com/QCsnakeSUFE",
     "avatar_url": "https://avatars.githubusercontent.com/u/126383240?v=4",
     "name": null,
-    "merged_prs": 1
+    "commits": 1
   },
   {
-    "login": "starslittle",
-    "html_url": "https://github.com/starslittle",
-    "avatar_url": "https://avatars.githubusercontent.com/u/110606805?v=4",
+    "login": "wegjgwioj",
+    "html_url": "https://github.com/wegjgwioj",
+    "avatar_url": "https://avatars.githubusercontent.com/u/155833991?v=4",
     "name": null,
-    "merged_prs": 1
+    "commits": 1
   },
   {
     "login": "zl1nq",
     "html_url": "https://github.com/zl1nq",
     "avatar_url": "https://avatars.githubusercontent.com/u/186989827?v=4",
     "name": null,
-    "merged_prs": 1
+    "commits": 1
   }
 ]

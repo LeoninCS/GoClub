@@ -6,8 +6,7 @@
     "name": "LeoninCS",
     "role": "核心维护者",
     "pinned": true,
-    "sort_order": 1,
-    "merged_prs": 0
+    "sort_order": 1
   },
   {
     "login": "oxkrypton",
@@ -16,8 +15,7 @@
     "name": "0xkrypton",
     "role": "核心维护者",
     "pinned": false,
-    "sort_order": 2,
-    "merged_prs": 0
+    "sort_order": 2
   },
   {
     "login": "Hddcc",
@@ -26,8 +24,7 @@
     "name": "Hddcc",
     "role": "核心维护者",
     "pinned": false,
-    "sort_order": 3,
-    "merged_prs": 0
+    "sort_order": 3
   },
   {
     "login": "KaiMinKang",
@@ -36,7 +33,6 @@
     "name": "KaiMinKang",
     "role": "核心维护者",
     "pinned": false,
-    "sort_order": 4,
-    "merged_prs": 0
+    "sort_order": 4
   }
 ]
