@@ -11,9 +11,8 @@ content/docs/          站点全部内容
   interview/           面试真题（dachang / zhongchang / xiaochang）
   baguwen/             八股总结
   resources/           资料、书籍、网站推荐
-  companion/           配套文章
   project-study/       项目学习与拆解
-  blog/                实践经验与技术记录
+  blog/                博客分享（配套文章、实践经验与技术记录）
 layouts/               模板覆盖（主题为 submodule themes/hugo-book）
 scripts/               构建期辅助脚本
 .github/workflows/     CI：pr-check / static / daily-question-sync
@@ -82,7 +81,7 @@ shortlink: "ltsl"
 
 `shortlink` 字段供页面上的「复制短链」按钮读取，模板在 `layouts/partials/goclub/share-shortlink.html`。
 
-短码由**内容文件路径**哈希得到，所以改标题、改正文、改 slug 都不会让短码变化，只有重命名或移动文件才会变。
+短码默认由**内容文件路径**哈希得到，所以改标题、改正文、改 slug 都不会让短码变化。重命名或移动文件时，按下方约定用 `shortlink_source` 固定原路径，继续保留旧短码。
 
 短链有两层自动化，正常情况下谁都不用手工处理：
 
@@ -102,7 +101,7 @@ python3 scripts/gen_shortlinks.py --list   # 打印短码对照表
 
 整本书的单章（`resources/` 下 web3-books、epub-books、pdf-books、cloud-native-web3-fulltext）不生成短链，书的目录页仍然生成。
 
-**不要手工改动已发布页面的 `shortlink`**，那会让别人手里的短链失效。文件重命名后脚本会提示短码不一致，此时应保留旧短链而不是直接覆盖。
+**不要手工改动已发布页面的 `shortlink`**，那会让别人手里的短链失效。文件重命名或移动时，保留原 `shortlink` 和短链 alias，并用 `shortlink_source` 指定最初生成短码的路径（相对 `content/docs/`，使用 `/` 分隔），例如 `shortlink_source: "companion/Go后端学习路线.md"`。脚本仍按原路径校验和生成短码，避免迁移后阻塞提交；旧页面 URL 也必须保留在 `aliases` 中。
 
 ## 新增内容的标准流程
 
@@ -127,15 +126,13 @@ python3 scripts/check_search_index.py --site public  # 搜索索引校验
 hugo server                                # 本地预览 http://localhost:1313/
 ```
 
-完整测试包含 Chromium 分页交互测试，请在虚拟环境中安装依赖后执行：
+运行全部单元测试（仅依赖 Python 标准库）：
 
 ```bash
-python3 -m pip install playwright==1.55.0
-python3 -m playwright install --only-shell chromium
 python3 -m unittest discover -s tests -v
 ```
 
-PR CI 按 URL、分享短链、面经投稿、每日一问、招聘同步、浏览器分页、Hugo 构建和搜索索引拆分检查。
+PR CI 按 URL、分享短链、贡献者统计、面经投稿、每日一问、短链生成、Hugo 构建和搜索索引拆分检查。
 除搜索索引依赖构建产物外，各检查并行运行；短链缺失仍只做提示。
 原有 `Build Hugo site` 检查名称保留为汇总门槛，任一必需检查失败、取消或跳过都会使它失败。
 新增测试文件时，同步更新 `pr-check.yml` 的测试矩阵或添加独立 job，避免遗漏。

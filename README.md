@@ -175,9 +175,8 @@ docs/update-mysql-notes
 - `content/docs/interview/`：面试真题
 - `content/docs/baguwen/`：八股总结
 - `content/docs/resources/`：资料、书籍、网站推荐
-- `content/docs/companion/`：配套文章
 - `content/docs/project-study/`：项目学习与项目拆解
-- `content/docs/blog/`：实践经验或技术记录
+- `content/docs/blog/`：博客分享，包括视频配套文章、实践经验与技术记录
 
 新增页面时，同步修改对应目录下的 `_index.md`，把新文章加入目录入口。
 
@@ -288,9 +287,8 @@ content/
     interview/         # 面试真题
     baguwen/           # 八股总结
     resources/         # 资料、书籍、网站推荐
-    companion/         # 配套文章
     project-study/     # 项目学习与项目拆解
-    blog/              # 技术博客与提交流程
+    blog/              # 博客分享、视频配套文章与提交流程
 
 .github/ISSUE_TEMPLATE/
   interview-question.yml                 # 面经投稿表单

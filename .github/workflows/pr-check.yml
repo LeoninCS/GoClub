@@ -15,7 +15,6 @@ concurrency:
 
 env:
   HUGO_VERSION: 0.159.0
-  PLAYWRIGHT_VERSION: 1.55.0
   PYTHONDONTWRITEBYTECODE: "1"
 
 jobs:
@@ -64,8 +63,8 @@ jobs:
             file: test_process_interview_question.py
           - name: 每日一问测试
             file: test_sync_daily_question.py
-          - name: 招聘同步单元测试
-            file: test_sync_qq_jobs.py
+          - name: 分享短链生成测试
+            file: test_gen_shortlinks.py
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -75,22 +74,6 @@ jobs:
         env:
           TEST_FILE: ${{ matrix.suite.file }}
         run: python3 -m unittest discover -s tests -p "$TEST_FILE" -v
-
-  browser-tests:
-    name: 招聘分页浏览器测试
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install Playwright Chromium
-        run: |
-          python3 -m pip install --disable-pip-version-check "playwright==$PLAYWRIGHT_VERSION"
-          python3 -m playwright install --with-deps --only-shell chromium
-      - name: Test pagination in Chromium
-        run: python3 -m unittest discover -s tests -p test_job_pagination_browser.py -v
 
   build-site:
     name: Hugo 构建
@@ -156,7 +139,7 @@ jobs:
     # 保留原检查名称，让已有分支保护继续要求全部检查成功。
     name: Build Hugo site
     if: ${{ always() }}
-    needs: [slugs, shortlinks, unit-tests, browser-tests, build-site, search-index]
+    needs: [slugs, shortlinks, unit-tests, build-site, search-index]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

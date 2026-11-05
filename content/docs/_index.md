@@ -1,7 +1,7 @@
 ---
 title: "内容导航"
 bookCollapseSection: false
-description: "八个栏目，按目标进入。"
+description: "六个栏目，按目标进入。"
 aliases:
   - "/s/5qio/"
 shortlink: "5qio"
