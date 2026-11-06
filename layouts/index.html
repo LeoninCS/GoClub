@@ -1,121 +1,117 @@
 {{ define "main" }}
-  {{ $docs := .Site.GetPage "section" "docs" }}
-
-  {{ $sections := slice }}
-  {{ with $docs }}
-    {{ range where .Pages "Params.bookHidden" "ne" true }}
-      {{ if .IsSection }}{{ $sections = $sections | append . }}{{ end }}
-    {{ end }}
-  {{ end }}
-  {{ $total := 0 }}
-  {{ with $docs }}{{ $total = len (where .RegularPagesRecursive "Params.bookHidden" "ne" true) }}{{ end }}
-
-  {{ $interview := .Site.GetPage "/docs/interview" }}
-  {{ $baguwen := .Site.GetPage "/docs/baguwen" }}
   {{ $submitPage := .Site.GetPage "/docs/blog/提交流程.md" }}
-  {{ $contributorCount := len hugo.Data.contributors }}
-  {{ $latest := now }}
+  {{ $githubURL := "https://github.com/LeoninCS/GoClub" }}
+  {{ $issueURL := "https://github.com/LeoninCS/GoClub/issues/new?template=interview-question.yml" }}
+  {{ $startPage := .Site.GetPage "docs/baguwen" }}
+  {{ $docs := .Site.GetPage "docs" }}
+  {{ $sections := slice }}
+  {{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/companion" "docs/project-study" "docs/blog" "docs/jobs" "docs/contributors" }}
+    {{ with $.Site.GetPage . }}{{ $sections = $sections | append . }}{{ end }}
+  {{ end }}
+  {{ $total := len .Site.RegularPages }}
+  {{ $latest := index (.Site.RegularPages.ByLastmod.Reverse) 0 }}
+  {{ $contributors := hugo.Data.contributors }}
 
-  {{ $icons := dict
-    "面试真题" "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z M8 9h8 M8 13h5"
-    "八股总结" "M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"
-    "资源荟萃" "M12 3 3 7.5l9 4.5 9-4.5z M3 12l9 4.5 9-4.5 M3 16.5 12 21l9-4.5"
-    "配套文章" "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h4"
-    "项目学习" "M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M8 13h8"
-    "技术博客" "M12 20h9 M16.5 3.5a2.1 2.1 0 0 1 3 3L7.5 18.5 3 20l1.5-4.5z"
-    "求职就业" "M20 8H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2z M16 8V6a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"
-    "贡献者" "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"
-  }}
-
-  <div class="home">
-    <section class="home-announce">
-      <span class="announce-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m3 11 18-5v12L3 14v-3Z" /><path d="M11.6 16.8 13 21H8l-1.8-6" />
-        </svg>
-        公告
-      </span>
-      <p class="announce-text">持续收录面经、八股与项目复盘，欢迎投稿与纠错。</p>
-      <a class="announce-link" href="{{ with $submitPage }}{{ .RelPermalink }}{{ else }}/docs/blog/{{ end }}">去投稿<span aria-hidden="true">↗</span></a>
-    </section>
-
+  <article class="markdown book-article home-article">
+    {{/* 首页（第五轮）：高级克制的文档门户风——居中 hero + 大搜索框 + 真实数据带 + 栏目索引行。
+         数据全部由模板在构建时从 content 实时计数，不写死。 */}}
+    {{/* 第一屏（用户 2026-10-24 亲定）：hero + 数据横幅撑满一屏，全部栏目从第二屏开始 */}}
+    <div class="home-first">
     <section class="home-hero">
-      <div class="hero-main">
-        <h1 class="hero-title">GoClub <span>面试知识库</span></h1>
-        <div class="hero-actions">
-          <a class="hero-btn hero-btn--primary" href="{{ with $interview }}{{ .RelPermalink }}{{ end }}">开始刷面试题<span aria-hidden="true">→</span></a>
-          <a class="hero-btn" href="{{ with $baguwen }}{{ .RelPermalink }}{{ end }}">八股专题速记<span aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-
-      <div class="hero-side">
-        <button type="button" class="hero-search" data-search-trigger>
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-            <circle cx="7" cy="7" r="4.6"></circle>
-            <path d="M10.6 10.6 14 14" stroke-linecap="round"></path>
-          </svg>
-          <span>搜索知识库</span>
-          <kbd>/</kbd>
-        </button>
-        <div class="hero-stats">
-          <div><strong>{{ $total }}</strong><span>篇内容</span></div>
-          <div><strong>{{ len $sections }}</strong><span>个栏目</span></div>
-          <div><strong>{{ $contributorCount }}</strong><span>位贡献者</span></div>
-        </div>
-      </div>
+      <p class="home-eyebrow"><span class="home-eyebrow-dot" aria-hidden="true"></span>社区共建 · 开源免费</p>
+      {{/* 大字标：定稿气泡 logo + Fredoka 600 艺术字（BotsRouter 同款品牌字），logo URL 带内容哈希防缓存 */}}
+      <p class="home-wordmark" aria-label="GoClub">
+        <img class="home-wordmark-logo" src="{{ printf "%s?v=%s" ("logo.svg" | relURL) (substr (sha256 (readFile "static/logo.svg")) 0 12) }}" alt="" aria-hidden="true">
+        <span class="home-wordmark-text" aria-hidden="true">GoClub</span>
+      </p>
+      <h1 class="home-title">Go 后端面试知识库</h1>
+      <p class="home-tagline">八股总结、面试真题、学习资源和配套文章，按栏目整理，社区一起维护。</p>
+      <button type="button" class="goclub-search-trigger home-search" aria-label="搜索知识库">
+        {{ partial "goclub/icon" (dict "name" "search" "class" "home-search-icon") }}
+        <span class="home-search-text">搜索题目、知识点…</span>
+        <kbd class="home-search-kbd">S</kbd>
+      </button>
+      <nav class="home-links" aria-label="快速操作">
+        {{ with $startPage }}
+          <a class="home-link home-link-primary" href="{{ .RelPermalink }}">开始学习{{ partial "goclub/icon" (dict "name" "arrow-right" "class" "home-link-icon") }}</a>
+        {{ end }}
+        <a class="home-link" href="{{ $githubURL }}" target="_blank" rel="noopener noreferrer">在 GitHub 上查看</a>
+      </nav>
     </section>
 
-    <section class="home-block home-block--core">
-      <div class="home-block-head">
-        <h2>核心栏目</h2>
+    {{/* 数据带：栏目数 = docs 下栏目数；全站篇数 = RegularPages 总数；最近更新 = 全部页面 Lastmod 最大值（GitInfo） */}}
+    <section class="home-stats" aria-label="站点数据">
+      <div class="home-stat">
+        <span class="home-stat-value">{{ len $sections }}</span>
+        <span class="home-stat-label">个栏目</span>
       </div>
+      <div class="home-stat">
+        <span class="home-stat-value">{{ $total }}</span>
+        <span class="home-stat-label">篇文章</span>
+      </div>
+      {{ if gt $latest.Lastmod.Year 2000 }}
+        <div class="home-stat">
+          <span class="home-stat-label">最近更新</span>
+          <span class="home-stat-value">{{ $latest.Lastmod.Format "2006-01-02" }}</span>
+        </div>
+      {{ end }}
+    </section>
+    </div>
 
-      <div class="featured-grid">
-        {{ range $index, $item := first 2 $sections }}
-          {{ $count := len (where $item.RegularPagesRecursive "Params.bookHidden" "ne" true) }}
-          <a class="feature-card" href="{{ $item.RelPermalink }}">
-            <span class="feature-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="{{ index $icons $item.Title | default "M4 6h16M4 12h16M4 18h10" }}" />
-              </svg>
+    <div class="home-notice" role="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m3 11 18-5v12L3 14v-3z" />
+        <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
+      </svg>
+      <p>八股总结、面试真题、学习资源与配套文章，按栏目整理，由社区共同维护。面经可先借助 AI 整理，再通过 Issue 表单投稿；内容补充与纠错，欢迎直接提 PR。</p>
+      <a href="{{ $issueURL }}" target="_blank" rel="noopener noreferrer">提交面经</a>
+    </div>
+
+    {{/* 栏目索引：两列索引行（序号 + 图标 + 栏目名 + 一句摘要 + 篇数 + 箭头），细线分隔 */}}
+    <section class="home-index" aria-label="全部栏目">
+      <p class="home-index-heading">全部栏目</p>
+      <div class="home-index-grid">
+        {{ range $i, $sec := $sections }}
+          {{ $summary := partial "goclub/lead-summary.html" $sec }}
+          {{ $icon := "library" }}
+          {{ $t := $sec.Title }}
+          {{ if in $t "面试" }}{{ $icon = "messages-square" }}
+          {{ else if in $t "八股" }}{{ $icon = "book-open" }}
+          {{ else if in $t "资源" }}{{ $icon = "folder-open" }}
+          {{ else if in $t "配套" }}{{ $icon = "file-text" }}
+          {{ else if in $t "项目" }}{{ $icon = "code" }}
+          {{ else if in $t "博客" }}{{ $icon = "pen-line" }}
+          {{ else if in $t "求职" }}{{ $icon = "briefcase" }}
+          {{ else if in $t "就业" }}{{ $icon = "briefcase" }}
+          {{ else if in $t "贡献" }}{{ $icon = "users" }}
+          {{ end }}
+          <a class="home-row" href="{{ $sec.RelPermalink }}">
+            <span class="home-row-num" aria-hidden="true">{{ printf "%02d" (add $i 1) }}</span>
+            <span class="home-row-icon" aria-hidden="true">{{ partial "goclub/icon" (dict "name" $icon) }}</span>
+            <span class="home-row-copy">
+              <span class="home-row-title">{{ partial "docs/title" $sec }}</span>
+              {{ with $summary }}<span class="home-row-summary">{{ . }}</span>{{ end }}
             </span>
-            <b class="feature-title">{{ partial "docs/title" $item }}</b>
-            <small class="feature-desc">
-              {{ if eq $item.Title "面试真题" }}按公司、岗位与轮次整理，先看题目，再复盘答案与追问。{{ else }}Go、MySQL、Redis 等专题成体系整理，适合冲刺阶段集中复习。{{ end }}
-            </small>
-            <div class="feature-foot">
-              <span class="feature-count">{{ $count }} 篇</span>
-              <span class="feature-date">更新于 {{ $latest.Format "2006-01-02" }}</span>
-            </div>
+            <span class="home-row-count">{{ if eq $sec.RelPermalink "/docs/contributors/" }}{{ len $contributors }} 位{{ else }}{{ len $sec.RegularPagesRecursive }} 篇{{ end }}</span>
+            <span class="home-row-arrow" aria-hidden="true">{{ partial "goclub/icon" (dict "name" "arrow-right") }}</span>
           </a>
         {{ end }}
       </div>
     </section>
 
-    <section class="home-block home-block--cats">
-      <div class="home-block-head">
-        <h2>全部栏目</h2>
-        <span>{{ len $sections }} 个栏目 · {{ $total }} 篇内容</span>
-      </div>
-
-      <div class="cat-grid">
-        {{ range $index, $item := $sections }}
-          {{ if gt $index 1 }}
-            {{ $count := len (where $item.RegularPagesRecursive "Params.bookHidden" "ne" true) }}
-            <a class="cat" href="{{ $item.RelPermalink }}">
-              <span class="cat-top">
-                <svg class="cat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="{{ index $icons $item.Title | default "M4 6h16M4 12h16M4 18h10" }}" />
-                </svg>
-              </span>
-              <span class="cat-title">{{ partial "docs/title" $item }}</span>
-              <span class="cat-foot">
-                <span>{{ if eq $item.Title "贡献者" }}{{ $contributorCount }} 位{{ else }}{{ $count }} 篇{{ end }}</span>
-              </span>
-            </a>
-          {{ end }}
+    {{/* 参与共建：一句引导 + 投稿流程 / GitHub 两链接 */}}
+    <section class="home-join">
+      <p class="home-join-text">发现内容有误，或者想分享你的面经？欢迎参与共建，一起把这份知识库维护下去。</p>
+      <nav class="home-links" aria-label="参与共建">
+        {{ with $submitPage }}
+          <a class="home-link home-link-primary" href="{{ .RelPermalink }}">面经投稿流程{{ partial "goclub/icon" (dict "name" "arrow-right" "class" "home-link-icon") }}</a>
         {{ end }}
-      </div>
+        <a class="home-link" href="{{ $githubURL }}" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
+      </nav>
     </section>
-  </div>
+
+
+  </article>
+
+
 {{ end }}

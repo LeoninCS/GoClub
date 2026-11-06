@@ -5,109 +5,48 @@
       var toggle = doc.getElementById('theme-toggle');
       var sun = doc.getElementById('sun-icon');
       var moon = doc.getElementById('moon-icon');
-      function isWarm() {
+      function isDark() {
         var t = doc.documentElement.getAttribute('data-theme');
-        if (t === 'warm' || t === 'dark') return true;
+        if (t === 'dark' || t === 'warm') return true; // warm 为旧值，按 dark 处理
         if (t === 'light') return false;
         return window.matchMedia('(prefers-color-scheme: dark)').matches;
       }
       function paintTheme() {
-        var warm = isWarm();
-        if (sun) sun.style.display = warm ? 'none' : 'block';
-        if (moon) moon.style.display = warm ? 'block' : 'none';
+        var dark = isDark();
+        if (sun) sun.style.display = dark ? 'none' : 'block';
+        if (moon) moon.style.display = dark ? 'block' : 'none';
       }
       paintTheme();
       if (toggle) {
         toggle.addEventListener('click', function () {
-          var next = isWarm() ? 'light' : 'warm';
+          var next = isDark() ? 'light' : 'dark';
           doc.documentElement.setAttribute('data-theme', next);
           try { localStorage.setItem('theme', next); } catch (e) {}
           paintTheme();
         });
       }
 
-      var sidebar = doc.getElementById('site-sidebar');
-      var openers = doc.querySelectorAll('[data-sidebar-open]');
-      var closers = doc.querySelectorAll('[data-sidebar-close]');
-      function setSidebar(open) {
-        if (!sidebar) return;
-        doc.body.classList.toggle('sidebar-open', open);
+      var sheet = doc.getElementById('nav-sheet');
+      var openers = doc.querySelectorAll('[data-nav-open]');
+      var closers = doc.querySelectorAll('[data-nav-close]');
+      function setSheet(open) {
+        if (!sheet) return;
+        sheet.classList.toggle('is-open', open);
+        doc.body.classList.toggle('sheet-open', open);
         openers.forEach(function (b) { b.setAttribute('aria-expanded', String(open)); });
         if (open) {
-          var first = sidebar.querySelector('.side-nav a, .side-nav button');
+          var first = sheet.querySelector('a, button');
           if (first) first.focus({ preventScroll: true });
         }
       }
-      openers.forEach(function (b) { b.addEventListener('click', function () { setSidebar(true); }); });
-      closers.forEach(function (b) { b.addEventListener('click', function () { setSidebar(false); }); });
+      openers.forEach(function (b) { b.addEventListener('click', function () { setSheet(true); }); });
+      closers.forEach(function (b) { b.addEventListener('click', function () { setSheet(false); }); });
       doc.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && doc.body.classList.contains('sidebar-open')) setSidebar(false);
+        if (e.key === 'Escape' && sheet && sheet.classList.contains('is-open')) setSheet(false);
       });
       doc.addEventListener('click', function (e) {
-        if (e.target.closest('.sidebar [data-search-trigger]')) setSidebar(false);
+        if (e.target.closest('.sheet [data-search-trigger]')) setSheet(false);
       });
-
-      // 右侧目录滚动高亮：按主内容滚动容器当前位置取最近的标题
-      var tocLinks = doc.querySelectorAll('#TableOfContents a[href^="#"], #TableOfContentsMobile a[href^="#"]');
-      var tocArticle = doc.querySelector('.article-prose');
-      var mainScroll = doc.getElementById('main');
-      if (tocLinks.length && tocArticle && mainScroll) {
-        var headings = Array.prototype.filter.call(
-          tocArticle.querySelectorAll('h2, h3, h4'),
-          function (h) { return h.id; }
-        );
-        var decodeHash = function (href) {
-          try { return decodeURIComponent(href.slice(1)); } catch (e) { return href.slice(1); }
-        };
-        var updateToc = function () {
-          if (!headings.length) return;
-          var threshold = mainScroll.getBoundingClientRect().top + 104;
-          var current = headings[0];
-          for (var i = 0; i < headings.length; i++) {
-            if (headings[i].getBoundingClientRect().top <= threshold) current = headings[i];
-            else break;
-          }
-          var activeLink = null;
-          Array.prototype.forEach.call(tocLinks, function (link) {
-            var on = decodeHash(link.getAttribute('href')) === current.id;
-            link.classList.toggle('is-current', on);
-            if (on) {
-              link.setAttribute('aria-current', 'location');
-              if (!activeLink && link.closest('.toc-pane')) activeLink = link;
-            } else {
-              link.removeAttribute('aria-current');
-            }
-          });
-          var bar = doc.querySelector('.toc-progress-track > span');
-          var track = doc.querySelector('.toc-progress-track');
-          var value = doc.querySelector('.toc-progress-value');
-          if (bar && track && value) {
-            var max = mainScroll.scrollHeight - mainScroll.clientHeight;
-            var percent = max > 0 ? Math.min(100, Math.max(0, Math.round((mainScroll.scrollTop / max) * 100))) : 100;
-            bar.style.width = percent + '%';
-            value.textContent = percent + '%';
-            track.setAttribute('aria-valuenow', String(percent));
-          }
-          var pane = activeLink && activeLink.closest('.toc-pane');
-          if (pane) {
-            var linkRect = activeLink.getBoundingClientRect();
-            var paneRect = pane.getBoundingClientRect();
-            if (linkRect.top < paneRect.top + 40) {
-              pane.scrollTop += linkRect.top - paneRect.top - 40;
-            } else if (linkRect.bottom > paneRect.bottom - 20) {
-              pane.scrollTop += linkRect.bottom - paneRect.bottom + 20;
-            }
-          }
-        };
-        var tocTicking = false;
-        mainScroll.addEventListener('scroll', function () {
-          if (tocTicking) return;
-          tocTicking = true;
-          requestAnimationFrame(function () { updateToc(); tocTicking = false; });
-        }, { passive: true });
-        window.addEventListener('resize', updateToc);
-        updateToc();
-      }
 
       doc.querySelectorAll('details.qa-answer').forEach(function (el) {
         var summary = el.querySelector('summary.qa-answer-toggle');
@@ -116,5 +55,52 @@
         el.addEventListener('toggle', update);
         update();
       });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      // 右侧大纲滚动高亮（fork inject/body 的等效实现，上游壳改动两点：
+      // ① 大纲在 .toc-pane nav 里；② 详情页滚 .article-pane，不滚 window）。
+      // 当前标题对应的大纲链接加 .active（品牌色标记段由 CSS ::before 绘制）。
+      var toc = document.querySelector('.toc-pane nav');
+      if (!toc) return;
+      var links = Array.prototype.slice.call(toc.querySelectorAll('a[href^="#"]'));
+      if (!links.length) return;
+      var byId = {};
+      links.forEach(function (a) {
+        byId[decodeURIComponent(a.getAttribute('href').slice(1))] = a;
+      });
+      var heads = Object.keys(byId)
+        .map(function (id) { return document.getElementById(id); })
+        .filter(Boolean);
+      if (!heads.length) return;
+      var pane = document.querySelector('.article-pane');
+      var current = null;
+      function setActive(id) {
+        if (current === id) return;
+        current = id;
+        links.forEach(function (a) { a.classList.remove('active'); });
+        if (id && byId[id]) byId[id].classList.add('active');
+      }
+      // 激活规则与 fork 一致：最后一个越过「顶栏高 + 32px」线的标题为当前节。
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var line = 64 + 32;
+        var id = heads.length ? heads[0].id : null;
+        for (var i = 0; i < heads.length; i++) {
+          if (heads[i].getBoundingClientRect().top <= line) id = heads[i].id;
+          else break;
+        }
+        setActive(id);
+      }
+      function onScroll() {
+        if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+      }
+      if (pane) pane.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', update);
+      update();
     })();
   </script>

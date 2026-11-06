@@ -1,4 +1,15 @@
-{{- $icon := "favicon-96.png" | relURL -}}
-{{- $touch := "apple-touch-icon.png" | relURL -}}
-<link rel="icon" type="image/png" sizes="96x96" href="{{ $icon }}">
-<link rel="apple-touch-icon" sizes="180x180" href="{{ $touch }}">
+{{- $faviconPath := .Site.Params.BookFavicon | default "favicon.png" -}}
+{{- $faviconURL := $faviconPath | relURL -}}
+{{- $cacheKey := "" -}}
+{{- $staticPath := path.Join "static" $faviconPath -}}
+{{- if fileExists $staticPath -}}
+  {{- $cacheKey = substr (sha256 (readFile $staticPath)) 0 12 -}}
+{{- end -}}
+{{- $href := cond (eq $cacheKey "") $faviconURL (printf "%s?v=%s" $faviconURL $cacheKey) -}}
+{{- $svgKey := "" -}}
+{{- if fileExists "static/favicon.svg" -}}
+  {{- $svgKey = substr (sha256 (readFile "static/favicon.svg")) 0 12 -}}
+{{- end -}}
+<link rel="icon" type="image/svg+xml" href="{{ printf "%s?v=%s" ("favicon.svg" | relURL) $svgKey }}">
+<link rel="icon" type="image/png" sizes="512x512" href="{{ $href }}">
+<link rel="apple-touch-icon" href="{{ $href }}">

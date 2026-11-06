@@ -4,8 +4,11 @@
 (function () {
   var SHARE_ID = 'A3zxc0L6w5ZOZWyH';
   var API_BASE = 'https://cloud.umami.is/analytics/us/api';
+  var PROXY_BASE = '/api/umami';
   var CACHE_KEY = 'goclub_umami_cache_v2';
   var CACHE_TTL = 60 * 1000;
+  var TIMEOUT_MS = 5000;
+  var RETRY_DELAY_MS = 1200;
 
   var containers = document.querySelectorAll('.goclub-umami-stats');
   if (!containers.length) return;
@@ -36,8 +39,37 @@
     } catch (e) {}
   }
 
+  /* 带超时的 fetch：请求挂住时不再无限等，超时即按失败走重试 */
+  function fetchTimeout(url, options) {
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, TIMEOUT_MS);
+    var opts = options || {};
+    opts.signal = controller.signal;
+    return fetch(url, opts).then(function (res) {
+      clearTimeout(timer);
+      return res;
+    }, function (err) {
+      clearTimeout(timer);
+      throw err;
+    });
+  }
+
+  /* 先直连 Umami；直连被拦截/超时/非 200 时改走本站同源代理
+     （同源无预检、不触发广告拦截；GitHub Pages 无代理时回退即直连结果） */
+  function fetchApi(path, options) {
+    function viaProxy() {
+      return fetchTimeout(PROXY_BASE + path, options);
+    }
+    return fetchTimeout(API_BASE + path, options).then(function (res) {
+      if (res.ok) return res;
+      return viaProxy();
+    }, function () {
+      return viaProxy();
+    });
+  }
+
   function apiGet(path, token) {
-    return fetch(API_BASE + path, {
+    return fetchApi(path, {
       headers: {
         'x-umami-share-token': token,
         'x-umami-share-context': '1'
@@ -54,37 +86,43 @@
     return;
   }
 
-  fetch(API_BASE + '/share/' + SHARE_ID)
-    .then(function (res) {
-      if (!res.ok) throw new Error('umami share http ' + res.status);
-      return res.json();
-    })
-    .then(function (share) {
-      var now = Date.now();
-      var todayStart = new Date().setHours(0, 0, 0, 0);
-      var statsPath = '/websites/' + share.websiteId + '/stats';
-      return Promise.all([
-        apiGet(statsPath + '?startAt=0&endAt=' + now, share.token),
-        apiGet(statsPath + '?startAt=' + todayStart + '&endAt=' + now, share.token),
-        apiGet('/websites/' + share.websiteId + '/active', share.token)
-      ]);
-    })
-    .then(function (results) {
-      var all = results[0], today = results[1];
-      var data = {
-        pageviews: all.pageviews,
-        visitors: all.visitors,
-        visits: all.visits,
-        t_pageviews: today.pageviews,
-        t_visitors: today.visitors,
-        t_visits: today.visits,
-        active: results[2].visitors
-      };
-      writeCache(data);
-      render(data);
-    })
-    .catch(function () {
-      /* 拉取失败时保持隐藏 */
-    });
+  function load() {
+    return fetchApi('/share/' + SHARE_ID)
+      .then(function (res) {
+        if (!res.ok) throw new Error('umami share http ' + res.status);
+        return res.json();
+      })
+      .then(function (share) {
+        var now = Date.now();
+        var todayStart = new Date().setHours(0, 0, 0, 0);
+        var statsPath = '/websites/' + share.websiteId + '/stats';
+        return Promise.all([
+          apiGet(statsPath + '?startAt=0&endAt=' + now, share.token),
+          apiGet(statsPath + '?startAt=' + todayStart + '&endAt=' + now, share.token),
+          apiGet('/websites/' + share.websiteId + '/active', share.token)
+        ]);
+      })
+      .then(function (results) {
+        var all = results[0], today = results[1];
+        var data = {
+          pageviews: all.pageviews,
+          visitors: all.visitors,
+          visits: all.visits,
+          t_pageviews: today.pageviews,
+          t_visitors: today.visitors,
+          t_visits: today.visits,
+          active: results[2].visitors
+        };
+        writeCache(data);
+        render(data);
+      });
+  }
+
+  /* 首拉失败或超时，1.2 秒后重试一次；仍失败则保持横杠占位 */
+  load().catch(function () {
+    setTimeout(function () {
+      load().catch(function () {});
+    }, RETRY_DELAY_MS);
+  });
 })();
 </script>

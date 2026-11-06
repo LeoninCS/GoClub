@@ -1,52 +1,38 @@
 {{ define "main" }}
   {{ $summary := partial "goclub/lead-summary.html" . }}
+  {{ $hasToc := partial "docs/toc-show" . }}
   {{ $content := partial "goclub/stripped-content.html" . }}
-  {{ $hasTOC := partial "docs/toc-show" . }}
-  {{ $showFeedback := and .Content (ne .Params.BookComments false) }}
 
-  <div class="article-shell{{ if not $hasTOC }} is-single{{ end }}">
-    <div class="article-pane">
-      <article class="article">
-        <header class="article-head">
-          <h1>{{ partial "docs/title" . }}</h1>
-          {{ with $summary }}<p class="article-lead">{{ . }}</p>{{ end }}
-          <div class="article-meta">
-            {{ if .GitInfo }}<span>更新于 {{ .Lastmod.Format "2006-01-02" }}</span>{{ end }}
-            {{ with .Params.shortlink }}
-              {{ if $.GitInfo }}<span class="meta-sep" aria-hidden="true">·</span>{{ end }}
-              {{ partial "goclub/share-shortlink-button.html" $ }}
-            {{ end }}
-          </div>
-        </header>
-
-        {{ if $hasTOC }}
-          <details class="toc-mobile">
-            <summary>本页目录</summary>
-            {{ partial "docs/toc" (dict "Page" . "ID" "TableOfContentsMobile") }}
-          </details>
+  <article class="markdown book-article book-article--single{{ if $hasToc }} has-page-toc{{ end }}{{ if .Params.preserveWhitespace }} preserve-whitespace{{ end }}">
+    <nav class="crumbs" aria-label="面包屑">
+      <a href="{{ .Site.Home.RelPermalink }}">首页</a>
+      {{ range .Ancestors.Reverse }}
+        {{ if and (not .IsHome) (ne .RelPermalink "/docs/") }}
+          <span class="crumb-sep" aria-hidden="true">/</span>
+          <a href="{{ .RelPermalink }}">{{ partial "docs/title" . }}</a>
         {{ end }}
+      {{ end }}
+      <span class="crumb-sep" aria-hidden="true">/</span>
+      <span class="crumb-current">{{ partial "docs/title" . }}</span>
+    </nav>
 
-        <div class="prose article-prose{{ if .Params.preserveWhitespace }} preserve-whitespace{{ end }}">
-          {{- $content | safeHTML -}}
-        </div>
-
-        {{ partial "goclub/prev-next.html" . }}
-
-        {{ if $showFeedback }}
-          {{ partial "docs/comments.html" . }}
+    <header class="page-lead page-lead--article">
+      <h1 class="page-lead-title">{{ partial "docs/title" . }}</h1>
+      {{ with $summary }}
+        <div class="page-lead-summary">{{ . }}</div>
+      {{ end }}
+      <div class="page-lead-meta" role="list" aria-label="页面信息">
+        {{ if .Params.shortlink }}
+          <span class="page-lead-meta-item" role="listitem">{{ partial "goclub/share-shortlink-button.html" . }}</span>
         {{ end }}
-      </article>
+        {{ if .GitInfo }}
+          <span class="page-lead-meta-item" role="listitem">最近更新：{{ partial "docs/date" (dict "Date" .Lastmod "Format" "2006-01-02") }}</span>
+        {{ end }}
+      </div>
+    </header>
+
+    <div class="article-prose">
+      {{- $content | safeHTML -}}
     </div>
-
-    {{ if $hasTOC }}
-      <aside class="toc-pane" aria-labelledby="toc-title">
-        <div class="toc-head" id="toc-title">本页内容</div>
-        <div class="toc-progress">
-          <div class="toc-progress-meta"><span>阅读进度</span><output class="toc-progress-value">0%</output></div>
-          <div class="toc-progress-track" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
-        </div>
-        {{ partial "docs/toc" (dict "Page" . "ID" "TableOfContents") }}
-      </aside>
-    {{ end }}
-  </div>
+  </article>
 {{ end }}

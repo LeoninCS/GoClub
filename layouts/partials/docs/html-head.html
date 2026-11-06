@@ -4,7 +4,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta name="description" content="{{ or .Description .Summary .Site.Params.description | plainify | htmlUnescape }}">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#f7f5f0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0f0f">
 <meta name="color-scheme" content="light dark">
 
 {{- with .Page.Params.BookHref -}}
@@ -27,6 +27,7 @@
 
 <link rel="preload" href="{{ "fonts/inter-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ "fonts/jetbrains-mono-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/fredoka-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 
 <!-- Theme stylesheet, you can customize scss by creating `assets/custom.scss` in your website -->
 {{- $styles := resources.Get "book.scss" | resources.ExecuteAsTemplate "book.scss" . | css.Sass (dict "transpiler" "dartsass" "outputStyle" "expanded") | resources.Minify | resources.Fingerprint }}
