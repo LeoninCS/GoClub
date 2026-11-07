@@ -2,13 +2,15 @@
 title: "网站推荐"
 description: "面向后端开发者的学习站点、动手教程和技术社区。"
 bookToC: false
+autoIndex: false
 weight: 3
 type: docs
-slug: "website-recommendations"
 aliases:
+  - "/docs/resources/website-recommendations/"
   - "/docs/resources/网站分享/"
   - "/s/5img/"
 shortlink: "5img"
+shortlink_source: "resources/网站分享.md"
 groups:
   - title: Go 与工程实践
     sites:
@@ -49,6 +51,29 @@ groups:
       - name: Claude Code 教程
         url: https://www.runoob.com/claude-code/claude-code-tutorial.html
         description: 从安装配置入手，练习交互命令、MCP 和子代理。
+      - name: Pi Agent Book
+        url: "https://dg-ai-notes.pages.dev/modules/ch01-overview/#%E4%B8%80%E5%BC%80%E5%9C%BA%E4%B8%89%E4%B8%AA%E9%97%AE%E9%A2%98%E4%B8%80%E4%B8%AA%E7%AD%94%E6%A1%88"
+        description: 从第一章的三个问题入手，沿 Pi-Agent 源码读懂智能体循环、工具调用和上下文管理。
+      - name: 深入理解 AI Agent
+        url: https://bojieli.github.io/ai-agent-book/
+        description: 结合配套实验，学习如何给智能体接入工具、管理记忆和组织上下文。
+      - name: Zero2Agent
+        url: https://onefly.top/zero2Agent/
+        description: 从最小智能体循环开始手写框架，再拆解 OpenClaw 和 Claude Code 的实现。
+  - title: 系统架构与基础设施
+    sites:
+      - name: QEMU / KVM 学习笔记
+        url: https://yifengyou.github.io/learn-kvm/
+        description: 对照 QEMU 用户态程序和 KVM 内核模块，学习硬件虚拟化及虚拟机的运行过程。
+      - name: Kubernetes 中文官网
+        url: https://kubernetes.io/zh-cn/
+        description: 从官方中文入口查找概念文档、操作指南和教程，练习部署与管理容器应用。
+      - name: 深入理解 AI Infra
+        url: https://github.com/bojieli/ai-infra-book
+        description: 从硬件约束出发，用书中的计算工具和实验分析大模型训练、推理的系统开销。
+      - name: 凤凰架构
+        url: https://icyfenix.cn/
+        description: 结合示例工程，学习大型分布式系统中的远程调用、事务处理和微服务架构。
   - title: 技术专栏与社区
     id: 技术专栏与课程索引
     sites:
@@ -60,6 +85,9 @@ groups:
         id: linuxdo-社区
         url: https://linux.do/
         description: 检索开发工具的使用经验、故障排查记录，或参与社区讨论。
+      - name: 极客时间文档
+        url: https://uaxe.github.io/geektime-docs/
+        description: 按后端架构、计算机基础、运维测试等方向查找专栏，也可按关键词搜索文档。
 ---
 
 {{< website-directory >}}

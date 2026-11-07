@@ -4,10 +4,7 @@
   {{ $issueURL := "https://github.com/LeoninCS/GoClub/issues/new?template=interview-question.yml" }}
   {{ $startPage := .Site.GetPage "docs/baguwen" }}
   {{ $docs := .Site.GetPage "docs" }}
-  {{ $sections := slice }}
-  {{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/blog" "docs/project-study" "docs/contributors" }}
-    {{ with $.Site.GetPage . }}{{ $sections = $sections | append . }}{{ end }}
-  {{ end }}
+  {{ $sections := where $docs.Sections "Params.bookHidden" "ne" true }}
   {{ $total := len .Site.RegularPages }}
   {{ $latest := index (.Site.RegularPages.ByLastmod.Reverse) 0 }}
   {{ $contributors := hugo.Data.contributors }}
@@ -89,7 +86,17 @@
               <span class="home-row-title">{{ partial "docs/title" $sec }}</span>
               {{ with $summary }}<span class="home-row-summary">{{ . }}</span>{{ end }}
             </span>
-            <span class="home-row-count">{{ if eq $sec.RelPermalink "/docs/contributors/" }}{{ len $contributors }} 位{{ else }}{{ len $sec.RegularPagesRecursive }} 篇{{ end }}</span>
+            <span class="home-row-count">
+              {{- if eq $sec.Path "/docs/websites" -}}
+                {{- $count := 0 -}}
+                {{- range $sec.Params.groups }}{{ $count = add $count (len .sites) }}{{ end -}}
+                {{ $count }} 个网站
+              {{- else if eq $sec.Path "/docs/contributors" -}}
+                {{ len $contributors }} 位
+              {{- else -}}
+                {{ len $sec.RegularPagesRecursive }} 篇
+              {{- end -}}
+            </span>
             <span class="home-row-arrow" aria-hidden="true">{{ partial "goclub/icon" (dict "name" "arrow-right") }}</span>
           </a>
         {{ end }}

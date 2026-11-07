@@ -1,7 +1,7 @@
 ---
 title: "博客分享"
 cardLabel: "学习路线 / 实践 / 视频文章"
-weight: 4
+weight: 5
 bookCollapseSection: true
 bookShowChildren: true
 aliases:

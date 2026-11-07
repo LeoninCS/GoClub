@@ -1,7 +1,7 @@
 ---
 title: "项目学习"
 cardLabel: "项目拆解与复盘"
-weight: 5
+weight: 6
 bookCollapseSection: true
 bookShowChildren: true
 autoIndex: false

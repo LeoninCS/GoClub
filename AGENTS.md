@@ -10,7 +10,8 @@ GoClub 是一个 Hugo 静态文档站，内容面向 Go 后端面试准备：面
 content/docs/          站点全部内容
   interview/           面试真题（dachang / zhongchang / xiaochang）
   baguwen/             八股总结
-  resources/           资料、书籍、网站推荐
+  websites/            网站推荐
+  resources/           资料、书籍
   project-study/       项目学习与拆解
   blog/                博客分享（配套文章、实践经验与技术记录）
 layouts/               模板覆盖（主题为 submodule themes/hugo-book）

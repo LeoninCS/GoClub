@@ -27,6 +27,8 @@
     {{- $category = "面试真题" -}}
   {{- else if hasPrefix $href "/docs/baguwen/" -}}
     {{- $category = "八股总结" -}}
+  {{- else if hasPrefix $href "/docs/websites/" -}}
+    {{- $category = "网站推荐" -}}
   {{- else if hasPrefix $href "/docs/blog/" -}}
     {{- $category = "博客分享" -}}
   {{- else if hasPrefix $href "/docs/project-study/" -}}

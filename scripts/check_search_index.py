@@ -15,6 +15,7 @@ from urllib.parse import unquote, urlsplit
 ALLOWED_CATEGORIES = {
     "面试真题",
     "八股总结",
+    "网站推荐",
     "资源荟萃",
     "博客分享",
     "项目学习",
