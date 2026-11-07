@@ -1,4 +1,4 @@
-{{/* 站点顶栏（VPNav 顺序）：品牌 / 搜索框 / 菜单行（含「更多」下拉）/ 分隔线 / 外观开关 / 分隔线 / 社交图标。
+{{/* 站点顶栏（VPNav 顺序）：品牌 / 搜索框 / 栏目导航/ 分隔线 / 外观开关 / 分隔线 / 社交图标。
      JS 依赖：label[for=menu-control].goclub-mobile-header-button、label[for=toc-control].goclub-mobile-header-button、#theme-toggle/#sun-icon/#moon-icon、.goclub-search-trigger */}}
 <header class="goclub-topbar">
   <div class="goclub-topbar-inner">
@@ -16,29 +16,8 @@
 
     <div class="goclub-topbar-spacer"></div>
 
-    {{/* 顶栏菜单行（VPNavMenu 形态）：四个主栏目直链 + 「更多」下拉（其余栏目），当前栏目品牌色高亮 */}}
-    {{ $cur := . }}
     <nav class="goclub-topbar-nav" aria-label="主栏目">
-      {{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/project-study" }}
-        {{ with $cur.Site.GetPage . }}
-          <a href="{{ .RelPermalink }}"{{ if strings.HasPrefix $cur.RelPermalink .RelPermalink }} class="active" aria-current="true"{{ end }}>{{ .Title }}</a>
-        {{ end }}
-      {{ end }}
-      <div class="goclub-topbar-more">
-        <button type="button" class="goclub-topbar-more-btn" aria-haspopup="true">
-          <span>更多</span>
-          {{ partial "goclub/icon" (dict "name" "chevron-down" "class" "goclub-topbar-more-icon") }}
-        </button>
-        <div class="goclub-topbar-flyout">
-          <div class="goclub-topbar-flyout-panel">
-            {{ range slice "docs/companion" "docs/blog" "docs/jobs" "docs/contributors" }}
-              {{ with $cur.Site.GetPage . }}
-                <a href="{{ .RelPermalink }}"{{ if strings.HasPrefix $cur.RelPermalink .RelPermalink }} class="active" aria-current="true"{{ end }}>{{ .Title }}</a>
-              {{ end }}
-            {{ end }}
-          </div>
-        </div>
-      </div>
+      {{ partial "goclub/section-links" . }}
     </nav>
 
     <span class="goclub-topbar-divider" aria-hidden="true"></span>

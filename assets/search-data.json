@@ -28,15 +28,11 @@
   {{- else if hasPrefix $href "/docs/baguwen/" -}}
     {{- $category = "八股总结" -}}
   {{- else if hasPrefix $href "/docs/blog/" -}}
-    {{- $category = "技术博客" -}}
-  {{- else if hasPrefix $href "/docs/companion/" -}}
-    {{- $category = "配套文章" -}}
+    {{- $category = "博客分享" -}}
   {{- else if hasPrefix $href "/docs/project-study/" -}}
     {{- $category = "项目学习" -}}
   {{- else if hasPrefix $href "/docs/resources/" -}}
     {{- $category = "资源荟萃" -}}
-  {{- else if hasPrefix $href "/docs/jobs/" -}}
-    {{- $category = "求职就业" -}}
   {{- end -}}
   {{- if eq $page.Kind "section" -}}
     {{- $type = "section" -}}

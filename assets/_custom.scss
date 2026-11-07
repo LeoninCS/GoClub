@@ -344,86 +344,44 @@ main.container {
   font-family: inherit;
   line-height: 1.5;
 }
-/* 顶栏菜单行（VPNavMenu 规格：14px/500、链接内边距 0 12px、行高=顶栏高） */
-.goclub-topbar-nav { display: none; }
-@media screen and (min-width: 60rem) {
-  .goclub-topbar-nav { display: flex; align-items: stretch; margin-left: 24px; }
-  .goclub-topbar-nav a {
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--vp-text-1);
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .goclub-topbar-nav a:hover { color: var(--vp-brand-1); }
-  .goclub-topbar-nav a.active { color: var(--vp-brand-1); }
+.goclub-topbar-nav {
+  display: flex;
+  align-items: stretch;
+  margin-inline-start: 24px;
 }
-/* 「更多」下拉（VP flyout：纯 CSS hover/focus 展开，白底、divider 边、圆角 12、轻阴影） */
-.goclub-topbar-more { position: relative; display: flex; align-items: stretch; }
-.goclub-topbar-more-btn {
+.goclub-topbar-nav a {
   display: flex;
   align-items: center;
-  gap: 4px;
   padding: 0 12px;
-  border: none;
-  background: none;
   font-size: 14px;
   font-weight: 500;
-  font-family: inherit;
-  color: var(--vp-text-1);
-  cursor: pointer;
-  white-space: nowrap;
-}
-.goclub-topbar-more-btn:hover { color: var(--vp-brand-1); }
-.goclub-topbar-more-icon {
-  width: 14px;
-  height: 14px;
-  color: var(--vp-text-2);
-  transition: transform 0.2s ease-in-out;
-}
-.goclub-topbar-more:hover .goclub-topbar-more-icon,
-.goclub-topbar-more:focus-within .goclub-topbar-more-icon { transform: rotate(180deg); }
-.goclub-topbar-flyout {
-  position: absolute;
-  top: 100%;
-  inset-inline-end: 0;
-  z-index: 55;
-  padding-top: 6px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(4px);
-  transition: opacity 0.18s ease-in-out, transform 0.18s ease-in-out, visibility 0.18s;
-}
-.goclub-topbar-more:hover .goclub-topbar-flyout,
-.goclub-topbar-more:focus-within .goclub-topbar-flyout {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-}
-.goclub-topbar-flyout-panel {
-  min-width: 184px;
-  padding: 8px;
-  border: 1px solid var(--vp-divider);
-  border-radius: 12px;
-  background: var(--vp-bg);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-}
-.goclub-topbar-flyout-panel a {
-  display: block;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 24px;
   color: var(--vp-text-1);
   text-decoration: none;
   white-space: nowrap;
 }
-.goclub-topbar-flyout-panel a:hover { background: var(--vp-bg-soft); color: var(--vp-brand-1); }
-.goclub-topbar-flyout-panel a.active { color: var(--vp-brand-1); }
+.goclub-topbar-nav a:hover,
+.goclub-topbar-nav a[aria-current] { color: var(--vp-brand-1); }
+
+@media screen and (max-width: 59.99rem) {
+  :root { --gc-topbar-h: 96px; }
+  .goclub-topbar-inner { flex-wrap: wrap; gap: 0 8px; }
+  .goclub-topbar-nav {
+    order: 1;
+    flex: 0 0 100%;
+    height: 36px;
+    margin: 0;
+    justify-content: space-between;
+  }
+  .goclub-topbar-nav a { padding: 0; }
+}
+@media screen and (max-width: 30rem) {
+  .goclub-topbar-inner { padding-inline: 8px; }
+  .goclub-topbar-nav a { font-size: 13px; }
+}
+@media screen and (max-width: 22.5rem) {
+  .goclub-topbar-inner { padding-inline: 6px; column-gap: 2px; }
+  .goclub-topbar-brand { gap: 6px; }
+}
 /* 顶栏竖分隔线（VP nav 的 controls 分隔） */
 .goclub-topbar-divider {
   flex: 0 0 auto;

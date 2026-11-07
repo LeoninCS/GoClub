@@ -1,6 +1,6 @@
 # GoClub
 
-GoClub 是一个围绕技术面试准备与系统复习搭建的内容站点，主要整理面试真题、八股总结、资料视频、项目推荐，以及视频配套文章等内容。
+GoClub 是一个围绕技术面试准备与系统复习搭建的内容站点，主要整理面试真题、八股总结、资料视频、项目推荐和博客分享等内容。
 
 当前站点基于 Hugo 构建，部署在 GitHub Pages，自定义域名为 `goclub.space`。
 
@@ -11,7 +11,7 @@ GoClub 是一个围绕技术面试准备与系统复习搭建的内容站点，�
 
 ## 如何提交内容
 
-如果你想给 GoClub 补充面试题、八股、配套文章、项目经验，或者修正文档中的错误，可以使用下面三种方式提交。
+如果你想给 GoClub 补充面试题、八股、博客文章、项目经验，或者修正文档中的错误，可以使用下面三种方式提交。
 
 ### 方式一：先用 AI 整理，再通过 Issue 表单投稿面经（推荐）
 
@@ -175,9 +175,8 @@ docs/update-mysql-notes
 - `content/docs/interview/`：面试真题
 - `content/docs/baguwen/`：八股总结
 - `content/docs/resources/`：资料、书籍、网站推荐
-- `content/docs/companion/`：配套文章
 - `content/docs/project-study/`：项目学习与项目拆解
-- `content/docs/blog/`：实践经验或技术记录
+- `content/docs/blog/`：博客分享，包括视频配套文章、实践经验与技术记录
 
 新增页面时，同步修改对应目录下的 `_index.md`，把新文章加入目录入口。
 
@@ -258,7 +257,7 @@ GoClub 当前主要覆盖以下方向：
 - 八股知识总结
 - 资料与视频推荐
 - 项目推荐
-- 视频配套文章
+- 博客分享
 
 目标是把零散、重复、难以检索的内容，整理成更适合复习和查阅的知识库。
 
@@ -288,9 +287,8 @@ content/
     interview/         # 面试真题
     baguwen/           # 八股总结
     resources/         # 资料、书籍、网站推荐
-    companion/         # 配套文章
     project-study/     # 项目学习与项目拆解
-    blog/              # 技术博客与提交流程
+    blog/              # 博客分享、视频配套文章与提交流程
 
 .github/ISSUE_TEMPLATE/
   interview-question.yml                 # 面经投稿表单

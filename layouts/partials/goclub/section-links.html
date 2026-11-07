@@ -1,0 +1,6 @@
+{{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/project-study" "docs/blog" "docs/contributors" }}
+  {{ with $.Site.GetPage . }}
+    {{ $active := or (eq . $) (.IsAncestor $) }}
+    <a href="{{ .RelPermalink }}"{{ if $active }} aria-current="true"{{ end }}>{{ .Title }}</a>
+  {{ end }}
+{{ end }}
