@@ -34,6 +34,9 @@ groups:
       - name: 灵神题单
         url: https://github.com/EndlessCheng/EndlessCheng
         description: 按滑动窗口、动态规划、图论等专题选题，逐步练习同类解法。
+      - name: CodeTop
+        url: https://codetop.cc/home
+        description: 按目标公司查找高频算法面试题，根据出现频次安排刷题顺序。
   - title: AI Agent
     sites:
       - name: Hello-Agents
