@@ -1,5 +1,6 @@
 ---
 title: "常用工具"
+weight: 100
 aliases:
   - "/s/zm03/"
 shortlink: "zm03"

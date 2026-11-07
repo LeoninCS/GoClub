@@ -1,6 +1,25 @@
-{{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/project-study" "docs/blog" "docs/contributors" }}
-  {{ with $.Site.GetPage . }}
-    {{ $active := or (eq . $) (.IsAncestor $) }}
-    <a href="{{ .RelPermalink }}"{{ if $active }} aria-current="true"{{ end }}>{{ .Title }}</a>
+{{ $primary := slice "/docs/interview" "/docs/baguwen" "/docs/contributors" }}
+{{ $more := slice "/docs/resources" "/docs/project-study" "/docs/blog" "/docs/resources/网站分享" }}
+{{ $paths := $primary | append $more }}
+{{ $active := . }}
+{{ range .Ancestors }}
+  {{ if in $paths $active.Path }}{{ break }}{{ end }}
+  {{ $active = . }}
+{{ end }}
+{{ range $primary }}
+  {{ template "goclub-section-link" (dict "active" $active "path" .) }}
+{{ end }}
+<details class="goclub-nav-more">
+  <summary>更多{{ partial "goclub/icon" (dict "name" "chevron-down" "class" "goclub-nav-chevron") }}</summary>
+  <div class="goclub-nav-more-links">
+    {{ range $more }}
+      {{ template "goclub-section-link" (dict "active" $active "path" .) }}
+    {{ end }}
+  </div>
+</details>
+
+{{ define "goclub-section-link" }}
+  {{ with site.GetPage .path }}
+    <a href="{{ .RelPermalink }}"{{ if eq . $.active }} aria-current="true"{{ end }}>{{ .Title }}</a>
   {{ end }}
 {{ end }}

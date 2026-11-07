@@ -1,0 +1,26 @@
+{{ $groups := .Page.Params.groups }}
+<div class="website-directory">
+  <div class="website-filters" role="group" aria-label="按分类筛选网站" hidden>
+    <button type="button" data-group="" aria-pressed="true">全部</button>
+    {{ range $groups }}
+      <button type="button" data-group="{{ .title }}" aria-pressed="false">{{ .title }}</button>
+    {{ end }}
+  </div>
+  {{ range $groups }}
+    <section class="website-group" data-group="{{ .title }}" id="{{ .id | default (.title | anchorize) }}">
+      <h2>{{ .title }}</h2>
+      <div class="website-grid">
+        {{ range .sites }}
+          <a class="website-card" href="{{ .url }}"{{ with .id }} id="{{ . }}"{{ end }}>
+            <strong>{{ .name }}</strong>
+            <span class="website-description">{{ .description }}</span>
+            <span class="website-domain">{{ (urls.Parse .url).Hostname }}</span>
+            {{ partial "goclub/icon" (dict "name" "arrow-right" "class" "website-arrow") }}
+          </a>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+</div>
+{{ $script := resources.Get "website-directory.js" | minify | fingerprint }}
+<script type="module" src="{{ $script.RelPermalink }}"></script>

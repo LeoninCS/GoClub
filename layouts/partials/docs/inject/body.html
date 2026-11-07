@@ -1,4 +1,19 @@
 <script>
+  document.querySelectorAll(".goclub-nav-more").forEach(function (menu) {
+    document.addEventListener("click", function (event) {
+      if (menu.open && !menu.contains(event.target)) menu.open = false;
+    });
+    menu.addEventListener("focusout", function (event) {
+      if (event.relatedTarget && !menu.contains(event.relatedTarget)) menu.open = false;
+    });
+    menu.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && menu.open) {
+        menu.open = false;
+        menu.querySelector("summary").focus();
+      }
+    });
+  });
+
   (function () {
     var collapseStorageKey = "goclub.sidebar.collapsed";
     var widthStorageKey = "goclub.sidebar.width";

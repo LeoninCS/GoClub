@@ -4,6 +4,10 @@ cardLabel: "语言 / 数据库 / 系统"
 weight: 2
 bookCollapseSection: true
 bookShowChildren: true
+cascade:
+  - target:
+      kind: page
+    weight: 10
 aliases:
   - "/s/lol1/"
 shortlink: "lol1"

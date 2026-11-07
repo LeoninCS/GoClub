@@ -349,7 +349,8 @@ main.container {
   align-items: stretch;
   margin-inline-start: 24px;
 }
-.goclub-topbar-nav a {
+.goclub-topbar-nav a,
+.goclub-nav-more > summary {
   display: flex;
   align-items: center;
   padding: 0 12px;
@@ -360,7 +361,102 @@ main.container {
   white-space: nowrap;
 }
 .goclub-topbar-nav a:hover,
-.goclub-topbar-nav a[aria-current] { color: var(--vp-brand-1); }
+.goclub-topbar-nav a[aria-current],
+.goclub-nav-more > summary:hover,
+.goclub-nav-more:has(a[aria-current]) > summary { color: var(--vp-brand-1); }
+
+.goclub-nav-more { position: relative; }
+.goclub-nav-more > summary {
+  gap: 4px;
+  min-height: 36px;
+  cursor: pointer;
+  list-style: none;
+}
+.goclub-nav-more > summary::-webkit-details-marker { display: none; }
+.goclub-nav-chevron { width: 14px; height: 14px; }
+.goclub-nav-more[open] .goclub-nav-chevron { transform: rotate(180deg); }
+.goclub-nav-more-links {
+  position: absolute;
+  top: calc(100% + 4px);
+  inset-inline-end: 0;
+  min-width: 8rem;
+  padding: 4px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 8px;
+  background: var(--vp-bg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.goclub-nav-more-links a {
+  display: flex;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.goclub-nav-more-links a:hover,
+.goclub-nav-more-links a:focus-visible { background: var(--vp-bg-soft); }
+
+.website-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.website-filters[hidden], .website-group[hidden] { display: none; }
+.website-filters button {
+  padding: 6px 12px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 6px;
+  background: var(--vp-bg);
+  color: var(--vp-text-2);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.website-filters button[aria-pressed="true"] {
+  border-color: var(--vp-brand-1);
+  color: var(--vp-brand-1);
+  background: var(--vp-brand-soft-weak);
+}
+.website-group + .website-group { margin-top: 32px; }
+.website-directory .website-group h2 {
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+  font-size: 20px;
+}
+.website-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 12px;
+}
+.website-directory a.website-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--vp-divider);
+  border-radius: 8px;
+  background: var(--vp-bg);
+  color: var(--vp-text-1);
+  text-decoration: none;
+}
+.website-directory a.website-card:hover,
+.website-directory a.website-card:focus-visible {
+  border-color: var(--vp-brand-1);
+  background: var(--vp-brand-soft-weak);
+}
+.website-card strong { padding-inline-end: 20px; line-height: 1.45; }
+.website-description { font-size: 14px; line-height: 1.6; color: var(--vp-text-2); }
+.website-domain { margin-top: auto; padding-top: 4px; font-size: 12px; color: var(--vp-text-2); }
+.website-arrow {
+  position: absolute;
+  inset: 16px 14px auto auto;
+  width: 14px;
+  height: 14px;
+  color: var(--vp-text-2);
+  transform: rotate(-45deg);
+}
 
 @media screen and (max-width: 59.99rem) {
   :root { --gc-topbar-h: 96px; }
@@ -372,11 +468,11 @@ main.container {
     margin: 0;
     justify-content: space-between;
   }
-  .goclub-topbar-nav a { padding: 0; }
+  .goclub-topbar-nav > a, .goclub-nav-more > summary { padding: 0; }
 }
 @media screen and (max-width: 30rem) {
   .goclub-topbar-inner { padding-inline: 8px; }
-  .goclub-topbar-nav a { font-size: 13px; }
+  .goclub-topbar-nav a, .goclub-nav-more > summary { font-size: 13px; }
 }
 @media screen and (max-width: 22.5rem) {
   .goclub-topbar-inner { padding-inline: 6px; column-gap: 2px; }
