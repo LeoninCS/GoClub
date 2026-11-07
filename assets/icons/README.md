@@ -11,7 +11,7 @@
 
 ## 首页栏目卡片图标
 
-首页栏目卡片按栏目名映射 Lucide 图标（`layouts/index.html` 内按标题关键字选择）：面试真题 `messages-square`、八股总结 `book-open`、资源荟萃 `folder-open`、配套文章 `file-text`、项目学习 `code`、技术博客 `pen-line`、求职就业 `briefcase`、贡献者 `users`，未命中时用 `library`。原件同样在 `lucide/` 目录。
+首页栏目卡片按栏目名映射 Lucide 图标（`layouts/index.html` 内按标题关键字选择）：面试真题 `messages-square`、八股总结 `book-open`、资源荟萃 `folder-open`、项目学习 `code`、博客分享 `pen-line`、贡献者 `users`，未命中时用 `library`。原件同样在 `lucide/` 目录。
 
 ## 例外
 

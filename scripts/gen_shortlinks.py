@@ -7,7 +7,7 @@
 
 短码由「内容文件路径」哈希得到，因此：
   - 改标题、改正文、改 slug，短码都不变
-  - 只有重命名/移动文件才会变（这时应保留旧短链）
+  - 重命名/移动文件时，用 shortlink_source 保留原路径和已发布的短链
 
 用法：
   python3 scripts/gen_shortlinks.py          # 写入缺失的短链
@@ -36,6 +36,9 @@ BOOK_PREFIXES = (
 )
 
 SHORTLINK_RE = re.compile(r'^shortlink:\s*["\']?([a-z0-9]+)["\']?\s*$', re.MULTILINE)
+SHORTLINK_SOURCE_RE = re.compile(
+    r'^shortlink_source:[ \t]*["\']?([^"\'\r\n]+?)["\']?[ \t]*$', re.MULTILINE
+)
 
 
 def is_book_chapter(rel: str) -> bool:
@@ -71,16 +74,17 @@ def collect_pages() -> list[str]:
     return sorted(pages)
 
 
-def assign_codes(pages: list[str]) -> dict[str, str]:
+def assign_codes(pages: list[str], sources: dict[str, str] | None = None) -> dict[str, str]:
     """分配短码，碰撞时对后来者逐位加长，保证结果稳定且唯一。"""
     codes: dict[str, str] = {}
     used: dict[str, str] = {}
     for rel in pages:
+        source = (sources or {}).get(rel, rel)
         length = CODE_LEN
-        code = make_code(rel, length)
+        code = make_code(source, length)
         while code in used:
             length += 1
-            code = make_code(rel, length)
+            code = make_code(source, length)
             if length > 12:
                 raise RuntimeError(f"无法为 {rel} 分配唯一短码")
         used[code] = rel
@@ -104,7 +108,17 @@ def main() -> int:
     args = ap.parse_args()
 
     pages = collect_pages()
-    codes = assign_codes(pages)
+    texts = {}
+    sources = {}
+    for rel in pages:
+        with open(os.path.join(CONTENT_ROOT, rel), encoding="utf-8") as file:
+            texts[rel] = file.read()
+        parsed = read_front_matter(texts[rel])
+        if parsed:
+            source = SHORTLINK_SOURCE_RE.search(parsed[0])
+            if source:
+                sources[rel] = source.group(1)
+    codes = assign_codes(pages, sources)
 
     if args.list:
         for rel in pages:
@@ -117,7 +131,7 @@ def main() -> int:
     for rel in pages:
         path = os.path.join(CONTENT_ROOT, rel)
         code = codes[rel]
-        text = open(path, encoding="utf-8").read()
+        text = texts[rel]
         parsed = read_front_matter(text)
 
         if parsed is None:

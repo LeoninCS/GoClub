@@ -311,7 +311,7 @@ button {
   min-width: 0;
 }
 
-.nav-link {
+.nav > a {
   padding: 8px 13px;
   border-radius: 6px;
   color: var(--fg-2);
@@ -325,7 +325,7 @@ button {
   }
 
   // 当前栏目：浅底 + 底部 2px 强调线
-  &.is-active {
+  &[aria-current] {
     color: var(--accent);
     background: var(--accent-soft);
     box-shadow: inset 0 -2px 0 var(--accent);
@@ -2010,7 +2010,7 @@ button {
 // 10. 响应式
 // -----------------------------------------------------------------------------
 @media (max-width: 1180px) {
-  .nav-link {
+  .nav > a {
     padding: 7px 9px;
     font-size: 13.5px;
   }

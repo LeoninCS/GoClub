@@ -5,7 +5,7 @@
   {{ $startPage := .Site.GetPage "docs/baguwen" }}
   {{ $docs := .Site.GetPage "docs" }}
   {{ $sections := slice }}
-  {{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/companion" "docs/project-study" "docs/blog" "docs/jobs" "docs/contributors" }}
+  {{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/blog" "docs/project-study" "docs/contributors" }}
     {{ with $.Site.GetPage . }}{{ $sections = $sections | append . }}{{ end }}
   {{ end }}
   {{ $total := len .Site.RegularPages }}
@@ -25,7 +25,7 @@
         <span class="home-wordmark-text" aria-hidden="true">GoClub</span>
       </p>
       <h1 class="home-title">Go 后端面试知识库</h1>
-      <p class="home-tagline">八股总结、面试真题、学习资源和配套文章，按栏目整理，社区一起维护。</p>
+      <p class="home-tagline">八股总结、面试真题、学习资源和博客分享，按栏目整理，社区一起维护。</p>
       <button type="button" class="goclub-search-trigger home-search" aria-label="搜索知识库">
         {{ partial "goclub/icon" (dict "name" "search" "class" "home-search-icon") }}
         <span class="home-search-text">搜索题目、知识点…</span>
@@ -63,7 +63,7 @@
         <path d="m3 11 18-5v12L3 14v-3z" />
         <path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" />
       </svg>
-      <p>八股总结、面试真题、学习资源与配套文章，按栏目整理，由社区共同维护。面经可先借助 AI 整理，再通过 Issue 表单投稿；内容补充与纠错，欢迎直接提 PR。</p>
+      <p>八股总结、面试真题、学习资源与博客分享，按栏目整理，由社区共同维护。面经可先借助 AI 整理，再通过 Issue 表单投稿；内容补充与纠错，欢迎直接提 PR。</p>
       <a href="{{ $issueURL }}" target="_blank" rel="noopener noreferrer">提交面经</a>
     </div>
 
@@ -78,11 +78,8 @@
           {{ if in $t "面试" }}{{ $icon = "messages-square" }}
           {{ else if in $t "八股" }}{{ $icon = "book-open" }}
           {{ else if in $t "资源" }}{{ $icon = "folder-open" }}
-          {{ else if in $t "配套" }}{{ $icon = "file-text" }}
           {{ else if in $t "项目" }}{{ $icon = "code" }}
           {{ else if in $t "博客" }}{{ $icon = "pen-line" }}
-          {{ else if in $t "求职" }}{{ $icon = "briefcase" }}
-          {{ else if in $t "就业" }}{{ $icon = "briefcase" }}
           {{ else if in $t "贡献" }}{{ $icon = "users" }}
           {{ end }}
           <a class="home-row" href="{{ $sec.RelPermalink }}">

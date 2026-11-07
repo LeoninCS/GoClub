@@ -16,10 +16,8 @@ ALLOWED_CATEGORIES = {
     "面试真题",
     "八股总结",
     "资源荟萃",
-    "技术博客",
-    "配套文章",
+    "博客分享",
     "项目学习",
-    "求职就业",
     "其他",
 }
 REQUIRED_FIELDS = ("href", "title", "category", "type")

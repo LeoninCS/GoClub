@@ -3,8 +3,10 @@ title: "Go后端学习路线"
 weight: 1
 slug: "go-backend-roadmap"
 aliases:
+  - "/docs/companion/go-backend-roadmap/"
   - "/docs/companion/Go后端学习路线/"
   - "/s/kiun/"
+shortlink_source: "companion/Go后端学习路线.md"
 shortlink: "kiun"
 ---
 

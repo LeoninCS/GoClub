@@ -18,29 +18,8 @@
       <kbd class="goclub-topbar-kbd">S</kbd>
     </button>
 
-    {{/* 顶栏菜单行：fork 的 4 直链 + 「更多」下拉（其余栏目），当前栏目品牌色高亮 */}}
     <nav class="nav" aria-label="栏目导航">
-      {{ range slice "docs/interview" "docs/baguwen" "docs/resources" "docs/project-study" }}
-        {{ with $page.Site.GetPage . }}
-          <a class="nav-link{{ if strings.HasPrefix $page.RelPermalink .RelPermalink }} is-active{{ end }}" href="{{ .RelPermalink }}"
-            {{ if strings.HasPrefix $page.RelPermalink .RelPermalink }}aria-current="true"{{ end }}>{{ .Title }}</a>
-        {{ end }}
-      {{ end }}
-      <div class="goclub-topbar-more">
-        <button type="button" class="goclub-topbar-more-btn" aria-haspopup="true">
-          <span>更多</span>
-          {{ partial "goclub/icon" (dict "name" "chevron-down" "class" "goclub-topbar-more-icon") }}
-        </button>
-        <div class="goclub-topbar-flyout">
-          <div class="goclub-topbar-flyout-panel">
-            {{ range slice "docs/companion" "docs/blog" "docs/jobs" "docs/contributors" }}
-              {{ with $page.Site.GetPage . }}
-                <a href="{{ .RelPermalink }}"{{ if strings.HasPrefix $page.RelPermalink .RelPermalink }} class="active" aria-current="true"{{ end }}>{{ .Title }}</a>
-              {{ end }}
-            {{ end }}
-          </div>
-        </div>
-      </div>
+      {{ partial "goclub/section-links" . }}
     </nav>
 
     <div class="head-actions">
