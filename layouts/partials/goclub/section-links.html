@@ -1,5 +1,5 @@
-{{ $primary := slice "/docs/interview" "/docs/baguwen" "/docs/contributors" }}
-{{ $more := slice "/docs/resources" "/docs/project-study" "/docs/blog" "/docs/resources/网站分享" }}
+{{ $primary := slice "/docs/interview" "/docs/baguwen" "/docs/resources/网站分享" "/docs/contributors" }}
+{{ $more := slice "/docs/resources" "/docs/project-study" "/docs/blog" }}
 {{ $paths := $primary | append $more }}
 {{ $active := . }}
 {{ range .Ancestors }}
