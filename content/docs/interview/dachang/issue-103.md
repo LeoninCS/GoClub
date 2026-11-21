@@ -1,5 +1,8 @@
 ---
 title: "keut09-字节-抖音后端开发-一面"
+aliases:
+  - "/s/ttp2/"
+shortlink: "ttp2"
 ---
 
 ##一面
