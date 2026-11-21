@@ -16,6 +16,11 @@ ALLOWED_CATEGORIES = {"dachang", "zhongchang", "xiaochang"}
 CATEGORY_LABELS = {"大厂": "dachang", "中厂": "zhongchang", "小厂": "xiaochang"}
 MAX_TITLE_LENGTH = 80
 
+# ATX 标题：允许 0-3 空格缩进（列表内的标题要保留缩进），# 后必须有空格和正文。
+HEADING_PATTERN = re.compile(r"^(\s{0,3})(#{1,6})(?!#)\s*(.+?)\s*$")
+FENCE_OPEN_PATTERN = re.compile(r"^\s{0,3}(`{3,}|~{3,})")
+FENCE_CLOSE_PATTERN = re.compile(r"^\s{0,3}(`{3,}|~{3,})\s*$")
+
 
 class SubmissionError(ValueError):
     """A user-facing conversion error for an unusable GitHub Issue event."""
@@ -103,6 +108,39 @@ def normalize_title(issue_title: str, issue_number: int) -> str:
     return title
 
 
+def normalize_markdown_headings(markdown: str) -> str:
+    """把投稿里不规范的小标题修成标准 Markdown。
+
+    投稿人常写成 "##一面"、"###算法"，Hugo 会当成普通段落，目录和锚点全失效。
+    这里只调整标题标记本身（补上 # 后的空格），不改写正文文字，也不重排列表编号。
+    围栏代码块里的 # 注释按原样保留。
+    """
+    lines = markdown.split("\n")
+    normalized: list[str] = []
+    open_fence: str | None = None
+
+    for line in lines:
+        fence = FENCE_OPEN_PATTERN.match(line)
+        if fence is not None:
+            marker = fence.group(1)
+            if open_fence is None:
+                open_fence = marker
+            elif (
+                marker[0] == open_fence[0]
+                and len(marker) >= len(open_fence)
+                and FENCE_CLOSE_PATTERN.fullmatch(line)
+            ):
+                open_fence = None
+            normalized.append(line)
+            continue
+
+        if open_fence is None:
+            line = HEADING_PATTERN.sub(r"\1\2 \3", line)
+        normalized.append(line)
+
+    return "\n".join(normalized)
+
+
 def page_filename(issue_number: int) -> str:
     return f"issue-{issue_number}.md"
 
@@ -130,11 +168,19 @@ def process(payload_path: Path, content_root: Path, write: bool) -> int:
 
         title = normalize_title(issue.get("title", ""), issue_number)
         body = strip_front_matter(extract_submission_content(issue["body"])).strip()
+        body = normalize_markdown_headings(body).strip()
         if not body:
             body = "待确认。"
 
         relative_path = category_dir / page_filename(issue_number)
-        page = f'---\ntitle: {json.dumps(title, ensure_ascii=False)}\n---\n\n{body}\n'
+        # weight 用 Issue 编号，保证自动收录的面经有稳定排序位置，且不与人工编排的权重冲突。
+        page = (
+            f"---\n"
+            f"title: {json.dumps(title, ensure_ascii=False)}\n"
+            f"weight: {issue_number}\n"
+            f"---\n\n"
+            f"{body}\n"
+        )
 
         if write:
             relative_path.write_text(page, encoding="utf-8", newline="\n")

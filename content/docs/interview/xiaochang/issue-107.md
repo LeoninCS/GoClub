@@ -1,6 +1,9 @@
 ---
 title: "My3tique-沥泉科技-Go后端开发-一面"
+slug: "my3tique-liqun-go-backend-1"
+weight: 5
 aliases:
+  - "/docs/interview/xiaochang/issue-107/"
   - "/s/7ozb/"
 shortlink: "7ozb"
 ---
