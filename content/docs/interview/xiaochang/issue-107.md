@@ -1,5 +1,8 @@
 ---
 title: "My3tique-沥泉科技-Go后端开发-一面"
+aliases:
+  - "/s/7ozb/"
+shortlink: "7ozb"
 ---
 
 ## 项目与微服务架构
