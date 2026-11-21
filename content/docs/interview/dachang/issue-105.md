@@ -1,5 +1,8 @@
 ---
 title: "keut09-字节-中国交易与广告-一面"
+aliases:
+  - "/s/hcfx/"
+shortlink: "hcfx"
 ---
 
 ##一面
